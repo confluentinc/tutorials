@@ -1,0 +1,34 @@
+Let's say you have a topic `financial_txns`, containing stock purchase at your firm. You want to do some basic reporting that includes the the number of shares, customer-id, and the ticker symbol involved in the transaction. All the information is in the record, but it's in JSON format and the information you need is nested.  Here's an example record:
+
+[source, json]
+----
+{
+  "id": "STBCKS289803838HHDHD",
+  "transaction": {
+       "num_shares": 50000,     <1>
+       "amount": 50044568.89,
+       "txn_ts": "2020-11-18 02:31:43",
+       "customer": {
+             "first_name": "Jill",
+             "last_name": "Smith",
+             "id": 1234567,          <2>
+             "email": "jsmith@gmail.com"
+
+       },
+       "company": {
+             "name": "ACME Corp",
+             "ticker": "ACMC",       <3>
+             "id": "ACME837275222752952",
+             "address": "Anytown USA, 333333"
+
+       }
+  }
+
+}
+----
+<1> Number of shares
+<2> Customer Id
+<3> The ticker symbol
+
+
+As you can see, all the information is there, but you need to way to navigate this nested JSON to extract only the bits of information you are interested in.

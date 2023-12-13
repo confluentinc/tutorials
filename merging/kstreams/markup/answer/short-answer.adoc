@@ -1,0 +1,10 @@
+The input streams are combined using the `merge` function, which creates a new stream that represents all of the events of its inputs.
+The merged stream is forwarded to a combined topic via the `to` method, which accepts the topic as a parameter.
+
+```
+KStream<String, SongEvent> rockSongs = builder.stream(rockTopic);
+KStream<String, SongEvent> classicalSongs = builder.stream(classicalTopic);
+KStream<String, SongEvent> allSongs = rockSongs.merge(classicalSongs);
+
+allSongs.to(allGenresTopic);
+```

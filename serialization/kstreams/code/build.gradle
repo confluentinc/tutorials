@@ -1,0 +1,91 @@
+buildscript {
+  repositories {
+    mavenCentral()
+  }
+  dependencies {
+    classpath "com.google.protobuf:protobuf-gradle-plugin:0.9.2"
+  }
+}
+
+plugins {
+  id "java"
+  id "application"
+  id "idea"
+  id "com.google.cloud.tools.jib" version "3.3.1"
+  id "com.github.johnrengelman.shadow" version "6.1.0"
+  id "com.google.protobuf" version "0.9.2"
+  id "com.github.davidmc24.gradle.plugin.avro" version "1.7.0"
+}
+
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
+version = "0.0.1"
+
+repositories {
+  mavenCentral()
+
+  maven {
+    url "https://packages.confluent.io/maven"
+  }
+}
+
+apply plugin: "com.github.johnrengelman.shadow"
+
+dependencies {
+  implementation "org.apache.avro:avro:1.11.1"
+  implementation "com.google.protobuf:protobuf-java:3.22.2"
+  implementation "org.slf4j:slf4j-simple:2.0.7"
+  implementation "org.apache.kafka:kafka-streams:3.3.0"
+  implementation "io.confluent:kafka-streams-avro-serde:7.3.0"
+  implementation "io.confluent:kafka-streams-protobuf-serde:7.3.0"
+  implementation 'com.google.code.gson:gson:2.10.1'
+
+  testImplementation "org.apache.kafka:kafka-streams-test-utils:3.3.0"
+  testImplementation 'junit:junit:4.13.2'
+  testImplementation 'org.assertj:assertj-core:3.24.2'
+}
+
+test {
+  testLogging {
+    outputs.upToDateWhen { false }
+    showStandardStreams = true
+    events "passed", "skipped", "failed"
+    exceptionFormat "full"
+  }
+}
+
+jar {
+  manifest {
+    attributes(
+        "Class-Path": configurations.compileClasspath.collect { it.getName() }.join(" "),
+        "Main-Class": "io.confluent.developer.SerializationTutorial"
+    )
+  }
+}
+
+shadowJar {
+  archiveBaseName = "kstreams-serialization-standalone"
+  archiveClassifier = ''
+}
+
+// Define the main class for the application
+mainClassName = 'io.confluent.developer.serialization.SerializationTutorial'
+
+protobuf {
+  generatedFilesBaseDir = "$buildDir/generated-main-proto-java/"
+
+  protoc {
+    artifact = "com.google.protobuf:protoc:3.22.2"
+  }
+
+}
+
+clean {
+  delete protobuf.generatedFilesBaseDir
+}
+
+idea {
+  module {
+    sourceDirs += file("${buildDir}/generated-main-proto-java/")
+  }
+}

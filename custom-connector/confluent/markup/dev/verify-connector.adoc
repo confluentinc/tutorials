@@ -1,0 +1,16 @@
+Once the connector has been provisioned, click on its tile on the `Connectors` page.
+
+In the `Overview` tab, you'll see that the connector is generating messages at a throughput of 1 message per second.
+
++++++
+<img src="{{ "/assets/img/custom-connector-overview.png" | relative_url }}" alt="Custom Connector Overview" width=800 />
++++++
+
+Now click the `Logs` tab, where you can search and filter log messages that the connector is generating in order to monitor or debug.
+
++++++
+<img src="{{ "/assets/img/custom-connector-logs.png" | relative_url }}" alt="Custom Connector Logs" width=800 />
++++++
+
+Now, click on `Topics` in the lefthand navigation and select the topic that the source connector is writing to (`counter-topic`).  In the `Messages` viewer, you'll see incrementing
+numbers being emitted.

@@ -1,0 +1,16 @@
+////
+   Example content file for how to include a console producer(s) in the tutorial.
+   Usually you'll include a line referencing the script to run the console producer and also include some content
+   describing how to input data as shown below.
+
+   Again modify this file as you need for your tutorial, as this is just sample content.  You also may have more than one
+   console producer to run depending on how you structure your tutorial
+
+////
+
+Create the following file `input.txt` in the base directory of the tutorial.  The numbers before the `-` will be the key and the part after will be the value.
+
++++++
+<pre class="snippet"><code class="json">{% include_raw tutorials/kafka-producer-application/kafka/code/tutorial-steps/dev/input.txt %}</code></pre>
++++++
+

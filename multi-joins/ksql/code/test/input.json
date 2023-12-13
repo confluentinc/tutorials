@@ -1,0 +1,112 @@
+{
+  "inputs": [
+    {
+      "topic": "customers",
+      "key": "1",
+      "value": {
+        "customerid": "1", 
+        "customername": "Adrian Garcia"
+      }
+    },
+    {
+      "topic": "customers",
+      "key": "2",
+      "value": {
+        "customerid": "2", 
+        "customername": "Robert Miller"
+      }
+    },
+    {
+      "topic": "customers",
+      "key": "3",
+      "value": {
+        "customerid": "3", 
+        "customername": "Brian Smith"
+      }
+    },
+    {
+      "topic": "items",
+      "key": "1",
+      "value": {
+        "itemid": "1", 
+        "itemname": "Television 60-in"
+      }
+    },
+    {
+      "topic": "items",
+      "key": "2",
+      "value": {
+        "itemid": "2", 
+        "itemname": "Laptop 15-in"
+      }
+    },
+    {
+      "topic": "items",
+      "key": "3",
+      "value": {
+        "itemid": "3", 
+        "itemname": "Speakers"
+      }
+    },
+    {
+      "topic": "orders",
+      "key": "abc123",
+      "value": {
+        "orderid": "abc123", 
+        "customerid": "1", 
+        "itemid": "1", 
+        "purchasedate": "2020-05-01"
+      }
+    },
+    {
+      "topic": "orders",
+      "key": "abc345",
+      "value": {
+        "orderid": "abc345", 
+        "customerid": "1", 
+        "itemid": "2", 
+        "purchasedate": "2020-05-01"
+      }
+    },
+    {
+      "topic": "orders",
+      "key": "abc678",
+      "value": {
+        "orderid": "abc678", 
+        "customerid": "2",  
+        "itemid": "1", 
+        "purchasedate": "2020-05-01"
+      }
+    },
+    {
+      "topic": "orders",
+      "key": "abc987",
+      "value": {
+        "orderid": "abc987", 
+        "customerid": "3", 
+        "itemid": "1", 
+        "purchasedate": "2020-05-03"
+      }
+    },
+    {
+      "topic": "orders",
+      "key": "xyz123",
+      "value": {
+        "orderid": "xyz123", 
+        "customerid": "2", 
+        "itemid": "3", 
+        "purchasedate": "2020-05-03"
+      }
+    },
+    {
+      "topic": "orders",
+      "key": "xyz987",
+      "value": {
+        "orderid": "xyz987", 
+        "customerid": "2", 
+        "itemid": "2", 
+        "purchasedate": "2020-05-05"
+      }
+    }
+  ]
+}

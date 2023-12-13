@@ -1,0 +1,5 @@
+Next, create the following `docker-compose.yml` file to obtain Confluent Platform (for Kafka in the cloud, see https://www.confluent.io/confluent-cloud/tryfree/[Confluent Cloud]) (this tutorial uses just ZooKeeper and the Kafka broker):
+
++++++
+<pre class="snippet"><code class="dockerfile">{% include_raw tutorials/message-ordering/kafka/code/docker-compose.yml %}</code></pre>
++++++

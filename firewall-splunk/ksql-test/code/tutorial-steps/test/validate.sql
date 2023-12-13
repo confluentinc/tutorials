@@ -1,0 +1,1 @@
+SELECT * FROM splunk_filtered EMIT CHANGES LIMIT 2;

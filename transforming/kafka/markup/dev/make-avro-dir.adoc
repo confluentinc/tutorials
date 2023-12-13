@@ -1,0 +1,5 @@
+Create a directory for the schemas that represent the stream of events:
+
++++++
+<pre class="snippet"><code class="shell">mkdir -p src/main/avro</code></pre>
++++++

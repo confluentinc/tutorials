@@ -1,0 +1,16 @@
+Now that the Kafka Connect Datagen is running in Confluent Cloud, it is producing messages to your Kafka topic.
+View the messages being produced to the Kafka topic in Confluent Cloud.
+
+There are many ways to do this, including the Confluent Cloud Console, but for this tutorial we will show you how to it with the Confluent CLI.
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/kafka-connect-datagen/confluent/code/tutorial-steps/dev/harness-console-consumer-keys.sh %}</code></pre>
++++++
+
+After the consumer starts, you should see the following output in a few seconds:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/kafka-connect-datagen/confluent/code/tutorial-steps/dev/consume-topic_expected.log %}</code></pre>
++++++
+
+When you are done, type `Ctrl-C`.

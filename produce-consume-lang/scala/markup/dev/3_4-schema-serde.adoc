@@ -1,0 +1,15 @@
+In this tutorial, events will be will be serialized in https://avro.apache.org/[Avro] format.
+To do so, we will need the appropriate serializers/deserializers.
+We add the following function to easily create a `Serializer[T]` where `T` in the type of the key or the value
+we'd like to serialise. Add the class: `src/main/scala/io/confluent/developer/schema/ScalaReflectionSerde.scala`
+
++++++
+<pre class="snippet"><code class="scala">{%
+    include_raw tutorials/produce-consume-lang/scala/code/src/main/scala/io/confluent/developer/schema/ScalaReflectionSerde.scala
+%}</code></pre>
++++++
+
+In this tutorial we are going to use a reflection based serialization method using https://github.com/sksamuel/avro4s[Avro4s], which is a serializing/deserializing library for Avro written in Scala.
+Avro4s performs it's de/serialization in multiple stages:
+- For Serialization:        `Case Class Instance   ->  Generic Record -> Avro Formatted Bytes`
+- For Deserialization:      `Avro Formatted bytes -> Generic Record -> Case Class Instance`

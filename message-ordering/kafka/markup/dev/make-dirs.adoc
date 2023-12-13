@@ -1,0 +1,5 @@
+Make the following directories to set up its structure:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/message-ordering/kafka/code/tutorial-steps/dev/make-dirs.sh %}</code></pre>
++++++

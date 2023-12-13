@@ -1,0 +1,19 @@
+
+In this step we’re going to create a topics needed for this tutorial.
+
+Since you are going to produce records using Protobuf and Avro serialization, you'll need two topics.
+
+But first, you're going to open a shell on the broker docker container.
+
+Open a new terminal and window then run this command:
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/multiple-event-types/kafka/code/tutorial-steps/dev/open-docker-shell.sh %}</code></pre>
++++++
+
+Now use the following commands to create the topics:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/multiple-event-types/kafka/code/tutorial-steps/dev/create-topic.sh %}</code></pre>
++++++
+
+Keep this terminal window open as you'll need to run a console-producer in a few steps.

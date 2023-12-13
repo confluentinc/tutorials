@@ -1,0 +1,13 @@
+In a new terminal, run:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/fk-joins/kstreams/code/tutorial-steps/dev/console-producer-albums.sh %}</code></pre>
++++++
+
+When the console producer starts, it will log some messages and hang, waiting for your input. Copy and paste one line at a time and press enter to send it. Note that these lines contain a `:` between the key and the value, so retyping them without the colon will not work.
+
+Each line represents an album that has individual tracks for purchase. To send all of the events below, paste the following into the prompt and press enter:
+
++++++
+<pre class="snippet"><code class="json">{% include_raw tutorials/fk-joins/kstreams/code/tutorial-steps/dev/albums.json %}</code></pre>
++++++

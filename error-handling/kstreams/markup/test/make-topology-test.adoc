@@ -1,0 +1,69 @@
+////
+  This content file is used to describe how to add test code you developed in this tutorial.  You'll need to update the
+  text to suit your test code.
+
+
+////
+
+Testing a Kafka streams application requires a bit of test harness code, but happily the `org.apache.kafka.streams.TopologyTestDriver` class makes this much more pleasant that it would otherwise be.
+
+
+The test for our streams application is simple, but we have two scenarios to cover.  The first is when the data is not in the expected format, so we expect that the topology will throw an exception.  The second case is the happy path where the data is as we expect:
+
+[source, java]
+----
+@Test
+public void shouldThrowException() {
+    assertThrows(org.apache.kafka.streams.errors.StreamsException.class, () -> inputTopic.pipeValueList(List.of("foo", "bar"))); <1>
+}
+
+@Test
+public void shouldProcessValues() {  <2>
+    var validMessages =  Collections.singletonList("foo");
+    var expectedMessages = validMessages.stream().map(String::toUpperCase).collect(Collectors.toList());
+    inputTopic.pipeValueList(validMessages);
+    var actualResults = outputTopic.readValuesToList();
+    assertEquals(expectedMessages, actualResults);
+}
+----
+
+<1> Test verifying unexpected format throws exception
+<2> Test validating the expected processing
+
+
+We also have logic in the `MaxFailuresUncaughtExceptionHandler` that needs testing as well.  Just like the streams application test, we have two scenarios to verify.
+
+* The case when errors are spread out so the exception handler should return `REPLACE_THREAD`
+* The case when the errors occur within our window and we expect the handler to return a `SHUTDOWN_APPLICATION`
+
+[source, java]
+----
+@Test
+public void shouldReplaceThreadWhenErrorsNotWithinMaxTime() throws Exception {  <1>
+    for (int i = 0; i < 10; i++) {
+        assertEquals(REPLACE_THREAD, exceptionHandler.handle(worksOnMyBoxException));
+        Thread.sleep(200);
+    }
+}
+@Test
+public void shouldShutdownApplicationWhenErrorsOccurWithinMaxTime() throws Exception { <2>
+    assertEquals(REPLACE_THREAD, exceptionHandler.handle(worksOnMyBoxException));
+    Thread.sleep(50);
+    assertEquals(SHUTDOWN_APPLICATION, exceptionHandler.handle(worksOnMyBoxException));
+}
+----
+
+<1> Test validating errors spread out result in replacing the thread
+<2> This test validates that a bunch of errors in a small timeframe result in a shutdown
+
+With the brief testing discussion done, let's create our two test files.
+
+First create the topology test file at `src/test/java/io/confluent/developer/StreamsUncaughtExceptionHandlingTest.java`.
++++++
+<pre class="snippet"><code class="java">{% include_raw tutorials/error-handling/kstreams/code/src/test/java/io/confluent/developer/StreamsUncaughtExceptionHandlingTest.java %}</code></pre>
++++++
+
+Then create the handler test file at `src/test/java/io/confluent/developer/MaxFailuresUncaughtExceptionHandlerTest.java`.
++++++
+<pre class="snippet"><code class="java">{% include_raw tutorials/error-handling/kstreams/code/src/test/java/io/confluent/developer/MaxFailuresUncaughtExceptionHandlerTest.java %}</code></pre>
++++++

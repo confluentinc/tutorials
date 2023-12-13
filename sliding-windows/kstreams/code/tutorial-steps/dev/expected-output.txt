@@ -1,0 +1,11 @@
+device-1 : 79.77
+device-1 : 80.63
+device-2 : 89.87
+device-1 : 79.76
+device-1 : 80.06
+device-1 : 82.06
+device-2 : 73.63
+device-2 : 81.75
+device-1 : 86.32
+device-1 : 82.82
+Processed a total of 10 messages

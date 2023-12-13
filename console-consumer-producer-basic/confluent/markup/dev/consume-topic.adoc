@@ -1,0 +1,5 @@
+Next, let's open up a consumer to read records.
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/console-consumer-producer-basic/confluent/code/tutorial-steps/dev/harness-console-consumer.sh %}</code></pre>
++++++

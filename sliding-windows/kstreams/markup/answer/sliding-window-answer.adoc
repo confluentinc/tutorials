@@ -1,0 +1,9 @@
+To use `SlidingWindows` use the `SlidingWindows.withTimeDifferenceAndGrace` method inside a `windowedBy` call.
+
++++++
+<pre class="snippet"><code class="java">{% include_raw tutorials/sliding-windows/kstreams/markup/answer/sliding-window-code.adoc %}</code></pre>
++++++
+
+The first parameter determines the maximum time difference between records in the same window, and the second parameter sets the grace period for allowing out-of-order events into the window.  For specifics on sliding windows you can read https://cwiki.apache.org/confluence/display/KAFKA/KIP-450%3A+Sliding+Window+Aggregations+in+the+DSL[KIP-450].
+
+You can get similar behavior in hopping windows by defining a short advance time. But this will result in poor performance because hopping windows will create many overlapping, possibly redundant windows.  Performing aggregation operations over redundant windows costs CPU time, which can be expensive.  Sliding windows only create windows containing distinct items, and perform calculations on these is more efficient. Additionally, sliding windows are inclusive on both the start and end time vs. hopping windows being inclusive only on the start time.

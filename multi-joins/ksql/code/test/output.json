@@ -1,0 +1,70 @@
+{
+  "outputs": [
+    {
+      "topic": "ORDERS_ENRICHED",
+      "key": "1",
+      "value": {
+        "CUSTOMERID": "1",
+        "CUSTOMERNAME": "Adrian Garcia",
+        "ORDERID": "abc123",
+        "PURCHASEDATE": "2020-05-01",
+        "ITEMNAME": "Television 60-in"
+      }
+    },
+    {
+      "topic": "ORDERS_ENRICHED",
+      "key": "2",
+      "value": {
+        "CUSTOMERID": "1",
+        "CUSTOMERNAME": "Adrian Garcia",
+        "ORDERID": "abc345",
+        "PURCHASEDATE": "2020-05-01",
+        "ITEMNAME": "Laptop 15-in"
+      }
+    },
+    {
+      "topic": "ORDERS_ENRICHED",
+      "key": "1",
+      "value": {
+        "CUSTOMERID": "2",
+        "CUSTOMERNAME": "Robert Miller",
+        "ORDERID": "abc678",
+        "PURCHASEDATE": "2020-05-01",
+        "ITEMNAME": "Television 60-in"
+      }
+    },
+    {
+      "topic": "ORDERS_ENRICHED",
+      "key": "1",
+      "value": {
+        "CUSTOMERID": "3",
+        "CUSTOMERNAME": "Brian Smith",
+        "ORDERID": "abc987",
+        "PURCHASEDATE": "2020-05-03",
+        "ITEMNAME": "Television 60-in"
+      }
+    },
+    {
+      "topic": "ORDERS_ENRICHED",
+      "key": "3",
+      "value": {
+        "CUSTOMERID": "2",
+        "CUSTOMERNAME": "Robert Miller",
+        "ORDERID": "xyz123",
+        "PURCHASEDATE": "2020-05-03",
+        "ITEMNAME": "Speakers"
+      }
+    },
+    {
+      "topic": "ORDERS_ENRICHED",
+      "key": "2",
+      "value": {
+        "CUSTOMERID": "2",
+        "CUSTOMERNAME": "Robert Miller",
+        "ORDERID": "xyz987",
+        "PURCHASEDATE": "2020-05-05",
+        "ITEMNAME": "Laptop 15-in"
+      }
+    }
+  ]
+}

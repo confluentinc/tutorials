@@ -1,0 +1,24 @@
+////
+  This is a sample content file for how to include a console consumer to the tutorial, probably a good idea so the end user can watch the results
+  of the tutorial.  Change the text as needed.
+
+////
+
+Start a console-consumer to confirm the output (no join happened in the final 3 lines so only the KStream side data should appear in those lines):
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/schedule-ktable-ttl/kstreams/code/tutorial-steps/dev/console-consumer-2.sh %}</code></pre>
++++++
+
+Your results should look someting like this:
+++++
+<pre class="snippet"><code class="shell">
+key1 : Bunch of coconuts what a lovely
+foo : baz bar
+fun : post quarantine not quarantine
+key1 : Bunch of coconuts
+foo : baz
+fun : post quarantine
+</code></pre>
+++++
+

@@ -1,0 +1,5 @@
+Run the Avro console consumer to view the messages in the topic `cities`. This is the topic that the JDBC source connector writes to, and note that the keys are `null`:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/connect-add-key-to-source/kstreams/code/tutorial-steps/dev/console-consumer.sh %}</code></pre>
++++++

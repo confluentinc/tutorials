@@ -1,0 +1,6 @@
+Then produce the following events to the stream. 
+This will automatically format the data that goes onto the topic in Avro since the stream's value format is declared as such.
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/serialization/ksql/code/tutorial-steps/dev/populate-avro-movies.sql %}</code></pre>
++++++

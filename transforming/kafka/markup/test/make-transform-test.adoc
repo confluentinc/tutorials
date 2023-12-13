@@ -1,0 +1,5 @@
+And finally, write the test file, `src/test/java/io/confluent/developer/TransformEventsTest.java`, using the following code:
+
++++++
+<pre class="snippet"><code class="java">{% include_raw tutorials/transforming/kafka/code/src/test/java/io/confluent/developer/TransformEventsTest.java %}</code></pre>
++++++

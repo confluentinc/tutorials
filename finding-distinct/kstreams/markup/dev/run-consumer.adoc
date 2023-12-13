@@ -1,0 +1,11 @@
+Leave your previous terminal running and open a new one that will run a consumer to view the distinct click events:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/finding-distinct/kstreams/code/tutorial-steps/dev/console-consumer.sh %}</code></pre>
++++++
+
+Depending on the cadence and values you produce in the steps above, you should see messages similar to the following:
+
++++++
+<pre class="snippet"><code class="json">{% include_raw tutorials/finding-distinct/kstreams/code/tutorial-steps/dev/expected-output-events.json %}</code></pre>
++++++

@@ -1,0 +1,5 @@
+If you haven't already, get Confluent Platform.
+
++++++
+<pre class="snippet"><code class="shell">{% include shared-content/docker-install.txt %}</code></pre>
++++++

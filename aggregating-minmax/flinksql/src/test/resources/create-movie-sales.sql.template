@@ -1,0 +1,17 @@
+CREATE TABLE movie_sales (
+    id INT,
+    title STRING,
+    release_year INT,
+    total_sales INT
+) WITH (
+    'connector' = 'kafka',
+    'topic' = 'movie-sales',
+    'properties.bootstrap.servers' = 'localhost:KAFKA_PORT',
+    'scan.startup.mode' = 'earliest-offset',
+    'scan.bounded.mode' = 'latest-offset',
+    'key.format' = 'raw',
+    'key.fields' = 'id',
+    'value.format' = 'avro-confluent',
+    'value.avro-confluent.url' = 'http://localhost:SCHEMA_REGISTRY_PORT',
+    'value.fields-include' = 'EXCEPT_KEY'
+);

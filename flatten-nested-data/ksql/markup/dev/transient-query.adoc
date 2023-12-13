@@ -1,0 +1,11 @@
+We can query the new result stream called `FLATTENED_ORDERS` with a much simpler query that doesn't need to handle nested data.
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/flatten-nested-data/ksql/code/tutorial-steps/dev/transient-query.sql %}</code></pre>
++++++
+
+The output should look similar to:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/flatten-nested-data/ksql/code/tutorial-steps/dev/expected-transient-query.log %}</code></pre>
++++++

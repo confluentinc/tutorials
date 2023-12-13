@@ -1,0 +1,46 @@
+
+Let's take a close look at the `buildTopology()` method, which uses the Kafka Streams DSL.
+This particular topology is pretty simple.
+
+[source,java]
+.buildTopology()
+----
+protected Topology buildTopology(Properties envProps,
+                                   final SpecificAvroSerde<Movie> movieSpecificAvroSerde,
+                                   final KafkaProtobufSerde<MovieProtos.Movie> movieProtoSerde) {
+    
+    final String inputAvroTopicName = envProps.getProperty("input.avro.movies.topic.name");
+    final String outProtoTopicName = envProps.getProperty("output.proto.movies.topic.name");
+
+    final StreamsBuilder builder = new StreamsBuilder(); // <1>
+    
+    final KStream<Long, Movie> avroMovieStream =
+        builder.stream(inputAvroTopicName, Consumed.with(Long(), movieSpecificAvroSerde));  // <2>
+
+    avroMovieStream
+        .map((key, avroMovie) ->
+                 new KeyValue<>(key, MovieProtos.Movie.newBuilder()
+                     .setMovieId(avroMovie.getMovieId())
+                     .setTitle(avroMovie.getTitle())
+                     .setReleaseYear(avroMovie.getReleaseYear())
+                     .build()))
+        .to(outProtoTopicName, Produced.with(Long(), movieProtoSerde)); // <3>
+
+    return builder.build();
+  }
+----
+<1> The first thing the method does is create an instance of `https://kafka.apache.org/{{ site.ak_javadoc_version }}/javadoc/org/apache/kafka/streams/StreamsBuilder.html[StreamsBuilder]`, which is the helper object that lets us build our topology.
+<2> We call the `stream()` method to create a `https://kafka.apache.org/{{ site.ak_javadoc_version }}/javadoc/org/apache/kafka/streams/kstream/KStream.html[KStream]<Long, Movie>` object.
+<3> Lastly, we call `to()` to send the events to another topic.
+
+NOTE: All of the work to work to convert the events between Avro and Protobuf happens through _parameterized serializers_.
+
+You see, even though we specified default serializers with `StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG` and `StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG` in Streams Configuration, the Kafka Streams DSL allows us to use a specific serializer / deserializer each time we interact with a topic.
+
+In this case, `Consumed.with()` allows us to consume the events with `SpecificAvroSerde`, and `Produced.with()` allows us to produce the events back to a topic with Protobuf.
+
+Now, go ahead and create the following file at `src/main/java/io/confluent/developer/serialization/SerializationTutorial.java`.
+
++++++
+<pre class="snippet"><code class="java">{% include_raw tutorials/serialization/kstreams/code/src/main/java/io/confluent/developer/serialization/SerializationTutorial.java %}</code></pre>
++++++

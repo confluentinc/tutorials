@@ -1,0 +1,5 @@
+Next, create an Avro schema file at `src/main/avro/movie.avsc` for the stream of movies:
+
++++++
+<pre class="snippet"><code class="avro">{% include_raw tutorials/serialization/kstreams/code/src/main/avro/movie.avsc %}</code></pre>
++++++

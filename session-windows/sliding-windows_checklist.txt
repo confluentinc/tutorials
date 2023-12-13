@@ -1,0 +1,21 @@
+
+Your tutorial, session-windows, has been generated sucessfully!
+A copy of this checklist has been added to the session-windows directory.
+
+There are some additional steps you'll need to take to complete the tutorial:
+
+
+1. Update the following entries in _data/tutorials.yaml file
+    a. title
+    b. meta-description
+    c. question
+    c. introduction
+
+You can find these fields by searching for session-windows in the _data/tutorials.yaml file.
+
+
+2. Update the link text then add the following link(s) to the index.html file in the appropriate section:
+
+
+   <li><a href="session-windows/kstreams.html">MEANINGFUL LINK TEXT HERE</a></li>
+

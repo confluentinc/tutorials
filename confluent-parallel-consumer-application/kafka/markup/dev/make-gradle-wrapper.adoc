@@ -1,0 +1,5 @@
+And be sure to run the following command to obtain the Gradle wrapper, which we will use to execute the build. The Gradle wrapper is a best practice ancillary build script that enables developers to more easily collaborate on Gradle projects by ensuring that developers all use the same correct Gradle version for the project (downloading Gradle at build time if necessary).
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/confluent-parallel-consumer-application/kafka/code/tutorial-steps/dev/gradle-wrapper.sh %}</code></pre>
++++++

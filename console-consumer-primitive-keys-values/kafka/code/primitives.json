@@ -1,0 +1,10 @@
+{ 
+  "type": "record",
+  "name": "primitives",
+  "namespace": "io.confluent.avro.random.generator",
+  "fields":
+    [
+      { "name": "key_field", "type": "long" },
+      { "name": "value_field", "type": "double" }
+    ]
+}

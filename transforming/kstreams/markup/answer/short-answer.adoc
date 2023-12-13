@@ -1,0 +1,6 @@
+Use the `map()` method to take each input record and create a new stream with transformed records in it. The records are transformed via a custom function, in this case `convertRawMovie()`.
+
+```
+KStream<Long, Movie> movies = rawMovies.map((key, rawMovie) ->
+                                                new KeyValue<>(rawMovie.getId(), convertRawMovie(rawMovie)));
+```

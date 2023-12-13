@@ -1,0 +1,5 @@
+Now that you have run the base streams application, you'll run the same application but this time a `filter()` is added to the topology.
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/naming-changelog-repartition-topics/kstreams/code/tutorial-steps/dev/run-dev-app-no-name-filter.sh %}</code></pre>
++++++

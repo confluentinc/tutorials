@@ -1,0 +1,5 @@
+First, we'll declare a ksqlDB stream on the Kafka topic with which we want to work. A ksqlDB stream is a Kafka topic (which here already exists), with a schema. 
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/count-messages/ksql/code/tutorial-steps/dev/03b-declare-stream.sql %}</code></pre>
++++++

@@ -1,0 +1,59 @@
+The following Scala class defines our Consumer application.
+Add the following class to the file
+
+`app-consumer/src/main/scala/io/confluent/developer/consume/Consumer.scala`
+
++++++
+<pre class="snippet"><code class="java">{%
+    include_raw tutorials/produce-consume-lang/scala/code/app-consumer/src/main/scala/io/confluent/developer/consume/Consumer.scala
+%}</code></pre>
++++++
+
+Let’s describe the key pieces of this program.
+
+NOTE: The Consumer application loads its configuration from the _consumer_ bloc of the `application.conf`
+
+A `Consumer#consume` function covers most of the record consumption.
+
+[source,scala]
+----
+def consume(consumer: KafkaConsumer[Bytes, Book]): Vector[Book] = { //<1>
+
+  val books: ConsumerRecords[Bytes, Book] = consumer.poll((1 second) toJava) //<2>
+
+  books.asScala.toVector.map(_.value()) //<3>
+}
+----
+
+<1> `Consumer#consume` takes a
+`https://kafka.apache.org/25/javadoc/org/apache/kafka/clients/consumer/KafkaConsumer.html[KafkaConsumer]`
+and gives back a collection of `Book`.
+
+<2> We call the `KafkaConsumer#poll` function on the `KafkaConsumer` which returns a `ConsumerRecords`
+containing Book instances.
+
+<3> For each returned value in the `ConsumerRecords` instance, the record value is extracted and passed
+back in a `Vector`.
+
+Our Consumer application functions as an HTTP service defining two routes, `/count` and `/books`.
+These routes are mapped to the functions `getCount` and `getBooks` in our code.
+
+Similar to the Producer code, we utilize our `Consumer#consume` function by constructing an instance of the
+`KafkaConsumer`.
+
+- The `KafkaConsumer` is constructed with the `reflectionDeserializer4S[T]` which is configured to connect to the Schema
+Registry.
+
+- The `KafkaConsumer` reads it's configuration from the _consumer.client-config_ block of
+`application.conf`.
+
+- Finally, we subscribe to the `BOOK` topic by calling `KafkaConsumer#subscribe`.
+
+That's it! we are ready to poll records in a loop, updating our map of books.  The map of books is used to respond to
+queries on the HTTP routes.
+
+WARNING: We've added a shut down hook to close the consumer by calling `KafkaConsumer#close`.
+
+WARNING: The `KafkaConsumer` is created and used in a new thread.
+It's is really important to use it in a _*single*_ Thread.
+In our case it's not the main thread just because we also have a HTTP server.

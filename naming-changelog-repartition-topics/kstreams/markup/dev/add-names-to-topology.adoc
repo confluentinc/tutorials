@@ -1,0 +1,31 @@
+Now let's start over. This time you'll update the topology and provide names to all stateful operators.
+
+
++++++
+<pre class="snippet"><code class="java">
+ countStream = inputStream.groupByKey(Grouped.with("count", longSerde, stringSerde))
+                                   .count(Materialized.as("the-counting-store"))
+                                   .toStream();
+
+ joinedStream = inputStream.join(countStream, (v1, v2) -> v1 + v2.toString(),
+                                 JoinWindows.of(Duration.ofMillis(100)),
+                                 StreamJoined.with(longSerde, stringSerde, longSerde)
+                                             .withName("join").withStoreName("the-join-store"));
+</code></pre>
++++++
+
+Here's an image of the relevant part of the topology now with names  (view a `https://zz85.github.io/kafka-streams-viz/#VG9wb2xvZ2llczoKICAgU3ViLXRvcG9sb2d5OiAwCiAgICBTb3VyY2U6IEtTVFJFQU0tU09VUkNFLTAwMDAwMDAwMDAgKHRvcGljczogW2lucHV0LXRvcGljXSkKICAgICAgLS0+IEtTVFJFQU0tS0VZLVNFTEVDVC0wMDAwMDAwMDAxCiAgICBQcm9jZXNzb3I6IEtTVFJFQU0tS0VZLVNFTEVDVC0wMDAwMDAwMDAxIChzdG9yZXM6IFtdKQogICAgICAtLT4gS1NUUkVBTS1GSUxURVItMDAwMDAwMDAwNCwgS1NUUkVBTS1GSUxURVItMDAwMDAwMDAwOAogICAgICA8LS0gS1NUUkVBTS1TT1VSQ0UtMDAwMDAwMDAwMAogICAgUHJvY2Vzc29yOiBLU1RSRUFNLUZJTFRFUi0wMDAwMDAwMDA0IChzdG9yZXM6IFtdKQogICAgICAtLT4gS1NUUkVBTS1TSU5LLTAwMDAwMDAwMDMKICAgICAgPC0tIEtTVFJFQU0tS0VZLVNFTEVDVC0wMDAwMDAwMDAxCiAgICBQcm9jZXNzb3I6IEtTVFJFQU0tRklMVEVSLTAwMDAwMDAwMDggKHN0b3JlczogW10pCiAgICAgIC0tPiBLU1RSRUFNLVNJTkstMDAwMDAwMDAwNwogICAgICA8LS0gS1NUUkVBTS1LRVktU0VMRUNULTAwMDAwMDAwMDEKICAgIFNpbms6IEtTVFJFQU0tU0lOSy0wMDAwMDAwMDAzICh0b3BpYzogY291bnQtcmVwYXJ0aXRpb24pCiAgICAgIDwtLSBLU1RSRUFNLUZJTFRFUi0wMDAwMDAwMDA0CiAgICBTaW5rOiBLU1RSRUFNLVNJTkstMDAwMDAwMDAwNyAodG9waWM6IGpvaW4tbGVmdC1yZXBhcnRpdGlvbikKICAgICAgPC0tIEtTVFJFQU0tRklMVEVSLTAwMDAwMDAwMDgKCiAgU3ViLXRvcG9sb2d5OiAxCiAgICBTb3VyY2U6IEtTVFJFQU0tU09VUkNFLTAwMDAwMDAwMDUgKHRvcGljczogW2NvdW50LXJlcGFydGl0aW9uXSkKICAgICAgLS0+IEtTVFJFQU0tQUdHUkVHQVRFLTAwMDAwMDAwMDIKICAgIFByb2Nlc3NvcjogS1NUUkVBTS1BR0dSRUdBVEUtMDAwMDAwMDAwMiAoc3RvcmVzOiBbdGhlLWNvdW50aW5nLXN0b3JlXSkKICAgICAgLS0+IEtUQUJMRS1UT1NUUkVBTS0wMDAwMDAwMDA2CiAgICAgIDwtLSBLU1RSRUFNLVNPVVJDRS0wMDAwMDAwMDA1CiAgICBQcm9jZXNzb3I6IEtUQUJMRS1UT1NUUkVBTS0wMDAwMDAwMDA2IChzdG9yZXM6IFtdKQogICAgICAtLT4gam9pbi1vdGhlci13aW5kb3dlZCwgS1NUUkVBTS1NQVAtMDAwMDAwMDAxNgogICAgICA8LS0gS1NUUkVBTS1BR0dSRUdBVEUtMDAwMDAwMDAwMgogICAgU291cmNlOiBLU1RSRUFNLVNPVVJDRS0wMDAwMDAwMDA5ICh0b3BpY3M6IFtqb2luLWxlZnQtcmVwYXJ0aXRpb25dKQogICAgICAtLT4gam9pbi10aGlzLXdpbmRvd2VkCiAgICBQcm9jZXNzb3I6IGpvaW4tb3RoZXItd2luZG93ZWQgKHN0b3JlczogW3RoZS1qb2luLXN0b3JlLW90aGVyLWpvaW4tc3RvcmVdKQogICAgICAtLT4gam9pbi1vdGhlci1qb2luCiAgICAgIDwtLSBLVEFCTEUtVE9TVFJFQU0tMDAwMDAwMDAwNgogICAgUHJvY2Vzc29yOiBqb2luLXRoaXMtd2luZG93ZWQgKHN0b3JlczogW3RoZS1qb2luLXN0b3JlLXRoaXMtam9pbi1zdG9yZV0pCiAgICAgIC0tPiBqb2luLXRoaXMtam9pbgogICAgICA8LS0gS1NUUkVBTS1TT1VSQ0UtMDAwMDAwMDAwOQogICAgUHJvY2Vzc29yOiBqb2luLW90aGVyLWpvaW4gKHN0b3JlczogW3RoZS1qb2luLXN0b3JlLXRoaXMtam9pbi1zdG9yZV0pCiAgICAgIC0tPiBqb2luLW1lcmdlCiAgICAgIDwtLSBqb2luLW90aGVyLXdpbmRvd2VkCiAgICBQcm9jZXNzb3I6IGpvaW4tdGhpcy1qb2luIChzdG9yZXM6IFt0aGUtam9pbi1zdG9yZS1vdGhlci1qb2luLXN0b3JlXSkKICAgICAgLS0+IGpvaW4tbWVyZ2UKICAgICAgPC0tIGpvaW4tdGhpcy13aW5kb3dlZAogICAgUHJvY2Vzc29yOiBLU1RSRUFNLU1BUC0wMDAwMDAwMDE2IChzdG9yZXM6IFtdKQogICAgICAtLT4gS1NUUkVBTS1TSU5LLTAwMDAwMDAwMTcKICAgICAgPC0tIEtUQUJMRS1UT1NUUkVBTS0wMDAwMDAwMDA2CiAgICBQcm9jZXNzb3I6IGpvaW4tbWVyZ2UgKHN0b3JlczogW10pCiAgICAgIC0tPiBLU1RSRUFNLVNJTkstMDAwMDAwMDAxNQogICAgICA8LS0gam9pbi10aGlzLWpvaW4sIGpvaW4tb3RoZXItam9pbgogICAgU2luazogS1NUUkVBTS1TSU5LLTAwMDAwMDAwMTUgKHRvcGljOiBqb2luLXRvcGljKQogICAgICA8LS0gam9pbi1tZXJnZQogICAgU2luazogS1NUUkVBTS1TSU5LLTAwMDAwMDAwMTcgKHRvcGljOiBvdXRwdXQtdG9waWMpCiAgICAgIDwtLSBLU1RSRUFNLU1BUC0wMDAwMDAwMDE2Cgo=[full image of the topology]`):
+++++
+<br />
+<img src="{{ "/assets/tutorial_images/naming-changelog-repartition-topics/names-no-filter.png" | relative_url }}" alt="Kafka Streams Sub-topology" />
+++++
+
+**(Note that changelog topics don't show up in `Topology.describe()`)**
+
+Just like you've done throughout the tutorial, the changes are made by using feature flags which are enabled by parameters you pass to start the application.
+
+In the terminal running the streams application, use `Ctrl-C`, then restart the streams application with this command:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/naming-changelog-repartition-topics/kstreams/code/tutorial-steps/dev/render-run-dev-app-names-no-filter.sh %}</code></pre>
++++++

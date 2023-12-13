@@ -1,0 +1,16 @@
+
+In this step we're going to create a topic for use during this tutorial.
+
+
+Open a new terminal window and then run this command to open a shell on the broker docker container
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/kafka-producer-application/kafka/code/tutorial-steps/dev/open-docker-shell.sh %}</code></pre>
++++++
+
+Next, create the topic that the producer can write to
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/kafka-producer-application/kafka/code/tutorial-steps/dev/create-topic.sh %}</code></pre>
++++++
+
+Keep this terminal window open for later use when you run a console consumer to verify your producer application.

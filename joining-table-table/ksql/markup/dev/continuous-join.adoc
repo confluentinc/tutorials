@@ -1,0 +1,5 @@
+Since the output looks right, the next step is to make the query continuous. Issue the following to create a new table that is continuously populated by its query:
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/joining-table-table/ksql/code/tutorial-steps/dev/continuous-join.sql %}</code></pre>
++++++

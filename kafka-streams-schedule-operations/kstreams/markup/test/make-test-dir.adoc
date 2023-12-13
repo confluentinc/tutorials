@@ -1,0 +1,5 @@
+Create a directory for the tests to live in:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/kafka-streams-schedule-operations/kstreams/code/tutorial-steps/test/make-test-dir.sh %}</code></pre>
++++++

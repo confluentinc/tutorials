@@ -1,0 +1,5 @@
+To get started, make a new directory anywhere you'd like for this project:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/versioned-ktables/kstreams/code/tutorial-steps/dev/init.sh %}</code></pre>
++++++

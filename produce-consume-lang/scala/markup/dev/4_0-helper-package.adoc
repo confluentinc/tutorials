@@ -1,0 +1,10 @@
+Topic creation and avro schema declaration are often part of an external process. For the sake of clarity in this
+tutorial, we won't include these steps as part of the main application, but isolate them in a dedicated package.
+
+Create a directory for the package helper:
+
++++++
+<pre class="snippet"><code class="bash">{%
+    include_raw tutorials/produce-consume-lang/scala/code/tutorial-steps/dev/make-helper-package.sh
+%}</code></pre>
++++++

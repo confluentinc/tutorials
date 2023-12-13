@@ -1,0 +1,7 @@
+Run the following command to obtain the Gradle build:
+
++++++
+<pre class="snippet"><code class="bash">{%
+    include_raw tutorials/produce-consume-lang/scala/code/tutorial-steps/dev/gradle-wrapper.sh
+%}</code></pre>
++++++

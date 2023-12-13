@@ -1,0 +1,5 @@
+In a similar manner, populate the lead actor information:
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/joining-table-table/ksql/code/tutorial-steps/dev/populate-lead-actors.sql %}</code></pre>
++++++

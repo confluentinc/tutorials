@@ -1,0 +1,7 @@
+Since we'll be converting events into Protobuf, we'll need to specify a proto-schema for them.
+In this case, our events represent movies with a few attributes, such as the release year.
+Go ahead and create a directory for your schemas:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/serialization/kstreams/code/tutorial-steps/dev/make-proto-dir.sh %}</code></pre>
++++++

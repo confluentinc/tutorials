@@ -1,0 +1,36 @@
+{
+  "outputs": [
+    {
+      "topic": "PURCHASE_HISTORY_STREAM",
+      "value": {
+          "FIRST_NAME" : "Art",
+          "LAST_NAME" : "Vandeley",
+          "PURCHASE_DIFF" : -2995.6499999999996
+      }
+    },
+    {
+      "topic": "PURCHASE_HISTORY_STREAM",
+      "value": {
+          "FIRST_NAME" : "Nick",
+          "LAST_NAME" : "Fury",
+          "PURCHASE_DIFF" : 500.56
+      }
+    },
+    {
+      "topic": "PURCHASE_HISTORY_STREAM",
+      "value": {
+          "FIRST_NAME" : "Natasha",
+          "LAST_NAME" : "Romanov",
+          "PURCHASE_DIFF" : 471.71
+      }
+    },
+    {
+      "topic": "PURCHASE_HISTORY_STREAM",
+      "value": {
+         "FIRST_NAME" : "Wanda",
+         "LAST_NAME" : "Maximoff",
+         "PURCHASE_DIFF" : -12807.220000000001
+      }
+    }
+  ]
+}

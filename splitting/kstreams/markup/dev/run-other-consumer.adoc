@@ -1,0 +1,11 @@
+And finally, to consume all the other genres, run the following:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/splitting/kstreams/code/tutorial-steps/dev/console-consumer-other.sh %}</code></pre>
++++++
+
+This should yield the following messages:
+
++++++
+<pre class="snippet"><code class="json">{% include_raw tutorials/splitting/kstreams/code/tutorial-steps/dev/outputs/actual-other-events.json %}</code></pre>
++++++

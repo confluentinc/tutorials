@@ -1,0 +1,11 @@
+We can check the status of our connector by running the following:
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/connect-sink-timestamp/ksql/code/tutorial-steps/dev/show-connector.sql %}</code></pre>
++++++
+
+Which will give output similar to below. You will see that `State` is `Running`, meaning that our connector should be up and running.
+
++++++
+<pre class="snippet"><code class="log">{% include_raw tutorials/connect-sink-timestamp/ksql/code/tutorial-steps/dev/show-connector-output.log %}</code></pre>
++++++
+

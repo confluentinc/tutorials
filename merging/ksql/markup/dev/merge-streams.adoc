@@ -1,0 +1,5 @@
+Time to merge the individual streams into one big one. To do that, we'll use `insert into`. This bit of syntax takes the contents of one stream and pours them into another. We do this with all of the declared genres. You'll notice that we select not only the title and artist, but also a string literal representing the genre. This allows us to track the lineage of which stream each event is derived from. Note that the order of the individual streams is retained in the larger stream, but the individual elements of each stream will likely be woven together depending on timing:
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/merging/ksql/code/tutorial-steps/dev/merge-streams.sql %}</code></pre>
++++++

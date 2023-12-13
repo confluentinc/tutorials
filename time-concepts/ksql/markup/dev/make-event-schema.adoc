@@ -1,0 +1,6 @@
+Then create the following Avro schema file at `src/main/avro/DeviceEvent.avsc` for the event.
+This schema has two fields, one of which is called `eventTime` that represents the event time.
+
++++++
+<pre class="snippet"><code class="avro">{% include_raw tutorials/time-concepts/ksql/code/src/main/avro/DeviceEvent.avsc %}</code></pre>
++++++

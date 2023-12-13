@@ -1,0 +1,5 @@
+Then insert the purchase data using the following commands:
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/masking-data/ksql/code/tutorial-steps/dev/populate-stream.sql %}</code></pre>
++++++

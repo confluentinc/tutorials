@@ -1,0 +1,5 @@
+Create a `TABLE` with the `WINDOW HOPPING` syntax, and specify the window duration with `SIZE` and its advance interval with ``ADVANCE BY`` within the parentheses.
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/hopping-windows/ksql/code/tutorial-steps/dev/transient-window.sql %}</code></pre>
++++++

@@ -1,0 +1,13 @@
+To stop the connector:
+
+1. Select `Connectors` in the lefthand navigation, and then click the tile corresponding to the custom connector that's running
+2. Click the `Settings` tab
+3. Click the `Delete connector` link on the bottom left
+4. Enter the connector name and then click `Confirm`
+
+To also uninstall the custom connector plugin:
+
+1. Find the `Counter Source` connector on the `Connectors` page
+2. Hover over the connector tile, and then click `Edit plugin`
+3. Click the `Delete plugin` link on the bottom left
+4. Enter the plugin name and then click `Confirm`

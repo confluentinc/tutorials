@@ -1,0 +1,7 @@
+We're going to use Kafka Connect to run the data generator, which is available as a source connector. 
+
+To start with, let's create a connector populating a single topic with some random purchase transactions
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/generate-test-data-streams/kafka/code/tutorial-steps/dev/create-connector-01.sh %}</code></pre>
++++++

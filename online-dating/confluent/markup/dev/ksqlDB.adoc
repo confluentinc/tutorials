@@ -1,0 +1,2 @@
+The application breaks up the stream of messages into individual conversations and puts each of those conversations in time order, keeping track of the sender as we go.
+Then it builds up the function `(old_state, element) => ...`, which considers different states.

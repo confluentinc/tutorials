@@ -1,0 +1,11 @@
+Create a Kafka topic called `orders-avro` in Confluent Cloud.
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/console-consumer-producer-avro/confluent/code/tutorial-steps/dev/create-topic.sh %}</code></pre>
++++++
+
+This should yield the following output:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/console-consumer-producer-avro/confluent/code/tutorial-steps/dev/expected-create-topic.log %}</code></pre>
++++++

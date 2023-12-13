@@ -1,0 +1,5 @@
+While you're at it, create another Avro schema file at `src/main/avro/parsed_movies.avsc` for the transformed movies:
+
++++++
+<pre class="snippet"><code class="avro">{% include_raw tutorials/transforming/kstreams/code/src/main/avro/parsed_movies.avsc %}</code></pre>
++++++

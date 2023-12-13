@@ -1,0 +1,15 @@
+We know that we produced three records to the stream but only two of them were actually correct.
+In order to check if these two records were properly written into the stream, run the query below:
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/deserialization-errors/ksql/code/tutorial-steps/dev/transient-query.sql %}</code></pre>
++++++
+
+The output should look similar to:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/deserialization-errors/ksql/code/tutorial-steps/dev/expected-transient-query.log %}</code></pre>
++++++
+
+For testing purposes, you can omit the limit clause to check if indeed there is only two records in the stream.
+Do it if you feel the urge to double-check this.

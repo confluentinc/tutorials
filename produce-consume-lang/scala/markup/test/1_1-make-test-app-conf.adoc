@@ -1,0 +1,8 @@
+Add the test config file with two test topics (`TEST-BOOKS1` and `TEST-BOOKS2`) at
+`src/test/resources/application.conf`:
+
++++++
+<pre class="snippet"><code class="hocon">{%
+    include_raw tutorials/produce-consume-lang/scala/code/src/test/resources/application.conf
+%}</code></pre>
++++++

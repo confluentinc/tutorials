@@ -1,0 +1,7 @@
+Create the following Gradle build file, named `build.gradle` for the project:
+
++++++
+<pre class="snippet"><code class="groovy">{% include_raw tutorials/versioned-ktables/kstreams/code/build.gradle %}</code></pre>
++++++
+
+Note that the `sourceCompatibility` and `targetCompatibility` are set to Java 17, so make sure that `java -version` displays 17 before proceeding.

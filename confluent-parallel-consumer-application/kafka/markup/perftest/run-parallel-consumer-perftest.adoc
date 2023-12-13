@@ -1,0 +1,18 @@
+Now that you have an uberjar containing `ParallelConsumerPerfTest`, you can launch it locally.
+This will run until the expected 10,000 records have been consumed. Ensure that the `seq` command that you ran previously to
+produce 10,000 records has completed before running this so that we can accurately test consumption throughput.
+
+As you kick this off, bear in mind the latency that you recorded when you ran `MultithreadedKafkaConsumerPerfTest` (40.46 seconds in the run performed for the tutorial).
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/confluent-parallel-consumer-application/kafka/code/tutorial-steps/perftest/run-parallel-consumer-perftest.sh %}</code></pre>
++++++
+
+While the performance test runs, take a few sips of the beverage... actually never mind. It's done:
+
++++++
+<pre class="snippet"><code class="shell">[main] INFO io.confluent.developer.ParallelConsumerPerfTest - Time to consume 10000 records: 1.78 seconds</code></pre>
++++++
+
+Your latency will surely be different from the `1.78 seconds` shown here. But, assuming you are running the test on reasonable hardware and you aren't running any
+extremely noisy neighbors on your machine, it should be just a few seconds.

@@ -1,0 +1,1 @@
+In this solution, we'll look at different ways to analyze user behavior and determine which rewards we want to issue to our customers.

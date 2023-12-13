@@ -1,0 +1,5 @@
+And some items available in our store:
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/multi-joins/ksql/code/tutorial-steps/dev/populate-table-items.sql %}</code></pre>
++++++

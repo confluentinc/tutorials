@@ -1,0 +1,9 @@
+INSERT INTO ratings (movie_id, rating) VALUES (294, 8.2);
+INSERT INTO ratings (movie_id, rating) VALUES (294, 8.5);
+INSERT INTO ratings (movie_id, rating) VALUES (354, 9.9);
+INSERT INTO ratings (movie_id, rating) VALUES (354, 9.7);
+INSERT INTO ratings (movie_id, rating) VALUES (782, 7.8);
+INSERT INTO ratings (movie_id, rating) VALUES (782, 7.7);
+INSERT INTO ratings (movie_id, rating) VALUES (128, 8.7);
+INSERT INTO ratings (movie_id, rating) VALUES (128, 8.4);
+INSERT INTO ratings (movie_id, rating) VALUES (780, 2.1);

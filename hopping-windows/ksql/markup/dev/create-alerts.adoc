@@ -1,0 +1,5 @@
+Note that the period where the average temperature fell below *45F* was exactly from `02:25` until `02:40`. This means that our alerting system is working properly. Now let's create some continuous queries to implement this scenario.
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/hopping-windows/ksql/code/tutorial-steps/dev/create-alerts.sql %}</code></pre>
++++++

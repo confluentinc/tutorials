@@ -1,0 +1,10 @@
+In the example above we provision an entire stack include kcat connecting to a broker in a Docker container. You can use kcat from a Docker container to connect to Kafka clusters elsewhere, such as Confluent Cloud. 
+
+If you don't have an account yet, sign up for link:https://www.confluent.io/confluent-cloud/tryfree/[Confluent Cloud]. 
+Use the promo code `CC100KTS` to receive an additional $100 free usage on Confluent Cloud (https://www.confluent.io/confluent-cloud-promo-disclaimer[details]). 
+
+Using your Confluent Cloud broker address and API key set the following environment variables
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/count-messages/kafka/code/tutorial-steps/dev/04a-set-env.sh %}</code></pre>
++++++

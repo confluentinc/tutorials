@@ -1,0 +1,7 @@
+Add the logging configuration to your project resources in the file `src/main/resources/logback.xml`:
+
++++++
+<pre class="snippet"><code class="xml">{%
+    include_raw tutorials/produce-consume-lang/scala/code/src/main/resources/logback.xml
+%}</code></pre>
++++++

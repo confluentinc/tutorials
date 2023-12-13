@@ -1,0 +1,20 @@
+CREATE TABLE orders (
+    order_id INT,
+    item_id INT,
+    quantity INT,
+    unit_price DOUBLE,
+    ts TIMESTAMP(3),
+    -- declare ts as event time attribute and use strictly ascending timestamp watermark strategy
+    WATERMARK FOR ts AS ts
+) WITH (
+    'connector' = 'kafka',
+    'topic' = 'orders',
+    'properties.bootstrap.servers' = 'localhost:KAFKA_PORT',
+    'scan.startup.mode' = 'earliest-offset',
+    'scan.bounded.mode' = 'latest-offset',
+    'key.format' = 'raw',
+    'key.fields' = 'order_id',
+    'value.format' = 'avro-confluent',
+    'value.avro-confluent.url' = 'http://localhost:SCHEMA_REGISTRY_PORT',
+    'value.fields-include' = 'ALL'
+);

@@ -1,0 +1,5 @@
+For this tutorial, we are interested in knowing the set of web pages visited by a given customer.
+
+++++
+<pre class="snippet"><code class="json">{% include_raw tutorials/customer-journey/confluent/code/tutorial-steps/dev/source.json %}</code></pre>
+++++

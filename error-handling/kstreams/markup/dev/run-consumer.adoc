@@ -1,0 +1,34 @@
+////
+  This is a sample content file for how to include a console consumer to the tutorial, probably a good idea so the end user can watch the results
+  of the tutorial.  Change the text as needed.
+
+////
+
+Now that you've run the Kafka Streams application, it should have shut it self down due to reaching the max-error threshold.
+
+Let's now run the `kafka-console-consumer` to confirm the output:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/error-handling/kstreams/code/tutorial-steps/dev/console-consumer.sh %}</code></pre>
++++++
+
+Your results should look something like this:
+++++
+<pre class="snippet"><code class="shell">
+ALL
+ALL
+STREAMS
+LEAD
+TO
+CONFLUENT
+ALL
+STREAMS
+LEAD
+TO
+CONFLUENT
+GO
+Processed a total of 12 messages
+</code></pre>
+++++
+
+You'll notice there are some duplicated values in the output.  This duplication is to be expected, as the streams application is running with the default processing mode of `AT_LEAST_ONCE`. Duplicate values is one thing to consider when using `REPLACE_THREAD` with the `StreamsUncaughtExceptionHander`, since this is analogous to using retries with the `KafkaProducer`.  If you don't want duplicate values, you should consider running with the processing mode of `EXACTLY_ONCE`

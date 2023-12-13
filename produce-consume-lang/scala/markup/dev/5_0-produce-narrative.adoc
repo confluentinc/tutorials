@@ -1,0 +1,61 @@
+The following Scala class will be the entry point of the producer application.
+Add the following class in the file
+
+`app-producer/src/main/scala/io/confluent/developer/produce/Producer.scala`
+
++++++
+<pre class="snippet"><code class="java">{%
+    include_raw tutorials/produce-consume-lang/scala/code/app-producer/src/main/scala/io/confluent/developer/produce/Producer.scala
+%}</code></pre>
++++++
+
+Let's describe the key sections of the producer code.
+
+NOTE: The producer application loads its configuration from the _producer_ block of the `application.conf`
+
+A `Producer#produce` function covers most of the record production.
+
+[source,scala]
+----
+def produce(producer: KafkaProducer[Bytes, Book], topic: String, book: Book): Future[RecordMetadata] = { //<1>
+    val record: ProducerRecord[Bytes, Book] = new ProducerRecord(topic, book) //<2>
+
+    producer.send(record, new Callback { //<3>
+      override def onCompletion(metadata: RecordMetadata, exception: Exception): Unit = Option(exception) //<4>
+        .map(ex => logger error s"fail to produce record due to: ${ex.getMessage}")
+        .getOrElse(logger info s"successfully produced - ${printMetaData(metadata)}")
+    })
+}
+----
+
+<1> `Producer#produce` takes a
+`https://kafka.apache.org/25/javadoc/index.html?org/apache/kafka/clients/producer/KafkaProducer.html[KafkaProducer]`,
+a topic name, and an instance of book to send into a Kafka topic.
+
+<2> `Producer#produce` wraps our book with a `ProducerRecord[K, V]`. That's where we attach the topic name to the book.
+
+<3> The `KafkaProducer#send` method  is called on the `producer` instance, returning a Java future which will
+contain the broker response.
+
+<4> `Producer#produce` uses a
+`https://kafka.apache.org/25/javadoc/index.html?org/apache/kafka/clients/producer/KafkaProducer.html[CallBack]`
+to respond to success or failure for the record production.
+
+In order to utilize the `Producer#produce` function, we construct an instance of our `KafkaProducer` to pass to it.
+
+- The `KafkaProducer` has types parameter corresponding to its key and value types. Its constructor takes
+serializers / deserializers with the same types.
+
+- As described above, we utilize the `reflectionSerializer4S[T]` for our `Serializer[Book]` which is configured to
+connect to the Schema Registry.
+
+- Our Kafka records do not have keys and will always be null, so we choose an arbitrary type such `Bytes`
+from the _kafka.common.utils_ package.
+
+- We instantiate the `KafkaProducer` by passing a Java Properties from the _producer.client-config_ block of
+`application.conf`
+
+That's it! we are ready to produce records.
+
+NOTE: At the end of the program we use `KafkaProducer#flush` to check
+if the latest messages have been written and `KafkaProducer#close` stop our connection.

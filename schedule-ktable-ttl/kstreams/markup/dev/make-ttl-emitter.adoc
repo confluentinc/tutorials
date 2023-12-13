@@ -1,0 +1,69 @@
+////
+In this file you describe the Kafka streams topology, and should cover the main points of the tutorial.
+The text assumes a method buildTopology exists and constructs the Kafka Streams application.  Feel free to modify the text below to suit your needs.
+////
+
+Before you create the Kafka Streams application file let's go over the key points of the application.  In this tutorial we want to
+show how a KTable loaded from an input topic can have its data periodically purged via use of a transformer. The example shows a fixed
+TTL per key based on the last update for that key. This may or may not serve all needs but it is sufficient to illustrate the 
+mechanism via which we can purge data from a KTable. The transformer use a state store to store the last updated time seen for a key 
+and periodically (via a punctuator) scans its list of keys to see if any of them have exceeded a configured cutoff period (TTL). If they have, then a tombstone is forwarded onwards in the pipeline and the key removed from its own internal store.
+
+For a refresh on scheduling logic using a punctuator, have a look at the link:{{ "kafka-streams-schedule-operations/kstreams.html" | relative_url }}[Scheduling Operations] tutorial.
+
+Now let's take a look at some of the key points from the application.
+
+For context your application has a simple KStream-KTable join where the output of the join is a trivial concatenation of the left side and the right side if the the associated key exists in the KTable.  The goal is to purge data in the KTable for which updates have not arrived within a TTL of 1 minute.
+
+NOTE: The following detailed sections are already included in the application file, we're just taking a detailed step through the code before you create it.
+
+Let's look at the TTL Emitter transformer that will schedule emitting tombstones past a certain time:
+
+[source,java]
+.TTLEmitter transformer punctuator
+----
+
+  public TTLEmitter(final Duration maxAge, final Duration scanFrequency,
+      final String stateStoreName) { <1>
+    this.maxAge = maxAge;
+    this.scanFrequency = scanFrequency;
+    this.purgeStoreName = stateStoreName;
+  }
+
+  @Override
+  public void init(ProcessorContext context) {
+    this.context = context;
+    this.stateStore = (KeyValueStore<K, Long>) context.getStateStore(purgeStoreName);
+    context.schedule(scanFrequency, PunctuationType.STREAM_TIME, timestamp -> { <2>
+      final long cutoff = timestamp - maxAge.toMillis();
+
+     try (final KeyValueIterator<K, Long> all = stateStore.all()) {
+        while (all.hasNext()) {
+          final KeyValue<K, Long> record = all.next();
+          if (record.value != null && record.value < cutoff) {
+            System.out.println("Forwarding Null");
+            context.forward(record.key, null); <3>
+          }
+        }
+      }
+    });
+  }
+
+  @Override
+  public R transform(K key, V value) { <4>
+    
+    if (value == null) { <5>
+      System.out.println("CLEANING key="+key);
+      stateStore.delete(key);
+    } else {
+      System.out.println("UPDATING key="+key);
+      stateStore.put(key, context.timestamp());
+    }
+    return null; 
+  }
+----
+<1> Initialize the transformer with maximum age, scan frequency, and state store name
+<2> Schedule the operation to (according to stream time) to scan all records and pick out which one exceeded TTL. We could change this to wallclock time based but it means in some cases there could just be data deleted without any activity in the KTable topic due to a failure. If the use case understands the implication of using wallclock time, they can use that.
+<3> Forward the tombstone for keys that have not been updated within the maximum age
+<4> We still need to create a transform() method to handle incoming changes to the KTable
+<5> Handle tombstones coming from upstream or update the timestamp in the local purge state store

@@ -1,0 +1,8 @@
+We are going to start out by creating a ksqlDB table and a ksqlDB stream. Our table will hold reference data about repair centers. The stream will contain insurance related events.
+
+
+Let's start with the repair shop table. We want to be able to direct customers to their closest repair center. To accomplish that, we need to load the location of the repair shops into another ksqlDB table. Create the ksqlDB ``repair_center_tab`` table.
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/geo-distance/ksql/code/tutorial-steps/dev/create-repair-ref-table.sql %}</code></pre>
++++++

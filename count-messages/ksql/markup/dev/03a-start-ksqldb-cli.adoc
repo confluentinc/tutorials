@@ -1,0 +1,5 @@
+To begin developing interactively, open up the ksqlDB CLI:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/count-messages/ksql/code/tutorial-steps/dev/03a-start-ksqldb-cli.sh %}</code></pre>
++++++

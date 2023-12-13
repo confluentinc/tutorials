@@ -1,0 +1,23 @@
+Let's join these streams together to produce a new one. Our new stream will be enriched from the originals to contain more information about the orders that have shipped. But one question you might be asking yourself is, "Why would I use a stream/stream join to do this?" That's a great question.
+
+Stream/stream joins are useful when your events are all "facts" that never supersede each other. Every order in the stream is distinct. Every shipment is distinct, too. Stream/stream joins help us reason about how two sources of events come together during some window of time. Contrast this with reference data that can update over time. Reference data is better kept in a table to represent its mutability. If, for example, you wanted to enrich the orders stream with the customers who purchased the orders, it would be better to model that as a stream/table join.
+
+Execute the following query and study its output. This will block and continue to return results until its limit is reached or you tell it to stop.
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/joining-stream-stream/ksql/code/tutorial-steps/dev/transient-join.sql %}</code></pre>
++++++
+
+This should yield the following output:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/joining-stream-stream/ksql/code/tutorial-steps/dev/expected-transient.log %}</code></pre>
++++++
+
+There's a lot to talk about here.
+
+The query we issued performs an _inner join_ between the orders and shipments. This kind of join only emits events when there's a match on the criteria of both sides of the join. In effect, this only joins orders that have successfully shipped.
+
+Another thing you'll notice is that we specified a window duration of seven days to denote the amount of time we'll allow joins to occur within. In theory, we could wait for any amount of time to join the elements of each stream together. The problem is that they may not occur within close proximity of one another, and we have a finite amount of buffer space to wait for joins to happen within. Join time windows allow us to control for the amount of buffer space that we'll allow. They can also be useful for modeling an SLA. In this example, we might want to ignore orders whose shipments don't occur within 7 days of purchasing. And because we defined the timestamp as a field of the record, ksqlDB understands that it should use the field time to determine if the event falls within the window instead of whatever time it happens to be right now.
+
+Lastly, let's talk about the output itself. We use fields from both the `orders` and `shipments` streams to create a new set of columns in the result stream. The new stream contains all orders that have shipped, along with which warehouse they shipped from and the duration of time between order placement and shipping in minutes.

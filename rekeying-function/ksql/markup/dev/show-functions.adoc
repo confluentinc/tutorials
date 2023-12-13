@@ -1,0 +1,5 @@
+Firstly, let's confirm the UDF jar has been loaded correctly.  You will see `REGEXREPLACE` in the list of functions.
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/rekeying-function/ksql/code/tutorial-steps/dev/show-functions.sql %}</code></pre>
++++++

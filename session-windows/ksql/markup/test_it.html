@@ -1,0 +1,26 @@
+<div class="tutorial-try-it-step">
+  <h4 class="subtitle">
+    <div>1. Create the test data</div>
+  </h4>
+
+  <p>Create a file at <code>test/input.json</code> with the inputs for testing:</p>
+  <pre class="snippet"><code class="json">{% include_raw tutorials/session-windows/ksql/code/test/input.json %}</code></pre>
+
+  <p>
+    Similarly, create a file at <code>test/output.json</code> with the expected outputs. Notice that because ksqlDB joins its grouping key with the window boundaries, we need to use a bit of extra expression to describe what to expect. We leverage the <code>window</code> key to describe the start and end boundaries that the key represents.
+  </p>
+  <pre class="snippet"><code class="json">{% include_raw tutorials/session-windows/ksql/code/test/output.json %}</code></pre>
+</div>
+
+<div class="tutorial-try-it-step">
+  <h4 class="subtitle">
+    <div>2. Invoke the tests</div>
+  </h4>
+
+  <p>Lastly, invoke the tests using the test runner and the statements file that you created earlier:
+  </p>
+  <pre class="snippet"><code class="shell">{% include_raw tutorials/session-windows/ksql/code/tutorial-steps/test/run-tests.sh %}</code></pre>
+
+  <p>Which should pass:</p>
+  <pre class="snippet"><code class="shell">{% include_raw tutorials/session-windows/ksql/code/tutorial-steps/test/expected-results.log %}</code></pre>
+</div>

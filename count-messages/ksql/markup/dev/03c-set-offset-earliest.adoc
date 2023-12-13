@@ -1,0 +1,11 @@
+Since we want to count all of the messages in the topic (and not just those that arrive after the query has started) we need to tell ksqlDB to query from the beginning of the topic: 
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/count-messages/ksql/code/tutorial-steps/dev/03c-set-offset-earliest.sql %}</code></pre>
++++++
+
+You should get message confirming the change:
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/count-messages/ksql/code/tutorial-steps/dev/03c-set-offset-earliest.out %}</code></pre>
++++++

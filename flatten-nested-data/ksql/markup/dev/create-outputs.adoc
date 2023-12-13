@@ -1,0 +1,7 @@
+Note that now each field is being shown in a flat structure.
+This means that our query is working properly.
+Now let's create a continuous query to implement this scenario.
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/flatten-nested-data/ksql/code/tutorial-steps/dev/create-outputs.sql %}</code></pre>
++++++

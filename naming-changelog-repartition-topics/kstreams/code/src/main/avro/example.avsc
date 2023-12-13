@@ -1,0 +1,9 @@
+{
+  "namespace": "io.confluent.developer.avro",
+  "type": "record",
+  "name": "Example",
+  "fields": [
+    {"name": "id", "type": "long"},
+    {"name": "name", "type": "string"}
+  ]
+}

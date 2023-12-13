@@ -1,0 +1,13 @@
+Next, we can print out the contents of the output stream's underlying topic to ensure the key has been correctly set.
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/rekeying/ksql/code/tutorial-steps/dev/print-output-topic.sql %}</code></pre>
++++++
+
+This should yield the roughly the following output:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/rekeying/ksql/code/tutorial-steps/dev/expected-print-output.log %}</code></pre>
++++++
+
+As you can see, the key format is now `KAFKA_INT` and the `ID` column in each row has been removed from the `value` and into the `key`, meaning the data has be repartitioned such that all movies with the same ID are now in exactly one partition.

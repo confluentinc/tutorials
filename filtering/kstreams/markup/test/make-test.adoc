@@ -1,0 +1,5 @@
+Create the following test file at `src/test/java/io/confluent/developer/FilterEventsTest.java`:
+
++++++
+<pre class="snippet"><code class="java">{% include_raw tutorials/filtering/kstreams/code/src/test/java/io/confluent/developer/FilterEventsTest.java %}</code></pre>
++++++

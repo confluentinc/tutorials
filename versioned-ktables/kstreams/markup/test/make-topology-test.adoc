@@ -1,0 +1,7 @@
+Then create the following file at `src/test/java/io/confluent/developer/VersionedKTableExampleTest.java`. Testing a Kafka streams application requires a bit of test harness code, but happily the `org.apache.kafka.streams.TopologyTestDriver` class makes this much more pleasant than it otherwise would be.
+
+There is only one method in `VersionedKTableExampleTest` annotated with `@Test`, and that is `versionedKTableTest()`. This method actually runs our Streams topology using the `TopologyTestDriver` and some mocked data that is set up inside the test method.
+
++++++
+<pre class="snippet"><code class="java">{% include_raw tutorials/versioned-ktables/kstreams/code/src/test/java/io/confluent/developer/VersionedKTableExampleTest.java %}</code></pre>
++++++

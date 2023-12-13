@@ -1,0 +1,22 @@
+////
+   Example content file for how to include a console producer(s) in the tutorial.
+   Usually you'll include a line referencing the script to run the console producer and also include some content
+   describing how to input data as shown below.
+
+   Again modify this file as you need for your tutorial, as this is just sample content.  You also may have more than one
+   console producer to run depending on how you structure your tutorial
+
+////
+
+Using the terminal window you opened in step three, run the following command to start a console-producer:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/multiple-event-types/kafka/code/tutorial-steps/dev/console-producer.sh %}</code></pre>
++++++
+
+
+Each line represents input data for the KafkaConsumer application.  To send all of the events below, paste the following into the prompt and press enter:
+
++++++
+<pre class="snippet"><code class="json">{% include_raw tutorials/multiple-event-types/kafka/code/tutorial-steps/dev/input.txt %}</code></pre>
++++++

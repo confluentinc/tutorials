@@ -1,0 +1,5 @@
+Then insert the following movies:
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/session-windows/ksql/code/tutorial-steps/dev/populate-movies.sql %}</code></pre>
++++++

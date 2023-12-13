@@ -1,0 +1,5 @@
+Next, create another Avro schema file at `src/main/avro/track-purchase.avsc` for the update-stream of ratings:
+
++++++
+<pre class="snippet"><code class="avro">{% include_raw tutorials/fk-joins/kstreams/code/src/main/avro/track-purchase.avsc %}</code></pre>
++++++

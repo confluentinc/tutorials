@@ -1,0 +1,3 @@
+++++
+<pre class="snippet expand-default"><code class="sql">{% include_raw tutorials/firewall-splunk/confluent/code/tutorial-steps/dev/process.sql %}</code></pre>
+++++

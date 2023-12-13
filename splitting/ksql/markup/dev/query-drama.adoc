@@ -1,0 +1,11 @@
+Let's find all of the drama films. Issue the following transient push query. This will block and continue to return results until it's limit is reached or you tell it to stop.
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/splitting/ksql/code/tutorial-steps/dev/query-drama.sql %}</code></pre>
++++++
+
+This should yield the following output:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/splitting/ksql/code/tutorial-steps/dev/expected-outputs/query-drama.log %}</code></pre>
++++++

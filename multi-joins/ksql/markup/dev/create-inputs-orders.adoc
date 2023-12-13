@@ -1,0 +1,6 @@
+Next we create a stream containing orders submitted to our online store, also formatted in JSON.
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/multi-joins/ksql/code/tutorial-steps/dev/create-inputs-orders.sql %}</code></pre>
++++++
+

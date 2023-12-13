@@ -1,0 +1,7 @@
+Using the command below, append the contents of `configuration/ccloud.properties` (with your Confluent Cloud configuration)
+to `configuration/perftest-kafka-consumer.properties` and `configuration/perftest-parallel-consumer.properties`:
+
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/confluent-parallel-consumer-application/kafka/code/tutorial-steps/perftest/ccloud-cat-config.sh %}</code></pre>
++++++

@@ -1,0 +1,5 @@
+Then to create the fleet management sensor reading connector you'll execute the following:
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/generate-test-data-streams/ksql/code/tutorial-steps/dev/create-connector-03.sql %}</code></pre>
++++++

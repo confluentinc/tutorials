@@ -1,0 +1,23 @@
+Now that you have an uberjar for the `KafkaProducerDevice` application, you can launch it locally.
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/time-concepts/ksql/code/tutorial-steps/dev/run-dev-app.sh %}</code></pre>
++++++
+
+After you run the previous command, the application will write some messages to Kafka and you should something like this on the console:
+
+[source, text]
+----
+Record written to topic deviceEvents: payload eventTime 1606785578301, Kafka timestamp 1606785579368
+Record written to topic deviceEvents: payload eventTime 1606785579482, Kafka timestamp 1606785580492
+Record written to topic deviceEvents: payload eventTime 1606785580492, Kafka timestamp 1606785581501
+Record written to topic deviceEvents: payload eventTime 1606785581501, Kafka timestamp 1606785582511
+Record written to topic deviceEvents: payload eventTime 1606785582512, Kafka timestamp 1606785583521
+Record written to topic deviceEvents: payload eventTime 1606785583521, Kafka timestamp 1606785584528
+Record written to topic deviceEvents: payload eventTime 1606785584528, Kafka timestamp 1606785585533
+Record written to topic deviceEvents: payload eventTime 1606785585534, Kafka timestamp 1606785586544
+Record written to topic deviceEvents: payload eventTime 1606785586544, Kafka timestamp 1606785587551
+Record written to topic deviceEvents: payload eventTime 1606785587552, Kafka timestamp 1606785588562
+----
+
+Note that the `payload eventTime` value is not the same as the `Kafka timestamp` value—this is working as expected.
+It demonstrates how the end system may intentionally set an event time in the payload, and it will differ from the Kafka record metadata timestamp.

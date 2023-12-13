@@ -1,0 +1,7 @@
+Then create the following file at `src/main/java/io/confluent/developer/SplitStream.java`. Notice the `buildTopology` method, which uses the Kafka Streams DSL. By using the `split` and `Branched` methods, which are stateless record-by-record operations, you can create branches for messages that match the predicate.  If no predicates are matched, the event gets dropped from further processing, but in this case, notice the last predicate, which simply returns `true`. This acts as an "else" statement to catch all events that don't match the other predicates.
+
+https://cwiki.apache.org/confluence/display/KAFKA/KIP-418%3A+A+method-chaining+way+to+branch+KStream[KIP-418] for details on method-chaining to branch a `KStream`.
+
++++++
+<pre class="snippet"><code class="java">{% include_raw tutorials/splitting/kstreams/code/src/main/java/io/confluent/developer/SplitStream.java %}</code></pre>
++++++

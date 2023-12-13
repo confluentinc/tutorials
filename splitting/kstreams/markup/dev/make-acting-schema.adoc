@@ -1,0 +1,5 @@
+Then create the following Avro schema file at `src/main/avro/acting_event.avsc` for the acting appearance events:
+
++++++
+<pre class="snippet"><code class="avro">{% include_raw tutorials/splitting/kstreams/code/src/main/avro/acting_event.avsc %}</code></pre>
++++++

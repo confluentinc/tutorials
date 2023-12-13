@@ -1,0 +1,23 @@
+This creates and populates a table that we could query with a `SELECT`. It also creates a Kafka topic, which we can examine from within ksqlDB using `PRINT`.
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/session-windows/ksql/code/tutorial-steps/dev/print-topic.sql %}</code></pre>
++++++
+
+Notice that the key for each message contains some strange characters that aren't quite printable. This occurs because ksqlDB has combined the grouping key (IP address) with its window boundaries using a format that's not quite printable in this format. It should look something like this:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/session-windows/ksql/code/tutorial-steps/dev/expected-print-topic.log %}</code></pre>
++++++  
+
+
+</div>
+
+<div class="tutorial-try-it-step">
+<h4 class="subtitle"><div>5. Write your statements to a file</div></h4>
+
+Now that you have a series of statements that's doing the right thing, the last step is to put them into a file so that they can be used outside the CLI session. Create a file at `src/statements.sql` with the following content:
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/session-windows/ksql/code/src/statements.sql %}</code></pre>
++++++
+</div>

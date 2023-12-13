@@ -1,0 +1,13 @@
+Run the following command to start a Confluent CLI consumer to view the distinct click events:
+
+```plaintext
+confluent kafka topic consume distinct-clicks -b --value-format avro
+```
+
+Depending on the cadence and values you produce in the steps above, you should see messages similar to the following:
+
++++++
+<pre class="snippet"><code class="json">{% include_raw tutorials/finding-distinct/kstreams/code/tutorial-steps/dev/expected-output-events.json %}</code></pre>
++++++
+
+Enter `Ctrl-C` to exit.

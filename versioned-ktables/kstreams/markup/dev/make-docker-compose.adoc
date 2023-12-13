@@ -1,0 +1,5 @@
+Next, create the following `docker-compose.yml` file to obtain Confluent Platform (for Kafka in the cloud, see https://www.confluent.io/confluent-cloud/tryfree/[Confluent Cloud]):
+
++++++
+<pre class="snippet"><code class="dockerfile">{% include_raw tutorials/versioned-ktables/kstreams/code/docker-compose.yml %}</code></pre>
++++++

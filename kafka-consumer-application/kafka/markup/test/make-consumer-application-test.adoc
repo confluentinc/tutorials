@@ -1,0 +1,12 @@
+
+
+Testing a Kafka consumer application is not too complicated thanks to the https://javadoc.io/doc/org.apache.kafka/kafka-clients/latest/org/apache/kafka/clients/consumer/MockConsumer.html[MockConsumer.java].  Since the `KafkaConsumer` is well tested, we don't need to use a _live_ consumer and Kafka broker. We can simply use mock consumer to process some data you'll feed into it.
+
+
+There is only one method in `KafkaConsumerApplicationTest` annotated with `@Test`, and that is `consumerTest()`. This method actually runs your `KafkaConsumerApplication` with the mock consumer.
+
+
+Now create the following file at `src/test/java/io/confluent/developer/KafkaConsumerApplicationTest.java`.
++++++
+<pre class="snippet"><code class="java">{% include_raw tutorials/kafka-consumer-application/kafka/code/src/test/java/io/confluent/developer/KafkaConsumerApplicationTest.java %}</code></pre>
++++++

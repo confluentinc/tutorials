@@ -1,0 +1,42 @@
+{
+  "inputs": [
+    {
+      "topic": "repair_center",
+      "key": "NSW",
+      "value": {
+        "LONG": 151.1169,
+        "LAT": -33.863
+      }
+    },
+    {
+      "topic": "repair_center",
+      "key": "VIC",
+      "value": {
+        "LONG": 145.1549,
+        "LAT": -37.9389
+      }
+    },
+    {
+      "topic": "phone_event_raw",
+      "value": {
+        "CUSTOMER_NAME": "Lindsey",
+        "PHONE_MODEL": "iPhone 11 Pro",
+        "EVENT": "dropped",
+        "STATE": "NSW",
+        "LONG": 151.25664,
+        "LAT": -33.85995
+      }
+    },
+    {
+      "topic": "phone_event_raw",
+      "value": {
+        "CUSTOMER_NAME": "Debbie",
+        "PHONE_MODEL": "Samsung Note 20",
+        "EVENT": "water",
+        "STATE": "NSW",
+        "LONG": 151.24504,
+        "LAT": -33.89640
+      }
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+Then create the following Avro schema file at `src/main/avro/click.avsc` for the click events (on macOS, copy the text then execute in the terminal: `pbpaste > src/main/avro/click.avsc`):
+
++++++
+<pre class="snippet"><code class="avro">{% include_raw tutorials/finding-distinct/kstreams/code/src/main/avro/click.avsc %}</code></pre>
++++++

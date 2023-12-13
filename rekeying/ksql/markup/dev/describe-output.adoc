@@ -1,0 +1,13 @@
+To check that it’s working, let's first describe the new stream:
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/rekeying/ksql/code/tutorial-steps/dev/describe-output.sql %}</code></pre>
++++++
+
+Your output should resemble:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/rekeying/ksql/code/tutorial-steps/dev/expected-describe.log %}</code></pre>
++++++
+
+Note the `(key)` at the end of the `ID` row that indicates the column is now stored in the Kafka message's key.

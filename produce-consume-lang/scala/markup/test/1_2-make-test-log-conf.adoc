@@ -1,0 +1,7 @@
+Then define the log level of the test with `src/test/resources/logback-test.xml`:
+
++++++
+<pre class="snippet"><code class="xml">{%
+    include_raw tutorials/produce-consume-lang/scala/code/src/test/resources/logback-test.xml
+%}</code></pre>
++++++

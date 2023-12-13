@@ -1,0 +1,20 @@
+Now we'll add the connector plugin to Confluent Cloud. We're not actually running the connector in this step; we're just uploading the plugin so that we can run the connector in the next section.
+
+Go ahead and create a Kafka cluster in the Confluent Cloud Console if you didn't already do so link:#provision-your-kafka-cluster[above]. Your Kafka cluster *must* reside in a https://docs.confluent.io/cloud/current/connectors/bring-your-connector/custom-connector-fands.html#cc-byoc-regions[supported cloud provider and region] in order for you to be able to upload the plugin to Confluent Cloud.
+
+On the cluster homepage, select `Connectors` from the lefthand navigation, and then click the `Add plugin` button on the top right.
+
++++++
+<img src="{{ "/assets/img/custom-connector-add-plugin.png" | relative_url }}" alt="Add Custom Connector Plugin" width=800 />
++++++
+
+Fill in the form as follows:
+
+1. Name: `Counter Source`
+2. Description: `Source connector that emits incrementing numbers`
+3. Connector class: the class that extends Kafka Connect's `SourceConnector` class, i.e., `io.confluent.developer.connect.CounterConnector`
+4. Connector type: Select `Source`
+5. Click `Select connector archive` and choose the zip file built in the previous step
+6. Sensitive properties: leave this section alone since the connector doesn't make use of any sensitive properties like credentials to connect to an external system
+7. Review the custom connector disclaimer and check the box agreeing that you are responsible for the code uploaded to Confluent Cloud
+8. Click `Submit`!

@@ -1,0 +1,13 @@
+In this step we’re going to create a topic for use during this tutorial.
+Use the following command to create the topic:
+
+```plaintext
+confluent kafka topic create topic-perf
+```
+
+This creates a topic called `topic-perf` with a default number of `6` partitions.
+A topic partition is the unit of parallelism in Kafka, and messages to different partitions can be sent in parallel by producers, written in parallel by different brokers, and read in parallel by different consumers.
+In general, a higher number of topic partitions results in higher throughput, and to maximize throughput, you want enough partitions to distribute them across the brokers in your cluster.
+Although it might seem tempting just to create topics with a very large number of partitions, there are link:https://www.confluent.io/blog/how-choose-number-topics-partitions-kafka-cluster[trade-offs] to increasing the number of partitions.
+Choose the partition count carefully after benchmarking producer and consumer throughput in your environment.
+Also take into consideration the design of your data patterns and key assignments so that messages are distributed as evenly as possible across topic partitions to avoid a partition imbalance.

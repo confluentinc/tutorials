@@ -1,0 +1,5 @@
+Create a directory for the Java files in this project:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/kafka-producer-application/kafka/code/tutorial-steps/dev/make-src-dir.sh %}</code></pre>
++++++

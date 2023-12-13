@@ -1,0 +1,20 @@
+Here you'll build a performance test application and supporting classes that implement
+multi-threaded consuming (one `KafkaConsumer` per-partition to maximize parallelism).
+
+First, you'll create the main performance test application, `src/main/java/io/confluent/developer/MultithreadedKafkaConsumerPerfTest.java`:
+
++++++
+<pre class="snippet"><code class="java">{% include_raw tutorials/confluent-parallel-consumer-application/kafka/code/src/main/java/io/confluent/developer/MultithreadedKafkaConsumerPerfTest.java %}</code></pre>
++++++
+
+Second, create the class that implements multi-threaded consuming, `src/main/java/io/confluent/developer/MultithreadedKafkaConsumer.java`:
+
++++++
+<pre class="snippet"><code class="java">{% include_raw tutorials/confluent-parallel-consumer-application/kafka/code/src/main/java/io/confluent/developer/MultithreadedKafkaConsumer.java %}</code></pre>
++++++
+
+Finally, create the record handler that sleeps 20ms per record consumed, `src/main/java/io/confluent/developer/SleepingRecordHandler.java`:
+
++++++
+<pre class="snippet"><code class="java">{% include_raw tutorials/confluent-parallel-consumer-application/kafka/code/src/main/java/io/confluent/developer/SleepingRecordHandler.java %}</code></pre>
++++++

@@ -1,0 +1,5 @@
+Then insert the customer data.
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/rekeying-function/ksql/code/tutorial-steps/dev/populate-stream.sql %}</code></pre>
++++++

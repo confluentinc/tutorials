@@ -1,0 +1,1 @@
+PRINT all_songs FROM BEGINNING LIMIT 9;

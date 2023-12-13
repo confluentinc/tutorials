@@ -1,0 +1,57 @@
+////
+In this file you describe the Kafka streams topology, and should cover the main points of the tutorial.
+The text assumes a method buildTopology exists and constructs the Kafka Streams application.  Feel free to modify the text below to suit your needs.
+////
+
+The point of this tutorial is to discuss the importance of naming state stores (hence `changelog` topics) and repartition topics.  In addition to having a more readable topology description, you can make your Kafka Streams application more robust to topology changes.
+
+Lets look at the core logic of the Kafka Streams application:
++++++
+<pre class="snippet"><code class="java">
+  KStream&lt;Long, Example&gt; inputStream = builder.stream(inputTopic, Consumed.with(longSerde, exampleSerde))
+                                                  .selectKey((k, v) -> Long.parseLong(v.getName().substring(0, 1)));
+
+  KStream&lt;Long, Long&gt; countStream = inputStream.groupByKey().count().toStream();
+
+  KStream&lt;Long, String&gt; joinedStream = inputStream.join(countStream, (v1, v2) -> v1.getName() + v2.toString(),
+                                                              JoinWindows.of(Duration.ofMillis(100)),
+                                                              StreamJoined.with(longSerde, exampleSerde, longSerde));
+</code></pre>
++++++
+
+
+In the `inputStream` there is a `selectKey()` operation, changing the key of the incoming stream.
+
+As a result, executing the `inputStream.groupByKey()` operation forces a repartition to make sure the modified keys end up on the correct partition.
+
+Additionally, `count()` is an aggregation, so Kafka Streams creates a state store plus a changelog topic for fault-tolerance of the state store.
+
+There are additional state stores and another repartition topic in this topology, but we'll focus on the `countStream` to keep things simple.  The same principles apply to any state store, changelog and repartition topic.
+
+When using the DSL, Kafka Streams generates the names for each processor, state store, and any required internal topics.  To view a textual representation of your topology, you can run `Topology.describe()`.
+
+We won't show the full output here, but describing this topology indicates the following names for the state store, changelog and repartition topic:
+
+-  state store - `<application.id>-KSTREAM-AGGREGATE-STATE-STORE-0000000002`
+-  changelog topic - `<application.id>-KSTREAM-AGGREGATE-STATE-STORE-0000000002-changelog`
+-  repartition topic - `<application.id>-KSTREAM-AGGREGATE-STATE-STORE-0000000002-repartition`
+
+Here's an image of the relevant part of the topology (view a `https://zz85.github.io/kafka-streams-viz/#VG9wb2xvZ2llczoKICAgU3ViLXRvcG9sb2d5OiAwCiAgICBTb3VyY2U6IEtTVFJFQU0tU09VUkNFLTAwMDAwMDAwMDAgKHRvcGljczogW2lucHV0LXRvcGljXSkKICAgICAgLS0+IEtTVFJFQU0tS0VZLVNFTEVDVC0wMDAwMDAwMDAxCiAgICBQcm9jZXNzb3I6IEtTVFJFQU0tS0VZLVNFTEVDVC0wMDAwMDAwMDAxIChzdG9yZXM6IFtdKQogICAgICAtLT4gS1NUUkVBTS1GSUxURVItMDAwMDAwMDAwNSwgS1NUUkVBTS1GSUxURVItMDAwMDAwMDAwOQogICAgICA8LS0gS1NUUkVBTS1TT1VSQ0UtMDAwMDAwMDAwMAogICAgUHJvY2Vzc29yOiBLU1RSRUFNLUZJTFRFUi0wMDAwMDAwMDA1IChzdG9yZXM6IFtdKQogICAgICAtLT4gS1NUUkVBTS1TSU5LLTAwMDAwMDAwMDQKICAgICAgPC0tIEtTVFJFQU0tS0VZLVNFTEVDVC0wMDAwMDAwMDAxCiAgICBQcm9jZXNzb3I6IEtTVFJFQU0tRklMVEVSLTAwMDAwMDAwMDkgKHN0b3JlczogW10pCiAgICAgIC0tPiBLU1RSRUFNLVNJTkstMDAwMDAwMDAwOAogICAgICA8LS0gS1NUUkVBTS1LRVktU0VMRUNULTAwMDAwMDAwMDEKICAgIFNpbms6IEtTVFJFQU0tU0lOSy0wMDAwMDAwMDA0ICh0b3BpYzogS1NUUkVBTS1BR0dSRUdBVEUtU1RBVEUtU1RPUkUtMDAwMDAwMDAwMi1yZXBhcnRpdGlvbikKICAgICAgPC0tIEtTVFJFQU0tRklMVEVSLTAwMDAwMDAwMDUKICAgIFNpbms6IEtTVFJFQU0tU0lOSy0wMDAwMDAwMDA4ICh0b3BpYzogS1NUUkVBTS1LRVktU0VMRUNULTAwMDAwMDAwMDEtcmVwYXJ0aXRpb24pCiAgICAgIDwtLSBLU1RSRUFNLUZJTFRFUi0wMDAwMDAwMDA5CgogIFN1Yi10b3BvbG9neTogMQogICAgU291cmNlOiBLU1RSRUFNLVNPVVJDRS0wMDAwMDAwMDA2ICh0b3BpY3M6IFtLU1RSRUFNLUFHR1JFR0FURS1TVEFURS1TVE9SRS0wMDAwMDAwMDAyLXJlcGFydGl0aW9uXSkKICAgICAgLS0+IEtTVFJFQU0tQUdHUkVHQVRFLTAwMDAwMDAwMDMKICAgIFByb2Nlc3NvcjogS1NUUkVBTS1BR0dSRUdBVEUtMDAwMDAwMDAwMyAoc3RvcmVzOiBbS1NUUkVBTS1BR0dSRUdBVEUtU1RBVEUtU1RPUkUtMDAwMDAwMDAwMl0pCiAgICAgIC0tPiBLVEFCTEUtVE9TVFJFQU0tMDAwMDAwMDAwNwogICAgICA8LS0gS1NUUkVBTS1TT1VSQ0UtMDAwMDAwMDAwNgogICAgUHJvY2Vzc29yOiBLVEFCTEUtVE9TVFJFQU0tMDAwMDAwMDAwNyAoc3RvcmVzOiBbXSkKICAgICAgLS0+IEtTVFJFQU0tTUFQLTAwMDAwMDAwMTcsIEtTVFJFQU0tV0lORE9XRUQtMDAwMDAwMDAxMgogICAgICA8LS0gS1NUUkVBTS1BR0dSRUdBVEUtMDAwMDAwMDAwMwogICAgU291cmNlOiBLU1RSRUFNLVNPVVJDRS0wMDAwMDAwMDEwICh0b3BpY3M6IFtLU1RSRUFNLUtFWS1TRUxFQ1QtMDAwMDAwMDAwMS1yZXBhcnRpdGlvbl0pCiAgICAgIC0tPiBLU1RSRUFNLVdJTkRPV0VELTAwMDAwMDAwMTEKICAgIFByb2Nlc3NvcjogS1NUUkVBTS1XSU5ET1dFRC0wMDAwMDAwMDExIChzdG9yZXM6IFtLU1RSRUFNLUpPSU5USElTLTAwMDAwMDAwMTMtc3RvcmVdKQogICAgICAtLT4gS1NUUkVBTS1KT0lOVEhJUy0wMDAwMDAwMDEzCiAgICAgIDwtLSBLU1RSRUFNLVNPVVJDRS0wMDAwMDAwMDEwCiAgICBQcm9jZXNzb3I6IEtTVFJFQU0tV0lORE9XRUQtMDAwMDAwMDAxMiAoc3RvcmVzOiBbS1NUUkVBTS1KT0lOT1RIRVItMDAwMDAwMDAxNC1zdG9yZV0pCiAgICAgIC0tPiBLU1RSRUFNLUpPSU5PVEhFUi0wMDAwMDAwMDE0CiAgICAgIDwtLSBLVEFCTEUtVE9TVFJFQU0tMDAwMDAwMDAwNwogICAgUHJvY2Vzc29yOiBLU1RSRUFNLUpPSU5PVEhFUi0wMDAwMDAwMDE0IChzdG9yZXM6IFtLU1RSRUFNLUpPSU5USElTLTAwMDAwMDAwMTMtc3RvcmVdKQogICAgICAtLT4gS1NUUkVBTS1NRVJHRS0wMDAwMDAwMDE1CiAgICAgIDwtLSBLU1RSRUFNLVdJTkRPV0VELTAwMDAwMDAwMTIKICAgIFByb2Nlc3NvcjogS1NUUkVBTS1KT0lOVEhJUy0wMDAwMDAwMDEzIChzdG9yZXM6IFtLU1RSRUFNLUpPSU5PVEhFUi0wMDAwMDAwMDE0LXN0b3JlXSkKICAgICAgLS0+IEtTVFJFQU0tTUVSR0UtMDAwMDAwMDAxNQogICAgICA8LS0gS1NUUkVBTS1XSU5ET1dFRC0wMDAwMDAwMDExCiAgICBQcm9jZXNzb3I6IEtTVFJFQU0tTUFQLTAwMDAwMDAwMTcgKHN0b3JlczogW10pCiAgICAgIC0tPiBLU1RSRUFNLVNJTkstMDAwMDAwMDAxOAogICAgICA8LS0gS1RBQkxFLVRPU1RSRUFNLTAwMDAwMDAwMDcKICAgIFByb2Nlc3NvcjogS1NUUkVBTS1NRVJHRS0wMDAwMDAwMDE1IChzdG9yZXM6IFtdKQogICAgICAtLT4gS1NUUkVBTS1TSU5LLTAwMDAwMDAwMTYKICAgICAgPC0tIEtTVFJFQU0tSk9JTlRISVMtMDAwMDAwMDAxMywgS1NUUkVBTS1KT0lOT1RIRVItMDAwMDAwMDAxNAogICAgU2luazogS1NUUkVBTS1TSU5LLTAwMDAwMDAwMTYgKHRvcGljOiBqb2luLXRvcGljKQogICAgICA8LS0gS1NUUkVBTS1NRVJHRS0wMDAwMDAwMDE1CiAgICBTaW5rOiBLU1RSRUFNLVNJTkstMDAwMDAwMDAxOCAodG9waWM6IG91dHB1dC10b3BpYykKICAgICAgPC0tIEtTVFJFQU0tTUFQLTAwMDAwMDAwMTcKCg==[full image of the topology]`)
+++++
+<br />
+<img src="{{ "/assets/tutorial_images/naming-changelog-repartition-topics/no-names-no-filter.png"  | relative_url }}" alt="Kafka Streams Sub-topology" />
+++++
+
+**(Note that changelog topics don't show up in `Topology.describe()`)**
+
+
+
+
+
+You'll notice the number `0000000002` at the end of the names.  Kafka Streams appends an incrementing number as part of the name for each part of the topology.  Here the state store, changelog topic, and repartition topic share the same number, since by default, they reuse the name of the corresponding state store.
+
+Now go ahead and create the following file at `src/main/java/io/confluent/developer/NamingChangelogAndRepartitionTopics.java`.
+
++++++
+<pre class="snippet"><code class="java">{% include_raw tutorials/naming-changelog-repartition-topics/kstreams/code/src/main/java/io/confluent/developer/NamingChangelogAndRepartitionTopics.java %}</code></pre>
++++++

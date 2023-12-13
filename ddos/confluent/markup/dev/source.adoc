@@ -1,0 +1,38 @@
+This tutorial assumes that you have captured your network packet data and published it to a RabbitMQ queue in JSON format. An example packet may look like the following:
+
+[source,json]
+----
+{
+  "timestamp": "1590682723239",
+  "layers": {
+    "frame": {
+      "time": "May 28, 2020 11:48:43.239564000 CST",
+      "protocols": "eth:ethertype:ip:tcp"
+    },
+    "eth": {
+      "src": "FF:AA:C9:83:C0:21",
+      "dst": "DF:ED:E3:91:D4:13"
+    },
+    "ip": {
+      "src": "192.168.33.11",
+      "src_host": "192.168.33.11",
+      "dst": "192.168.33.77",
+      "dst_host": "192.168.33.77"
+    },
+    "tcp": {
+      "srcport": "59202",
+      "dstport": "443",
+      "flags_ack": "1",
+      "flags_reset": "0"
+    }
+  }
+}
+----
+
+**Note**: For brevity, some fields have been removed and some names have been simplified from a typical packet capture event.
+
+This connector will source the data into a Kafka topic for stream processing in ksqlDB.
+
+++++
+<pre class="snippet"><code class="json">{% include_raw tutorials/ddos/confluent/code/tutorial-steps/dev/source.json %}</code></pre>
+++++

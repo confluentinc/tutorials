@@ -1,0 +1,5 @@
+First, create a directory for the Java files in this project:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/creating-first-apache-kafka-streams-application/kstreams/code/tutorial-steps/dev/make-src-dir.sh %}</code></pre>
++++++

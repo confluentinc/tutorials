@@ -1,0 +1,5 @@
+Then create the following Avro schema file at `src/main/avro/input-movie-event.avsc` that will define the structure of a movie and its basic fields. In this tutorial, we're are going to refer to this as `RawMovie`. This is the version of the movie before any transformation.
+
++++++
+<pre class="snippet"><code class="avro">{% include_raw tutorials/transforming/kafka/code/src/main/avro/input-movie-event.avsc %}</code></pre>
++++++

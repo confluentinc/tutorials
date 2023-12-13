@@ -1,0 +1,15 @@
+Let's do a quick walkthrough of some of the producer properties.
+
+https://kafka.apache.org/documentation/#key.serializer[key.serializer] - The serializer the `KafkaProducer` will use to serialize the key.
+
+https://kafka.apache.org/documentation/#value.serializer[value.serializer] - The serializer the `KafkaProducer` will use to serialize the value.
+
+https://kafka.apache.org/documentation/#acks[acks] - The `KafkaProducer` uses the `acks` configuration to tell the lead broker how many acknowledgments to wait for to consider a produce request complete. Acceptable values for `acks` are: `0`, `1` (the default), `-1`, or `all`.  Setting `acks` to `-1` is the same as setting it to `all`.
+
+
+- `acks=0`: "fire and forget", once the producer sends the record batch it is considered successful
+- `acks=1`: leader broker added the records to its local log but didn't wait for any acknowledgment from the followers
+- `acks=all`: highest data durability guarantee, the leader broker persisted the record to its log and received acknowledgment of replication from all in-sync replicas. When using `acks=all`, it's strongly recommended to update https://kafka.apache.org/documentation/#min.insync.replicas[min.insync.replicas] as well.
+
+
+This is only a small sub-set of producer configuration parameters. The full list of producer configuration parameters can be found in the https://kafka.apache.org/documentation/#producerconfigs[Apache Kafka documentation].

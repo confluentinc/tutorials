@@ -1,0 +1,11 @@
+CreateTime:1691166221891 : one : jelly
+CreateTime:1691166231891 : two : eggs
+CreateTime:1691166241891 : three : crackers
+CreateTime:1691166251891 : four : crumpets
+CreateTime:1691166261891 : five : cream
+CreateTime:1691166321891 : one : sardines
+CreateTime:1691166311891 : two : an old tire
+CreateTime:1691166301891 : three : fish eyes
+CreateTime:1691166301891 : four : moldy bread
+CreateTime:1691166301891 : five : lots of salt
+Processed a total of 10 messages

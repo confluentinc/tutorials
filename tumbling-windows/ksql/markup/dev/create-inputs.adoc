@@ -1,0 +1,5 @@
+The first thing we'll need to start modeling this scenario is a stream that represents ratings of movies. One important attribute of these events is their timestamp since we'll be modeling the number of ratings that each movie receives over time.
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/tumbling-windows/ksql/code/tutorial-steps/dev/create-inputs.sql %}</code></pre>
++++++

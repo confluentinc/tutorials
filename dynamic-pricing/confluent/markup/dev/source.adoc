@@ -1,0 +1,6 @@
+For this tutorial, we are interested in knowing each marketplace event for an item, specifically its pricing. 
+This creates a stream of events, upon which real-time stream processing can keep state and calculate pricing statistics.
+
+++++
+<pre class="snippet"><code class="json">{% include_raw tutorials/dynamic-pricing/confluent/code/tutorial-steps/dev/source.json %}</code></pre>
+++++

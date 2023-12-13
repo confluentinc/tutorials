@@ -1,0 +1,2 @@
+This tutorial creates simulated data with the `Datagen` connector.
+Then you can process the data in a variety of ways by enriching the orders and clickstream data with product and customer attributes, analyze errors, aggregate data by time, etc.

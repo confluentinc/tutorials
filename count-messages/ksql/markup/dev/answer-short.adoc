@@ -1,0 +1,5 @@
+Create a ksqlDB stream over the Kafka topic, and then use the `COUNT` function to count the number of messages.
+
++++++
+<pre class="snippet"><code class="java">{% include_raw tutorials/count-messages/ksql/code/tutorial-steps/dev/03d-count-all-messages-pageview.sql %}</code></pre>
++++++

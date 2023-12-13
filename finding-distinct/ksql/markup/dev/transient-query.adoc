@@ -1,0 +1,23 @@
+In the first statement above, we created the query that finds click events, naming it `DETECTED_CLICKS`. We modeled it as a table since the query performs aggregations.
+
+As we're grouping by ip-address and url, these columns will become part of the primary key of the table.
+Primary key columns are stored in the Kafka message's key. As we'll need them in the value later, we use `AS_VALUE` to copy the columns into the value and set their name. To avoid the value column names clashing with the key columns, we add aliases to rename the key columns.
+
+As it stands, the key of the `DETECTED_CLICKS` table contains the ip-address, and url columns, and as the table is windowed, the window start time. Wouldn't it be nice if the key was just the IP address?
+You'll take care of that as well as finding distinct IP addresses with the next two queries.
+
+The second statement declares a stream on top of the `DETECTED_CLICKS` table, defining only the value columns we're interested in.
+
+In the third statement you set the key of the `DISTINCT_CLICKS` stream to just the IP address using the `PARTITION BY` statement.  The `WHERE` clause is where we filter out duplicates by specifying to only retrieve IP addresses with a `IP_COUNT` of `1`.
+
+To verify everything is working as expected, run the following query:
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/finding-distinct/ksql/code/tutorial-steps/dev/transient-query.sql %}</code></pre>
++++++
+
+The output should look similar to:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/finding-distinct/ksql/code/tutorial-steps/dev/expected-transient-query.log%}</code></pre>
++++++

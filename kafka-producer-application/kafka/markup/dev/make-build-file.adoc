@@ -1,0 +1,5 @@
+Create the following Gradle build file for the project, named `build.gradle`:
+
++++++
+<pre class="snippet"><code class="groovy">{% include_raw tutorials/kafka-producer-application/kafka/code/build.gradle %}</code></pre>
++++++

@@ -1,0 +1,13 @@
+In order to implement a stream that will contain any deserialization errors that occurs in KSQL, we will enable the https://docs.ksqldb.io/en/latest/reference/processing-log/[KSQL Processing Log] feature.
+This feature allows us to capture any errors from KSQL and send to a topic that we will designate.
+The first step to enable this feature is to create a custom Log4J configuration file that contains an appender capable of sending events with the errors to a Kafka topic.
+Create a file named `log4j.properties` within the `log4j` folder with the content below.
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/deserialization-errors/ksql/code/log4j/log4j.properties %}</code></pre>
++++++
+
+Note that we declared an appender with the `org.apache.kafka.log4jappender.KafkaLog4jAppender` implementation.
+This appender is able to produce records to a Kafka topic containing any event from the log.
+The Kafka cluster and topic being used are specified via the properties 'BrokerList' and 'Topic', respectively.
+Also note that the appender has been configured to send events using the JSON format, in the property 'layout'.

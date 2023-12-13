@@ -1,0 +1,3 @@
+[main] INFO io.confluent.developer.MultiEventProtobufProduceConsumeApp - Producing Protobuf events now
+	specific.protobuf.value.type = class io.confluent.developer.proto.CustomerEventProto$CustomerEvent
+[main] INFO io.confluent.developer.MultiEventProtobufProduceConsumeApp - Consumed Proto Events [Protobuf Pageview event -> http://acme/traps, Protobuf Pageview event -> http://acme/bombs, Protobuf Pageview event -> http://acme/bait, Protobuf Purchase event -> road-runner-bait]

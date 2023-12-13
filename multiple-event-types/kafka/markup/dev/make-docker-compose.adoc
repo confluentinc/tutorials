@@ -1,0 +1,5 @@
+Next, create the following `docker-compose.yml` file to obtain Confluent Platform:
+
++++++
+<pre class="snippet"><code class="dockerfile">{% include_raw tutorials/multiple-event-types/kafka/code/docker-compose.yml %}</code></pre>
++++++

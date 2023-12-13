@@ -1,0 +1,5 @@
+Now launch Confluent Platform by running the following command. Note the `--build` argument which automatically builds the Docker image for Kafka Connect and the bundled kafka-connect-jdbc connector.
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/connect-add-key-to-source/kafka/code/tutorial-steps/dev/docker-compose-up.sh %}</code></pre>
++++++

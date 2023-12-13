@@ -1,0 +1,11 @@
+Produce some messages to the Kafka topic.
+  
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/count-messages/confluent/code/tutorial-steps/dev/produce-messages.sh %}</code></pre>
++++++
+
+Enter a few records and use `Ctrl-D` when finished.
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/count-messages/confluent/code/tutorial-steps/dev/messages.txt %}</code></pre>
++++++

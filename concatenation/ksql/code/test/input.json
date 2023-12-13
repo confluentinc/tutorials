@@ -1,0 +1,52 @@
+{
+  "inputs": [
+    {
+      "topic": "stock_purchases",
+      "value": {
+         "id": "1", 
+         "num_shares": 30000, 
+         "amount": 5004.89,
+         "txn_ts": "2020-12-04 02:35:43", 
+         "first_name": "Art",
+         "last_name": "Vandeley", 
+         "symbol": "IMEP"
+      }
+    },
+    {
+      "topic": "stock_purchases",
+      "value": {
+          "id": "2", 
+          "num_shares": 500, 
+          "amount": 1000.89,
+          "txn_ts": "2020-12-04 02:35:44",
+          "first_name": "Nick",
+          "last_name": "Fury", 
+          "symbol": "IMEP"
+      }
+    },
+    {
+      "topic": "stock_purchases",
+      "value": {
+          "id": "3", 
+          "num_shares": 45729, 
+          "amount": 804.89,
+          "txn_ts": "2020-12-04 02:35:45", 
+          "first_name": "Natasha",
+          "last_name": "Romanov", 
+          "symbol": "STRK"
+      }
+    },
+    {
+      "topic": "stock_purchases",
+      "value": {
+         "id": "4", 
+         "num_shares": 72848, 
+         "amount": 60040.89,
+         "txn_ts": "2020-12-04 02:35:46", 
+         "first_name": "Wanda",
+         "last_name": "Maximoff", 
+         "symbol": "STRK"  
+      }
+    }
+  ]
+}

@@ -1,0 +1,144 @@
+This solution uses ksqlDB's ability to link:https://www.confluent.io/blog/ksqldb-techniques-that-make-stream-processing-easier-than-ever/[model] and link:https://docs.ksqldb.io/en/latest/how-to-guides/query-structured-data/[query] structured data. 
+
+## Streaming JSON
+
+Let's break down the commands in this application and explain the individual parts.
+
+The first step is to model the packet capture data using the ksqlDB `CREATE STREAM` command, giving our new stream the name `network_traffic`:
+
+[source,sql]
+----
+CREATE STREAM network_traffic
+----
+
+We then define the schema for events in the topic by declaring field names and data types using standard SQL syntax. In this snippet from the full statement:
+
+[source,sql]
+----
+  timestamp BIGINT,
+  layers STRUCT<
+   ...
+   ip STRUCT< 
+      src VARCHAR, 
+      src_host VARCHAR, 
+      dst VARCHAR, 
+      dst_host VARCHAR, 
+      proto VARCHAR >,
+   ...
+----
+
+We declare an event structure that contains a timestamp field, and then a child nested data structure named `layers`. Comparing the sample packet capture event with the declared structure, we see the relationships between the data and the field names and types:
+
+[source,json]
+----
+{
+  "timestamp": "1590682723239",
+  "layers": {
+    ...
+    "ip": {
+      "src": "192.168.33.11",
+      "src_host": "192.168.33.11",
+      "dst": "192.168.33.77",
+      "dst_host": "192.168.33.77"
+    },
+    ...
+  }
+}
+
+----
+
+The `CREATE STREAM ... WITH ...` https://docs.ksqldb.io/en/latest/developer-guide/ksqldb-reference/create-stream/[command] marries the event schema with the Kafka topic. The `WITH` clause in the statement allows us to specify details about the stream. 
+
+[source,sql]
+----
+WITH (
+  KAFKA_TOPIC='network-traffic', 
+  TIMESTAMP='timestamp', 
+  VALUE_FORMAT='JSON', 
+  PARTITIONS=6
+);
+----
+
+We also indicate the data format of the events on the topic, using the `VALUE_FORMAT` property. Finally, we use the `TIMESTAMP` property to indicate an event field that can be used as the rowtime of the event. This would allow us to perform time-based operations based on the actual event time as provided by the captured packet data.
+
+## Materialized view
+
+Now that we have a useful stream of packet capture data, we're ready to try to detect potential DDoS attacks from the events.
+
+We're going to use the ksqlDB `CREATE TABLE` command, which will create a new link:https://docs.ksqldb.io/en/latest/developer-guide/ksqldb-reference/create-table-as-select/[materialized view] of the packet data.
+
+Let's tell ksqlDB to create the table with a name of `potential_slowloris_attacks`:
+
+[source,sql]
+----
+CREATE TABLE potential_slowloris_attacks AS 
+----
+
+Next, we'll define the values that we want to materialize into the table. We are capturing two values:
+
+* The source IP address, read from the `layers->ip->src` nested value in the JSON event
+* The count of rows that satisfy conditions defined later in the command (obtained Using the `count` function)
+
+[source,sql]
+----
+SELECT 
+  layers->ip->src, count(*) as count_connection_reset
+----
+
+Next, we tell ksqlDB about the event source from which to build the table: the `network_traffic` stream we defined above.
+
+[source,sql]
+----
+FROM network_traffic 
+----
+
+Because the stream of packet capture events is continuous, we need a way to aggregate them into a bucket that is both meaningful to our business case and useful enough that we can perform calculations with it. Here, we want to know if there are a large number of connection reset events within a given period of time. So let's tell ksqlDB that we want to create a window of events based on time:
+
+[source,sql]
+----
+WINDOW TUMBLING (SIZE 60 SECONDS)
+----
+
+A link:https://docs.ksqldb.io/en/latest/concepts/time-and-windows-in-ksqldb-queries/#tumbling-window[tumbling window] specifies a bucket of events in a fixed time, non-overlapping, gap-less window. Here, we've specified 60-second windows.
+
+Now that we have our events aggregated into time buckets with the fields that interest us, how do we specify that a connection has been reset? We use the ksqlDB `WHERE` clause to extract the relevant events. In this case, we define a connection as reset if the `tcp` `flags_ack` and `flag_reset` fields are set to "true".
+
+[source,sql]
+----
+WHERE 
+  layers->tcp->flags_ack = '1' AND layers->tcp->flags_reset = '1'
+----
+
+We will define a potential Slowloris attack as multiple connection reset events coming from the _same_ source IP address. In order to properly aggregate (via the `count` function above), we need to group the qualifying events by the source IP:
+
+[source,sql]
+----
+GROUP BY layers->ip->src
+----
+
+And finally, we want to count the number of matching events within our window. In this example, we consider `10` events to signify a potential attack, but for real-world scenarios, you should adjust this variable.
+
+[source,sql]
+----
+HAVING count(*) > 10;
+----
+
+The end result is a `TABLE` that can be queried for information useful in alerting administrators of a potential attack. For example, you could execute a link:https://docs.ksqldb.io/en/latest/concepts/queries/#push[push query] against the table as part of a monitoring and alerting pipeline.
+
+First, for this example, we need to set the `auto.offset.reset` flag to `earliest`, which will ensure that our query runs from the beginning of the topic to produce an expected result. In a production query, you may choose to use `latest` and only capture events going forward from the time you execute the push query.
+
+[source,sql]
+----
+SET 'auto.offset.reset' = 'earliest';
+----
+
+This query will select all records from our materialized view, including the source IP address and count. We can use these to investigate the issue.
+
+[source,text]
+----
+select * from POTENTIAL_SLOWLORIS_ATTACKS EMIT CHANGES;
++----------------------------+----------------------------+----------------------------+----------------------------+
+|SRC                         |WINDOWSTART                 |WINDOWEND                   |COUNT_CONNECTION_RESET      |
++----------------------------+----------------------------+----------------------------+----------------------------+
+|192.168.33.11               |1642017660000               |1642017720000               |14                          |
+----

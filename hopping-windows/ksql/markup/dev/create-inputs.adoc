@@ -1,0 +1,5 @@
+To start off the implementation of this scenario, you need to create a stream that represents the temperature readings coming from the sensors. Since we will be handling time in this scenario, it is important that each reading contains a timestamp indicating when that reading was taken. The field `TIMESTAMP` will be used for this purpose.
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/hopping-windows/ksql/code/tutorial-steps/dev/create-inputs.sql %}</code></pre>
++++++

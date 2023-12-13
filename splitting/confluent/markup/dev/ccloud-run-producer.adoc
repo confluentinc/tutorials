@@ -1,0 +1,11 @@
+In a new terminal, run:
+
+```plaintext
+confluent kafka topic produce acting-events --value-format avro --schema src/main/avro/acting_event.avsc
+```
+
+include::_includes/shared/markup/ccloud/ccloud-sr-produce.adoc[]
+
++++++
+<pre class="snippet"><code class="json">{% include_raw tutorials/splitting/kstreams/code/tutorial-steps/dev/input-events.json %}</code></pre>
++++++

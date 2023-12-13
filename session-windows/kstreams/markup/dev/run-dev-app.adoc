@@ -1,0 +1,9 @@
+Now that you have an uberjar for the Kafka Streams application, you can launch it locally.
+
+When you run the following, the prompt won't return, because the application will run until you exit it. There is always another message to process, so streaming applications don't exit until you force them.
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/session-windows/kstreams/code/tutorial-steps/dev/run-dev-app.sh %}</code></pre>
++++++
+
+NOTE: This Kafka Streams application includes record generator to populate the topic with "sessionized" data.  The first part of running the application will populate data in the input topic for the streams application to process.  If you decide to re-run the application the data-generator will run again, giving you slightly different results.  In practice, you don't want to include something like this in a production application.

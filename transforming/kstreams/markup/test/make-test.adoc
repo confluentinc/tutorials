@@ -1,0 +1,7 @@
+Create the following test file at `src/test/java/io/confluent/developer/TransformStreamTest.java`. Testing a Kafka streams application requires a bit of test harness code, but happily the `org.apache.kafka.streams.TopologyTestDriver` class makes this much more pleasant that it would otherwise be.
+
+There are two methods in `TransformStreamTest` annotated with `@Test`: `testMovieConverter()` and `testTransformStream()`. `testMovieConverter()` is a simple method that tests the string that is core to the transformation action of this Streams application. `testMovieConverter()` actually runs our Streams topology using the `TopologyTestDriver` and some mocked data that is set up inside the test method.
+
++++++
+<pre class="snippet"><code class="java">{% include_raw tutorials/transforming/kstreams/code/src/test/java/io/confluent/developer/TransformStreamTest.java %}</code></pre>
++++++

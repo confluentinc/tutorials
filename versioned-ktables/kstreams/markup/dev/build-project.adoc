@@ -1,0 +1,10 @@
+////
+ This file assumes use of Avro schemas.  If your tutorial does not use Avro, then you'll probably want to change
+ the wording below.
+////
+
+Because we will use an Avro schema in our Java code, we'll need to compile it. The Gradle Avro plugin is a part of the build, so it will see your new Avro files, generate Java code for them, and compile those and all other Java sources. Run this command to get it all done:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/versioned-ktables/kstreams/code/tutorial-steps/dev/build-project.sh %}</code></pre>
++++++

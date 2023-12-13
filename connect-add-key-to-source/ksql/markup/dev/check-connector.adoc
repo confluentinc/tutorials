@@ -1,0 +1,11 @@
+Check that the connector is running:
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/connect-add-key-to-source/ksql/code/tutorial-steps/dev/check-connector.sql %}</code></pre>
++++++
+
+You should see that the state is `RUNNING`:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/connect-add-key-to-source/ksql/code/tutorial-steps/dev/check-connector_expected.log %}</code></pre>
++++++

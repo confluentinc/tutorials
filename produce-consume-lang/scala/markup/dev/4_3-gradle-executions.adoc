@@ -1,0 +1,10 @@
+Run the following command to create the topic and then the schemas:
+
++++++
+<pre class="snippet"><code class="bash">{%
+include_raw tutorials/produce-consume-lang/scala/code/tutorial-steps/dev/run-helpers.sh
+%}</code></pre>
++++++
+
+These gradle tasks are defined in the `build.gradle` file and are declared as `TaskKey[Unit]` with the corresponding
+main class.

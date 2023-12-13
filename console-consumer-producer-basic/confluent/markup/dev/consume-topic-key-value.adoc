@@ -1,0 +1,13 @@
+Next, let's open up a consumer to read the new records.
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/console-consumer-producer-basic/confluent/code/tutorial-steps/dev/harness-console-consumer-keys.sh %}</code></pre>
++++++
+
+After the consumer starts you should see the following output in a few seconds:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/console-consumer-producer-basic/confluent/code/tutorial-steps/dev/expected-records-full.log %}</code></pre>
++++++
+
+Since we kept the `--from-beginning` property, you'll see all the records sent to the topic.  You'll notice the results before you sent keys are formatted as `null-<value>`.

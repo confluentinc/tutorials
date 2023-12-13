@@ -1,0 +1,64 @@
+{
+  "inputs": [
+    {
+      "topic": "movies",
+      "key": "Aliens",
+      "value": {
+        "ID": 48,
+        "RELEASE_YEAR": 1986
+      }
+    },
+    {
+      "topic": "movies",
+      "key": "Die Hard",
+      "value": {
+        "ID": 294,
+        "RELEASE_YEAR": 1998
+      }
+    },
+    {
+      "topic": "movies",
+      "key": "The Big Lebowski",
+      "value": {
+        "ID": 128,
+        "RELEASE_YEAR": 1998
+      }
+    },
+    {
+      "topic": "movies",
+      "key": "The Godfather",
+      "value": {
+        "ID": 128,
+        "RELEASE_YEAR": 1998
+      }
+    },
+    {
+      "topic": "lead_actors",
+      "key": "Aliens",
+      "value": {
+        "ACTOR_NAME": "Sigourney Weaver"
+      }
+    },
+    {
+      "topic": "lead_actors",
+      "key": "Die Hard",
+      "value": {
+        "ACTOR_NAME": "Bruce Willis"
+      }
+    },
+    {
+      "topic": "lead_actors",
+      "key": "The Big Lebowski",
+      "value": {
+        "ACTOR_NAME": "Jeff Bridges"
+      }
+    },
+    {
+      "topic": "lead_actors",
+      "key": "The Godfather",
+      "value": {
+        "ACTOR_NAME": "Al Pacino"
+      }
+    }
+  ]
+}

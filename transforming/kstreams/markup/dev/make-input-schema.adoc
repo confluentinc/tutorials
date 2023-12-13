@@ -1,0 +1,5 @@
+Then create the following Avro schema file at `src/main/avro/input_movie_event.avsc` for the raw movies:
+
++++++
+<pre class="snippet"><code class="avro">{% include_raw tutorials/transforming/kstreams/code/src/main/avro/input_movie_event.avsc %}</code></pre>
++++++

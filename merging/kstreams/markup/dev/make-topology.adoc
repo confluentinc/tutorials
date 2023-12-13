@@ -1,0 +1,7 @@
+Then create the following file at `src/main/java/io/confluent/developer/MergeStreams.java`. Notice the `buildTopology` method, which uses the Kafka Streams DSL. A `stream` is opened up for each input topic. The input streams are then combined using the `merge` function, which creates a new stream that represents all of the events of its inputs. Note that you can chain `merge` to combine as many streams as needed. The merged stream is then connected to the `to` method, which the name of a Kafka topic to send the events to.
+
++++++
+<pre class="snippet"><code class="java">{% include_raw tutorials/merging/kstreams/code/src/main/java/io/confluent/developer/MergeStreams.java %}</code></pre>
++++++
+
+Note when using the `merge` operator the keys and values of the two `KStream` objects you're merging must be of the same type.  If you have 2 `KStream` instances with different key and/or value types, you'll have to use the `KStream.map` (or `KStream.mapValues`) operation first to get the types to line-up before merging.

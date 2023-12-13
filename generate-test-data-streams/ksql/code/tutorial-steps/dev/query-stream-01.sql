@@ -1,0 +1,10 @@
+SET 'auto.offset.reset' = 'earliest';
+
+SELECT TIMESTAMPTOSTRING(ROWTIME,'yyyy-MM-dd HH:mm:ss','Europe/London') AS PIZZA_ORDER_TS, 
+       STORE_ID, 
+       STORE_ORDER_ID,
+       STATUS
+  FROM PIZZA_ORDERS 
+ WHERE COUPON_CODE BETWEEN 1200 and 1600
+ EMIT CHANGES
+ LIMIT 5;

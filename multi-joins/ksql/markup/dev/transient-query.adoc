@@ -1,0 +1,11 @@
+Let's view the result by selecting the values from our new enriched orders stream:
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/multi-joins/ksql/code/tutorial-steps/dev/transient-query.sql %}</code></pre>
++++++
+
+The output should look similar to:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/multi-joins/ksql/code/tutorial-steps/dev/expected-transient-query.log %}</code></pre>
++++++

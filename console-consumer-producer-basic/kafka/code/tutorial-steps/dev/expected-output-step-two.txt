@@ -1,0 +1,8 @@
+the
+lazy
+fox
+jumped over the brown cow
+how now
+brown cow
+all streams lead
+to Kafka!

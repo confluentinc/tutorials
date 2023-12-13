@@ -1,0 +1,76 @@
+{
+  "inputs": [
+    {
+      "topic": "purchases",
+      "value": {
+        "order_id": 1,
+        "customer_name": "Britney",
+        "date_of_birth":  "02/29/2000",
+        "product":  "Heart Rate Monitor",
+        "order_total_usd":  119.93,
+        "town": "Denver",
+        "country": "USA"
+      }
+    },
+    {
+      "topic": "purchases",
+      "value": {
+        "order_id": 2,
+        "customer_name": "Michael",
+        "date_of_birth":  "06/08/1981",
+        "product":  "Foam Roller",
+        "order_total_usd":  34.95,
+        "town": "Los Angeles",
+        "country": "USA"
+      }
+    },
+    {
+      "topic": "purchases",
+      "value": {
+        "order_id": 3,
+        "customer_name": "Kimmy",
+        "date_of_birth": "05/19/1978",
+        "product": "Hydration Belt",
+        "order_total_usd": 50.00,
+        "town": "Tuscan",
+        "country": "USA"
+      }
+    },
+    {
+      "topic": "purchases",
+      "value": {
+        "order_id": 4,
+        "customer_name": "Samantha",
+        "date_of_birth":  "08/05/1983",
+        "product": "Wireless Headphones",
+        "order_total_usd": 175.93,
+        "town": "Tulsa",
+        "country": "USA"
+      }
+    },
+    {
+      "topic": "purchases",
+      "value": {
+        "order_id": 5,
+        "customer_name": "Jonathon",
+        "date_of_birth": "01/31/1981",
+        "product": "Comfort Insoles",
+        "order_total_usd": 49.95,
+        "town": "Portland",
+        "country": "USA"
+      }
+    },
+    {
+      "topic": "purchases",
+      "value": {
+        "order_id": 6,
+        "customer_name": "Raymond",
+        "date_of_birth": "07/29/2001",
+        "product": "Running Beanie",
+        "order_total_usd": 13.73,
+        "town": "Omaha",
+        "country": "USA"
+      }
+    }
+  ]
+}

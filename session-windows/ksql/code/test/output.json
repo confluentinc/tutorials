@@ -1,0 +1,18 @@
+{
+  "outputs": [
+    {"topic":"IP_SESSIONS","key": "51.56.119.117", "window": {"start":1563444000000, "end":1563444000000,"type":"session"},"value": {"SESSION_END_TS":"2019-07-18 10:00:00", "SESSION_START_TS":"2019-07-18 10:00:00", "CLICK_COUNT":1, "SESSION_LENGTH_MS":0},"timestamp":1563444000000},
+    {"topic":"IP_SESSIONS","key": "51.56.119.117", "window": {"start":1563444000000, "end":1563444000000,"type":"session"},"value": null,"timestamp":1563444000000},
+    {"topic":"IP_SESSIONS","key": "51.56.119.117", "window": {"start":1563444000000, "end":1563444060000,"type":"session"},"value": {"SESSION_END_TS":"2019-07-18 10:01:00", "SESSION_START_TS":"2019-07-18 10:00:00", "CLICK_COUNT":2, "SESSION_LENGTH_MS":60000},"timestamp":1563444060000},
+    {"topic":"IP_SESSIONS","key": "53.170.33.192", "window": {"start":1563444091000, "end":1563444091000,"type":"session"},"value": {"SESSION_END_TS":"2019-07-18 10:01:31", "SESSION_START_TS":"2019-07-18 10:01:31", "CLICK_COUNT":1, "SESSION_LENGTH_MS":0},"timestamp":1563444091000},
+    {"topic":"IP_SESSIONS","key": "51.56.119.117", "window": {"start":1563444000000, "end":1563444060000,"type":"session"},"value": null,"timestamp":1563444060000},
+    {"topic":"IP_SESSIONS","key": "51.56.119.117", "window": {"start":1563444000000, "end":1563444096000,"type":"session"},"value": {"SESSION_END_TS":"2019-07-18 10:01:36", "SESSION_START_TS":"2019-07-18 10:00:00", "CLICK_COUNT":3, "SESSION_LENGTH_MS":96000},"timestamp":1563444096000},
+    {"topic":"IP_SESSIONS","key": "53.170.33.192", "window": {"start":1563444091000, "end":1563444091000,"type":"session"},"value": null,"timestamp":1563444091000},
+    {"topic":"IP_SESSIONS","key": "53.170.33.192", "window": {"start":1563444091000, "end":1563444120000,"type":"session"},"value": {"SESSION_END_TS":"2019-07-18 10:02:00", "SESSION_START_TS":"2019-07-18 10:01:31", "CLICK_COUNT":2, "SESSION_LENGTH_MS":29000},"timestamp":1563444120000},
+    {"topic":"IP_SESSIONS","key": "51.56.119.117", "window": {"start":1563447801000, "end":1563447801000,"type":"session"},"value": {"SESSION_END_TS":"2019-07-18 11:03:21", "SESSION_START_TS":"2019-07-18 11:03:21", "CLICK_COUNT":1, "SESSION_LENGTH_MS":0},"timestamp":1563447801000},
+    {"topic":"IP_SESSIONS","key": "51.56.119.117", "window": {"start":1563447801000, "end":1563447801000,"type":"session"},"value": null,"timestamp":1563447801000},
+    {"topic":"IP_SESSIONS","key": "51.56.119.117", "window": {"start":1563447801000, "end":1563447830000,"type":"session"},"value": {"SESSION_END_TS":"2019-07-18 11:03:50", "SESSION_START_TS":"2019-07-18 11:03:21", "CLICK_COUNT":2, "SESSION_LENGTH_MS":29000},"timestamp":1563447830000},
+    {"topic":"IP_SESSIONS","key": "53.170.33.192", "window": {"start":1563450000000, "end":1563450000000,"type":"session"},"value": {"SESSION_END_TS":"2019-07-18 11:40:00", "SESSION_START_TS":"2019-07-18 11:40:00", "CLICK_COUNT":1, "SESSION_LENGTH_MS":0},"timestamp":1563450000000},
+    {"topic":"IP_SESSIONS","key": "53.170.33.192", "window": {"start":1563450000000, "end":1563450000000,"type":"session"},"value": null,"timestamp":1563450000000},
+    {"topic":"IP_SESSIONS","key": "53.170.33.192", "window": {"start":1563450000000, "end":1563450009000,"type":"session"},"value": {"SESSION_END_TS":"2019-07-18 11:40:09", "SESSION_START_TS":"2019-07-18 11:40:00", "CLICK_COUNT":2, "SESSION_LENGTH_MS":9000},"timestamp":1563450009000}
+]
+}

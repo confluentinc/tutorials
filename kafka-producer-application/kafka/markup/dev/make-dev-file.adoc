@@ -1,0 +1,5 @@
+Then create a development file at `configuration/dev.properties`:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/kafka-producer-application/kafka/code/configuration/dev.properties %}</code></pre>
++++++

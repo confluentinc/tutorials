@@ -1,0 +1,14 @@
+To check that it's working, print out the contents of the output stream using the following query:
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/joining-stream-stream/ksql/code/tutorial-steps/dev/print-output-topic.sql %}</code></pre>
++++++
+
+This should yield the following output:
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/joining-stream-stream/ksql/code/tutorial-steps/dev/expected-print.log %}</code></pre>
++++++
+
+As you can see, the output sits in a plain Kafka topic and therefore, any application that is able to consume data from it will be able to have access to this data.
+
+Type 'exit' and hit enter to exit the ksqlDB CLI.

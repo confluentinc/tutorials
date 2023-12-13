@@ -1,0 +1,25 @@
+To make producing records easy, the producer application can accept book data in the form of a CSV line.
+
+Build the producer app:
+
++++++
+<pre class="snippet"><code class="bash">./gradlew shadowJar</code></pre>
++++++
+
+We can create a book by starting the Produce app:
+
++++++
+<pre class="snippet"><code class="bash">java -jar app-producer/build/libs/app-producer-0.1.0-SNAPSHOT.jar</code></pre>
++++++
+
+And then typing the book data at the prompt (type "exit" to stop the program)
+
++++++
+<pre class="snippet"><code class="bash">Loic D.,How to sharpen a knife,Other,10,2020-06-09</code></pre>
++++++
+
+or, by directly passing the book as argument:
+
++++++
+<pre class="snippet"><code class="bash">java -jar app-producer/build/libs/app-producer-0.1.0-SNAPSHOT.jar "'Loic D.','How to sharpen a knife (safely this time)',Other,10,2020-06-09"</code></pre>
++++++

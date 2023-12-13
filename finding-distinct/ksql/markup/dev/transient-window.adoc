@@ -1,0 +1,17 @@
+Let's experiment with these events.
+
+First, let's create a query to select the information we need and count each occurrence of an IP address.
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/finding-distinct/ksql/code/tutorial-steps/dev/transient-window.sql %}</code></pre>
++++++
+
+And it should produce the following output:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/finding-distinct/ksql/code/tutorial-steps/dev/expected-transient-window.log%}</code></pre>
++++++
+
+Notice that the duplicate IP addresses have an `IP_COUNT` value greater than one.  So our next step is to filter out the duplicates by only selecting records where the `IP_COUNT` column equals `1`.
+
+You'll also notice that each ip-address + url combo have the same timestamp value.  That's because this this statement https://docs.ksqldb.io/en/latest/developer-guide/ksqldb-reference/aggregate-functions/#earliest_by_offset[EARLIEST_BY_OFFSET(ROWTIME)] selects the earliest `ROWTIME`, the event timestamp, for the composite key of ip-address and url.  This is the desired behavior because when you add the de-duplication, you'll only want the event timestamp of the first user click for the unique ip-address and url pair.

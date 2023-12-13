@@ -1,0 +1,9 @@
+The following text represents records to be written to the original topic `myTopic`.
+Each line has the format `<key>,<value>`, whereby the `,` is the special delimiter character that separates the record key from the record value.
+Copy these records and paste them into the `kafka-console-producer` prompt that you started in the previous step.
+
++++++
+<pre class="snippet"><code class="json">{% include_raw tutorials/message-ordering/kafka/code/test/input.txt %}</code></pre>
++++++
+
+Stop the producer with `Ctrl-C`.

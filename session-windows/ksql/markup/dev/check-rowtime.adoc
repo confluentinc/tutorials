@@ -1,0 +1,9 @@
+Now compare the timestamp we want to use (`timestamp` column) with the system column exposing how KSQL sees the timestamp (`ROWTIME`): 
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/session-windows/ksql/code/tutorial-steps/dev/check-rowtime.sql %}</code></pre>
++++++
+
+You should see that both columns match in time value (only the formatting differs):
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/session-windows/ksql/code/tutorial-steps/dev/expected-check-rowtime.log %}</code></pre>
++++++

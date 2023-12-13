@@ -1,0 +1,7 @@
+Add the consume function test class: `app-consumer/src/test/scala/io/confluent/developer/ConsumerSpec.scala`:
+
++++++
+<pre class="snippet"><code class="bash">{%
+    include_raw tutorials/produce-consume-lang/scala/code/app-consumer/src/test/scala/io/confluent/developer/consume/ConsumerSpec.scala
+%}</code></pre>
++++++

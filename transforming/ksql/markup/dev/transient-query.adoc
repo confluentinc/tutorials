@@ -1,0 +1,11 @@
+Let's break apart the `title` field and extract the year that the movie was published into its own column. Issue the following transient push query. This will block and continue to return results until its limit is reached or you tell it to stop.
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/transforming/ksql/code/tutorial-steps/dev/transient-query.sql %}</code></pre>
++++++
+
+This should yield the following output:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/transforming/ksql/code/tutorial-steps/dev/expected-transient.log %}</code></pre>
++++++

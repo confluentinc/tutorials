@@ -1,0 +1,76 @@
+{
+  "outputs": [
+    {
+      "topic": "all_songs",
+      "value": {
+        "ARTIST": "Metallica",
+        "TITLE": "Fade to Black",
+        "GENRE": "rock"
+      }
+    },
+    {
+      "topic": "all_songs",
+      "value": {
+        "ARTIST": "Smashing Pumpkins",
+        "TITLE": "Today",
+        "GENRE": "rock"
+      }
+    },
+    {
+      "topic": "all_songs",
+      "value": {
+        "ARTIST": "Pink Floyd",
+        "TITLE": "Another Brick in the Wall",
+        "GENRE": "rock"
+      }
+    },
+    {
+      "topic": "all_songs",
+      "value": {
+        "ARTIST": "Van Halen",
+        "TITLE": "Jump",
+        "GENRE": "rock"
+      }
+    },
+    {
+      "topic": "all_songs",
+      "value": {
+        "ARTIST": "Led Zeppelin",
+        "TITLE": "Kashmir",
+        "GENRE": "rock"
+      }
+    },
+    {
+      "topic": "all_songs",
+      "value": {
+        "ARTIST": "Wolfgang Amadeus Mozart",
+        "TITLE": "The Magic Flute",
+        "GENRE": "classical"
+      }
+    },
+    {
+      "topic": "all_songs",
+      "value": {
+        "ARTIST": "Johann Pachelbel",
+        "TITLE": "Canon",
+        "GENRE": "classical"
+      }
+    },
+    {
+      "topic": "all_songs",
+      "value": {
+        "ARTIST": "Ludwig van Beethoven",
+        "TITLE": "Symphony No. 5",
+        "GENRE": "classical"
+      }
+    },
+    {
+      "topic": "all_songs",
+      "value": {
+        "ARTIST": "Edward Elgar",
+        "TITLE": "Pomp and Circumstance",
+        "GENRE": "classical"
+      }
+    }
+  ]
+}

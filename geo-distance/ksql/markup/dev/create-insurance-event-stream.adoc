@@ -1,0 +1,5 @@
+Lastly, imagine we have a stream of insurance claim events for people who have lost their insured mobile phone. We know the customer name, phone model, and the state, long and lat where the loss of the mobile phone occurred. The following ksqlDB statement will create a new topic ``phone_event_raw`` and a stream ``insurance_event_stream``:
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/geo-distance/ksql/code/tutorial-steps/dev/create-insurance-event-stream.sql %}</code></pre>
++++++

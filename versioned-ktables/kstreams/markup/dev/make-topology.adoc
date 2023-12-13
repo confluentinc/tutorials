@@ -1,0 +1,41 @@
+
+Before you create the Java class to run the `VersionedKTable` example, let's dive into the main point of this tutorial, creating a versioned `KTable`:
+
+[source, java]
+----
+final VersionedBytesStoreSupplier versionedStoreSupplier = <1>
+                            Stores.persistentVersionedKeyValueStore("versioned-ktable-store",
+                                                                    Duration.ofMinutes(10)) <2>
+
+
+final KTable<String, String> tableInput = builder.table(tableInputTopic,
+                Materialized.<String, String>as(versionedStoreSupplier) <3>
+                        .withKeySerde(stringSerde)
+                        .withValueSerde(stringSerde));
+
+
+
+streamInput.join(tableInput, valueJoiner) <4>
+                .to(totalResultOutputTopic,
+                        Produced.with(stringSerde, stringSerde));
+
+----
+
+<1> Creating the versioned state store
+<2> Specifying the length of time the table keeps previous versions of a record for querying
+<3> Creating the source `KTable` backed by a versioned state store
+<4> Using the versioned table in a stream-table join
+
+So for using a versioned `KTable` you first create a `VersionedBytesStoreSupplier` with the https://javadoc.io/static/org.apache.kafka/kafka-streams/3.5.1/org/apache/kafka/streams/state/Stores.html#persistentVersionedKeyValueStore-java.lang.String-java.time.Duration-[Stores.persistentVersionedKeyValueStore] factory method providing parameters for the name of the store and the amount of time the store retains previous versions.
+
+Then you'll use the newly created supplier when creating your source `KTable` with the https://javadoc.io/static/org.apache.kafka/kafka-streams/3.5.1/org/apache/kafka/streams/StreamsBuilder.html#table-java.lang.String-org.apache.kafka.streams.kstream.Materialized-[StreamBuilder.build(String topic, Materialized)] method as shown above at annotation three.
+
+Now if your `KStream` https://docs.confluent.io/platform/current/streams/concepts.html#out-of-order-handling[out-of-order records] joining with a `KTable` using a versioned store, the join should result in a temporal correct result as the join of the stream record with a table record is *_aligned by timestamps_* instead of simply using the latest record for the key.
+
+For more background on versioned state stores https://cwiki.apache.org/confluence/display/KAFKA/KIP-889%3A+Versioned+State+Stores[read KIP-889].
+
+
+Now go ahead and create the Java file at `src/main/java/io/confluent/developer/VersionedKTableExample.java`.
++++++
+<pre class="snippet"><code class="java">{% include_raw tutorials/versioned-ktables/kstreams/code/src/main/java/io/confluent/developer/VersionedKTableExample.java %}</code></pre>
++++++

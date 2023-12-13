@@ -1,0 +1,23 @@
+////
+   Example content file for how to include a console producer(s) in the tutorial.
+   Usually you'll include a line referencing the script to run the console producer and also include some content
+   describing how to input data as shown below.
+
+   Again modify this file as you need for your tutorial, as this is just sample content.  You also may have more than one
+   console producer to run depending on how you structure your tutorial
+
+////
+
+Go back to the producer/consumer terminal and start the console-producer again.
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/naming-changelog-repartition-topics/kstreams/code/tutorial-steps/dev/console-producer.sh %}</code></pre>
++++++
+
+We'll send the exact same data from before, as we want to update the counts for existing records. Copy and paste the following into the prompt and press enter:
+
++++++
+<pre class="snippet"><code class="json">{% include_raw tutorials/naming-changelog-repartition-topics/kstreams/code/tutorial-steps/dev/input.txt %}</code></pre>
++++++
+
+After you've sent the records, you can shut down the console-producer with `Ctrl-C`.

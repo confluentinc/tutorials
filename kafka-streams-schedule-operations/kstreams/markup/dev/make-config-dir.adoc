@@ -1,0 +1,5 @@
+Next, create a directory for configuration data:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/kafka-streams-schedule-operations/kstreams/code/tutorial-steps/dev/make-configuration-dir.sh %}</code></pre>
++++++

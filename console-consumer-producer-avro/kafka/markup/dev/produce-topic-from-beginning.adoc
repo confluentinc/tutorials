@@ -1,0 +1,13 @@
+In the first consumer example, you observed all incoming records because the consumer was already running, waiting for incoming records.
+
+But what if the records were produced before you started your consumer?  In that case you wouldn't see the records as the console consumer by default only reads incoming records arriving after it has started up.
+
+But what about reading previously sent records?  In that case, you'll add one property `--from-beginning` to the start command for the console consumer.
+
+To demonstrate reading from the beginning, close the current console consumer.
+
+Now go back to your producer console and send the following records:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/console-consumer-producer-avro/kafka/code/tutorial-steps/dev/input-step-two.txt %}</code></pre>
++++++

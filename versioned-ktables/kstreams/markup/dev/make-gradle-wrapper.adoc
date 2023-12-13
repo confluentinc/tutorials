@@ -1,0 +1,5 @@
+And be sure to run the following command to obtain the Gradle wrapper:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/versioned-ktables/kstreams/code/tutorial-steps/dev/gradle-wrapper.sh %}</code></pre>
++++++

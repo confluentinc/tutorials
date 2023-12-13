@@ -1,0 +1,7 @@
+You can create a Gradle build file to build your Java code into a jar file that is supplied to KSQL. Create the following Gradle build file, named `build.gradle` for the project:
+
++++++
+<pre class="snippet"><code class="groovy">{% include_raw tutorials/rekeying-function/ksql/code/build.gradle %}</code></pre>
++++++
+
+The `build.gradle` also contains a `copyJar` step to copy the jar file to the `extensions/` directory where it will be picked up by KSQL. This is convenient when you are iterating on a function. For example, you might have tested your UDF against your suite of unit tests and you are now ready to test against steams in KSQL. With the jar in the correct place a restart of ksqlDB will load your updated jar.

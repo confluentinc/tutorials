@@ -1,0 +1,5 @@
+For this tutorial, we are interested in knowing each event for an item that affects its quantity. This creates a stream of events, where each event results in the addition or removal of inventory.
+
+++++
+<pre class="snippet"><code class="json">{% include_raw tutorials/inventory/confluent/code/tutorial-steps/dev/source.json %}</code></pre>
+++++

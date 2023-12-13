@@ -1,0 +1,14 @@
+Then create the following file at `src/main/java/io/confluent/developer/TumblingWindow.java`.
+    
++++++
+<pre class="snippet"><code class="java">{% include_raw tutorials/tumbling-windows/kstreams/code/src/main/java/io/confluent/developer/TumblingWindow.java %}</code></pre>
++++++
+
+Let's take a close look at the `buildTopology()` method, which uses the Kafka Streams DSL.
+
+
+The first thing the method does is create an instance of `https://kafka.apache.org/{{ site.ak_javadoc_version }}/javadoc/org/apache/kafka/streams/StreamsBuilder.html[StreamsBuilder]`, which is the helper object that lets us build our topology.
+  
+First, we call the `stream()` method to create a `https://kafka.apache.org/{{ site.ak_javadoc_version }}/javadoc/org/apache/kafka/streams/kstream/KStream.html[KStream]<String, Rating>` object. The problem is that we can't make any assumptions about the key of this stream, so we have to repartition it explicitly. We use the `map()` method for that, creating a new `https://kafka.apache.org/{{ site.ak_javadoc_version }}/javadoc/org/apache/kafka/streams/KeyValue.html[KeyValue]` instance for each record, using the title as the new key.
+    
+Next we group the events by that new key by calling the `groupByKey()` method. We want to count the events that occur with each given key, so we must first define a tumbling window by calling `windowedBy(TimeWindows.of(Duration.ofMinutes(10)))`. We then call `count()`, which directs the topology to count the grouped events that occur within each window. At this point in the topology, the result is a `https://kafka.apache.org/{{ site.ak_javadoc_version }}/javadoc/org/apache/kafka/streams/kstream/KTable.html[KTable]<https://kafka.apache.org/{{ site.ak_javadoc_version }}/javadoc/org/apache/kafka/streams/kstream/Windowed.html[Windowed]<String>, Long>`. We use the `map()` method to turn it into two easy-to-read strings, then emit the result to the output topic with the `to()` method. You might not always make that last call to `map()`, but for our purposes here, it makes the output a lot easier to read.

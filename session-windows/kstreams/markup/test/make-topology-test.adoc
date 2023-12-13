@@ -1,0 +1,43 @@
+////
+  This content file is used to describe how to add test code you developed in this tutorial.  You'll need to update the
+  text to suit your test code.
+
+
+////
+
+Testing a Kafka streams application requires a bit of test harness code, but happily the `org.apache.kafka.streams.TopologyTestDriver` class makes this much more pleasant that it would otherwise be.
+
+////
+             You'll want to update the name of the test method from "exampleTest" to something more meaningful for your tutorial
+////
+
+There is only one method in `SessionWindowTest` annotated with `@Test`, and that is `sessionWindowTest()`. This method actually runs our Streams topology using the `TopologyTestDriver` and some mocked data that is set up inside the test method.
+
+
+This test is straightforward, but there is one section we should look into a little more
+
+[source, java]
+----
+final int expectedNumberOfSessions = 2;
+final String key = "51.56.119.117";
+final List<Clicks> sessionClicks = new ArrayList<>();
+Instant instant = Instant.now();
+
+sessionClicks.add(Clicks.newBuilder().setIp(key).setUrl("/etiam/justo/etiam/pretium/iaculis.xml").setTimestamp(instant.toEpochMilli()).build()); <1>
+
+Instant newSessionInstant = instant.plus(6,ChronoUnit.MINUTES); <2>
+
+sessionClicks.add(Clicks.newBuilder().setIp(key).setUrl("/mauris/morbi/non.jpg").setTimestamp(newSessionInstant.toEpochMilli()).build());<3>
+----
+
+<1> Creating a record for the first "session"
+<2> Increasing the time to beyond inactivity period, the test should yield 2 sessions in the results
+<3> Adding record for second "session"
+
+The https://kafka.apache.org/27/javadoc/org/apache/kafka/streams/TestInputTopic.html#pipeKeyValueList-java.util.List-java.time.Instant-java.time.Duration-[TestInputTopic] provides useful methods when testing your topology. Here you're using the `pipeKeyValueList` to provide the records to the steams application.  Here you're not specifying any timestamp activity as the streams application pulls the timestamps embedded in the `TemperatureReading` objects you created above.
+
+
+Now create the following file at `src/test/java/io/confluent/developer/SessionWindowTest.java`.
++++++
+<pre class="snippet"><code class="java">{% include_raw tutorials/session-windows/kstreams/code/src/test/java/io/confluent/developer/SessionWindowTest.java %}</code></pre>
++++++

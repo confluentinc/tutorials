@@ -1,0 +1,11 @@
+This tutorial uses three streams: one called `albums` that holds album reference data, one called `trackPurchases` that holds an update-stream of inbound music track purchases, and one called `musicInterestTable` that holds the result of a foreign-key join between `trackPurchases` and `albums`.
+
+In this case the inbound keys are different, but the `trackPurchases` stream has the id of the album in its value. We will use the `KTable` foreign-key join functionality to extract the album id and perform the join.
+
+Let's create schemas for all three.
+
+Create a directory for the schemas that represent the events in the stream:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/fk-joins/kstreams/code/tutorial-steps/dev/make-avro-dir.sh %}</code></pre>
++++++

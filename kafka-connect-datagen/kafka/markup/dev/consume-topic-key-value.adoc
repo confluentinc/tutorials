@@ -1,0 +1,13 @@
+Now that the kafka-connect-datagen is running, run the Kafka Avro console consumer to see the data streaming into the Kafka topic.
+
+Note the added properties of `print.key` and `key.separator`.
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/kafka-connect-datagen/kafka/code/tutorial-steps/dev/harness-console-consumer-keys.sh %}</code></pre>
++++++
+
+After the consumer starts you should see the following output in a few seconds:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/kafka-connect-datagen/kafka/code/tutorial-steps/dev/consume-topic_expected.log %}</code></pre>
++++++

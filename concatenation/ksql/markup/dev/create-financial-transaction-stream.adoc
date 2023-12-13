@@ -1,0 +1,8 @@
+The first thing we do is to create a stream named `ACTIVITY_STREAM`.  This statement creates the `stock_purchases` topic, since it doesn't already exist.  For more details check out the https://docs.ksqldb.io/en/latest/developer-guide/ksqldb-reference/create-stream/#create-strea[ksqlDB documentation on the CREATE STREAM] statement.  The data contained in the topic is just plain, schemaless JSON.
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/concatenation/ksql/code/tutorial-steps/dev/create-activity-stream.sql %}</code></pre>
++++++
+
+
+Go ahead and create the stream now by pasting this statement into the ksqlDB window you opened at the beginning of this step.  After you've created the stream, quit the ksqlDB CLI for now by typing `exit`.

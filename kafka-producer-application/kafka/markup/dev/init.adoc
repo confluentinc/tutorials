@@ -1,0 +1,5 @@
+Make a local directory anywhere you'd like for this project:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/kafka-producer-application/kafka/code/tutorial-steps/dev/init.sh %}</code></pre>
++++++

@@ -1,0 +1,5 @@
+Starting Kafka Consumer. Use Ctrl-C to exit.
+Chuck Norris can write multi-threaded applications with a single thread.
+No statement can catch the ChuckNorrisException.
+Chuck Norris can divide by zero.
+Chuck Norris can binary search unsorted data.
