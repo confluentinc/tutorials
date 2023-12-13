@@ -1,7 +1,0 @@
-Take the fields you want to calculate the difference between and use the `-` operator between them `field_1 - field_2`
-
-+++++
-<pre class="snippet"><code class="sql">{% include_raw tutorials/column-difference/ksql/code/tutorial-steps/dev/query-with-column-difference.sql %}</code></pre>
-+++++
-
-Note that the `-` operator expects numerical values.  So if have columns where the numbers are stored as `VARCHAR` you'll have to use a `CAST` operation to convert them to a numerical type, otherwise you'll get an error in your query.
