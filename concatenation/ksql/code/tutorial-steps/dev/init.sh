@@ -1,1 +1,0 @@
-mkdir concatenation && cd concatenation

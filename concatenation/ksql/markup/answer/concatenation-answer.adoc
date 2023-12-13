@@ -1,7 +1,0 @@
-Select the fields you want to combine and use the `+` operator to concatenate them into one field:
-
-+++++
-<pre class="snippet"><code class="sql">{% include_raw tutorials/concatenation/ksql/code/tutorial-steps/dev/query-with-concatenation.sql %}</code></pre>
-+++++
-
-Note that concatenation only works with `STRING` values, so you'll have to use a `CAST` operation on non-string fields as demonstrated above, otherwise your query will result in an error.
