@@ -1,5 +1,0 @@
-In this step we’re going to create a topic for use during this tutorial. Use the following command to create the topic:
-
-```plaintext
-confluent kafka topic create parallel-consumer-input-topic
-```
