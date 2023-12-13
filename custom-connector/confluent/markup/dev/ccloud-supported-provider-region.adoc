@@ -1,0 +1,2 @@
+**Important:**
+In order to run a custom connector, your Kafka cluster must reside in a https://docs.confluent.io/cloud/current/connectors/bring-your-connector/custom-connector-fands.html#cc-byoc-regions[supported cloud provider and region].

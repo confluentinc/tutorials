@@ -1,0 +1,21 @@
+We need to create a query that extracts the fields we want in our report.
+Since we modeled each field containing a nested data using a struct, we can write the query using the operator `->` operator to retrieve the data from specific nested fields.
+
+Notice that we can navigate to any depth with the `->` operator, so using arbitrarily nested JSON is no problem for ksqlDB.
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/ksql-nested-json/ksql/code/tutorial-steps/dev/transient-reporting.sql %}</code></pre>
++++++
+
+This query should produce the following output:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/ksql-nested-json/ksql/code/tutorial-steps/dev/expected-transient-reporting.log %}</code></pre>
++++++
+
+Now that the reporting query works, let's update it to create a continous query for your reporting scenario
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/ksql-nested-json/ksql/code/tutorial-steps/dev/continuous-reporting.sql %}</code></pre>
++++++
+
+We're done with the ksqlDB CLI for now so go ahead and type `exit` to quit.

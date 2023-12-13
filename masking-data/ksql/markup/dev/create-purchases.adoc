@@ -1,0 +1,5 @@
+First, you'll need to create a Kafka topic and stream to represent the purchases data. The following creates both in one shot.
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/masking-data/ksql/code/tutorial-steps/dev/create-purchases.sql %}</code></pre>
++++++

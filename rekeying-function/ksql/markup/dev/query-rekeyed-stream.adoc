@@ -1,0 +1,11 @@
+Now, we can verify it's working:
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/rekeying-function/ksql/code/tutorial-steps/dev/query-rekeyed-stream.sql %}</code></pre>
++++++
+
+This should yield roughly the following output. The order might vary from what you see here, but the data has been repartitioned such that all customers in the same area code are now in exactly one partition.
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/rekeying-function/ksql/code/tutorial-steps/dev/expected-query-rekeyed-stream.log %}</code></pre>
++++++

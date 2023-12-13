@@ -1,0 +1,10 @@
+Let's now run the connector.
+
+1. On the cluster homepage, select `Connectors` from the lefthand navigation
+2. In the `Filter by:` section, click the `Deployment` dropdown and select `Custom`
+3. Click the `Counter Source` connector tile
+4. Click `Generate API key & download` in order to create Kafka credentials that the connector will use, and then click `Continue` on the bottom right
+5. In the `Configuration` step, enter `kafka.topic` as the key and `counter-topic` as the value. This is the only required property. There is also an `interval.ms` property to specify the number of milliseconds to wait between events, but we can leave that out and accept the default of 1000 (1 second).
+6. Click `Continue` to proceed to the `Networking` section, and then `Continue` again to proceed to the `Sizing` section since there are no connection endpoints to allow list
+7. Click `Continue` to run the connector with a single task
+8. Click `Continue` once more to provision the connector. You'll see a tile for the connector on the Connectors page showing that the connector is `Provisioning`.

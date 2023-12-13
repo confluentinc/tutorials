@@ -1,0 +1,19 @@
+Run the Kafka producer performance test again, sending the exact same number of records of the same size as the previous test, but this time use configuration values optimized for throughput.
+
+include::_includes/tutorials/optimize-producer-throughput/confluent/markup/dev/optimized-producer-config.adoc[]
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/optimize-producer-throughput/confluent/code/tutorial-steps/dev/producer-perf-test-optimized-throughput.sh %}</code></pre>
++++++
+
+Your results will vary depending on your connectivity and bandwidth to the Kafka cluster.
+
+```
+10000 records sent, 740.960285 records/sec (5.65 MB/sec), 3801.36 ms avg latency, 8198.00 ms max latency, 3297 ms 50th, 7525 ms 95th, 7949 ms 99th, 8130 ms 99.9th.
+```
+
+The key result to note is in the last line: the throughput being `740.960285 records/sec (5.65 MB/sec)`.
+For the test shown here, 5.65 MB/sec throughput is about a 5x improvement over the 1.03 MB/sec baseline throughput, but again, the improvement factor will vary depending on your environment.
+
+This tutorial has demonstrated how to get started with improving the producer throughput, and you should do further testing in your environment.
+Continue to tune these configuration parameters, and test it with your specific Kafka producer, not just using `kafka-producer-perf-test`.

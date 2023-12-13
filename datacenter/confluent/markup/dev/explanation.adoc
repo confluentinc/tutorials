@@ -1,0 +1,87 @@
+Typically, customer information would be sourced from an existing database. As customer occupancy changes, tables in the database are updated and we can stream them into Kafka using Kafka Connect with link:https://www.confluent.io/blog/cdc-and-streaming-analytics-using-debezium-kafka/[change data capture]. The earlier example of the `MySqlCdcSource` configuration could be used to capture changes from a `customer` database's `tenant` table into the Kafka cluster. This connector is provided as link:https://docs.confluent.io/cloud/current/connectors/cc-mysql-source-cdc-debezium.html[fully managed on Confluent Cloud].
+
+Telemetry data may be sourced into Kafka in a variety of ways. MQTT is a popular source for the Internet of Things (IoT) devices, and smart electrical panels may provide this functionality out of the box. The link:https://docs.confluent.io/cloud/current/connectors/cc-mqtt-source.html[MQTT Connector] is available as link:https://docs.confluent.io/cloud/current/connectors/cc-mqtt-source.html[fully managed on Confluent Cloud].
+
+The current state of customer tenant occupancy can be represented with a ksqlDB `TABLE`. Events streamed into the `tenant-occupancy` topic represent a customer (`customer_id`) beginning an occupancy of a particular tenant (`tenant_id`). As events are observed on the `tenant-occupancy` topic, the table will model the current set of tenant occupants. 
+
+[source,sql]
+----
+CREATE TABLE tenant_occupancy (
+  tenant_id VARCHAR PRIMARY KEY,
+  customer_id BIGINT
+) WITH (
+  KAFKA_TOPIC = 'tenant-occupancy',
+  PARTITIONS = 6,
+  KEY_FORMAT = 'JSON',
+  VALUE_FORMAT = 'JSON'
+);
+----
+
+You can query this table to determine which customer occupies which tenant.
+
+[source,sql]
+----
+SELECT * FROM tenant_occupancy EMIT CHANGES;
+----
+
+When customers leave a tenant, the source system will need to send a link:https://docs.ksqldb.io/en/latest/developer-guide/ksqldb-reference/create-table/#primary-key[tombstone record] (an event with a valid `tenant_id` key and a `null` value). ksqlDB will process the tombstone by removing the row with the given key from the table.
+
+Panel sensor readings can be streamed directly into a topic or sourced from an upstream system. A `STREAM` captures the power readings when they flow from the smart panel into Kafka. Each event contains a panel identifier and the associated tenant, in addition to two power readings.
+
+[source,sql]
+----
+CREATE STREAM panel_power_readings (
+  panel_id BIGINT,
+  tenant_id VARCHAR,
+  panel_current_utilization DOUBLE,
+  tenant_kwh_usage BIGINT
+) WITH (
+  KAFKA_TOPIC = 'panel-readings',
+  PARTITIONS = 6,
+  KEY_FORMAT = 'JSON',
+  VALUE_FORMAT = 'JSON'
+);
+----
+
+* `panel_current_utilization` represents the percentage of total capacity of the panel and is useful for business continuation monitoring
+* `tenant_kwh_usage` provides the total amount of energy consumed by the tenant in the current month 
+
+A simple example for determining when a panel is overloaded is provided by:
+
+[source,sql]
+----
+CREATE STREAM overloaded_panels AS 
+  SELECT panel_id, tenant_id, panel_current_utilization 
+    FROM panel_power_readings 
+    WHERE panel_current_utilization >= 0.85
+  EMIT CHANGES;
+----
+
+This command filters the panel power readings for instances where utilization is 85% or higher. This stream could be used in a monitoring or alerting context to notify on-call personnel of a potential issue with the power supplies to the datacenter.
+
+To provide billing reports, a `STREAM` is created that joins the panel sensor readings with the customer tenant information. Functions are used to create a billable month indicator along with the necessary fields from the joined stream and table. 
+
+[source,sql]
+----
+CREATE STREAM billable_power AS 
+  SELECT 
+      FORMAT_TIMESTAMP(FROM_UNIXTIME(panel_power_readings.ROWTIME), 'yyyy-MM') 
+        AS billable_month,
+      tenant_occupancy.customer_id as customer_id,
+      tenant_occupancy.tenant_id as tenant_id, 
+      panel_power_readings.tenant_kwh_usage as tenant_kwh_usage
+    FROM panel_power_readings
+    INNER JOIN tenant_occupancy ON 
+      panel_power_readings.tenant_id = tenant_occupancy.tenant_id
+  EMIT CHANGES;
+----
+
+Finally, the `billable_power_report` aggregates the `billable_power` stream into a `TABLE` that can be queried to create reports by month, customer, and tenant.
+
+[source,sql]
+----
+CREATE TABLE billable_power_report WITH (KEY_FORMAT = 'JSON') AS
+  SELECT customer_id, tenant_id, billable_month, MAX(tenant_kwh_usage) as kwh
+    FROM billable_power
+    GROUP BY tenant_id, customer_id, billable_month;
+----

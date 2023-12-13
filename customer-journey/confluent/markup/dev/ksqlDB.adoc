@@ -1,0 +1,2 @@
+Given a stream of pageview statistics, count the number of visits to individual pages, grouped by customer.
+This uses the ksqlDB function link:https://docs.ksqldb.io/en/latest/developer-guide/ksqldb-reference/aggregate-functions/#count_distinct[COUNT DISTINCT].

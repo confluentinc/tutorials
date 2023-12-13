@@ -1,0 +1,7 @@
+Then create the fleet management sensor reading stream you'll execute the following:
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/generate-test-data-streams/kafka/code/tutorial-steps/dev/create-connector-03.sh %}</code></pre>
++++++
+
+When looking at the connector setting notice the `quickstart` entry in the `JSON`, this is where you specify a bundled schema the datagen connector provides.  By generating two streams of data with related keys you'll be able to join records or perform aggregations with the related keys.

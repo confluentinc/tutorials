@@ -1,0 +1,11 @@
+Finally, let's see what's available on the underlying Kafka topic for the table. We can print that out easily.
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/tumbling-windows/ksql/code/tutorial-steps/dev/print-topic.sql %}</code></pre>
++++++
+
+Notice that the key for each message includes not just the movie title, but also the start time of the window. It should look something like this:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/tumbling-windows/ksql/code/tutorial-steps/dev/expected-print-topic.log %}</code></pre>
++++++

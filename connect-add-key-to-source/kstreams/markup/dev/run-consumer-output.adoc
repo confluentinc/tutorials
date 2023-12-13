@@ -1,0 +1,5 @@
+Next, run the Avro console consumer to view the messages in the topic `cities_keyed`. This is the output topic that the Kafka Streams application creates from the input topic `cities`, and note that it has added the keys:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/connect-add-key-to-source/kstreams/code/tutorial-steps/dev/console-consumer-output.sh %}</code></pre>
++++++

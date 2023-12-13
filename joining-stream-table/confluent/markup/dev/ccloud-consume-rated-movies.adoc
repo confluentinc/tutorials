@@ -1,0 +1,7 @@
+Before you start producing ratings, it's a good idea to set up the consumer on the output topic. This way, as soon as you produce ratings (and they're joined to movies), you'll see the results right away. Run this to get ready to consume the rated movies:
+
+```plaintext
+confluent kafka topic consume rated-movies --from-beginning --value-format avro
+```
+
+You won't see any results until the next step.

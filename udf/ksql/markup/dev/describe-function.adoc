@@ -1,0 +1,11 @@
+You can see some additional detail about the function with `DESCRIBE FUNCTION`.
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/udf/ksql/code/tutorial-steps/dev/describe-function.sql %}</code></pre>
++++++
+
+The result gives you a description of the function including input parameters and the return type.
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/udf/ksql/code/tutorial-steps/dev/expected-describe-function.log %}</code></pre>
++++++

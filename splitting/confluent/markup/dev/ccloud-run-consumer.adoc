@@ -1,0 +1,37 @@
+Leave your original terminal running. To consume the output events from each of the topic, you'll need to open several new terminal windows. In each instance, the prompt will hang, waiting for more events to arrive. To continue studying the example, send more events through the input terminal prompt. Otherwise, you can `Control-C` to exit the process.
+
+First, to consume the events of drama films, run the following:
+
+```plaintext
+confluent kafka topic consume drama-acting-events --from-beginning --value-format avro
+```
+
+This should yield the following messages:
+
++++++
+<pre class="snippet"><code class="json">{% include_raw tutorials/splitting/kstreams/code/tutorial-steps/dev/outputs/actual-drama-events.json %}</code></pre>
++++++
+
+Second, to consume those from fantasy films, run the following:
+
+```plaintext
+confluent kafka topic consume fantasy-acting-events --from-beginning --value-format avro
+```
+
+This should yield the following messages:
+
++++++
+<pre class="snippet"><code class="json">{% include_raw tutorials/splitting/kstreams/code/tutorial-steps/dev/outputs/actual-fantasy-events.json %}</code></pre>
++++++
+
+And finally, to consume all the other genres, run the following:
+
+```plaintext
+confluent kafka topic consume other-acting-events --from-beginning --value-format avro
+```
+
+This should yield the following messages:
+
++++++
+<pre class="snippet"><code class="json">{% include_raw tutorials/splitting/kstreams/code/tutorial-steps/dev/outputs/actual-other-events.json %}</code></pre>
++++++

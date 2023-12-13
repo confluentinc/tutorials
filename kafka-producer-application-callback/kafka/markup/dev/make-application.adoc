@@ -1,0 +1,86 @@
+////
+In this file you describe the Kafka streams topology, and should cover the main points of the tutorial.
+The text assumes a method buildTopology exists and constructs the Kafka Streams application.  Feel free to modify the text below to suit your needs.
+////
+Before you create your application file, let's look at some of the key points of this program:
+
+[source, java]
+.KafkaProducerCallbackApplication constructor
+----
+
+public class KafkaProducerCallbackApplication {
+
+  private final Producer<String, String> producer;
+  final String outTopic;
+
+  public KafkaProducerCallbackApplication(final Producer<String, String> producer,  <1>
+                                  final String topic) {                     <2>
+    this.producer = producer;
+    outTopic = topic;
+  }
+
+----
+
+<1> Passing in the `Producer` instance as a constructor parameter.
+<2> The topic to write records to
+
+
+In this tutorial you'll inject the dependencies in the `KafkaProducerCallbackApplication.main()` method.
+Having this thin wrapper class around a `Producer` is not required, but it does help with making our code easier to test.  We'll go into more details in the testing section of the tutorial.
+
+(In practice you may want to use a dependency injection framework library, such as the  https://spring.io/projects/spring-framework[Spring Framework]).
+
+
+Next let's take a look at the `KafkaProducerCallbackApplication.produce` method
+[source, java]
+.KafkaProducerCallbackApplication.produce
+----
+public void produce(final String message) {
+    final String[] parts = message.split("-");  <1>
+    final String key, value;
+    if (parts.length > 1) {
+      key = parts[0];
+      value = parts[1];
+    } else {
+      key = "NO-KEY";
+      value = parts[0];
+    }
+    final ProducerRecord<String, String> producerRecord = new ProducerRecord<>(outTopic, key, value);  <2>
+    producer.send(producerRecord, (recordMetadata, exception) -> {  <3>
+              if (exception == null) {                          <4>
+                  System.out.println("Record written to offset " +
+                          recordMetadata.offset() + " timestamp " +
+                          recordMetadata.timestamp());
+              } else {
+                  System.err.println("An error occurred"); <5>
+                  exception.printStackTrace(System.err);
+              }
+        });
+  }
+
+----
+
+<1> Process the String for sending message
+<2> Create the `ProducerRecord`
+<3> Send the record to the broker specifying a `Callback` instance as a lambda function
+<4> If there's no exceptions print the offset and timestamp of the acknowledged record
+<5> Error handling portion-in this case printing the stacktrace to `System.err`
+
+The `KafkaProducerCallbackApplication.produce` method does some processing on a `String`, and then sends it as a https://kafka.apache.org/25/javadoc/org/apache/kafka/clients/producer/ProducerRecord.html[`ProducerRecord`].  While this code is a trivial example, it's enough to show the example of using a `KafkaProducer`.
+
+Notice that this overload of the https://javadoc.io/static/org.apache.kafka/kafka-clients/2.6.0/org/apache/kafka/clients/producer/KafkaProducer.html#send-org.apache.kafka.clients.producer.ProducerRecord-org.apache.kafka.clients.producer.Callback--[`KafkaProducer.send`] method accepts a second parameter, an instance of the https://kafka.apache.org/26/javadoc/org/apache/kafka/clients/producer/Callback.html[Callback] interface.
+
+The `Callback` provides a way of handling any actions you want to take on request completion *_asynchronously_*.  Note that the `Callback` code executes on the producer's I/O thread and any time consuming tasks could cause a delay in sending new records, so any code here should be designed to execute quickly.  
+
+The `KafkaProducer.send` method is asynchronous and returns as soon as the provided record is placed in the buffer of records to be sent to the broker. Once the broker acknowledges that the record has been appended to its log, the broker completes the produce request, which the application receives as `RecordMetadata`—information about the committed message.
+
+In this example, the code in the callback just prints information from each record's `RecordMetadata` object, specifically the `timestamp` and `offset`.
+
+
+Now go ahead and create the following file at `src/main/java/io/confluent/developer/KafkaProducerCallbackApplication.java`.
+
+// Full topology description goes here
+
++++++
+<pre class="snippet"><code class="java">{% include_raw tutorials/kafka-producer-application-callback/kafka/code/src/main/java/io/confluent/developer/KafkaProducerCallbackApplication.java %}</code></pre>
++++++

@@ -1,0 +1,13 @@
+We can view the results of the newly created `REGEXREPLACE` with the messages:
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/rekeying-function/ksql/code/tutorial-steps/dev/key-query.sql %}</code></pre>
++++++
+
+This should yield roughly the following output. The order will be different as we are delivering to 2 partitions:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/rekeying-function/ksql/code/tutorial-steps/dev/expected-key-query.log %}</code></pre>
++++++
+
+Note `REGEXREPLACE` has extracted the area code from several differently formatted phone numbers.

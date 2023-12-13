@@ -1,0 +1,11 @@
+Now let's confirm the sensor connector is running:
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/generate-test-data-streams/kafka/code/tutorial-steps/dev/check-connector-03.sh %}</code></pre>
++++++
+
+Again the state should be `RUNNING`:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/generate-test-data-streams/kafka/code/tutorial-steps/dev/check-connector-03_expected.log %}</code></pre>
++++++

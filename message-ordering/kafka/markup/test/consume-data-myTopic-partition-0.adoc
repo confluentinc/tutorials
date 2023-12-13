@@ -1,0 +1,13 @@
+Consume data from the Kafka topic, specifying only to read from partition 0.
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/message-ordering/kafka/code/tutorial-steps/test/consume-data-input-partition-0.sh %}</code></pre>
++++++
+
+You should see only some of the records in this partition.
+
++++++
+<pre class="snippet"><code class="text">{% include_raw tutorials/message-ordering/kafka/code/tutorial-steps/test/expected-data-from-myTopic-partition-0.sh %}</code></pre>
++++++
+
+Close the consumer with `Ctrl-C`.

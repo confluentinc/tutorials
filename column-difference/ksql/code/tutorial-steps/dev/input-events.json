@@ -1,0 +1,4 @@
+{"id": "1", "previous_purchase": 8000.54, "current_purchase": 5004.89,"txn_ts": "2020-12-04 02:35:43", "first_name": "Art","last_name": "Vandeley"}
+{"id": "2", "previous_purchase": 500.33, "current_purchase": 1000.89,"txn_ts": "2020-12-04 02:35:44", "first_name": "Nick","last_name": "Fury"}
+{"id": "3", "previous_purchase": 333.18, "current_purchase": 804.89,"txn_ts": "2020-12-04 02:35:45", "first_name": "Natasha","last_name": "Romanov"}
+{"id": "4", "previous_purchase": 72848.11, "current_purchase": 60040.89,"txn_ts": "2020-12-04 02:35:46", "first_name": "Wanda","last_name": "Maximoff"}

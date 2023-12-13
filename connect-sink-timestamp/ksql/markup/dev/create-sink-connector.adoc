@@ -1,0 +1,19 @@
+Now deploy a JDBC sink connector with the code below. The sink connector will write the specified topic records to the Postgres database. Notice no transforms will be necessary to the `eventTime` column because the column is already a supported `TIMESTAMP` type.
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/connect-sink-timestamp/ksql/code/tutorial-steps/dev/create-sink-connector.sql %}</code></pre>
++++++
+
+[NOTE]
+====
+Prior to version 0.17.0, ksqlDB did not have a `TIMESTAMP` data type so the only way to convert `BIGINT` to a `TIMESTAMP` was with Kafka Connect's Single Message Transforms (SMT), specifically the  https://docs.confluent.io/platform/current/connect/transforms/timestampconverter.html[TimestampConverter]; .
+Using this SMT is simple but it does not provide a way to convert timestamp data to other timezones, and it needs to be configured a per connector basis.
+If you were going this route of using `TimestampConverter`, you would add the SMT into the connector configuration, something similar to the following:
+
+```
+"transforms": "TimestampConverter",
+"transforms.TimestampConverter.type": "org.apache.kafka.connect.transforms.TimestampConverter$Value",
+"transforms.TimestampConverter.format": "yyyy-MM-ddTHH:mm:ss.SSS"
+"transforms.TimestampConverter.target.type": "Timestamp"
+```
+====

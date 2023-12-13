@@ -1,0 +1,5 @@
+Your first step is to create a topic to produce to and consume from.  Use the following command to create the topic:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/console-consumer-producer-avro/kafka/code/tutorial-steps/dev/create-topic.sh %}</code></pre>
++++++

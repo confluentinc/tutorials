@@ -1,0 +1,5 @@
+Now let's produce some events that represent user clicks. Note that we are going to purposely produce duplicate events, in which each IP address will have clicked twice in the same URL.
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/finding-distinct/ksql/code/tutorial-steps/dev/populate-stream.sql %}</code></pre>
++++++

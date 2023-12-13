@@ -1,0 +1,26 @@
+Use the command below to query the contents of the purchases_pii_obfuscated stream:
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/masking-data/ksql/code/tutorial-steps/dev/print-purchases-obfuscated-topic.sql %}</code></pre>
++++++
+
+We can see that the sensitive data is masked with x's or n's.
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/masking-data/ksql/code/tutorial-steps/dev/expected-purchases-obfuscated-output.log %}</code></pre>
++++++
+
+[TIP]
+.`MASK` Function Options
+====
+There are a few types of masking functions and optional parameters that may be of use to you. +
+
+*Optional arguments:* +
+`MASK(CUSTOMER_NAME, 'X', 'x', 'n', '-')` +
+In the example above, the following types of characters in `CUSTOMER_NAME` would be masked: upper-case letters would become `X`, lower-case letters would become `x`, numbers would become `n`, and other characters would become `-`. This is the default setting if no mask characters are present. Set a given mask character to NULL to prevent any masking of that character type. +
+
+*Other types of `MASK` Functions:* +
+ksqlDB offers a variety of different masking functions that allow you to mask the farthest or nearest _x_ number of characters on right or left. Check out the https://docs.ksqldb.io/en/latest/developer-guide/ksqldb-reference/scalar-functions/#mask[*ksqlDB documentation*,window=_blank] for more information.
+====
+
+Type 'exit' and hit enter to shutdown the ksqlDB CLI.

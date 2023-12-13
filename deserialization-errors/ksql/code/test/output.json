@@ -1,0 +1,22 @@
+{
+  "outputs": [
+    {
+      "topic": "SENSORS",
+      "key": "e7f45046-ad13-404c-995e-1eca16742801",
+      "value": {
+        "TIMESTAMP": "2020-01-15 02:20:30",
+        "ENABLED": true
+      },
+      "timestamp": 1579054830000
+    },
+    {
+      "topic": "SENSORS",
+      "key": "835226cf-caf6-4c91-a046-359f1d3a6e2e",
+      "value": {
+        "TIMESTAMP": "2020-01-15 02:25:30",
+        "ENABLED": true
+      },
+      "timestamp": 1579055130000
+    }
+  ]
+}

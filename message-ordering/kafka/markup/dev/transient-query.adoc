@@ -1,0 +1,5 @@
+Let's find all of the books written by George R. R. Martin. Issue the following transient query. This will block and continue to return results until its limit is reached or you tell it to stop.
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/message-ordering/kafka/code/tutorial-steps/dev/transient-query.sql %}</code></pre>
++++++

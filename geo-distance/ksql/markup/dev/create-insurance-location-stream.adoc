@@ -1,0 +1,5 @@
+In order to calculate how far away the repair center is from the insurance event, we will need to create a stream that joins the insurance events with our repair center reference data. or this use case, let's assume there is only one repair center in each ``STATE`` and the repair center in an event's ``STATE`` is the closest repair center.
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/geo-distance/ksql/code/tutorial-steps/dev/create-insurance-location-stream.sql %}</code></pre>
++++++

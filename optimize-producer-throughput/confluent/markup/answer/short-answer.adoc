@@ -1,0 +1,1 @@
+include::_includes/tutorials/optimize-producer-throughput/confluent/markup/dev/optimized-producer-config.adoc[]

@@ -1,0 +1,9 @@
+We now have two Kafka topics being written to. The first (`devices`) is keyed on the MAC address, as can be seen from the data: 
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/generate-test-data-streams/kafka/code/tutorial-steps/dev/consume-topic-02a.sh %}</code></pre>
++++++
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/generate-test-data-streams/kafka/code/tutorial-steps/dev/consume-topic-02a_expected.log %}</code></pre>
++++++

@@ -1,0 +1,1 @@
+seq 1 10000 | kafka-console-producer --topic perftest-parallel-consumer-input-topic --bootstrap-server broker:9092

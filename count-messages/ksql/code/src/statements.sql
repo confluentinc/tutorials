@@ -1,0 +1,10 @@
+CREATE STREAM pageviews (msg VARCHAR)
+  WITH (KAFKA_TOPIC ='pageviews',
+        VALUE_FORMAT='JSON');
+
+CREATE TABLE MSG_COUNT AS
+    SELECT 'X' AS X,
+        COUNT(*) AS MSG_CT
+    FROM PAGEVIEWS
+    GROUP BY 'X'
+    EMIT CHANGES;

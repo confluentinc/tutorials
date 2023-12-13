@@ -1,0 +1,5 @@
+Then, issue the following to create a new stream that is continuously populated by its query:
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/rekeying/ksql/code/tutorial-steps/dev/continuous-rekey.sql %}</code></pre>
++++++

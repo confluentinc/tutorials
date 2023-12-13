@@ -1,0 +1,5 @@
+Create a Kafka topic and stream of customers.
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/rekeying-function/ksql/code/tutorial-steps/dev/create-customers-stream.sql %}</code></pre>
++++++

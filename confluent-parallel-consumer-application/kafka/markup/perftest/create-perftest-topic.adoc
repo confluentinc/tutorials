@@ -1,0 +1,17 @@
+
+In this step we're going to create a topic for use during this tutorial.
+
+But first, you're going to open a shell on the broker docker container.
+
+Open a new terminal and window then run this command:
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/confluent-parallel-consumer-application/kafka/code/tutorial-steps/dev/open-docker-shell.sh %}</code></pre>
++++++
+
+Now use the following command to create the topic:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/confluent-parallel-consumer-application/kafka/code/tutorial-steps/perftest/create-perftest-topic.sh %}</code></pre>
++++++
+
+Keep this terminal window open as you'll need to run a console-producer in a few steps.

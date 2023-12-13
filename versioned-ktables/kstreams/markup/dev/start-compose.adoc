@@ -1,0 +1,5 @@
+And launch it by running:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/versioned-ktables/kstreams/code/tutorial-steps/dev/docker-compose-up.sh %}</code></pre>
++++++

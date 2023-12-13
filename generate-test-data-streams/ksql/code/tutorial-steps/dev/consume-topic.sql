@@ -1,0 +1,1 @@
+PRINT pizza_orders LIMIT 5;

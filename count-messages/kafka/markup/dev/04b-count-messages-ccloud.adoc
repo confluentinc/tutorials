@@ -1,0 +1,5 @@
+Now we can run kcat (passing in the necessary Confluent Cloud details from environment variables) to count the number of messages in a Kafka topic simply by consuming the entire topic and counting how many messages are read. 
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/count-messages/kafka/code/tutorial-steps/dev/04b-count-messages-ccloud.sh %}</code></pre>
++++++

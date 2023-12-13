@@ -1,0 +1,25 @@
+Now let's see how you can generate streams of data that are related and consistent. You are going to use https://github.com/confluentinc/kafka-connect-datagen/tree/master#use-a-bundled-schema-specification[bundled schemas] available in the Kafka Connect `DatagenConnector`.
+
+
+Consider an example where we want to generate some dummy data for tracking sensors on a fleet of delivery trucks.  There will be two streams of data: (1) the current location of each truck, and (2) truck sensor information from each truck.  The first stream representing the location of the trucks would contain the following fields:
+
+-> *Vehicle id (primary key / unique identifier)*
+
+-> *Current location of the truck expressed in longitude and latitude*
+
+The second stream will contain sensor readings attached to the truck.  Now instead of generating lots of random sensor data, we want a limited set so that it's more realistic, tying it back to a fixed set of imaginary trucks. Each sensor reading will provide the following information:
+
+-> *Vehicle id (primary key / unique identifier)*
+
+-> *Engine Temerature*
+
+-> *Average RPM*
+
+For building the two related streams you'll need to create two datagen connectors.
+
+Run the following to create the fleet managment location stream:
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/generate-test-data-streams/kafka/code/tutorial-steps/dev/create-connector-02.sh %}</code></pre>
++++++
+

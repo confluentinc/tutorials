@@ -1,0 +1,11 @@
+You can also use negative matches, that is, messages that _don't_ match the condition. Run this query to get a list of all films that aren't drama or fantasy.
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/splitting/ksql/code/tutorial-steps/dev/query-not-drama-fantasy.sql %}</code></pre>
++++++
+
+This should yield the following output:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/splitting/ksql/code/tutorial-steps/dev/expected-outputs/negative-query.log %}</code></pre>
++++++

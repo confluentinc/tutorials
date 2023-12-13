@@ -1,0 +1,41 @@
+The application for this tutorial includes a record generator to populate the topics for a stream and table.  To demonstrate how the versioned `KTable` works, the application will perform a simple `KStream`-`KTable` join.  The stream contains some classic food combinations that aren't complete - the join will the table will fill in the details.
+
+Here are the records produced to the source topic for the `KStream`
+
+```
+KeyValue.pair("one", "peanut butter and"),
+KeyValue.pair("two", "ham and"),
+KeyValue.pair("three", "cheese and"),
+KeyValue.pair("four", "tea and"),
+KeyValue.pair("five", "coffee with")
+```
+
+The application will produce two sets of records to the topic for the `KTable`.  The first set contains the correct pairings:
+
+```
+KeyValue.pair("one", "jelly"),
+KeyValue.pair("two", "eggs"),
+KeyValue.pair("three", "crackers"),
+KeyValue.pair("four", "crumpets"),
+KeyValue.pair("five", "cream")
+```
+
+Then a second set of answers is produced to the `KTable` topic, after the initial batch, that don't quite match:
+
+```
+KeyValue.pair("one", "sardines"),
+KeyValue.pair("two", "an old tire"),
+KeyValue.pair("three", "fish eyes"),
+KeyValue.pair("four", "moldy bread"),
+KeyValue.pair("five", "lots of salt")
+```
+
+Even though there's a second round of records sent to the `KTable`, you'll still get the expected results from the join since your `KTable` is using a versioned store and the timestamps of the stream records and the first batch of table records align.
+
+
+Now that you have an uberjar for the Kafka Streams application, you can launch it locally. When you run the following, the prompt won't return, because the application will run until you exit it. There is always another message to process, so streaming applications don't exit until you force them.
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/versioned-ktables/kstreams/code/tutorial-steps/dev/run-dev-app.sh %}</code></pre>
++++++
+

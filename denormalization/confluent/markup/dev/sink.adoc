@@ -1,0 +1,5 @@
+Any downstream application or database can receive the denormalized data.
+
+++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/denormalization/confluent/code/tutorial-steps/dev/sink.sql %}</code></pre>
+++++

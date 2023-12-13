@@ -1,0 +1,13 @@
+In a new terminal, run:
+
+```plaintext
+confluent kafka topic produce movies --value-format avro --schema src/main/avro/movie.avsc
+```
+
+include::_includes/shared/markup/ccloud/ccloud-sr-produce.adoc[]
+
++++++
+<pre class="snippet"><code class="json">{% include_raw tutorials/joining-stream-table/kstreams/code/tutorial-steps/dev/movies.json %}</code></pre>
++++++
+
+In this case the table data originates from a Kafka topic that was populated by a console producer using `ccloud` CLI but this doesn't always have to be the case. You can use Kafka Connect to stream data from a source system (such as a database) into a Kafka topic, which could then be the foundation for a lookup table. For further reading checkout this tutorial on link:{{ "connect-add-key-to-source/kstreams.html" | relative_url }}[creating a Kafka Streams table from SQLite data using Kafka Connect].

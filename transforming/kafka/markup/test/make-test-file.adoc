@@ -1,0 +1,5 @@
+First, create a test configuration `configuration/test.properties` with the following content:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/transforming/kafka/code/configuration/test.properties %}</code></pre>
++++++

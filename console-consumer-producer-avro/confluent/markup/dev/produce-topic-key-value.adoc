@@ -1,0 +1,21 @@
+Now we are going to produce records to our new topic using the schema created a few steps back. Open a second terminal window and start the producer:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/console-consumer-producer-avro/confluent/code/tutorial-steps/dev/produce.sh %}</code></pre>
++++++
+
+The producer will start with some information and then wait for you to enter input.
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/console-consumer-producer-avro/confluent/code/tutorial-steps/dev/produce_expected.log %}</code></pre>
++++++
+
+Below are example records in JSON format with each line representing a single record. In this case we are producing records in Avro format, however, first they are passed to the producer in JSON and the producer converts them to Avro based on the `orders-avro-schema.json` schema prior to sending them to Kafka.
+
+Copy each line and paste it into the producer terminal, or copy-paste all of them into the terminal and hit enter.
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/console-consumer-producer-avro/confluent/code/tutorial-steps/dev/records.txt %}</code></pre>
++++++
+
+As you produce records you can observe them in the consumer terminal.

@@ -1,0 +1,1 @@
+PRINT ratings_keyed_by_id FROM BEGINNING LIMIT 9;

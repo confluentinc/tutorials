@@ -1,0 +1,44 @@
+This tutorial shows the source as Cisco Adaptive Security Appliance (ASA) and the Splunk S2S Source connector should be run on the same host as the Splunk UF, but the same logic can be applied to any type of device.
+
+To stream ASA data into a Kafka topic called `splunk`, create the `Dockerfile` below to bundle a Kafka Connect worker with the `kafka-connect-splunk-s2s` connector:
+
+++++
+<pre class="snippet"><code class="json">{% include_raw tutorials/firewall-splunk/confluent/code/tutorial-steps/dev/Dockerfile %}</code></pre>
+++++
+
+Build the custom Docker image with this command:
+
+[source,text]
+----
+docker build \
+   -t localbuild/connect_distributed_with_splunk-s2s:1.0.5 \
+   -f Dockerfile .
+----
+
+Next, create a `docker-compose.yml` file with the following content, substituting your Confluent Cloud connection information:
+
+++++
+<pre class="snippet"><code class="json">{% include_raw tutorials/firewall-splunk/confluent/code/tutorial-steps/dev/docker-compose.yml %}</code></pre>
+++++
+
+Run the container with the Connect worker:
+
+[source,text]
+----
+docker compose up -d
+----
+
+Create a configuration file, `connector-splunk-s2s.config`, for the Splunk S2S Source connector, specifying the port that the connector will use:
+
+++++
+<pre class="snippet"><code class="json">{% include_raw tutorials/firewall-splunk/confluent/code/tutorial-steps/dev/source.json %}</code></pre>
+++++
+
+Submit that connector to the Connect worker:
+
+[source,text]
+----
+curl -X POST -H "Content-Type: application/json" --data @connector-splunk-s2s.config http://localhost:8083/connectors
+----
+
+You now should have ASA events being written to the `splunk` topic in Confluent Cloud.

@@ -1,0 +1,7 @@
+Create the Kafka Connect Datagen source connector. It automatically creates the Kafka topic `pageviews` and produces data to it with a schema specification from https://github.com/confluentinc/kafka-connect-datagen/blob/master/src/main/resources/pageviews_schema.avro
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/kafka-connect-datagen/kafka/code/tutorial-steps/dev/create-connector.sh %}</code></pre>
++++++
+
+If you run this before Kafka Connect has finished starting up you'll get the error `curl: (52) Empty reply from server` - in which case, rerun the above command. 

@@ -1,0 +1,5 @@
+In your terminal, run:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/time-concepts/ksql/code/tutorial-steps/dev/build-uberjar.sh %}</code></pre>
++++++

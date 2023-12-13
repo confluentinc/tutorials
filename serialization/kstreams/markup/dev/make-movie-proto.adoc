@@ -1,0 +1,5 @@
+Next, create an Protobuf schema file at `src/main/proto/movie.proto` for the stream of movies:
+
++++++
+<pre class="snippet"><code class="proto">{% include_raw tutorials/serialization/kstreams/code/src/main/proto/movie.proto %}</code></pre>
++++++

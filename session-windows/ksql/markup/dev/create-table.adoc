@@ -1,0 +1,4 @@
+Now let's take this snapshot, and persist it as a table, populated continually by the results of the ongoing query:  
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/session-windows/ksql/code/tutorial-steps/dev/create-table.sql %}</code></pre>
++++++

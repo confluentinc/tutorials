@@ -1,0 +1,24 @@
+When the console producer starts, it will log some text and hang, waiting for your input. You can copy and paste all of the test data at once to see the results. (Because event times are baked into each message, it doesn't matter at what time the messages arrive in the input topic. In fact, if you want extra credit, you should be able to experiment with changing the order of the messages in this data, and still get the same output counts.)
+
+Start the console producer with this command in a terminal window of its own:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/tumbling-windows/confluent/code/tutorial-steps/dev/console-producer-ratings.sh %}</code></pre>
++++++
+
+include::_includes/shared/markup/ccloud/ccloud-sr-produce.adoc[]
+
++++++
+<pre class="snippet"><code class="json">{% include_raw tutorials/tumbling-windows/kstreams/code/tutorial-steps/dev/ratings.json %}</code></pre>
++++++
+
+Looking back up in the consumer terminal, these are the results you should see there if you paste in all the ratings as directed above:
+
++++++
+<pre class="snippet"><code class="json">{% include_raw tutorials/tumbling-windows/kstreams/code/tutorial-steps/dev/windowed-counted-ratings.txt %}</code></pre>
++++++
+
+Note that each event is counted individually. Since output caching is disabled, we see Die Hard get counted once, then counted again, then counted again, until the Die Hard ratings stop arriving. At that point, we have the final count for that movie. The same happens with all the rest. If we were to interrogate the contents of the resulting `KTable` after all the input messages have arrived, we would see only the final counts in the table—not the history of the counting as we see in the output topic. This is a good illustration of what we sometimes refer to as the _stream-table duality_.
+
+
+That is a topic for further study later on, but for now, you deserve some congratulations! You have now computed an aggregation over a tumbling window. Well done.

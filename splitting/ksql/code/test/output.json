@@ -1,0 +1,92 @@
+{
+  "outputs": [
+    {
+      "topic": "ACTINGEVENTS_FANTASY",
+      "value": {
+        "NAME": "Bill Murray",
+        "TITLE": "Ghostbusters"
+      }
+    },
+    {
+      "topic": "ACTINGEVENTS_OTHER",
+      "value": {
+        "NAME": "Christian Bale",
+        "TITLE": "The Dark Knight",
+        "GENRE": "crime"
+      }
+    },
+    {
+      "topic": "ACTINGEVENTS_OTHER",
+      "value": {
+        "NAME": "Diane Keaton",
+        "TITLE": "The Godfather: Part II",
+        "GENRE": "crime"
+      }
+    },
+    {
+      "topic": "ACTINGEVENTS_OTHER",
+      "value": {
+        "NAME": "Jennifer Aniston",
+        "TITLE": "Office Space",
+        "GENRE": "comedy"
+      }
+    },
+    {
+      "topic": "ACTINGEVENTS_FANTASY",
+      "value": {
+        "NAME": "Judy Garland",
+        "TITLE": "The Wizard of Oz"
+      }
+    },
+    {
+      "topic": "ACTINGEVENTS_FANTASY",
+      "value": {
+        "NAME": "Keanu Reeves",
+        "TITLE": "The Matrix"
+      }
+    },
+    {
+      "topic": "ACTINGEVENTS_FANTASY",
+      "value": {
+        "NAME": "Laura Dern",
+        "TITLE": "Jurassic Park"
+      }
+    },
+    {
+      "topic": "ACTINGEVENTS_DRAMA",
+      "value": {
+        "NAME": "Matt Damon",
+        "TITLE": "The Martian"
+      }
+    },
+    {
+      "topic": "ACTINGEVENTS_DRAMA",
+      "value": {
+        "NAME": "Meryl Streep",
+        "TITLE": "The Iron Lady"
+      }
+    },
+    {
+      "topic": "ACTINGEVENTS_DRAMA",
+      "value": {
+        "NAME": "Russell Crowe",
+        "TITLE": "Gladiator"
+      }
+    },
+    {
+      "topic": "ACTINGEVENTS_OTHER",
+      "value": {
+        "NAME": "Will Smith",
+        "TITLE": "Men in Black",
+        "GENRE": "comedy"
+      }
+    },
+    {
+      "topic": "ACTINGEVENTS_FANTASY",
+      "value": {
+        "NAME": "Barret Oliver",
+        "TITLE": "The NeverEnding Story"
+      }
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "namespace": "io.confluent.developer.avro",
+  "type": "record",
+  "name": "LoginTime",
+  "fields": [
+    {"name": "logintime", "type": "long" },
+    {"name": "userid", "type": "string" },
+    {"name": "appid", "type": "string" }
+  ]
+}

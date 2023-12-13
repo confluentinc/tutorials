@@ -1,0 +1,6 @@
+Now create a new stream, but force ksqlDB to use the `eventTime` field in the payload of each record as the timestamp, by setting the `TIMESTAMP` parameter.
+(For details on managing timestamps in ksqlDB, read more at https://docs.ksqldb.io/en/latest/how-to-guides/use-a-custom-timestamp-column/[How to use a custom timestamp column]).
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/time-concepts/ksql/code/tutorial-steps/dev/create-stream-eventtime.sql %}</code></pre>
++++++

@@ -1,0 +1,5 @@
+Next, create the following `docker-compose.yml` file to configure an instance of the Confluent Platform (on macOS you can paste directly to a file from the copy buffer with `pbpaste > docker-compose.yml`):
+
++++++
+<pre class="snippet"><code class="dockerfile">{% include_raw tutorials/finding-distinct/kstreams/code/docker-compose.yml %}</code></pre>
++++++

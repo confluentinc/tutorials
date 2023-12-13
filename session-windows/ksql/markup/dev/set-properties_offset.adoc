@@ -1,0 +1,5 @@
+Now that you have stream with some events in it, let's start to use them. The first thing that we'll do is ensure that the timestamp that ksqlDB will use for our time-based aggregation is the one that we expect. ksqlDB's timestamp is exposed as a column called `ROWTIME`, and we can compare this to our declared `timestamp` column; they should match. 
+Before checking the timestamps, set the following property to ensure that you're reading from the beginning of the stream:
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/session-windows/ksql/code/tutorial-steps/dev/set-properties_offset.sql %}</code></pre>
++++++

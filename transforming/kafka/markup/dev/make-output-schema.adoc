@@ -1,0 +1,5 @@
+Create another Avro schema file at `src/main/avro/parsed-movies.avsc` to define the structure of the movies after the transformation. The goal of this tutorial is to take the raw movies and transform them into parsed movies by splitting the `title` field into separate `title` and `release_year` fields.
+
++++++
+<pre class="snippet"><code class="avro">{% include_raw tutorials/transforming/kafka/code/src/main/avro/parsed-movies.avsc %}</code></pre>
++++++

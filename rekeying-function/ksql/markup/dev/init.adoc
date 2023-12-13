@@ -1,0 +1,7 @@
+ksqlDB has many built-in functions that help with processing records in streaming data, like `ABS` and `SUM`.  Extracting the area code from a phone number is easiest done with a regular expression. To do this you can implement custom functions in Java that go beyond the built-in functions.
+
+Get started by making a new directory anywhere you'd like for this project:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/rekeying-function/ksql/code/tutorial-steps/dev/init.sh %}</code></pre>
++++++

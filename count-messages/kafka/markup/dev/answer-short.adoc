@@ -1,0 +1,5 @@
+Consume the entire Kafka topic using `kcat`, and count how many messages are read.
+  
++++++
+<pre class="snippet"><code class="java">{% include_raw tutorials/count-messages/kafka/code/tutorial-steps/dev/03a-count-messages.sh %}</code></pre>
++++++

@@ -1,0 +1,35 @@
+Now we write a query to concatenate multiple columns. To achieve this, we will use the `+` operator between the fields in our `SELECT` statement rather than a comma.
+
+[source, sql]
+----
+
+SELECT FIRST_NAME + ' ' + LAST_NAME +
+       ' purchased ' +
+       CAST(NUM_SHARES AS VARCHAR) + <1>
+       ' shares of ' +
+       SYMBOL AS SUMMARY
+FROM ACTIVITY_STREAM
+EMIT CHANGES
+LIMIT 4;
+
+
+----
+
+<1> The NUM_SHARES field is an `INT` so we need to cast it to a `VARCHAR` as `concatenate` only works with `STRING` types
+
+NOTE: You can also SELECT fields you don't want to concatenate.  In that case you use a comma to separate the field from those you concatenate.  For example, you can SELECT individual fields `field_1` and `field_2` at the same time that you concatenate `field_3` with `field_4`.  For example
+`SELECT field_1, field_2, field_3 + field_4`
+
+This query should produce the following output:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/concatenation/ksql/code/tutorial-steps/dev/expected-transient-reporting.log %}</code></pre>
++++++
+
+Now that the reporting query works, let's update it to create a continuous query for your reporting scenario
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/concatenation/ksql/code/tutorial-steps/dev/continuous-reporting.sql %}</code></pre>
++++++
+
+We're done with the ksqlDB CLI for now so go ahead and type `exit` to quit.

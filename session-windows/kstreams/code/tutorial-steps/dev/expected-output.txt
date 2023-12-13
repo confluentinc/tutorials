@@ -1,0 +1,5 @@
+51.56.119.117 : Session info started: 1:13:45 PM EST ended: 1:14:23 PM EST with count 4
+53.170.33.192 : Session info started: 1:13:55 PM EST ended: 1:14:43 PM EST with count 4
+51.56.119.117 : Session info started: 3:13:45 PM EST ended: 3:13:55 PM EST with count 4
+53.170.33.192 : Session info started: 3:13:56 PM EST ended: 3:14:13 PM EST with count 4
+Processed a total of 4 messages

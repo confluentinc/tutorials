@@ -1,0 +1,19 @@
+[TIP]
+.A tutorial prerequisites 
+====
+To successfully complete the steps of the tutorial, you need to have following software installed prior executing tutorial steps
+
+* Java 8+ 
++
+
+You can download and install it from https://jdk.dev/downloads[jdk.dev] or using https://sdkman.io/jdks[sdkman]
+
+* https://www.docker.com/products/docker-desktop[Docker Desktop]
+* https://gradle.org/install/[Gradle 6+]
+====
+
+To get started, make a new directory anywhere you'd like for this project:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/serialization/kstreams/code/tutorial-steps/dev/init.sh %}</code></pre>
++++++

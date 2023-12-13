@@ -1,0 +1,5 @@
+Then insert the ratings data. Because the stream has no key, the records will be inserted in approximately a round-robin manner across the different partitions.
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/rekeying/ksql/code/tutorial-steps/dev/populate-stream.sql %}</code></pre>
++++++

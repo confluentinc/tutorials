@@ -1,0 +1,27 @@
+Now that you have an uberjar for the KafkaProducerApplication, you can launch it locally.
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/kafka-producer-application/kafka/code/tutorial-steps/dev/run-dev-app.sh %}</code></pre>
++++++
+
+After you run the previous command, the application will process the file and you should something like this on the console:
+
+[source, text]
+----
+Offsets and timestamps committed in batch from input.txt
+Record written to offset 0 timestamp 1597352120029
+Record written to offset 1 timestamp 1597352120037
+Record written to offset 2 timestamp 1597352120037
+Record written to offset 3 timestamp 1597352120037
+Record written to offset 4 timestamp 1597352120037
+Record written to offset 5 timestamp 1597352120037
+Record written to offset 6 timestamp 1597352120037
+Record written to offset 7 timestamp 1597352120037
+Record written to offset 8 timestamp 1597352120037
+Record written to offset 9 timestamp 1597352120037
+Record written to offset 10 timestamp 1597352120038
+----
+
+Now you can experiment some by creating your own file in base directory and re-run the above command and substitute your file name for `input.txt`
+
+Remember any data before the `-` is the key and data after is the value.
+

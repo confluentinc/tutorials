@@ -1,0 +1,13 @@
+To produce the input events to their respective topics, you'll want two terminals running. To send the rock songs to their topic, open up a terminal and run the following:
+
+```plaintext
+confluent kafka topic produce rock-song-events \
+      --value-format avro \
+      --schema src/main/avro/song_event.avsc
+```
+
+include::_includes/shared/markup/ccloud/ccloud-sr-produce.adoc[]
+
++++++
+<pre class="snippet"><code class="json">{% include_raw tutorials/merging/kstreams/code/tutorial-steps/dev/rock-input-events.json %}</code></pre>
++++++

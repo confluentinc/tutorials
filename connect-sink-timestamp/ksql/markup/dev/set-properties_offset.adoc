@@ -1,0 +1,6 @@
+Before we get too far, let’s set the `auto.offset.reset` configuration parameter to `earliest`. This means all new ksqlDB queries will automatically compute their results from the beginning of a stream, rather than the end. This isn’t always what you’ll want to do in production, but it makes query results much easier to see in examples like this.
+
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/connect-sink-timestamp/ksql/code/tutorial-steps/dev/set-properties_offset.sql %}</code></pre>
++++++

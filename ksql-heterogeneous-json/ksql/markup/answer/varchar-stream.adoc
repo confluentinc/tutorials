@@ -1,0 +1,12 @@
+Create a stream and define the outer-most element of the JSON structures as `VARCHAR`
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/ksql-heterogeneous-json/ksql/code/tutorial-steps/dev/create-stream-with-varchars.sql %}</code></pre>
++++++
+
+Then you can access fields in the JSON structure using the `EXTRACTJSONFIELD` keyword
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/ksql-heterogeneous-json/ksql/code/tutorial-steps/dev/continuous-reporting.sql %}</code></pre>
++++++
+

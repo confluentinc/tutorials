@@ -1,0 +1,48 @@
+Now let's see how you can generate streams of data that is related and consistent. 
+
+Consider an example where we want to generate some dummy data about network devices. The stream of events would have fields such as
+
+* The MAC address of the device
+* The number of bytes sent
+
+Now let's imagine that instead of generating lots of random MAC addresses, we want a limited set so that the data is more realistic, tying it back to a fixed set of imaginary devices. Each device will have some characteristics: 
+
+* MAC address (primary key / unique identifier)
+* Device name
+* Location 
+
+and again, the location won't just be a set of random locations, but drawn from a defined set with characteristics including: 
+
+* Location ID (primary key / unique identifier)
+* City
+* Country
+
+Run the following to create the connector:
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/generate-test-data-streams/ksql/code/tutorial-steps/dev/create-connector-02.sql %}</code></pre>
++++++
+
+The connector settings can be understood as follows: 
+
+* **Locations**
+** `genkp` generates a primitive key for the location, based on a UUID
+** `city` and `country` are populated based on the JavaFaker https://dius.github.io/java-faker/apidocs/com/github/javafaker/Address.html[Address] class
+** `records.exactly` limits the number of records produced to 3
+
+* **Devices**
+** `genkp` sets the https://dius.github.io/java-faker/apidocs/com/github/javafaker/Internet.html#macAddress--[macAddress] as the primitive key
+** The `location_id` of the device is set as one of the existing `location` key values (`location_id.matching' = 'locations.key'`)
+** `records.exactly` limits the number of records produced to 10
+
+* **Traffic**
+** Not all messages in Kafka are keyed, and this shows an example of generating null keys by setting the null rate to 100% (`null.rate` has a value between 0 and 1).
++
+[source,sql]
+----
+'genkp.traffic.with'                = '#{Number.randomDigit}',
+'attrkp.traffic.null.rate'           = 1,
+----
+** The MAC address of the device is set as one of the existing keys on `devices` 
+** The rate at which messages are produced is limited to two per second (`throttle.ms' = 500`)
+

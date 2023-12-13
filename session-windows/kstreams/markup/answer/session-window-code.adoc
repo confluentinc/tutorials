@@ -1,0 +1,7 @@
+
+
+builder.stream(<INPUT TOPIC>, Consumed.with(<KEY SERDE>, <VALUE SERDE>))
+                .groupByKey()
+                .windowedBy(SessionWindows.with(Duration.ofMinutes(5)).grace(Duration.ofSeconds(30)))
+                .<Aggregation Operation>....
+

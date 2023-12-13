@@ -1,0 +1,11 @@
+Leaving your original terminal running, open another to consume the events that have been filtered by your application:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/filtering/kstreams/code/tutorial-steps/dev/console-consumer.sh %}</code></pre>
++++++
+
+After the consumer starts, you should see the following messages. The prompt will hang, waiting for more events to arrive. To continue studying the example, send more events through the input terminal prompt. Otherwise, you can `Control-C` to exit the process.
+
++++++
+<pre class="snippet"><code class="json">{% include_raw tutorials/filtering/kstreams/code/tutorial-steps/dev/outputs/actual-output-events.json %}</code></pre>
++++++

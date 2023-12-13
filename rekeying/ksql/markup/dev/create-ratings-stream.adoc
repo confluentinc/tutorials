@@ -1,0 +1,5 @@
+First, you'll need to create a Kafka topic and stream to represent the movie ratings data. The following creates both in one shot. Notice that the stream has 2 partitions and no key set.
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/rekeying/ksql/code/tutorial-steps/dev/create-ratings-stream.sql %}</code></pre>
++++++

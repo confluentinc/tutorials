@@ -1,0 +1,7 @@
+Once you've finished you can tear down the Docker Compose stack. This will delete all data that you've stored in Kafka.
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/count-messages/kafka/code/tutorial-steps/dev/05-clean-up.sh %}</code></pre>
++++++
+
+''''

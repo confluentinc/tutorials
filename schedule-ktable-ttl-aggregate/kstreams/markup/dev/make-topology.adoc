@@ -1,0 +1,12 @@
+Create the TTLKTableTombstoneEmitter class by copying the following file to src/main/java/io/confluent/developer/TTLKTableTombstoneEmitter.java:
+
++++++
+<pre class="snippet"><code class="java">{% include_raw tutorials/schedule-ktable-ttl-aggregate/kstreams/code/src/main/java/io/confluent/developer/TTLKTableTombstoneEmitter.java %}</code></pre>
++++++
+
+
+Create the KafkaStreamsKTableTTLExample class by copying the following file to src/main/java/io/confluent/developer/KafkaStreamsKTableTTLExample.java:
+
++++++
+<pre class="snippet"><code class="java">{% include_raw tutorials/schedule-ktable-ttl-aggregate/kstreams/code/src/main/java/io/confluent/developer/KafkaStreamsKTableTTLExample.java %}</code></pre>
++++++

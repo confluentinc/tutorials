@@ -1,0 +1,6 @@
+Dumping /var/lib/kafka/data/myTopic-1/00000000000000000000.log
+Starting offset: 0
+baseOffset: 0 lastOffset: 2 count: 3 baseSequence: 0 lastSequence: 2 producerId: 0 producerEpoch: 0 partitionLeaderEpoch: 0 isTransactional: false isControl: false position: 0 CreateTime: 1602295941754 size: 89 magic: 2 compresscodec: NONE crc: 308733939 isvalid: true
+| offset: 0 CreateTime: 1602295941753 keysize: 1 valuesize: 1 sequence: 0 headerKeys: [] key: d payload: 4
+| offset: 1 CreateTime: 1602295941754 keysize: 1 valuesize: 1 sequence: 1 headerKeys: [] key: d payload: 8
+| offset: 2 CreateTime: 1602295941754 keysize: 1 valuesize: 2 sequence: 2 headerKeys: [] key: d payload: 12

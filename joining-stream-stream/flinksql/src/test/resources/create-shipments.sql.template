@@ -1,0 +1,17 @@
+CREATE TABLE shipments (
+    id VARCHAR,
+    order_id INT,
+    warehouse VARCHAR,
+    ship_ts_raw BIGINT
+) WITH (
+    'connector' = 'kafka',
+    'topic' = 'shipments',
+    'properties.bootstrap.servers' = 'localhost:KAFKA_PORT',
+    'scan.startup.mode' = 'earliest-offset',
+    'scan.bounded.mode' = 'latest-offset',
+    'key.format' = 'raw',
+    'key.fields' = 'id',
+    'value.format' = 'avro-confluent',
+    'value.avro-confluent.url' = 'http://localhost:SCHEMA_REGISTRY_PORT',
+    'value.fields-include' = 'EXCEPT_KEY'
+);

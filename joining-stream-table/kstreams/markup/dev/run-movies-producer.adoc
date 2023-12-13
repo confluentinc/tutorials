@@ -1,0 +1,15 @@
+In a new terminal, run:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/joining-stream-table/kstreams/code/tutorial-steps/dev/console-producer-movies.sh %}</code></pre>
++++++
+
+When the console producer starts, it will log some messages and hang, waiting for your input. Copy and paste one line at a time and press enter to send it. Note that these lines contain hard tabs between the key and the value, so retyping them without the tab will not work.
+
+Each line represents a movie we will be able to rate. To send all of the events below, paste the following into the prompt and press enter:
+
++++++
+<pre class="snippet"><code class="json">{% include_raw tutorials/joining-stream-table/kstreams/code/tutorial-steps/dev/movies.json %}</code></pre>
++++++
+
+In this case the table data originates from a Kafka topic that was populated by a console producer but this doesn't always have to be the case. You can use Kafka Connect to stream data from a source system (such as a database) into a Kafka topic, which could then be the foundation for a lookup table. For further reading checkout this tutorial on link:{{ "connect-add-key-to-source/kstreams.html" | relative_url }}[creating a Kafka Streams table from SQLite data using Kafka Connect].

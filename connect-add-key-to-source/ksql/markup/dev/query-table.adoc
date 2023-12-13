@@ -1,0 +1,9 @@
+With this table object created, we can query it or use it in queries such as joining to other objects. 
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/connect-add-key-to-source/ksql/code/tutorial-steps/dev/query-table.sql %}</code></pre>
++++++
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/connect-add-key-to-source/ksql/code/tutorial-steps/dev/query-table_expected.log %}</code></pre>
++++++

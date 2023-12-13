@@ -1,0 +1,7 @@
+Now we will populate our inputs with some sample data.
+
+First some customer data:
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/multi-joins/ksql/code/tutorial-steps/dev/populate-table-customers.sql %}</code></pre>
++++++

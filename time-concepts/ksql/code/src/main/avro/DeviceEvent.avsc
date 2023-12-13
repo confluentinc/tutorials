@@ -1,0 +1,9 @@
+{
+  "namespace": "io.confluent.developer.avro",
+  "type": "record",
+  "name": "DeviceEvent",
+  "fields": [
+    {"name": "temperature", "type": "long"},
+    {"name": "eventTime", "type": "long"}
+  ]
+}    

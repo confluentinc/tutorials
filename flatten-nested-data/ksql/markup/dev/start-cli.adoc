@@ -1,0 +1,7 @@
+The first thing that we're going to do is create a input topic that will contain the orders.
+For this, we are going to create a stream with the definition of the order and the fields that contain nested data.
+To create the stream, open a session with KSQL using the following command:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/flatten-nested-data/ksql/code/tutorial-steps/dev/start-cli.sh %}</code></pre>
++++++

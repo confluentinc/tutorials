@@ -1,0 +1,5 @@
+Now that you have events in both tables, let's join them up to obtain an enriched table of movie information. The first thing to do is set the following properties to ensure that you're reading from the beginning of the stream:
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/joining-table-table/ksql/code/tutorial-steps/dev/set-properties.sql %}</code></pre>
++++++

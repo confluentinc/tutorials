@@ -1,0 +1,37 @@
+Next you'll need to register some schemas. When you have an Avro schema where the top level element is a union you need to register the individual schemas in the union first.
+Then you'll register the parent schema itself along with references to the schemas making up the union element.
+
+Fortunately, the gradle https://github.com/ImFlog/schema-registry-plugin[Schema Registry plugin] makes this easy for us. Here's the configuration that you already have in the build.gradle file:
+
+.Avro schemas configuration for using references
+[source, groovy]
+----
+register {
+        subject('page-view', 'src/main/avro/page_view.avsc', 'AVRO')  <1>
+        subject('purchase', 'src/main/avro/purchase.avsc', 'AVRO')
+        subject('avro-events-value', 'src/main/avro/all_events.avsc', 'AVRO')   <2>
+                .addReference("io.confluent.developer.avro.PageView", "page-view", 1) <3>
+                .addReference("io.confluent.developer.avro.Purchase", "purchase", 1)
+    }
+----
+
+<1> Registering the schemas for the referenced objects
+<2> The parent schema containing the references
+<3> Adding the references which point to the schemas registered previously
+
+Now to register these Avro schemas, run this in the command line:
+
++++++
+<pre class="snippet"><code class="proto">{% include_raw tutorials/multiple-event-types/kafka/code/tutorial-steps/dev/register-schemas.sh %}</code></pre>
++++++
+
+This task runs quickly, and you should see some text followed by this result in the console:
+
+[source, bash]
+----
+BUILD SUCCESSFUL
+----
+
+We don't have a corresponding register command to register schemas for Protobuf.  Instead you are going to use the auto registration feature for the Protobuf schemas because Protobuf will recursively register any proto files included in the main schema.  Using the Confluent Cloud Console you can view the uploaded schemas by clicking in the `Schema Registry` tab and click on the individual schemas to inspect them.
+
+We'll get into some of the details more in the next section.

@@ -1,0 +1,50 @@
+////
+  This is a sample content file for how to include a console consumer to the tutorial, probably a good idea so the end user can watch the results
+  of the tutorial.  Change the text as needed.
+
+////
+
+Finally, start a console-consumer.
+
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/naming-changelog-repartition-topics/kstreams/code/tutorial-steps/dev/console-consumer.sh %}</code></pre>
++++++
+
+You should see the following output:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/naming-changelog-repartition-topics/kstreams/code/tutorial-steps/dev/expected-output-names-with-filter.txt %}</code></pre>
++++++
+
+The last three records, `2-4, 2-5, 2-6`, show the correct output, as you produced six records with the same key.
+
+You have updated your topology and reused the existing state stores and internal topics!
+
+++++
+<br/> <br/>
+<h4 class="subtitle">
+  <div class="text">Some points to remember</div>
+</h4>
+++++
+
+. Always name stateful operators
+. If you haven't named your stateful operators and you need to update your topology, use the `https://docs.confluent.io/current/streams/developer-guide/app-reset-tool.html[Application Reset Tool]` to reprocess records.
+
+- **Aggregation repartition topics (if needed)**
+   . Use the `Grouped.as()` method
+   . Use `Grouped` to provide repartition `Serdes` as well if required
+   . Kafka Streams appends the text `-repartition` to the provided name
+   . If no name is provided, the state store name is used with `-repartition` appended
+
+- **Joins**
+   . Use the `StreamJoined` configuration object
+   . `StreamJoined.name()` names the join processors and provides the base-name of the repartition topic (if needed)
+   . `StreamJoined.withStoreName()` is used to name the state stores associated with the join.
+   . If you need to provide `Serdes` you'll use `StreamJoined` as well
+
+- **State Stores**
+   . Use `Materialized.as()` method
+   . Use `Materialized` for state store `Serdes` if needed
+
+

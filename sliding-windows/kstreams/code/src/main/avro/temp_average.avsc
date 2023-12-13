@@ -1,0 +1,15 @@
+{
+  "namespace": "io.confluent.developer.avro",
+  "type": "record",
+  "name": "TempAverage",
+  "fields": [
+    {
+      "name": "total",
+      "type": "double"
+    },
+    {
+      "name": "num_readings",
+      "type": "long"
+    }
+  ]
+}

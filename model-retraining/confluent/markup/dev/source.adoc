@@ -1,0 +1,5 @@
+The existing pipeline, which is predicting the weight of fish based on size and species, stores its results in two MongoDB collections, which are used by other processes downstream. One collection contains the data fed to the model, along with the prediction. The other contains the actual weight as determined by a later step in the process. For this tutorial, we'll use Connect to make this data available to our ksqlDB application.
+
+++++
+<pre class="snippet"><code class="json">{% include_raw tutorials/model-retraining/confluent/code/tutorial-steps/dev/source.json %}</code></pre>
+++++

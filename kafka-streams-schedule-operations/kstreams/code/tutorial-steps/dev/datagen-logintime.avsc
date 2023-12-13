@@ -1,0 +1,26 @@
+{
+  "namespace": "io.confluent.developer.avro",
+  "type": "record",
+  "name": "LoginTime",
+  "fields": [
+    {"name": "logintime", "type": {
+      "type": "long",
+      "format_as_time" : "unix_long",
+      "arg.properties": {
+        "iteration": { "start": 1, "step": 100}
+      }
+    }},
+    {"name": "userid", "type": {
+      "type": "string",
+      "arg.properties": {
+        "regex": "User_[1-9]{0,1}"
+      }
+    }},
+    {"name": "appid", "type": {
+      "type": "string",
+      "arg.properties": {
+        "regex": "App[1-9][0-9]?"
+      }
+    }}
+  ]
+}

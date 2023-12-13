@@ -1,0 +1,2 @@
+The concept in this tutorial can be applicable to any of the traditional message systems (RabbitMQ, Tibco, IBM MQ, ActiveMQ, etc.), and this specific tutorial uses the link:https://docs.confluent.io/cloud/current/connectors/cc-rabbitmq-source.html[RabbitMQ Source Connector for Confluent Cloud] which uses the AMQP protocol to communicate with RabbitMQ servers and persists the data in a Kafka topic.
+Then you can process the data in a variety of ways.

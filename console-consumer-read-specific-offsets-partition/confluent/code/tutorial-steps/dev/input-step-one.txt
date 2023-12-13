@@ -1,0 +1,12 @@
+key1:the lazy
+key2:fox jumped
+key3:over the
+key4:brown cow
+key1:All
+key2:streams
+key3:lead
+key4:to
+key1:Kafka
+key2:Go to
+key3:Kafka
+key4:summit

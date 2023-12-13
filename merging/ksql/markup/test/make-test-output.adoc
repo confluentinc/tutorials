@@ -1,0 +1,5 @@
+Similarly, create a file at `test/output.json` with the expected outputs. Note that we're expecting events in the order that we issued the insert statements. The test runner will determine its output order based on the order of the statements.
+
++++++
+<pre class="snippet"><code class="json">{% include_raw tutorials/merging/ksql/code/test/output.json %}</code></pre>
++++++

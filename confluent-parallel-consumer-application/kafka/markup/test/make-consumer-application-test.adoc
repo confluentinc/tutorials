@@ -1,0 +1,12 @@
+
+
+Testing a Confluent Parallel Consumer application is not too complicated thanks to the https://github.com/confluentinc/parallel-consumer/blob/master/parallel-consumer-core/src/test/java/io/confluent/csid/utils/LongPollingMockConsumer.java[LongPollingMockConsumer] that is based on Apache Kafka's https://javadoc.io/doc/org.apache.kafka/kafka-clients/latest/org/apache/kafka/clients/consumer/MockConsumer.html[MockConsumer].  Since the Confluent Parallel Consumer's https://github.com/confluentinc/parallel-consumer[codebase] is well tested, we don't need to use a _live_ consumer and Kafka broker to test our application. We can simply use a mock consumer to process some data you'll feed into it.
+
+
+There is only one method in `KafkaConsumerApplicationTest` annotated with `@Test`, and that is `consumerTest()`. This method actually runs your `ParallelConsumerApplication` with the mock consumer.
+
+
+Now create the following file at `src/test/java/io/confluent/developer/ParallelConsumerApplicationTest.java`:
++++++
+<pre class="snippet"><code class="java">{% include_raw tutorials/confluent-parallel-consumer-application/kafka/code/src/test/java/io/confluent/developer/ParallelConsumerApplicationTest.java %}</code></pre>
++++++

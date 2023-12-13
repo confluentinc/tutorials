@@ -1,0 +1,76 @@
+{
+  "outputs": [
+    {
+      "topic": "ratings_keyed_by_id",
+      "key": 294,
+      "value": {
+        "RATING": 8.2,
+        "OLD": 1
+      }
+    },
+    {
+      "topic": "ratings_keyed_by_id",
+      "key": 294,
+      "value": {
+        "RATING": 8.5,
+        "OLD": 2
+      }
+    },
+    {
+      "topic": "ratings_keyed_by_id",
+      "key": 354,
+      "value": {
+        "RATING": 9.9,
+        "OLD": 3
+      }
+    },
+    {
+      "topic": "ratings_keyed_by_id",
+      "key": 354,
+      "value": {
+        "RATING": 9.7,
+        "OLD": 4
+      }
+    },
+    {
+      "topic": "ratings_keyed_by_id",
+      "key": 782,
+      "value": {
+        "RATING": 7.8,
+        "OLD": 5
+      }
+    },
+    {
+      "topic": "ratings_keyed_by_id",
+      "key": 782,
+      "value": {
+        "RATING": 7.7,
+        "OLD": 6
+      }
+    },
+    {
+      "topic": "ratings_keyed_by_id",
+      "key": 128,
+      "value": {
+        "RATING": 8.7,
+        "OLD": 7
+      }
+    },
+    {
+      "topic": "ratings_keyed_by_id",
+      "key": 128,
+      "value": {
+        "RATING": 8.4,
+        "OLD": 8
+      }
+    },
+    {
+      "topic": "ratings_keyed_by_id",
+      "key": 780,
+      "value": {
+        "RATING": 2.1,
+        "OLD": 9
+      }
+    }
+  ]
+}

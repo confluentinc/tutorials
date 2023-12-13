@@ -1,0 +1,13 @@
+////
+   Include this step if you have one or more Avro schemas for your tutorial.
+
+Here is some example text from an existing tutorial you can use for a starting point, change it as you need to.
+
+This tutorial uses three streams: one called `movies` that holds movie reference data, one called `ratings` that holds a stream of inbound movie ratings, and one called `rated-movies` that holds the result of the join between ratings and movies. Let's create schemas for all three.
+
+////
+Create a directory for the schemas that represent the events in the stream:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/kafka-streams-schedule-operations/kstreams/code/tutorial-steps/dev/make-avro-dir.sh %}</code></pre>
++++++

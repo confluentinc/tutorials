@@ -1,0 +1,424 @@
+{
+  "inputs": [
+    {
+      "topic": "pageviews",
+      "timestamp": 1600341475094,
+      "key": "1",
+      "value": {
+        "viewtime": 1,
+        "userid": "User_7",
+        "pageid": "Page_47"
+      }
+    },
+    {
+      "topic": "pageviews",
+      "timestamp": 1600341475206,
+      "key": "11",
+      "value": {
+        "viewtime": 11,
+        "userid": "User_8",
+        "pageid": "Page_47"
+      }
+    },
+    {
+      "topic": "pageviews",
+      "timestamp": 1600341475478,
+      "key": "21",
+      "value": {
+        "viewtime": 21,
+        "userid": "User_7",
+        "pageid": "Page_64"
+      }
+    },
+    {
+      "topic": "pageviews",
+      "timestamp": 1600341475955,
+      "key": "31",
+      "value": {
+        "viewtime": 31,
+        "userid": "User_7",
+        "pageid": "Page_29"
+      }
+    },
+    {
+      "topic": "pageviews",
+      "timestamp": 1600341476073,
+      "key": "41",
+      "value": {
+        "viewtime": 41,
+        "userid": "User_4",
+        "pageid": "Page_41"
+      }
+    },
+    {
+      "topic": "pageviews",
+      "timestamp": 1600341476547,
+      "key": "51",
+      "value": {
+        "viewtime": 51,
+        "userid": "User_6",
+        "pageid": "Page_68"
+      }
+    },
+    {
+      "topic": "pageviews",
+      "timestamp": 1600341476659,
+      "key": "61",
+      "value": {
+        "viewtime": 61,
+        "userid": "User_5",
+        "pageid": "Page_17"
+      }
+    },
+    {
+      "topic": "pageviews",
+      "timestamp": 1600341476677,
+      "key": "71",
+      "value": {
+        "viewtime": 71,
+        "userid": "User_1",
+        "pageid": "Page_60"
+      }
+    },
+    {
+      "topic": "pageviews",
+      "timestamp": 1600341476727,
+      "key": "81",
+      "value": {
+        "viewtime": 81,
+        "userid": "User_4",
+        "pageid": "Page_80"
+      }
+    },
+    {
+      "topic": "pageviews",
+      "timestamp": 1600341476886,
+      "key": "91",
+      "value": {
+        "viewtime": 91,
+        "userid": "User_8",
+        "pageid": "Page_90"
+      }
+    },
+    {
+      "topic": "pageviews",
+      "timestamp": 1600341477316,
+      "key": "101",
+      "value": {
+        "viewtime": 101,
+        "userid": "User_9",
+        "pageid": "Page_33"
+      }
+    },
+    {
+      "topic": "pageviews",
+      "timestamp": 1600341477503,
+      "key": "111",
+      "value": {
+        "viewtime": 111,
+        "userid": "User_7",
+        "pageid": "Page_50"
+      }
+    },
+    {
+      "topic": "pageviews",
+      "timestamp": 1600341477758,
+      "key": "121",
+      "value": {
+        "viewtime": 121,
+        "userid": "User_6",
+        "pageid": "Page_10"
+      }
+    },
+    {
+      "topic": "pageviews",
+      "timestamp": 1600341478251,
+      "key": "131",
+      "value": {
+        "viewtime": 131,
+        "userid": "User_4",
+        "pageid": "Page_75"
+      }
+    },
+    {
+      "topic": "pageviews",
+      "timestamp": 1600341478450,
+      "key": "141",
+      "value": {
+        "viewtime": 141,
+        "userid": "User_3",
+        "pageid": "Page_13"
+      }
+    },
+    {
+      "topic": "pageviews",
+      "timestamp": 1600341478512,
+      "key": "151",
+      "value": {
+        "viewtime": 151,
+        "userid": "User_6",
+        "pageid": "Page_28"
+      }
+    },
+    {
+      "topic": "pageviews",
+      "timestamp": 1600341478868,
+      "key": "161",
+      "value": {
+        "viewtime": 161,
+        "userid": "User_2",
+        "pageid": "Page_47"
+      }
+    },
+    {
+      "topic": "pageviews",
+      "timestamp": 1600341479027,
+      "key": "171",
+      "value": {
+        "viewtime": 171,
+        "userid": "User_3",
+        "pageid": "Page_44"
+      }
+    },
+    {
+      "topic": "pageviews",
+      "timestamp": 1600341479064,
+      "key": "181",
+      "value": {
+        "viewtime": 181,
+        "userid": "User_1",
+        "pageid": "Page_42"
+      }
+    },
+    {
+      "topic": "pageviews",
+      "timestamp": 1600341479462,
+      "key": "191",
+      "value": {
+        "viewtime": 191,
+        "userid": "User_1",
+        "pageid": "Page_59"
+      }
+    },
+    {
+      "topic": "pageviews",
+      "timestamp": 1600341479532,
+      "key": "201",
+      "value": {
+        "viewtime": 201,
+        "userid": "User_1",
+        "pageid": "Page_30"
+      }
+    },
+    {
+      "topic": "pageviews",
+      "timestamp": 1600341480014,
+      "key": "211",
+      "value": {
+        "viewtime": 211,
+        "userid": "User_1",
+        "pageid": "Page_47"
+      }
+    },
+    {
+      "topic": "pageviews",
+      "timestamp": 1600341480252,
+      "key": "221",
+      "value": {
+        "viewtime": 221,
+        "userid": "User_2",
+        "pageid": "Page_23"
+      }
+    },
+    {
+      "topic": "pageviews",
+      "timestamp": 1600341480652,
+      "key": "231",
+      "value": {
+        "viewtime": 231,
+        "userid": "User_9",
+        "pageid": "Page_97"
+      }
+    },
+    {
+      "topic": "pageviews",
+      "timestamp": 1600341481044,
+      "key": "241",
+      "value": {
+        "viewtime": 241,
+        "userid": "User_7",
+        "pageid": "Page_18"
+      }
+    },
+    {
+      "topic": "pageviews",
+      "timestamp": 1600341481304,
+      "key": "251",
+      "value": {
+        "viewtime": 251,
+        "userid": "User_1",
+        "pageid": "Page_22"
+      }
+    },
+    {
+      "topic": "pageviews",
+      "timestamp": 1600341481749,
+      "key": "261",
+      "value": {
+        "viewtime": 261,
+        "userid": "User_5",
+        "pageid": "Page_35"
+      }
+    },
+    {
+      "topic": "pageviews",
+      "timestamp": 1600341482080,
+      "key": "271",
+      "value": {
+        "viewtime": 271,
+        "userid": "User_5",
+        "pageid": "Page_13"
+      }
+    },
+    {
+      "topic": "pageviews",
+      "timestamp": 1600341482470,
+      "key": "281",
+      "value": {
+        "viewtime": 281,
+        "userid": "User_3",
+        "pageid": "Page_33"
+      }
+    },
+    {
+      "topic": "pageviews",
+      "timestamp": 1600341482957,
+      "key": "291",
+      "value": {
+        "viewtime": 291,
+        "userid": "User_2",
+        "pageid": "Page_41"
+      }
+    },
+    {
+      "topic": "pageviews",
+      "timestamp": 1600341483102,
+      "key": "301",
+      "value": {
+        "viewtime": 301,
+        "userid": "User_3",
+        "pageid": "Page_40"
+      }
+    },
+    {
+      "topic": "pageviews",
+      "timestamp": 1600341483115,
+      "key": "311",
+      "value": {
+        "viewtime": 311,
+        "userid": "User_3",
+        "pageid": "Page_24"
+      }
+    },
+    {
+      "topic": "pageviews",
+      "timestamp": 1600341483594,
+      "key": "321",
+      "value": {
+        "viewtime": 321,
+        "userid": "User_5",
+        "pageid": "Page_88"
+      }
+    },
+    {
+      "topic": "pageviews",
+      "timestamp": 1600341483978,
+      "key": "331",
+      "value": {
+        "viewtime": 331,
+        "userid": "User_1",
+        "pageid": "Page_18"
+      }
+    },
+    {
+      "topic": "pageviews",
+      "timestamp": 1600341484149,
+      "key": "341",
+      "value": {
+        "viewtime": 341,
+        "userid": "User_5",
+        "pageid": "Page_35"
+      }
+    },
+    {
+      "topic": "pageviews",
+      "timestamp": 1600341484582,
+      "key": "351",
+      "value": {
+        "viewtime": 351,
+        "userid": "User_1",
+        "pageid": "Page_85"
+      }
+    },
+    {
+      "topic": "pageviews",
+      "timestamp": 1600341484880,
+      "key": "361",
+      "value": {
+        "viewtime": 361,
+        "userid": "User_1",
+        "pageid": "Page_29"
+      }
+    },
+    {
+      "topic": "pageviews",
+      "timestamp": 1600341485041,
+      "key": "371",
+      "value": {
+        "viewtime": 371,
+        "userid": "User_1",
+        "pageid": "Page_40"
+      }
+    },
+    {
+      "topic": "pageviews",
+      "timestamp": 1600341485271,
+      "key": "381",
+      "value": {
+        "viewtime": 381,
+        "userid": "User_3",
+        "pageid": "Page_29"
+      }
+    },
+    {
+      "topic": "pageviews",
+      "timestamp": 1600341485570,
+      "key": "391",
+      "value": {
+        "viewtime": 391,
+        "userid": "User_4",
+        "pageid": "Page_15"
+      }
+    },
+    {
+      "topic": "pageviews",
+      "timestamp": 1600341485759,
+      "key": "401",
+      "value": {
+        "viewtime": 401,
+        "userid": "User_2",
+        "pageid": "Page_27"
+      }
+    },
+    {
+      "topic": "pageviews",
+      "timestamp": 1600341485951,
+      "key": "411",
+      "value": {
+        "viewtime": 411,
+        "userid": "User_9",
+        "pageid": "Page_22"
+      }
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+Before we move foward with the implementation, we need to produce records to the `ORDERS` stream.
+Let's use the console producer to create some records.
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/flatten-nested-data/ksql/code/tutorial-steps/dev/console-producer.sh %}</code></pre>
++++++
+
+When the console producer starts, it will log some messages and hang, waiting for your input.
+Type in one line at a time and press enter to send it.
+Each line represents an order of one 'Highly Durable Glue' bought by each member of Confluent's developer advocacy team.
+Note that each order contains the fields `customer` and `product` that in turn contains nested data.
+To send all orders below, click on the clipboard icon on the right, then paste the following into the prompt and press enter:
+
++++++
+<pre class="snippet"><code class="json">{% include_raw tutorials/flatten-nested-data/ksql/code/tutorial-steps/dev/input-events.json %}</code></pre>
++++++

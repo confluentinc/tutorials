@@ -1,0 +1,5 @@
+Now that you have created all the necessary schema files you need to compile them into code so that you can work with them in the application.  The `build.gradle` file contains plugins for both Avro and Protobuf so all you need to do is run the following command to generate the Java code files:
+
++++++
+<pre class="snippet"><code class="json">{% include_raw tutorials/multiple-event-types/kafka/code/tutorial-steps/dev/build-project.sh%}</code></pre>
++++++

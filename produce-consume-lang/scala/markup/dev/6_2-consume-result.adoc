@@ -1,0 +1,23 @@
+In a third terminal call your new service to get all the books.
+
++++++
+<pre class="snippet"><code class="bash">{%
+    include_raw tutorials/produce-consume-lang/scala/code/tutorial-steps/dev/http-call.sh
+%}</code></pre>
++++++
+
++++++
+<pre class="snippet"><code class="json">{
+    "result": [
+        "How to sharpen a knife",
+        "How to sharpen a knife (safely this time)",
+        "etc ..."
+    ]
+}</code></pre>
++++++
+
+Let's now play with these two programs and the Confluent Platform:
+
++++++
+<script id="asciicast-358242" src="https://asciinema.org/a/358242.js" async></script>
++++++

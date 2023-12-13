@@ -1,0 +1,36 @@
+We'll start by developing a simple source connector that emits numeric data to a Kafka topic.
+
+We'll build the connector with Maven, so ensure that you have it https://maven.apache.org/install.html[installed] and on
+your path. Before proceeding, verify that `mvn -version` succeeds when you run it on the command line.
+
+First, create the following `pom.xml` file in the `custom-connector` directory:
+
++++++
+<pre class="snippet"><code class="java">{% include_raw tutorials/custom-connector/confluent/code/pom.xml %}</code></pre>
++++++
+
+Most of the POM is boilerplate, but notice two important sections that any custom connector should have:
+
+1. A dependency on the Kafka Connect API, `connect-api`
+
+2. The `kafka-connect-maven-plugin` plugin, which does the heavy lifting to build the connector zip following https://docs.confluent.io/kafka-connectors/self-managed/confluent-hub/component-archive.html[this spec].  This lets us simply run `mvn package` later in this tutorial in order to build the plugin zip that we will upload to Confluent Cloud.
+
+Now we'll create the three classes that comprise our connector: a configuration class, the connector class that most notably builds connector task configurations, and the source task class that generates records.
+
+Go ahead and create the following file at `src/main/java/io/confluent/developer/connect/CounterConnectorConfig.java`. This class defines the two configuration properties for our connector: the topic to write to (`kafka.topic`), and the number of milliseconds to wait between emitting events (`interval.ms`).
+
++++++
+<pre class="snippet"><code class="java">{% include_raw tutorials/custom-connector/confluent/code/src/main/java/io/confluent/developer/connect/CounterConnectorConfig.java %}</code></pre>
++++++
+
+Next, create the following file at `src/main/java/io/confluent/developer/connect/CounterConnector.java`. You can think of this class as the glue between the connector configuration and the task implementation. We'll provide the fully qualified name of this class (`io.confluent.developer.connect.CounterConnector`) later in this tutorial when adding the connector plugin to Confluent Cloud.
+
++++++
+<pre class="snippet"><code class="java">{% include_raw tutorials/custom-connector/confluent/code/src/main/java/io/confluent/developer/connect/CounterConnector.java %}</code></pre>
++++++
+
+Finally, create the following file at `src/main/java/io/confluent/developer/connect/CounterSourceTask.java`. The `poll()` method in this class generates our numeric events.
+
++++++
+<pre class="snippet"><code class="java">{% include_raw tutorials/custom-connector/confluent/code/src/main/java/io/confluent/developer/connect/CounterSourceTask.java %}</code></pre>
++++++

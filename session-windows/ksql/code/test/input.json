@@ -1,0 +1,13 @@
+{
+  "inputs": [
+    { "topic": "clicks", "value": { "IP": "51.56.119.117", "URL": "/etiam/justo/etiam/pretium/iaculis.xml", "TIMESTAMP": "2019-07-18T10:00:00Z" } },
+    { "topic": "clicks", "value": { "IP": "51.56.119.117", "URL": "/nullam/orci/pede/venenatis.json", "TIMESTAMP": "2019-07-18T10:01:00Z" } },
+    { "topic": "clicks", "value": { "IP": "53.170.33.192", "URL": "/mauris/morbi/non.jpg", "TIMESTAMP": "2019-07-18T10:01:31Z" } },
+    { "topic": "clicks", "value": { "IP": "51.56.119.117", "URL": "/convallis/nunc/proin.jsp", "TIMESTAMP": "2019-07-18T10:01:36Z" } },
+    { "topic": "clicks", "value": { "IP": "53.170.33.192", "URL": "/vestibulum/vestibulum/ante/ipsum/primis/in.json", "TIMESTAMP": "2019-07-18T10:02:00Z" } },
+    { "topic": "clicks", "value": { "IP": "51.56.119.117", "URL": "/vehicula/consequat/morbi/a/ipsum/integer/a.jpg", "TIMESTAMP": "2019-07-18T11:03:21Z" } },
+    { "topic": "clicks", "value": { "IP": "51.56.119.117", "URL": "/pede/venenatis.jsp", "TIMESTAMP": "2019-07-18T11:03:50Z" } },
+    { "topic": "clicks", "value": { "IP": "53.170.33.192", "URL": "/nec/euismod/scelerisque/quam.xml", "TIMESTAMP": "2019-07-18T11:40:00Z" } },
+    { "topic": "clicks", "value": { "IP": "53.170.33.192", "URL": "/ligula/nec/sem/duis.jsp", "TIMESTAMP": "2019-07-18T11:40:09Z" } }
+  ]
+}

@@ -1,0 +1,5 @@
+Because we will use this Avro schema in our Java code, we'll need to compile it. Run the following:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/splitting/kstreams/code/tutorial-steps/dev/build-project.sh %}</code></pre>
++++++

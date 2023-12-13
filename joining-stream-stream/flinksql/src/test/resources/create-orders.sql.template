@@ -1,0 +1,17 @@
+CREATE TABLE orders (
+    id INT,
+    total_amount DOUBLE,
+    customer_name VARCHAR,
+    order_ts_raw BIGINT
+) WITH (
+    'connector' = 'kafka',
+    'topic' = 'orders',
+    'properties.bootstrap.servers' = 'localhost:KAFKA_PORT',
+    'scan.startup.mode' = 'earliest-offset',
+    'scan.bounded.mode' = 'latest-offset',
+    'key.format' = 'raw',
+    'key.fields' = 'id',
+    'value.format' = 'avro-confluent',
+    'value.avro-confluent.url' = 'http://localhost:SCHEMA_REGISTRY_PORT',
+    'value.fields-include' = 'EXCEPT_KEY'
+);

@@ -1,0 +1,3 @@
+In this example, the telemetry events for device threshold values and reporting alarms are stored in Postgres database tables. The connector reads from the tables and writes the data into Kafka topics in Confluent Cloud.
+
+The following stream processing app identifies which devices need to be investigated where the threshold is insufficient and alarm code is not zero.

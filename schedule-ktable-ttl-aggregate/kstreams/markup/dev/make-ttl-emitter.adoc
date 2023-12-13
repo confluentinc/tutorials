@@ -1,0 +1,123 @@
+////
+In this file you describe the Kafka streams topology, and should cover the main points of the tutorial.
+The text assumes a method buildTopology exists and constructs the Kafka Streams application.  Feel free to modify the text below to suit your needs.
+////
+Now let's take a look at the components and the approach of the solution.
+
+For context your application has a simple KStream-KTable join where the output of the join is a trivial concatenation of the left side and the right side if the the associated key exists in the KTable.  The goal is to purge data in the KTable for which updates have not arrived within a TTL of 1 minute.
+
+NOTE: The following detailed sections are already included in the application file, we're just taking a detailed step through the code before you create it.
+
+Let's look at the TTL Emitter transformer that will schedule emitting tombstones past a certain time:
+
+[source,java]
+.TTLKTableTombstoneEmitter transformer punctuator
+----
+
+  public TTLKTableTombstoneEmitter(final Duration maxAge, final Duration scanFrequency,
+      final String stateStoreName) { <1>
+    this.maxAge = maxAge;
+    this.scanFrequency = scanFrequency;
+    this.purgeStoreName = stateStoreName;
+  }
+
+  @Override
+  public void init(ProcessorContext context) {
+    this.context = context;
+    this.stateStore = (KeyValueStore<K, Long>) context.getStateStore(purgeStoreName);
+    // This is where the delete signal is created. This HAS to use Wallcock Time
+    // as the we may not updates to the table's input topic
+    context.schedule(scanFrequency, PunctuationType.WALL_CLOCK_TIME, timestamp -> { <2>
+      final long cutoff = timestamp - maxAge.toMillis();
+
+      // scan over all the keys in this partition's store
+      // this can be optimized, but just keeping it simple.
+      // this might take a while, so the Streams timeouts should take this into account
+      try (final KeyValueIterator<K, Long> all = stateStore.all()) {
+        while (all.hasNext()) {
+          final KeyValue<K, Long> record = all.next();
+          System.out.println("RECORD "+record.key+":"+record.value);
+
+          if (record.value != null && record.value < cutoff) {
+
+            System.out.println("Forwarding Null for key "+record.key);
+            // if a record's last update was older than our cutoff, emit a tombstone.
+            ValueWrapper vw = new ValueWrapper();
+            vw.setDeleted(true);
+            context.forward(record.key, vw); <3>
+            stateStore.delete(record.key); <4>
+          }
+        }
+      }
+    });
+  }
+
+  @Override
+  public R transform(K key, V value) { <5>
+
+    if (value == null) { <6>
+      System.out.println("CLEANING key="+key);
+      stateStore.delete(key);
+    } else {
+      System.out.println("UPDATING key="+key);
+      stateStore.put(key, context.timestamp());
+    }
+    return null;
+  }
+----
+<1> Initialize the transformer with maximum age, scan frequency, and state store name
+<2> Schedule the operation to (according to wallclock time in this case) to scan all records and pick out which one exceeded TTL.
+<3> Forward a ValueWrapper object with "deleted" flag set for keys that have not been updated within the maximum age. This is because null values are not passed to aggregate()
+<4> Remove this key from the state store
+<5> We still need to	 create a transform() method to handle incoming changes to the input topic upstream of the KTable
+<6> Handle tombstones coming from upstream or update the timestamp in the local purge state store
+
+Next, we set up a simple topology showing the KTable created out of an aggregate function (this just keeps values in a list) and then join the generated KTable with the KStream. 
+Here, we have to attach the TTLKTableTombstoneEmitter before the groupBy() and aggregate() steps.
+
+[source, java]
+.Initializing two KStreams in Kafka Streams application and a state store to manage key-timestamp pairs.
+----
+    // Read the input data.
+    final KStream<String, String> stream =
+        builder.stream(inputTopicForStream, Consumed.with(Serdes.String(), Serdes.String()));
+
+    final KStream<String, String> stream2 =
+        builder.stream(inputTopicForTable, Consumed.with(Serdes.String(), Serdes.String()));
+
+   // adding a custom state store for the TTL transformer which has a key of type string, and a
+    // value of type long
+    // which represents the timestamp
+    final StoreBuilder<KeyValueStore<String, Long>> storeBuilder = Stores.keyValueStoreBuilder( <1>
+        Stores.persistentKeyValueStore(STATE_STORE_NAME), Serdes.String(), Serdes.Long());
+
+    builder.addStateStore(storeBuilder);
+----
+
+
+[source, java]
+.Attaching a transformer to the input stream that is then later used to create a KTable via aggregate()
+----
+    KTable<String, AggregateObject> table = stream2
+        .transform(() -> new TTLKTableTombstoneEmitter<String, String, KeyValue<String, ValueWrapper>>(MAX_AGE, <1>
+            SCAN_FREQUENCY, STATE_STORE_NAME), STATE_STORE_NAME)
+        .groupByKey(Grouped.with(Serdes.String(), new JSONSerde<ValueWrapper>()))
+        .aggregate(AggregateObject::new, (key, value, aggregate) -> {
+          System.out.println("aggregate() - value=" + value);
+          if (value.isDeleted())
+            return null; // signal to tombstone this key in KTable
+          else
+            return aggregate.add((String) value.getValue());
+        }, Materialized.<String, AggregateObject, KeyValueStore<Bytes, byte[]>>as("eventstore")
+            .withKeySerde(Serdes.String()).withValueSerde(new JSONSerde<AggregateObject>()));
+
+     final KStream<String, String> joined = stream.leftJoin(table, (left, right) -> {
+      System.out.println("JOINING left=" + left + " right=" + right);
+      if (right != null) {
+        int size = right.getValues().size();
+        return left + " " + right.getValues().get(size - 1); // concat the last value out of the aggregate
+      }
+      return left;
+    });
+----
+<1> Attach the TTLKTableTombstoneEmitter transformer to the stream before the groupBy

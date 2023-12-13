@@ -1,0 +1,5 @@
+Now that you have an uberjar for the Kafka Streams application, you can launch it locally. When you run the following, the prompt won't return, because the application will run until you exit it. There is always another message to process, so streaming applications don't exit until you force them.
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/kafka-streams-schedule-operations/kstreams/code/tutorial-steps/dev/run-dev-app.sh %}</code></pre>
++++++

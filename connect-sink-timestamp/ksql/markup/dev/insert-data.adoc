@@ -1,0 +1,5 @@
+Insert sample data into the stream with the commands below.
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/connect-sink-timestamp/ksql/code/tutorial-steps/dev/insert-data.sql %}</code></pre>
++++++

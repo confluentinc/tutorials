@@ -1,0 +1,5 @@
+And launch it by running:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/kafka-producer-application/kafka/code/tutorial-steps/dev/docker-compose-up.sh %}</code></pre>
++++++

@@ -1,0 +1,10 @@
+{
+  "namespace": "io.confluent.developer.avro",
+  "type": "record",
+  "name": "CompletedOrder",
+  "fields": [
+    {"name": "id", "type": "string"},
+    {"name": "name", "type": "string"},
+    {"name": "amount", "type": "double"}
+  ]
+}

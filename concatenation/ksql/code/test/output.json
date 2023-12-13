@@ -1,0 +1,28 @@
+{
+  "outputs": [
+    {
+      "topic": "SUMMARY_RESULTS",
+      "value": {
+          "SUMMARY" : "Art Vandeley purchased 30000 shares of IMEP"
+      }
+    },
+    {
+      "topic": "SUMMARY_RESULTS",
+      "value": {
+         "SUMMARY" : "Nick Fury purchased 500 shares of IMEP"
+      }
+    },
+    {
+      "topic": "SUMMARY_RESULTS",
+      "value": {
+         "SUMMARY" : "Natasha Romanov purchased 45729 shares of STRK"
+      }
+    },
+    {
+      "topic": "SUMMARY_RESULTS",
+      "value": {
+         "SUMMARY" : "Wanda Maximoff purchased 72848 shares of STRK"
+      }
+    }
+  ]
+}

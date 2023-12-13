@@ -1,0 +1,7 @@
+Create a directory for the project resources:
+
++++++
+<pre class="snippet"><code class="bash">{%
+    include_raw tutorials/produce-consume-lang/scala/code/tutorial-steps/dev/make-resources-dir.sh
+%}</code></pre>
++++++

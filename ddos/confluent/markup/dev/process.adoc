@@ -1,0 +1,7 @@
+++++
+<pre class="snippet expand-default"><code class="sql">
+{% include_raw shared/code/ccloud/comment-connector.sql %}
+{% include_raw tutorials/ddos/confluent/code/tutorial-steps/dev/source.sql %}
+{% include_raw tutorials/ddos/confluent/code/tutorial-steps/dev/process.sql %}
+</code></pre>
+++++

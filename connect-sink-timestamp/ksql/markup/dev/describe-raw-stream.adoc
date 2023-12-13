@@ -1,0 +1,11 @@
+Let's examine the ksqlDB stream with the `DESCRIBE` function:
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/connect-sink-timestamp/ksql/code/tutorial-steps/dev/describe-raw-stream.sql %}</code></pre>
++++++
+
+After entering the command above, you should see the following:
+
++++++
+<pre class="snippet"><code class="log">{% include_raw tutorials/connect-sink-timestamp/ksql/code/tutorial-steps/dev/describe-raw-stream-output.log %}</code></pre>
++++++

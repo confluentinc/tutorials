@@ -1,0 +1,5 @@
+The second technique for masking data utilizes ksqlDB's built in `MASK` functions. Here we retain the customer name and date of birth, but obfuscated.
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/masking-data/ksql/code/tutorial-steps/dev/create-purchases-pii-obfuscated.sql %}</code></pre>
++++++

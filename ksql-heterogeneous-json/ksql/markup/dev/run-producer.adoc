@@ -1,0 +1,14 @@
+Now let's produce some records for the `DATA_STREAM` stream
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/ksql-heterogeneous-json/ksql/code/tutorial-steps/dev/console-producer.sh %}</code></pre>
++++++
+
+After starting the console producer it will wait for your input.
+To send all send all the stock transactions click on the clipboard icon on the right, then paste the following into the terminal and press enter:
+
++++++
+<pre class="snippet"><code class="json">{% include_raw tutorials/ksql-heterogeneous-json/ksql/code/tutorial-steps/dev/input-events.json %}</code></pre>
++++++
+
+After you've sent the records above, you can close the console producer with `Ctrl-C`.

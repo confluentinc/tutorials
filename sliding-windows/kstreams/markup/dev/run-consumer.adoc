@@ -1,0 +1,30 @@
+////
+  This is a sample content file for how to include a console consumer to the tutorial, probably a good idea so the end user can watch the results
+  of the tutorial.  Change the text as needed.
+
+////
+
+Now that your Kafka Streams application is running, open a new terminal window, change directories (`cd`) into the `sliding-windows` directory and start a console-consumer to confirm the output:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/sliding-windows/kstreams/code/tutorial-steps/dev/console-consumer.sh %}</code></pre>
++++++
+
+Your results should look someting like this:
+++++
+<pre class="snippet"><code class="shell">
+device-1 : 79.77
+device-1 : 80.63
+device-2 : 89.87
+device-1 : 79.76
+device-1 : 80.06
+device-1 : 82.06
+device-2 : 73.63
+device-2 : 81.75
+device-1 : 86.32
+device-1 : 82.82
+</code></pre>
+++++
+
+
+Go ahead and shut down your streams application now with a `CNTR+C` command.

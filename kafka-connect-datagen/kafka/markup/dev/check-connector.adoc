@@ -1,0 +1,13 @@
+Check that the connector is running:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/kafka-connect-datagen/kafka/code/tutorial-steps/dev/check-connector.sh %}</code></pre>
++++++
+
+You should see that the state is `RUNNING` for both `connector` and `tasks` elements
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/kafka-connect-datagen/kafka/code/tutorial-steps/dev/check-connector_expected.log %}</code></pre>
++++++
+
+If you get the message `{"error_code":404,"message":"No status found for connector datagen_local_01"}` then check that the step above in which you created the connector actually succeeded.

@@ -1,0 +1,21 @@
+You can run your application with link:https://www.confluent.io/confluent-cloud/tryfree/[Confluent Cloud].
+
+
+In the Kafka Streams application use a `VersionedKeyValueStore` when creating your `KTable`.  The [history] retention time shown is just
+a placeholder - you are free to use any time that suits your event streaming requirements.
+
+++++
+<pre class="snippet">
+    <code class="java">
+    final VersionedBytesStoreSupplier versionedStoreSupplier =
+              Stores.persistentVersionedKeyValueStore("versioned-ktable-store",
+                                                       Duration.ofMinutes(10));
+
+
+    final KTable&lt;String, String&gt; tableInput = builder.table(tableInputTopic,
+                Materialized.&lt;String, String&gt;as(versionedStoreSupplier)
+                        .withKeySerde(stringSerde)
+                        .withValueSerde(stringSerde));
+    </code>
+</pre>
+++++

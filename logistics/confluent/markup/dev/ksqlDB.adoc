@@ -1,0 +1,3 @@
+This application processes real-time vehicle information, showing the current state of the order on the vehicle –  `WAREHOUSE`, `EN ROUTE`, or `DELIVERED` – along with the distance away from the final destination and an estimated delivery time.
+
+For this tutorial, we'll be using order data as well as a stream of status updates from a fleet of delivery vehicles that are in the process of transporting orders from a warehouse to customers. Kafka Connect can easily stream in data from a database containing that information; use the following template as a guide for setting up your connector.

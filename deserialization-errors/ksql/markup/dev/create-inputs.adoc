@@ -1,0 +1,9 @@
+To start off the implementation of this scenario, you need to create a stream that represent sensors.
+This stream will contain a timestamp field called `TIMESTAMP` to indicate when the sensor was enabled.
+Each sensor will also have a field called `ENABLED` to indicate the status of the sensor.
+While this stream acts upon data stored in a topic called `SENSORS_RAW`, we will create derived stream called `SENSORS` to actually handle the sensors.
+This stream simply copies the data from the previous stream, ensuring that the `ID` field is used as the key.
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/deserialization-errors/ksql/code/tutorial-steps/dev/create-inputs.sql %}</code></pre>
++++++

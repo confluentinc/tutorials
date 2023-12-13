@@ -1,0 +1,25 @@
+Then create the following file at `src/main/java/io/confluent/developer/FkJoinTableToTable.java`. Let's take a close look at the `buildTopology()` method, which uses the Kafka Streams DSL.
+
+The first thing the method does is create an instance of `https://kafka.apache.org/{{ site.ak_javadoc_version }}/javadoc/org/apache/kafka/streams/StreamsBuilder.html[StreamsBuilder]`, which is the helper object that lets us build our topology. With our builder in hand, there are three things we need to do. First, we call the `table()` method to create a `https://kafka.apache.org/{{ site.ak_javadoc_version }}/javadoc/org/apache/kafka/streams/kstream/KTable.html[KStream]<Long, Album>` object.  In this case, we can use a `KTable` as each we know the topic is keyed by the album id and each album-id is unique.
+
+Now that we have our table of albums, we'll move on to the tracks available for purchase stream.  While it may seem that purchasing music tracks would end up in a `KStream`, there are a couple of circumstances that allow us to represent the track purchases as a table instead.
+
+First, each track purchase has a simple `Long` key, representing a increasing sequence number for each purchase.  This means each purchase is unique, and we don't need to worry about later sales replacing earlier purchases by the same customer.  Second, we need to join each track purchase with an existing album so we can create a trend of artists and genres gaining or losing popularity.
+
+But if the key is a monotonically increasing number, how can we join against the `album` table?  The `trackPurchases` table has the album id as part of its value payload, so we can use the `KTable.join` method with a `ForeignKeyExtractor` parameter to extract the album id for the join comparison.
+
+Creating the `https://kafka.apache.org/{{ site.ak_javadoc_version }}/javadoc/org/apache/kafka/streams/kstream/KTable.html[KTable]<Long,TrackPurchase>` of track purchases looks just like our first step with the albums: we create a table from the topic. Note that we must choose the same key—the album id—for our join to work.  You can accomplish this by providing a Java 8 method handle `TrackPurchase::getAlbumId` to extract the id.
+
+At this point we should discuss the importance of the order in which we use the `KTable` parameters in the `join()`.  The `trackPurchases` table is the *_calling_* or *_left-side-table_*, and it is the table where the primary key is embedded in its value.  The *_left-side-table_*  always provides the `ForeignKeyExtractor` function.
+
+The `albums` table is the *_right-side-table_* and always has the primary key for the join. This is where order matters, for example: if you tried `albums.join(trackPurchases..)` the join would never work as the `albums` table has no knowledge of the `trackPurchases` table details.
+
+If you have a situation where you have two tables for which the primary keys don't match, yet *_each_* table has a reference to the other's primary key, then the order of the tables in the join method won't matter.  This scenario is probably unlikely in practice.
+
+With the `trackPurchases` table and the `albums` table in hand, all that remains is to join them using the `join()` method. It's a wonderfully simply one-liner, but we have concealed a bit of complexity in the form of the `MusicInterestJoiner` class. More on that in a moment.
+
+For more background on `KTable` foreign key joins you can https://cwiki.apache.org/confluence/display/KAFKA/KIP-213+Support+non-key+joining+in+KTable[read the original KIP-213 proposal].
+
++++++
+<pre class="snippet"><code class="java">{% include_raw tutorials/fk-joins/kstreams/code/src/main/java/io/confluent/developer/FkJoinTableToTable.java %}</code></pre>
++++++

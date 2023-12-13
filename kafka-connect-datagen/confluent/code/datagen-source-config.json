@@ -1,0 +1,10 @@
+{
+    "name" : "datagen_ccloud_01",
+    "connector.class": "DatagenSource",
+    "kafka.api.key": "<CLUSTER_API_KEY>",
+    "kafka.api.secret" : "<CLUSTER_API_SECRET>",
+    "kafka.topic" : "mytopic",
+    "output.data.format" : "JSON",
+    "quickstart" : "PAGEVIEWS",
+    "tasks.max" : "1"
+}

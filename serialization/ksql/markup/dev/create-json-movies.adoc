@@ -1,0 +1,6 @@
+The first thing we'll need is to create a Kafka topic and stream to represent the movie data. We declare the `VALUE_FORMAT` of the stream to be `json` to denote the format of the events.
+The stream stores the movie's id, `MOVIE_ID`, in the Kafka message's key, but could just as easily store it in the value if we removed the `KEY` classifier.
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/serialization/ksql/code/tutorial-steps/dev/create-json-movies.sql %}</code></pre>
++++++

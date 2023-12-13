@@ -1,0 +1,11 @@
+Now we should be able to see all of the purchases data we just entered with the following command:
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/masking-data/ksql/code/tutorial-steps/dev/print-purchases-topic.sql %}</code></pre>
++++++
+
+This should yield roughly the following output. The order will be different depending on how the records were actually inserted. Note that PII like name, birthdate, city, and country are present.
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/masking-data/ksql/code/tutorial-steps/dev/expected-purchases-output.log %}</code></pre>
++++++

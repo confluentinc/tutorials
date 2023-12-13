@@ -1,0 +1,5 @@
+Next, create another Avro schema file at `src/main/avro/rating.avsc` for the stream of ratings:
+
++++++
+<pre class="snippet"><code class="avro">{% include_raw tutorials/joining-stream-table/kstreams/code/src/main/avro/rating.avsc %}</code></pre>
++++++

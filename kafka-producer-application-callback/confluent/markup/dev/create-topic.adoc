@@ -1,0 +1,11 @@
+
+In this step we're going to create a topic for use during this tutorial.
+
+
+Open a new terminal window and then run this command to create the topic that the producer can write to
+
+```plaintext
+confluent kafka topic create output-topic
+```
+
+Keep this terminal window open for later use when you run a console consumer to verify your producer application.

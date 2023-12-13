@@ -1,0 +1,55 @@
+
+
+Testing a `KafkaProducer` and `KafkaConsumer` used in application fairly easy to accomplish thanks  to the https://kafka.apache.org/30/javadoc/org/apache/kafka/clients/producer/MockProducer.html[MockProducer] and the  https://javadoc.io/doc/org.apache.kafka/kafka-clients/latest/org/apache/kafka/clients/consumer/MockConsumer.html[MockConsumer].  Since both the `KafkaProducer` and `KafkaConsumer` are well tested, we don't need to test the clients themselves, we'll use the mocks to verify that our logic executes as expected.
+
+There are two test classes `MultiEventAvroProduceConsumeAppTest`  and `MultiEventProtobufProduceConsumeAppTest` one for the Avro application and the Protobuf application.  Before you create the tests, let's look at some of key parts of using a mock producer and consumer.
+
+.Replaying the history of produced records
+[source,java]
+----
+// Details left out for clarity
+
+MockProducer<String, CustomerEventProto.CustomerEvent> mockProtoProducer
+                = new MockProducer<>(true, stringSerializer, protobufSerializer); <1>
+List<CustomerEventProto.CustomerEvent> events = produceConsumeApp.protobufEvents();
+produceConsumeApp.produceProtobufEvents(() -> mockProtoProducer, (String) commonConfigs.get("proto.topic"), events);<2>
+
+ actualKeyValues = mockProtoProducer.history().stream().map(this::toKeyValue).collect(Collectors.toList()); <3>
+assertThat(actualKeyValues, equalTo(expectedKeyValues));
+----
+
+<1> Creating the `MockProducer`
+<2> Executing the produce of Protobuf records with the mock producer
+<3> Replaying the history of the producer
+
+In annotation 3 above, we can use a mock producer in the test to validate that all the records we expected to be produced were sent to the producer correctly. The test for the Avro producer has identical logic so we won't review it here, but you can view the full source code if you'd like to see it.
+
+For testing the consumer, it's a little tricky because the consumer polls for records and will continue polling until you close the application. The `MockConsumer` provides a method `schedulePollTask` where you provide the action you want to take at each poll call.
+
+.Driving the behavior of a consumer poll
+[source, java]
+----
+  mockConsumer.schedulePollTask(() -> {  <1>
+        addTopicPartitionsAssignment(topic, mockConsumer);
+        addConsumerRecords(mockConsumer, produceConsumeApp.protobufEvents(), CustomerEventProto.CustomerEvent::getId, topic);
+    });
+  mockConsumer.schedulePollTask(() -> produceConsumeApp.close()); <2>
+----
+
+<1> Assigning the topic-partitions and records in the first poll call
+<2> Shutting down the application in the next call
+
+
+In our case here for the first poll call we'll assign the topic partitions then provide the records to the consumer to process. In the next poll call we simply shut the application down.  Note that the methods in the first `schedulePollTask` are internal to the test and to fully understand what's going on you'll need to look at the source code for the test.  The test for the Avro multi-event application more or less uses the same logic so we won't review that test here.
+
+
+Now create the following file for the Protobuf application test at `src/test/java/io/confluent/developer/MultiEventProtobufProduceConsumeAppTest.java`.
++++++
+<pre class="snippet"><code class="java">{% include_raw tutorials/multiple-event-types/kafka/code/src/test/java/io/confluent/developer/MultiEventProtobufProduceConsumeAppTest.java %}</code></pre>
++++++
+
+Then create the file for the Avro application test at `src/test/java/io/confluent/developer/MultiEventAvroProduceConsumeAppTest.java`.
++++++
+<pre class="snippet"><code class="java">{% include_raw tutorials/multiple-event-types/kafka/code/src/test/java/io/confluent/developer/MultiEventAvroProduceConsumeAppTest.java %}</code></pre>
++++++
+

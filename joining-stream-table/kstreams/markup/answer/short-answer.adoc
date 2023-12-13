@@ -1,0 +1,9 @@
+Use the `builder.table()` method to create a `KTable`.
+Then use the `https://kafka.apache.org/{{ site.ak_javadoc_version }}/javadoc/org/apache/kafka/streams/kstream/ValueJoiner.html[ValueJoiner]` interface in the Streams API to join the `KStream` and `KTable`.
+
+```
+KStream<String, Rating> ratings = ...
+KTable<String, Movie> movies = ...
+final MovieRatingJoiner joiner = new MovieRatingJoiner();
+KStream<String, RatedMovie> ratedMovie = ratings.join(movies, joiner);
+```

@@ -1,0 +1,9 @@
+To use `SessionWindows` use the `SessionWindows.with` method inside a `windowedBy` call.
+
++++++
+<pre class="snippet"><code class="java">{% include_raw tutorials/session-windows/kstreams/markup/answer/session-window-code.adoc %}</code></pre>
++++++
+
+The `SessionsWindows.with` call determines the length inactivity before you consider the session closed.  The `grace` method determines is how much time elapses after the window closes before out-of-order are rejected.
+
+Session windows aggregate events (by key) into sessions.  A session represents a period of activity followed by inactivity period.  Once the defined time for inactivity elapses, the session is considered closed.  Session windows are a bit different from other window types (hopping, tumbling) because they don't have a fixed window size.  As long as new records arrive for a key within the inactivity gap, the window continues to grow in size, meaning the amount of time the window spans, not the total number of records in the window.  Another way to view session windows is that they are driven by behavior while other window types are solely time based.

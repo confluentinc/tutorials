@@ -1,0 +1,130 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        maven {
+            url = uri("https://packages.confluent.io/maven/")
+        }
+        maven {
+            url = uri("https://plugins.gradle.org/m2/")
+        }
+        maven {
+            url = uri("https://jitpack.io")
+        }
+    }
+    dependencies {
+        classpath "gradle.plugin.com.github.jengelman.gradle.plugins:shadow:7.0.0"
+    }
+}
+
+plugins {
+    id "java"
+    id "com.google.cloud.tools.jib" version "3.3.1"
+    id "idea"
+    id "eclipse"
+    id "com.github.imflog.kafka-schema-registry-gradle-plugin" version "1.9.1"
+    id "com.google.protobuf" version "0.9.2"
+    id "com.github.davidmc24.gradle.plugin.avro" version "1.7.0"
+}
+
+
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
+version = "0.0.1"
+
+repositories {
+    mavenCentral()
+    maven {
+        url = uri("https://packages.confluent.io/maven/")
+    }
+
+    maven {
+        url = uri("https://jitpack.io")
+    }
+}
+
+apply plugin: "com.github.johnrengelman.shadow"
+
+dependencies {
+    implementation 'com.google.protobuf:protobuf-java:3.22.2'
+    implementation 'org.apache.avro:avro:1.11.1'
+    implementation 'org.slf4j:slf4j-simple:2.0.7'
+    implementation 'org.apache.kafka:kafka-streams:3.4.0'
+    implementation ('org.apache.kafka:kafka-clients') {
+       version {
+           strictly '3.4.0'
+        }
+      }
+    testImplementation "junit:junit:4.13.2"
+    testImplementation 'org.hamcrest:hamcrest:2.2'
+    implementation "io.confluent:kafka-avro-serializer:7.1.4"
+    implementation "io.confluent:kafka-protobuf-serializer:7.2.2"
+    implementation "io.confluent:kafka-protobuf-provider:7.3.0"
+}
+
+protobuf {
+    generatedFilesBaseDir = "${project.buildDir}/generated-main-proto-java"
+
+    protoc {
+        artifact = 'com.google.protobuf:protoc:3.22.2'
+    }
+}
+
+test {
+    testLogging {
+        outputs.upToDateWhen { false }
+        showStandardStreams = true
+        exceptionFormat = "full"
+    }
+}
+
+jar {
+  manifest {
+    attributes(
+      "Class-Path": configurations.compileClasspath.collect { it.getName() }.join(" "),
+      "Main-Class": "io.confluent.developer.MultiEventProtobufProduceConsumeApp"
+    )
+  }
+}
+
+shadowJar {
+    archiveBaseName = "multiple-event-types-standalone"
+    archiveClassifier = ''
+}
+
+schemaRegistry {
+    def props = new Properties()
+    def configs = file("configuration/ccloud.properties")
+    if (configs.exists()) {
+        configs.withInputStream { props.load(it) }
+        def srUrl = props.getProperty("schema.registry.url")
+        def auth = props.getProperty("basic.auth.user.info").split(":")
+        println "Using Confluent properties Schema Registry endpoint:${srUrl}, username:${auth[0]},password:${auth[1]}"
+
+        url = srUrl
+
+        credentials {
+            // username is the characters up to the ':' in the basic.auth.user.info property
+            username = auth[0]
+            // password is everything after ':' in the basic.auth.user.info property
+            password = auth[1]
+        }
+    } else if (file("configuration/dev.properties").exists()) {
+        configs = file("configuration/dev.properties")
+        configs.withInputStream { props.load(it) }
+        def srUrl = props.getProperty("schema.registry.url")
+        println "Using local dev properties Schema Registry endpoint:${srUrl}"
+    } else {
+        println "No configs to parse yet"
+    }
+
+
+    // Possible types are ["JSON", "PROTOBUF", "AVRO"]
+    register {
+        subject('page-view', 'src/main/avro/page-view.avsc', 'AVRO')
+        subject('purchase', 'src/main/avro/purchase.avsc', 'AVRO')
+        subject('avro-events-value', 'src/main/avro/all-events.avsc', 'AVRO')
+                .addReference("io.confluent.developer.avro.PageView", "page-view", 1)
+                .addReference("io.confluent.developer.avro.Purchase", "purchase", 1)
+    }
+
+}

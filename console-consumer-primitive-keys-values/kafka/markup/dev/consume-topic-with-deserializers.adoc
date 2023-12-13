@@ -1,0 +1,17 @@
+Now let's update your command to the console consumer to specify the deserializer for keys and values.
+
+In the same window of your previous console consumer run this updated command in the container shell:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/console-consumer-primitive-keys-values/kafka/code/tutorial-steps/dev/console-consumer-keys-deserializers.sh %}</code></pre>
++++++
+
+After the consumer starts you should see readable numbers similar to this:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/console-consumer-primitive-keys-values/kafka/code/tutorial-steps/dev/expected-output-step-two.txt %}</code></pre>
++++++
+
+Now you know how to configure a console consumer to handle primitive types - `Double`, `Long`, `Float`, `Integer` and `Short`.
+
+Strings are the default value so you don't have to specify a deserializer for those.

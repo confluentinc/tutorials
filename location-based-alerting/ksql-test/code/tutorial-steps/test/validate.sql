@@ -1,0 +1,1 @@
+SELECT * FROM promo_alerts EMIT CHANGES LIMIT 3;

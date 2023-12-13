@@ -1,0 +1,5 @@
+Create the AggregateObject class by copying the following file to src/main/java/io/confluent/developer/AggregateObject.java:
+
++++++
+<pre class="snippet"><code class="java">{% include_raw tutorials/schedule-ktable-ttl-aggregate/kstreams/code/src/main/java/io/confluent/developer/AggregateObject.java %}</code></pre>
++++++

@@ -1,0 +1,5 @@
+First, create a test file at `configuration/test.properties`:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/kafka-streams-schedule-operations/kstreams/code/configuration/test.properties %}</code></pre>
++++++

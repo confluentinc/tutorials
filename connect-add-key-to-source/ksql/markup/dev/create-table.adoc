@@ -1,0 +1,7 @@
+Now that we have a topic with data in from the source system and the keys appropriately set, we can declare a ksqlDB table over the topic.
+
+We only need to specify the datatype of the table's key (`CITY_ID`) – the rest of the schema is picked up automagically from the Schema Registry since we're using Avro to serialize the value part of the payload.
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/connect-add-key-to-source/ksql/code/tutorial-steps/dev/create-table.sql %}</code></pre>
++++++

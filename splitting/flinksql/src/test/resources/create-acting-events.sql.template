@@ -1,0 +1,17 @@
+CREATE TABLE acting_events (
+    name STRING,
+    title STRING,
+    genre STRING
+) WITH (
+    'connector' = 'kafka',
+    'topic' = 'acting-events',
+    'properties.bootstrap.servers' = 'localhost:KAFKA_PORT',
+    'scan.startup.mode' = 'earliest-offset',
+    'scan.bounded.mode' = 'latest-offset',
+    'key.format' = 'avro-confluent',
+    'key.avro-confluent.url' = 'http://localhost:SCHEMA_REGISTRY_PORT',
+    'key.fields' = 'name;title',
+    'value.format' = 'avro-confluent',
+    'value.avro-confluent.url' = 'http://localhost:SCHEMA_REGISTRY_PORT',
+    'value.fields-include' = 'ALL'
+);

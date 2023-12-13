@@ -1,0 +1,11 @@
+This creates and populate a table that we could query with a `SELECT`, but also a Kafka topic, which we can examine from within KSQL using `PRINT`.
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/session-windows/ksql/code/tutorial-steps/dev/print-topic.sql %}</code></pre>
++++++
+
+Notice the key for each message. ksqlDB has combined the grouping key (IP address) with its window boundaries. It should look something like this:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/session-windows/ksql/code/tutorial-steps/dev/expected-print-topic.log %}</code></pre>
++++++  

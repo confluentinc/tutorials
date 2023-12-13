@@ -1,0 +1,21 @@
++----+--------------------------------+----------------------+
+| op |                          title |         tickets_sold |
++----+--------------------------------+----------------------+
+| +I |                         Aliens |                    1 |
+| +I |                       Die Hard |                    1 |
+| -U |                       Die Hard |                    1 |
+| +U |                       Die Hard |                    2 |
+| +I |                  The Godfather |                    1 |
+| -U |                       Die Hard |                    2 |
+| +U |                       Die Hard |                    3 |
+| -U |                  The Godfather |                    1 |
+| +U |                  The Godfather |                    2 |
+| +I |               The Big Lebowski |                    1 |
+| -U |               The Big Lebowski |                    1 |
+| +U |               The Big Lebowski |                    2 |
+| -U |                  The Godfather |                    2 |
+| +U |                  The Godfather |                    3 |
+| -U |                  The Godfather |                    3 |
+| +U |                  The Godfather |                    4 |
++----+--------------------------------+----------------------+
+16 rows in set

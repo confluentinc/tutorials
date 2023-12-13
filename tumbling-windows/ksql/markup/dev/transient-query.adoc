@@ -1,0 +1,11 @@
+As a bonus, we can prove to ourselves that the window boundaries are in fact 6-hour intervals. Run the following transient push query, which uses the `TIMESTAMPTOSTRING` function to convert the UNIX timestamps into something that we can read:
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/tumbling-windows/ksql/code/tutorial-steps/dev/transient-query.sql %}</code></pre>
++++++
+
+The output should look similar to:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/tumbling-windows/ksql/code/tutorial-steps/dev/expected-transient-query.log %}</code></pre>
++++++

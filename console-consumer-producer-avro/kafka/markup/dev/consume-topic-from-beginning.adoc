@@ -1,0 +1,18 @@
+Next, let's open up a console consumer again. This time you'll read everything your producer has sent to the topic you created in the previous step.
+
+Run this command in the container shell you created for your first consumer and note the additional property `--from-beginning`:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/console-consumer-producer-avro/kafka/code/tutorial-steps/dev/console-consumer-from-beginning.sh %}</code></pre>
++++++
+
+After the consumer starts you should see the following output in a few seconds:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/console-consumer-producer-avro/kafka/code/tutorial-steps/dev/expected-output-step-two.txt %}</code></pre>
++++++
+
+
+One word of caution with using the `--from-beginning` flag. As the name implies this setting forces the consumer retrieve _**every record**_ currently on the topic.  So it's best to use when testing  and learning and not on a production topic.
+
+Again, once you've received all records, close this console consumer with `Ctrl-C`.

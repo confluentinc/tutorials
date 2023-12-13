@@ -1,0 +1,11 @@
+Now that the `EVENTTIME` column is a `TIMESTAMP`, we can use the `CONVERT_TZ` ksqlDB function to convert it from `UTC` to `America/Denver`. Run the `SELECT` query below to see the timezone conversion.
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/connect-sink-timestamp/ksql/code/tutorial-steps/dev/select-from-ts.sql %}</code></pre>
++++++
+
+The query will output the content below.
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/connect-sink-timestamp/ksql/code/tutorial-steps/dev/select-from-ts-output.log %}</code></pre>
++++++

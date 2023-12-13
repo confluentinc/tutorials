@@ -1,0 +1,36 @@
+This application takes the raw network packet data and creates a structured stream of events that can be processed using SQL. Using link:https://docs.ksqldb.io/en/latest/concepts/time-and-windows-in-ksqldb-queries/#windows-in-sql-queries[windows] and filters, the application detects a high number of connection `RESET` events from the server and isolates the potentially offending source.
+
+This tutorial assumes that you have captured your network packet data and published it to a RabbitMQ queue in JSON format. An example packet may look like the following:
+
+[source,json]
+----
+{
+  "timestamp": "1590682723239",
+  "layers": {
+    "frame": {
+      "time": "May 28, 2020 11:48:43.239564000 CST",
+      "protocols": "eth:ethertype:ip:tcp"
+    },
+    "eth": {
+      "src": "FF:AA:C9:83:C0:21",
+      "dst": "DF:ED:E3:91:D4:13"
+    },
+    "ip": {
+      "src": "192.168.33.11",
+      "src_host": "192.168.33.11",
+      "dst": "192.168.33.77",
+      "dst_host": "192.168.33.77"
+    },
+    "tcp": {
+      "srcport": "59202",
+      "dstport": "443",
+      "flags_ack": "1",
+      "flags_reset": "0"
+    }
+  }
+}
+----
+
+**Note**: For brevity, some fields have been removed and some names have been simplified from a typical packet capture event.
+
+The connector will source the data into a Kafka topic for stream processing in ksqlDB.

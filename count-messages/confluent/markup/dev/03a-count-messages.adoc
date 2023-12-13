@@ -1,0 +1,29 @@
+You can count the number of messages in a Kafka topic simply by consuming the entire topic and counting how many messages are read. 
+
+To do this from the commandline you can use the https://github.com/edenhill/kcat[`kcat`] tool which is built around the https://en.wikipedia.org/wiki/Pipeline_(Unix)[Unix philosophy of pipelines]. This means that you can pipe the output (messages) from kcat into another tool like `wc` to count the number of messages.
+
+As input, pass in the `configuration/ccloud.properties` file that you created in an earlier step.
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/count-messages/confluent/code/tutorial-steps/dev/03a-count-messages.sh %}</code></pre>
++++++
+
+Let's take a close look at the commandline soup we've used here to count the messages. 
+
+* `docker exec kcat` runs the following command with its arguments in the Docker container called `kcat`
+* `\` is a line continuation character
+** `kcat` runs kcat itself, passing in arguments as follows: 
+*** `-F` Kafka cluster connection information
+*** `-C` act as a consumer
+*** `-t` read data from the `test-topic` topic
+*** `-e` exit once at the end of the topic
+*** `-q` run quietly
+** `|` pipes the messages from kcat to the next command 
+** `grep -v "Reading configuration from file"` skip the log message
+** `wc -l` reads the piped messages and writes the number of lines in total (one message per line) to screen
+
+Finally, the output of the command is the message count.
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/count-messages/confluent/code/tutorial-steps/dev/03a-count-messages.out %}</code></pre>
++++++

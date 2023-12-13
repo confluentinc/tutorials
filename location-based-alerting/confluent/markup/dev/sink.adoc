@@ -1,0 +1,5 @@
+Sinking the promotion alerts out to Elasticsearch facilitates further search processing:
+
+++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/clickstream/confluent/code/tutorial-steps/dev/sink.sql %}</code></pre>
+++++

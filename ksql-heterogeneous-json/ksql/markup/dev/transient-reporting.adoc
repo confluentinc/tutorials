@@ -1,0 +1,23 @@
+We need to create a query that extracts the fields we want from input sources.  Since we have defined the top element of the JSON as a String using the `VARCHAR` keyword,
+we can use the https://docs.ksqldb.io/en/latest/developer-guide/ksqldb-reference/scalar-functions/#extractjsonfield[ksqlDB EXTRACTJSONFIELD function] to extract the different values at a specified https://jsonpath.com/[JSONPath].  If the requested JSONpath doesn't exist, the `EXTRACTJSONFIELD` function returns `NULL`.
+
+NOTE: The result of `EXTRACTJSONFIELD` function is always a `STRING` type. To convert the result to another type you'll need to use the `CAST` operator. We've done that with our queries in this tutorial.  If
+
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/ksql-heterogeneous-json/ksql/code/tutorial-steps/dev/transient-reporting.sql %}</code></pre>
++++++
+
+This query should produce the following output:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/ksql-heterogeneous-json/ksql/code/tutorial-steps/dev/expected-transient-reporting.log %}</code></pre>
++++++
+
+Now that the reporting query works, let's update it to create a continous query for your reporting scenario
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/ksql-heterogeneous-json/ksql/code/tutorial-steps/dev/continuous-reporting.sql %}</code></pre>
++++++
+
+We're done with the ksqlDB CLI for now so go ahead and type `exit` to quit.

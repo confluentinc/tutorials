@@ -1,0 +1,18 @@
+Next let's open up a console consumer to read records sent to the topic in the previous step, but you'll only read from the first partition. Kafka partitions
+are zero based so your two partitions are numbered `0`, and `1` respectively.
+
+Using the broker container shell, lets start a console consumer to read only records from the first partition, `0`
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/console-consumer-read-specific-offsets-partition/kafka/code/tutorial-steps/dev/console-consumer-keys-partition-zero.sh %}</code></pre>
++++++
+
+After a few seconds you should see something like this (your output will vary depending on the hashing algorithm):
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/console-consumer-read-specific-offsets-partition/kafka/code/tutorial-steps/dev/expected-output-step-one.txt %}</code></pre>
++++++
+
+You'll notice you sent 12 records, but only 3 went to the first partition.  The reason for this is the way Kafka calculates the partition assignment for a given record.  Kafka calculates the partition by taking the hash of the key modulo the number of partitions.  So, even though you have 2 partitions, depending on what the key hash value is, you aren't guaranteed an even distribution of records across partitions.
+
+Go ahead and shut down the current consumer with `Ctrl-C`.

@@ -1,0 +1,10 @@
+The second is a stream of information about network traffic for the devices created in the topic above. 
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/generate-test-data-streams/kafka/code/tutorial-steps/dev/consume-topic-02b.sh %}</code></pre>
++++++
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/generate-test-data-streams/kafka/code/tutorial-steps/dev/consume-topic-02b_expected.log %}</code></pre>
++++++
+

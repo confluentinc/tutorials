@@ -1,0 +1,7 @@
+Every record in ksqlDB has a system-column called `ROWTIME` that tracks the timestamp of the event.
+By default, `ROWTIME` is inherited from the timestamp in the underlying Kafka record metadata.
+To use the timestamp from a field in the record payload instead, configure the `TIMESTAMP` option when you create the stream:
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/time-concepts/ksql/code/tutorial-steps/dev/create-stream-eventtime.sql  %}</code></pre>
++++++

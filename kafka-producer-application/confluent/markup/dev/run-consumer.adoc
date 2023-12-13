@@ -1,0 +1,20 @@
+////
+  This is a sample content file for how to include a console consumer to the tutorial, probably a good idea so the end user can watch the results
+  of the tutorial.  Change the text as needed.
+
+////
+
+Now run a console consumer that will read topics from the output topic to confirm your application published the expected records.
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/kafka-producer-application/confluent/code/tutorial-steps/dev/ccloud-cli-consumer.sh %}</code></pre>
++++++
+
+The output from the consumer can vary if you added any of your own records, but it should look something like this:
+
+++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/kafka-producer-application/kafka/code/tutorial-steps/dev/expected-output.txt %}</code></pre>
+++++
+
+
+Now close the consumer with `Ctrl-C` then the broker shell with `Ctrl-D`.

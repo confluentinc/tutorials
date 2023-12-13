@@ -1,0 +1,24 @@
+////
+  This is a sample content file for how to include a console consumer to the tutorial, probably a good idea so the end user can watch the results
+  of the tutorial.  Change the text as needed.
+
+////
+
+In the previous step you verified the record stream output, but in this step you'll verify the update stream output.
+
+
+Next, run the following command to see the output of the update-stream:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/streams-to-table/confluent/code/tutorial-steps/dev/table-console-consumer.sh %}</code></pre>
++++++
+
+After a few seconds you should see output like the following:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/streams-to-table/kstreams/code/tutorial-steps/dev/expected-table-output.txt %}</code></pre>
++++++
+
+The difference in the output you should see is that instead of six records, you have two.  When you converted the `KStream` (an event stream) to a _materialized_ `KTable` (an update stream), Kafka Streams provides a cache in front of the state store.  With the cache in place, new records replace existing records with the same key.  Unlike a record stream where each record is independent, with an update stream, it's ok to remove intermediate results.  Kafka Streams flushes the cache when either the cache is full (10G by default) or when Kafka Streams commits the offsets of the records processed.  In this case, when the Kafka Streams flushed the cache, you only have one record for each key.
+
+Now that you've confirmed the streams output, close this consumer with `Ctrl-C`.

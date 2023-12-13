@@ -1,0 +1,5 @@
+Now run the test, which is as simple as:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/versioned-ktables/kstreams/code/tutorial-steps/test/invoke-tests.sh %}</code></pre>
++++++

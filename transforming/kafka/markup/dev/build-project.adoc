@@ -1,0 +1,5 @@
+Because these Avro schemas are going to be used by other Java classes, we need to run the build to turn the avsc files into Java code. Run the following:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/transforming/kafka/code/tutorial-steps/dev/build-project.sh %}</code></pre>
++++++

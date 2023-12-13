@@ -1,0 +1,18 @@
+Next, let's open up a consumer to read records from the new topic. 
+
+From the same terminal you used to create the topic above, run the following command to start a console consumer with the `ccloud` CLI:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/console-consumer-producer-avro/confluent/code/tutorial-steps/dev/harness-console-consumer-keys.sh %}</code></pre>
++++++
+
+You will be prompted for the Confluent Cloud Schema Registry credentials as shown below.
+Enter the values you got from when you enabled Schema Registry in the Confluent Cloud Console.
+
+```
+Enter your Schema Registry API key:
+Enter your Schema Registry API secret:
+```
+
+The consumer will start up and block waiting for records, you won't see any output until after the next step.
+

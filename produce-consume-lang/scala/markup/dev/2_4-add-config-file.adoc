@@ -1,0 +1,7 @@
+Add in your project resources the file `src/main/resources/application.conf`:
+
++++++
+<pre class="snippet"><code class="hocon">{%
+    include_raw tutorials/produce-consume-lang/scala/code/src/main/resources/application.conf
+%}</code></pre>
++++++

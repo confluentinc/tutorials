@@ -1,0 +1,7 @@
+We will create a stream to model some sample data with this command.
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/connect-sink-timestamp/ksql/code/tutorial-steps/dev/create-stream.sql %}</code></pre>
++++++
+
+The schema for our example stream specifies `eventTime` as a `BIGINT`. It is common for applications to send data in Unix time, thus why `eventTime` is specified as a `BIGINT`.

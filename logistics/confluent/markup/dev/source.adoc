@@ -1,0 +1,5 @@
+For this tutorial, we'll be using order data as well as a stream of status updates from a fleet of delivery vehicles that are in the process of transporting orders from a warehouse to customers. Kafka Connect can easily stream in data from a database containing that information; use the following template as a guide for setting up your connector.
+
+++++
+<pre class="snippet"><code class="json">{% include_raw tutorials/logistics/confluent/code/tutorial-steps/dev/source.json %}</code></pre>
+++++

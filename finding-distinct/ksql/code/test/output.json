@@ -1,0 +1,31 @@
+{
+  "outputs": [
+    {
+      "topic": "DISTINCT_CLICKS",
+      "key": "10.0.0.1",
+      "value": {
+        "URL": "https://docs.confluent.io/current/tutorials/examples/kubernetes/gke-base/docs/index.html",
+        "TIMESTAMP": "2023-06-01 18:26:50.383"
+      },
+      "timestamp": 1685644010383
+    },
+    {
+      "topic": "DISTINCT_CLICKS",
+      "key": "10.0.0.12",
+      "value": {
+        "URL": "https://www.confluent.io/hub/confluentinc/kafka-connect-datagen",
+        "TIMESTAMP": "2023-06-01 18:31:35.242"
+      },
+      "timestamp": 1685644295242
+    },
+    {
+      "topic": "DISTINCT_CLICKS",
+      "key": "10.0.0.13",
+      "value": {
+        "URL": "https://www.confluent.io/hub/confluentinc/kafka-connect-datagen",
+        "TIMESTAMP": "2023-06-01 18:35:21.624"
+      },
+      "timestamp": 1685644521624
+    }
+  ]
+}

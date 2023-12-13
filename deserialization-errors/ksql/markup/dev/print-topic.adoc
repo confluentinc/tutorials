@@ -1,0 +1,12 @@
+We purposely selected only some fields to prove the point about showing deserialization errors with the `KSQL_PROCESSING_LOG` stream, but each event produced to this stream carries much more useful data.
+Print the contents of its underlying topic to see some more.
+
++++++
+<pre class="snippet"><code class="sql">{% include_raw tutorials/deserialization-errors/ksql/code/tutorial-steps/dev/print-topic.sql %}</code></pre>
++++++
+
+The output should look similar to:
+
++++++
+<pre class="snippet"><code class="shell">{% include_raw tutorials/deserialization-errors/ksql/code/tutorial-steps/dev/expected-print.log %}</code></pre>
++++++

@@ -1,0 +1,17 @@
+////
+  This is an example file for adding an Avro schema to the tutorial.  You should have one of these make-TYPE-schema steps for
+  each schema you are using in the tutorial, named "make-TYPE-schema.adoc".  For example if this was a file in a tutorial it
+  would get named "make-movie.schema.adoc".  You will also need to make the corresponding Avro file in
+  _includes/tutorials/kafka-producer-application/kafka/code/src/main/avro.
+
+  You'll need to update the wording and names of the avro files to fit your tutorial.
+
+  If you aren't using Avro, delete this file from the folder.
+////
+
+Then create the following Avro schema file at `src/main/avro/example.avsc` for the movies lookup table:
+
++++++
+<pre class="snippet"><code class="avro">{% include_raw tutorials/kafka-producer-application/kafka/code/src/main/avro/example.avsc %}</code></pre>
++++++
+

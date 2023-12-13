@@ -1,0 +1,5 @@
+Then create the following Avro schema file at `src/main/avro/album.avsc` for the album lookup table:
+
++++++
+<pre class="snippet"><code class="avro">{% include_raw tutorials/fk-joins/kstreams/code/src/main/avro/album.avsc %}</code></pre>
++++++
