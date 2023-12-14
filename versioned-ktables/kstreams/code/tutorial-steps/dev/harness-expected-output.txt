@@ -1,6 +1,0 @@
-one : peanut butter and jelly
-two : ham and eggs
-three : cheese and crackers
-four : tea and crumpets
-five : coffee with cream
-Processed a total of 5 messages
