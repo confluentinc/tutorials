@@ -1,4 +1,5 @@
 # Confluent parallel consumer
+
 The Confluent Parallel Consumer is an open-source Apache 2.0-licensed Java library that enables you to consume from a Kafka topic with more parallelism than the number of partitions.  In an Apache Kafka consumer group, the number of partitions is the parallelism limit.
 Increasing the level of parallelism beyond the partition count is desirable in many situations.  For example, when there are fixed partition counts for a reason beyond your control or if you need to make a high-latency call out to a database or microservice while consuming and want to increase throughput.
 
@@ -33,9 +34,6 @@ record it consumes.
 
 There are two performance tests `ParallelConsumerPerfTest` and the `MultithreadedKafkaConsumerPerfTest` you can run to 
 observe the power of parallel consumption first-hand.
-
-
-
 
 
 
