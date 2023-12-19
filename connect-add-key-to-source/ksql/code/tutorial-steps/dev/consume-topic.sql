@@ -1,1 +1,0 @@
-PRINT postgres_cities FROM BEGINNING LIMIT 6;

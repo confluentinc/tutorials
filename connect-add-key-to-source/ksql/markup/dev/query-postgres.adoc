@@ -1,9 +1,0 @@
-Check the data in the source database. Observe the `city_id` primary key: 
-
-+++++
-<pre class="snippet"><code class="shell">{% include_raw tutorials/connect-add-key-to-source/ksql/code/tutorial-steps/dev/query-postgres.sh %}</code></pre>
-+++++
-
-+++++
-<pre class="snippet"><code class="shell">{% include_raw tutorials/connect-add-key-to-source/ksql/code/tutorial-steps/dev/query-postgres_expected.log %}</code></pre>
-+++++

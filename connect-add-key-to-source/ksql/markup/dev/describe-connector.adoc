@@ -1,9 +1,0 @@
-You can also inspect further details about the connector including to which topics it is writing:
-
-+++++
-<pre class="snippet"><code class="sql">{% include_raw tutorials/connect-add-key-to-source/ksql/code/tutorial-steps/dev/describe-connector.sql %}</code></pre>
-+++++
-
-+++++
-<pre class="snippet"><code class="shell">{% include_raw tutorials/connect-add-key-to-source/ksql/code/tutorial-steps/dev/describe-connector_expected.log %}</code></pre>
-+++++
