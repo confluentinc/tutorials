@@ -1,5 +1,0 @@
-In your terminal, run:
-
-+++++
-<pre class="snippet"><code class="shell">{% include_raw tutorials/versioned-ktables/kstreams/code/tutorial-steps/dev/build-uberjar.sh %}</code></pre>
-+++++
