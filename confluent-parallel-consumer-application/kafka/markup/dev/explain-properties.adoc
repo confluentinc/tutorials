@@ -1,9 +1,0 @@
-Let's do a quick overview of some of the more important properties here:
-
-The `key.deserializer` and `value.deserializer` properties provide a class implementing the `Deserializer` interface for converting `byte` arrays into the expected object type of the key and value respectively.
-
-The `max.poll.interval.ms` is the maximum amount of time a consumer may take between calls to `Consumer.poll()`.  If a consumer instance takes longer than the specified time, it's considered non-responsive and removed from the consumer-group triggering a rebalance.
-
-Setting `enable.auto.commit` configuration to `false` is required because the Confluent Parallel Consumer handles committing offsets in order to achieve fault tolerance.
-
-`auto.offset.reset` - If a consumer instance can't locate any offsets for its topic-partition assignment(s), it will resume processing from the _**earliest**_ available offset.

@@ -1,5 +1,0 @@
-Use the following command to create a topic that we'll use for performance testing:
-
-```plaintext
-confluent kafka topic create perftest-parallel-consumer-input-topic
-```

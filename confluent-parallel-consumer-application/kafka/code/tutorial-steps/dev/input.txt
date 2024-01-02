@@ -1,4 +1,0 @@
-fun-line:All streams lead to Kafka
-event-promo:Go to Current
-event-promo:Go to Kafka Summit
-fun-line:Consume gently down the stream

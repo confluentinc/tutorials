@@ -1,9 +1,0 @@
-In order to build the project, first https://gradle.org/install/[install Gradle] 7.5 or later if you don't already have it.
-Create the following Gradle build file, named `build.gradle` for the project. Note the `parallel-consumer-core` dependency,
-which is available in Maven Central. This artifact includes the Confluent Parallel Consumer's core API.
-There are also separate modules for using the Confluent Parallel Consumer with reactive API frameworks like Vert.x (`parallel-consumer-vertx`)
-and Reactor (`parallel-consumer-reactor`). These modules are out of scope for this introductory tutorial.
-
-+++++
-<pre class="snippet"><code class="groovy">{% include_raw tutorials/confluent-parallel-consumer-application/kafka/code/build.gradle %}</code></pre>
-+++++
