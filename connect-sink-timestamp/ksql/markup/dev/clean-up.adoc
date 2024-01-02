@@ -1,5 +1,0 @@
-Exit the ksqlDB CLI with `exit` and shut down the stack by running:
-
-+++++
-<pre class="snippet"><code class="bash">{% include_raw tutorials/connect-sink-timestamp/ksql/code/tutorial-steps/dev/clean-up.sh %}</code></pre>
-+++++
