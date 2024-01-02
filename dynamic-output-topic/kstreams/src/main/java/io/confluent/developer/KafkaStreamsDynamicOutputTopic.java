@@ -19,13 +19,13 @@ import java.util.Properties;
 import java.util.concurrent.CountDownLatch;
 
 
-public class DynamicOutputTopic {
+public class KafkaStreamsDynamicOutputTopic {
 
     static final double FAKE_PRICE = 0.467423D;
     static final String INPUT_TOPIC = "dynamic-topic-input";
     static final String OUTPUT_TOPIC = "dynamic-topic-output";
     static final String SPECIAL_ORDER_OUTPUT_TOPIC = "special-order-output";
-     private static final Logger LOG = LoggerFactory.getLogger(DynamicOutputTopic.class);
+     private static final Logger LOG = LoggerFactory.getLogger(KafkaStreamsDynamicOutputTopic.class);
     public Topology buildTopology(Properties allProps) {
         final StreamsBuilder builder = new StreamsBuilder();
 
@@ -66,10 +66,10 @@ public class DynamicOutputTopic {
         } else {
             properties = Utils.loadProperties();
         }
-        properties.put(StreamsConfig.APPLICATION_ID_CONFIG, "dynamic-output-topic");
-        DynamicOutputTopic dynamicOutputTopic = new DynamicOutputTopic();
+        properties.put(StreamsConfig.APPLICATION_ID_CONFIG, "kafka-streams-dynamic-output-topic");
+        KafkaStreamsDynamicOutputTopic kafkaStreamsDynamicOutputTopic = new KafkaStreamsDynamicOutputTopic();
 
-        Topology topology = dynamicOutputTopic.buildTopology(properties);
+        Topology topology = kafkaStreamsDynamicOutputTopic.buildTopology(properties);
 
         try (KafkaStreams kafkaStreams = new KafkaStreams(topology, properties)) {
             CountDownLatch countDownLatch = new CountDownLatch(1);
