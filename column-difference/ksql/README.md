@@ -8,7 +8,7 @@ The first thing we do is to create a stream named `PURCHASE_STREAM`
 
 ```sql
 CREATE STREAM PURCHASE_STREAM (
-        	  ID VARCHAR,
+                  ID VARCHAR,
                   PREVIOUS_PURCHASE DOUBLE,
                   CURRENT_PURCHASE DOUBLE,
                   TXN_TS VARCHAR,
@@ -60,7 +60,7 @@ test data, and run the query that calculates the column difference.
 
 ```sql
  CREATE STREAM PURCHASE_STREAM (
-        	      ID VARCHAR,
+                      ID VARCHAR,
                       PREVIOUS_PURCHASE DOUBLE,
                       CURRENT_PURCHASE DOUBLE,
                       TXN_TS VARCHAR,
@@ -136,7 +136,7 @@ test data, and run the column difference query.
 
 ```sql
 CREATE STREAM PURCHASE_STREAM (
-        	      ID VARCHAR,
+                      ID VARCHAR,
                       PREVIOUS_PURCHASE DOUBLE,
                       CURRENT_PURCHASE DOUBLE,
                       TXN_TS VARCHAR,

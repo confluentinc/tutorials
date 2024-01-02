@@ -5,7 +5,7 @@ In this tutorial, we'll show how to use the concatenation operator to create a s
 
 ## Setup
 
-The first thing we do is create a stream named `ACTIVITY_STREAM` which simulates stock purchases and serves for our example of concatenating two columns together.
+The first thing we do is create a stream named `ACTIVITY_STREAM` which simulates stock purchases and serves as our example of concatenating two columns together.
 
 ```sql
 CREATE STREAM ACTIVITY_STREAM (
@@ -23,7 +23,7 @@ CREATE STREAM ACTIVITY_STREAM (
 ```
 ## Concatenating columns 
 
-Now let's create a stream that concatenates several columns to create a summary of activity
+Now let's create a stream that concatenates several columns to create a summary of activity.
 
 ```sql
 CREATE STREAM SUMMARY_RESULTS AS
