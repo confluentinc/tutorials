@@ -1,5 +1,0 @@
-Next, create a directory for configuration data:
-
-+++++
-<pre class="snippet"><code class="shell">{% include_raw tutorials/connect-add-key-to-source/kstreams/code/tutorial-steps/dev/make-configuration-dir.sh %}</code></pre>
-+++++

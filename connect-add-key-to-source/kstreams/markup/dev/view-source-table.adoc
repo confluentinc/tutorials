@@ -1,5 +1,0 @@
-View the data in the source table:
-
-+++++
-<pre class="snippet"><code class="shell">{% include_raw tutorials/connect-add-key-to-source/kstreams/code/tutorial-steps/dev/view-source-table.sh %}</code></pre>
-+++++

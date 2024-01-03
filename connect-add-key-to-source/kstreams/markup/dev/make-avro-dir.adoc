@@ -1,7 +1,0 @@
-This tutorial uses one stream of cities. Let's create the schemas for it.
-
-Create a directory for the schema that represents each city in the stream:
-
-+++++
-<pre class="snippet"><code class="shell">{% include_raw tutorials/connect-add-key-to-source/kstreams/code/tutorial-steps/dev/make-avro-dir.sh %}</code></pre>
-+++++

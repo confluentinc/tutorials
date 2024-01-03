@@ -1,9 +1,0 @@
-With the connector running let's now inspect the data on the Kafka topic. Here we'll use `kcat` because of its rich capabilities for inspecting and displaying details of Kafka messages:
-
-+++++
-<pre class="snippet"><code class="shell">{% include_raw tutorials/connect-add-key-to-source/kafka/code/tutorial-steps/dev/consume-topic.sh %}</code></pre>
-+++++
-
-+++++
-<pre class="snippet"><code class="shell">{% include_raw tutorials/connect-add-key-to-source/kafka/code/tutorial-steps/dev/consume-topic_expected.log %}</code></pre>
-+++++
