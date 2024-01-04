@@ -17,7 +17,7 @@ selecting values from the `TEMPERATURE_READINGS_RAW` stream.
 
 ```sql
 CREATE STREAM TEMPERATURE_READINGS_TIMESTAMP_CONVERTED AS
-SELECT temperature, CONVERT_TZ(FROM_UNIXTIME(eventTime)'UTC', 'America/Denver') AS EVENTTIME_MT
+SELECT temperature, CONVERT_TZ(FROM_UNIXTIME(eventTime), 'UTC', 'America/Denver') AS EVENTTIME_MT
 FROM TEMPERATURE_READINGS_RAW;
 ```
 What you've done here is to first convert `eventTime` from a `BIGINT` to a timestamp with the `FROM_UNIXTIME` function. Then the `CONVERT_TZ` function
