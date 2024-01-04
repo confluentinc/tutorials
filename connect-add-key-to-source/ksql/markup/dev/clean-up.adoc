@@ -1,5 +1,0 @@
-Exit the ksqlDB CLI with `exit` and shut down the stack by running:
-
-+++++
-<pre class="snippet"><code class="groovy">{% include_raw tutorials/connect-add-key-to-source/ksql/code/tutorial-steps/dev/clean-up.sh %}</code></pre>
-+++++

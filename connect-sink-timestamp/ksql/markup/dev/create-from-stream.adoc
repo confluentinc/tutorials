@@ -1,5 +1,0 @@
-Things look good, so let's create a persistent query to continuously convert that column into a human-readable `America/Denver` timestamp.
-
-+++++
-<pre class="snippet"><code class="sql">{% include_raw tutorials/connect-sink-timestamp/ksql/code/tutorial-steps/dev/create-from-stream.sql %}</code></pre>
-+++++

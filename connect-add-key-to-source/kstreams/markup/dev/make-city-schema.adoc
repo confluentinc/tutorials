@@ -1,5 +1,0 @@
-Then create the following Avro schema file at `src/main/avro/city.avsc` for the cities lookup table:
-
-+++++
-<pre class="snippet"><code class="avro">{% include_raw tutorials/connect-add-key-to-source/kstreams/code/src/main/avro/city.avsc %}</code></pre>
-+++++
