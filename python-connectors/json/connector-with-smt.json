@@ -1,0 +1,30 @@
+{
+  "name": "pytools-demo-connector-with-smt",
+  "config": {
+    "name": "pytools-demo-connector-with-smt",
+    "connector.class": "io.confluent.pytools.PySourceConnector",
+    "key.converter": "org.apache.kafka.connect.converters.LongConverter",
+    "value.converter": "org.apache.kafka.connect.storage.StringConverter",
+    "value.converter.schema.registry.url": "http://schema-registry:8081",
+    "value.converter.schemas.enable": "false",
+
+    "kafka.topic": "test-topic-connector-with-smt",
+
+    "scripts.dir": "/app/",
+    "working.dir": "/tmp/",
+    "entry.point": "connector_with_smt.poll",
+    "init.method": "init_connector",
+    "private.settings": "{\"conf1\":\"value1\", \"conf2\":\"value2\"}",
+
+    "transforms": "myTransform",
+    "transforms.myTransform.type": "io.confluent.pytools.PyConnectSmt",
+
+    "transforms.myTransform.scripts.dir": "/app/",
+    "transforms.myTransform.working.dir": "/tmp/",
+
+    "transforms.myTransform.entry.point": "connector_with_smt.transform",
+    "transforms.myTransform.init.method": "init_smt",
+    "transforms.myTransform.private.settings": "{\"conf3\":\"value3\", \"conf4\":\"value4\"}"
+  }
+}
+
