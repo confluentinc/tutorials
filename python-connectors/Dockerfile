@@ -19,8 +19,7 @@ RUN pip3 install pemja
 
 USER appuser
 
-# temporary link until the fatjar is on our artifactory
-ADD https://www.dropbox.com/scl/fi/569vla0f8j04c6kr9twcn/confluent-pytools-0.1-jar-with-dependencies.jar?rlkey=ktm71zuatdnvm327p5d97i88w&dl=1 /etc/kafka-connect/jars/
+ADD https://confluent-csid-maven.s3.us-west-2.amazonaws.com/releases/io/confluent/pytools/confluent-pytools/0.1/confluent-pytools-0.1-jar-with-dependencies.jar /etc/kafka-connect/jars/
 COPY code/*.py /app/
 COPY code/requirements.txt /app/
 COPY json/*.json /app/
