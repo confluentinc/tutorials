@@ -1,7 +1,0 @@
-Before you start producing input data, it's a good idea to set up the consumer on the output topic. This way, as soon as you produce movie ratings (and windowed and counted), you'll see the results right away. Run this to get ready to consume the windowed counts:
-
-+++++
-<pre class="snippet"><code class="shell">{% include_raw tutorials/tumbling-windows/confluent/code/tutorial-steps/dev/console-consumer.sh %}</code></pre>
-+++++
-
-You won't see any results until the next step.

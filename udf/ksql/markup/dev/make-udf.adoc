@@ -1,7 +1,0 @@
-Then create the following file at `src/main/java/io/confluent/developer/VwapUdf.java`.  This file contains the Java logic of your custom function.  Read through the code to familiarize yourself.
-
-+++++
-<pre class="snippet"><code class="java">{% include_raw tutorials/udf/ksql/code/src/main/java/io/confluent/developer/VwapUdf.java %}</code></pre>
-+++++
-
-Here we have created a new Class which defines two functions, both of which are annotated with `Udf`, indicating they are ksqlDB UDF function definitions.   Both functions take parameters of type `double` or `int` and produce a single result of type `double`, representing the calculated volume-weighted average price of the inputs.

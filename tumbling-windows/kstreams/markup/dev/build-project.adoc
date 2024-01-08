@@ -1,5 +1,0 @@
-Because we will use this Avro schema in our Java code, we'll need to compile it. The Gradle Avro plugin is a part of the build, so it will see your new Avro files, generate Java code for them, and compile those and all other Java sources. Run this command to get it all done:
-
-+++++
-<pre class="snippet"><code class="shell">{% include_raw tutorials/tumbling-windows/kstreams/code/tutorial-steps/dev/build-project.sh %}</code></pre>
-+++++

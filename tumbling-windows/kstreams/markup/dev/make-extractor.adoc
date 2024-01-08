@@ -1,5 +1,0 @@
-The preceding topology relies on the messages in its input topic being processed according <em>event time</em>—the time at which the event actually occurred, rather than the time it happened to arrive on the topic. Event time is typically available in the message itself, as it is in this case in the form of the `timestamp` field. We can automatically extract this timestamp by creating the `src/main/java/io/confluent/developer/RatingTimestampExtractor.java` class, which is an implementation of the `https://kafka.apache.org/{{ site.ak_javadoc_version }}/javadoc/org/apache/kafka/streams/processor/TimestampExtractor.html[TimestampExtractor]` interface. The code is simple:
-
-+++++
-<pre class="snippet"><code class="java">{% include_raw tutorials/tumbling-windows/kstreams/code/src/main/java/io/confluent/developer/RatingTimestampExtractor.java %}</code></pre>
-+++++
