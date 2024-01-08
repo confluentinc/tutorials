@@ -1,7 +1,0 @@
-This tutorial uses a single input stream called `ratings`. It contains movie ratings for a few different movies submitted at times spanning a few weeks. We'll need to create a schema for these events.
-  
-Create a directory to hold the schema file:
-
-+++++
-<pre class="snippet"><code class="shell">{% include_raw tutorials/tumbling-windows/kstreams/code/tutorial-steps/dev/make-avro-dir.sh %}</code></pre>
-+++++
