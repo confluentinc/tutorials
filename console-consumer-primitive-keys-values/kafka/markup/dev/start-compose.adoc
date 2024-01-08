@@ -1,9 +1,0 @@
-And launch it by running:
-
-+++++
-<pre class="snippet"><code class="shell">{% include_raw tutorials/console-consumer-primitive-keys-values/kafka/code/tutorial-steps/dev/docker-compose-up.sh %}</code></pre>
-+++++
-
-After you've run the `docker compose up -d` command, wait 30 seconds to a 1 minute before executing the next step.
-
-

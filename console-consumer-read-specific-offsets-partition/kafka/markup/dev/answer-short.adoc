@@ -1,5 +1,0 @@
-Use the `kafka-console-consumer` command with the `--partition` and `--offset` flags to read from a specific partition and offset.
-
-+++++
-<pre class="snippet"><code class="bash">{% include_raw tutorials/console-consumer-read-specific-offsets-partition/kafka/code/tutorial-steps/dev/console-consumer-keys-partition-offset.sh %}</code></pre>
-+++++
