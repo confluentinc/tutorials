@@ -1,1 +1,0 @@
-For more information on how to use the Apache Kafka® command line tools with Confluent Cloud, see https://docs.confluent.io/platform/current/tutorials/examples/clients/docs/kafka-commands.html 

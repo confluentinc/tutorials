@@ -1,4 +1,0 @@
-key1:what a lovely
-key1:bunch of coconuts
-foo:bar
-fun:programming

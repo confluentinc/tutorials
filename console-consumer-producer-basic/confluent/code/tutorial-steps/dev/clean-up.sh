@@ -1,1 +1,0 @@
-ccloud::destroy_ccloud_stack $SERVICE_ACCOUNT_ID

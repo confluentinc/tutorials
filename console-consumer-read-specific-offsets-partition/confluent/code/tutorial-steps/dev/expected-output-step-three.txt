@@ -1,3 +1,0 @@
-key1-All
-key3-lead
-key1-Kafka
