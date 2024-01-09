@@ -1,6 +1,6 @@
-# Consuming non-string primitive keys and values 
+# Consuming non-string primitive keys and values with the Apache Kafka &reg; console consumer 
 
-You want to inspect or debug records written to a topic. Each record key and value is a long and double, respectively. In this tutorial, you'll learn how to specify key and value deserializers with the console consumer.
+You want to inspect or debug records written to a topic. Each record key and value is a long and double, respectively. In this tutorial, you'll learn how to specify key and value deserializers with the Apache Kafka console consumer.
 
 
 ## Setup
@@ -17,7 +17,7 @@ kafka-console-consumer --topic <TOPIC>\
  --property key.separator=" : " \
 ```
 
-You'll see results that look like:
+You'll see results that look like the following because the default string deserializer is used:
 
 ```commandline
 !? : @'?u_?mY
