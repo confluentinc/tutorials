@@ -1,5 +1,0 @@
-Similarly, create a file at `test/output.json` with the expected outputs. Notice that because ksqlDB joins its grouping key with the window boundaries, we need to use a bit of extra expression to describe what to expect. We leverage the `window` key to describe the start and end boundaries that the key represents.
-
-+++++
-<pre class="snippet"><code class="json">{% include_raw tutorials/tumbling-windows/ksql/code/test/output.json %}</code></pre>
-+++++

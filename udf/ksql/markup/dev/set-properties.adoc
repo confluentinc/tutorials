@@ -1,5 +1,0 @@
-Now that you have stream with some events in it, let's read them out. The first thing to do is set the following properties to ensure that you're reading from the beginning of the stream:
-
-+++++
-<pre class="snippet"><code class="sql">{% include_raw tutorials/udf/ksql/code/tutorial-steps/dev/set-properties.sql %}</code></pre>
-+++++

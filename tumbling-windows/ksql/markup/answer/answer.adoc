@@ -1,5 +1,0 @@
-Create a `TABLE` with the `WINDOW TUMBLING` syntax, and specify the window duration with `SIZE` within the parentheses.
-
-+++++
-<pre class="snippet"><code class="sql">{% include_raw tutorials/tumbling-windows/ksql/code/tutorial-steps/dev/create-table.sql %}</code></pre>
-+++++
