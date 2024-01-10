@@ -1,5 +1,0 @@
-This tutorial assumes that you have merchant data stored in an SQL database. The merchant data includes geolocation information, which will be matched with the stream of location data from a user's device. First, deploy a source connector that will read the merchant data into a Kafka topic for stream processing in ksqlDB.
-
-++++
-<pre class="snippet"><code class="json">{% include_raw tutorials/location-based-alerting/confluent/code/tutorial-steps/dev/source.json %}</code></pre>
-++++

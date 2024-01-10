@@ -1,5 +1,0 @@
-After processing the data, send it to Elasticsearch.
-
-++++
-<pre class="snippet"><code class="sql">{% include_raw tutorials/customer-journey/confluent/code/tutorial-steps/dev/sink.sql %}</code></pre>
-++++

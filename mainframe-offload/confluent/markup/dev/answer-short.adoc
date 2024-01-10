@@ -1,1 +1,0 @@
-Run this tutorial in link:https://www.confluent.io/confluent-cloud/tryfree[Confluent Cloud]

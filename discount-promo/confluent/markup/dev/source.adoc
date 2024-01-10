@@ -1,5 +1,0 @@
-In the case of this tutorial, we're interested in capturing data that reflects incoming orders as well as details on unique discount codes. Kafka Connect can easily stream in data from a database containing that information; you can use the following template as a guide to setting up a connector.
-
-++++
-<pre class="snippet"><code class="json">{% include_raw tutorials/discount-promo/confluent/code/tutorial-steps/dev/source.json %}</code></pre>
-++++

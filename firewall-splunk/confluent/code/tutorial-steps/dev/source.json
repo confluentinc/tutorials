@@ -1,7 +1,0 @@
-{
-  "connector.class"          : "io.confluent.connect.splunk.s2s.SplunkS2SSourceConnector",
-  "name"                     : "recipe-splunk-s2s-source",
-  "splunk.s2s.port"          : "<port>",
-  "kafka.topic"              : "splunk",
-  "tasks.max"                : "1"
-}

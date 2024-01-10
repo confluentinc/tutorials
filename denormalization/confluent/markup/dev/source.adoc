@@ -1,5 +1,0 @@
-Change data capture (CDC) for sales orders is being read from a SQL Server database, and the customer data is being read from Oracle.
-
-++++
-<pre class="snippet"><code class="json">{% include_raw tutorials/denormalization/confluent/code/tutorial-steps/dev/source.json %}</code></pre>
-++++

@@ -1,5 +1,0 @@
-After processing the data, send the targeted set of events to Splunk for indexing:
-
-++++
-<pre class="snippet"><code class="sql">{% include_raw tutorials/firewall-splunk/confluent/code/tutorial-steps/dev/sink.sql %}</code></pre>
-++++
