@@ -98,8 +98,8 @@ public class ParallelConsumerPerfTest {
             .maxConcurrency(maxConcurrency)
             .consumer(consumer)
             .commitMode(commitMode)
+            .commitInterval(ofSeconds(secondsBetweenCommits))
             .build());
-    parallelConsumer.setTimeBetweenCommits(ofSeconds(secondsBetweenCommits));
 
     // create handler that sleeps configured number of ms per record
     final int recordHandlerSleepMs = Integer.parseInt(appProperties.getProperty("record.handler.sleep.ms"));
