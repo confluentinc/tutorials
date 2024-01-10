@@ -1,1 +1,0 @@
-This application will perform a series of joins between event streams and tables to calculate the next best offer for a banking customer based on their activity which should yield higher customer activity and satisfaction.

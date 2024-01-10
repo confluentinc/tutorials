@@ -1,3 +1,0 @@
-++++
-<pre class="snippet"><code class="json">{% include_raw tutorials/iot-asset-tracking/confluent/code/tutorial-steps/dev/source.json %}</code></pre>
-++++

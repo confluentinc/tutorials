@@ -1,5 +1,0 @@
-Now we'll use a MongoDB sink connector to send the combined predictions and actual weights to a database, and the HTTP sink connector to trigger the retraining process.
-
-++++
-<pre class="snippet"><code class="sql">{% include_raw tutorials/model-retraining/confluent/code/tutorial-steps/dev/sink.sql %}</code></pre>
-++++
