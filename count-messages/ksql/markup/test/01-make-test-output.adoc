@@ -1,7 +1,0 @@
-Similarly, create a file at `test/output.json` with the expected outputs:
-
-+++++
-<pre class="snippet"><code class="json">{% include_raw tutorials/count-messages/ksql/code/test/output.json %}</code></pre>
-+++++
-
-Note that contrary to the output we saw from the CLI above, in the test execution there is no buffering of the input records and so an aggregate value is emitted for every input record processed (https://docs.ksqldb.io/en/latest/developer-guide/test-and-debug/ksqldb-testing-tool/#input-consumption[ref]). 

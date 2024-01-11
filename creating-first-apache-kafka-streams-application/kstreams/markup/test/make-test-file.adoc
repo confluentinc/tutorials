@@ -1,5 +1,0 @@
-First, create a test file at +++<code class="copy-inline">configuration/test.properties</code>+++:
-
-+++++
-<pre class="snippet"><code class="shell">{% include_raw tutorials/creating-first-apache-kafka-streams-application/kstreams/code/configuration/test.properties %}</code></pre>
-+++++
