@@ -17,9 +17,8 @@ This tutorial uses a complete cluster running on `docker`. Just make sure you ha
 ### Start the cluster
 
 1. Open a terminal and go to the tutorial folder.
-2. Build the connect image, which uses a specific Dockerfile: `docker-compose build`
-3. Start the cluster: `docker-compose up -d`
-4. Wait for a few seconds and run: `docker-compose ps`. Everything container instance should be marked as running.  
+2. Start the cluster: `docker-compose up -d`
+3. Wait for a few seconds and run: `docker-compose ps`. Everything container instance should be marked as running.  
 
 ### Start a connector and an SMT
 
