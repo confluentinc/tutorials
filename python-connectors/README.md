@@ -17,8 +17,9 @@ This tutorial uses a complete cluster running on `docker`. Just make sure you ha
 ### Start the cluster
 
 1. Open a terminal and go to the tutorial folder.
-2. Start the cluster: `docker-compose up -d`
-3. Wait for a few seconds and run: `docker-compose ps`. Everything container instance should be marked as running.  
+2. Build the connect image, which uses a specific Dockerfile: `docker-compose build`
+3. Start the cluster: `docker-compose up -d`
+4. Wait for a few seconds and run: `docker-compose ps`. Everything container instance should be marked as running.  
 
 ### Start a connector and an SMT
 
@@ -26,13 +27,13 @@ From there, you have to create a connector in the Connect cluster.
 
 There are 3 examples provided with this tutorial in the `json`folder. They all use a python connector and the last one also includes a python SMT.
 
-1. `connector-fields.json`: this example publishes JSON messages containing 6 fields. This corresponds to the `code/speed_traps.py` script.
-2. `connector-full-text.json`: this example publishes messages with one big string as the value. This is in the `code/full_text.py` script.
-3. `connector-with-smt.json`: this example publishes simple messages and the same script also contains an SMT that is modifying the messages. It can be found in the `code/connector_with_smt.py` script.
+1. [connector-fields.json](json/connector-fields.json): this example publishes JSON messages containing 6 fields. This corresponds to the `code/speed_traps.py` script.
+2. [connector-full-text.json](json/connector-full-text.json): this example publishes messages with one big string as the value. This is in the `code/full_text.py` script.
+3. [connector-with-smt.json](json/connector-with-smt.json): this example publishes simple messages and the same script also contains an SMT that is modifying the messages. It can be found in the `code/connector_with_smt.py` script.
 
 To create a connector you can use `curl` or you can use the Control Center UI. Since we already have a terminal open, let's use that.
 
-Run `curl localhost:8083/connectors -X POST --json @/json/connector-fields.json` to create a connector with the example 1 above.
+Run `curl localhost:8083/connectors -X POST --json @./json/connector-fields.json` to create a connector with the example 1 above.
 
 To check that everything is running you can either:
 - Open Control Center at http://localhost:9021 and go to the Topics panel. Select the topic starting with `test-topic` and click on the Messages tab. You should see messages coming in.
@@ -51,5 +52,10 @@ They receive the messages with some context and return the transformed (or not) 
 
 In our example (no 3 above), the connector and the SMT are on the same script. This is for convenience but not mandatory at all. As a matter of fact, in the vast majority of the case, the SMTs will be fully separated from the connectors.
 
-## A brief look at the code
+## Configuration Properties and Technical Details
 
+When you submit a json file to create a connector, it includes some settings for the python connector.
+The main one is the `entry.point` property that is telling the connector which python script to use and which method to call repeatedly.
+(Usually this method is called `poll` but it can be anything.)
+
+All the configuration properties and the technical are described in the [tech-details.md](./tech-details.md) file. 
