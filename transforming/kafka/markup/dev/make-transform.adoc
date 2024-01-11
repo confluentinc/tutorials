@@ -1,5 +1,0 @@
-Next, create another Java file at `src/main/java/io/confluent/developer/TransformEvents.java` for the main program. The main program is responsible for creating the configuration properties that any producer and consumer created will use. It is also responsible for creating and destroying any topics necessary for the tutorial to work, as well as spawning a thread to execute the logic of the transformation.
-
-+++++
-<pre class="snippet"><code class="java">{% include_raw tutorials/transforming/kafka/code/src/main/java/io/confluent/developer/TransformEvents.java %}</code></pre>
-+++++

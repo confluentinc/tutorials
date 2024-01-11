@@ -1,5 +1,0 @@
-Create a Java file at `src/main/java/io/confluent/developer/TransformationEngine.java` to implement the code of the transformation. This code leverages the https://kafka.apache.org/documentation/#api[Apache Kafka Client API] to implement https://kafka.apache.org/{{ site.ak_javadoc_version }}/javadoc/index.html?org/apache/kafka/clients/producer/KafkaProducer.html[producers] and https://kafka.apache.org/{{ site.ak_javadoc_version }}/javadoc/index.html?org/apache/kafka/clients/consumer/KafkaConsumer.html[consumers] that will be used to read the raw movies from the input topic, perform the transformation operation on them, and write the transformed movies into the output topic.
-
-+++++
-<pre class="snippet"><code class="java">{% include_raw tutorials/transforming/kafka/code/src/main/java/io/confluent/developer/TransformationEngine.java %}</code></pre>
-+++++
