@@ -1,19 +1,15 @@
 package io.confluent.developer;
 
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.MatcherAssert.assertThat;
-
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Properties;
-import java.util.stream.Collectors;
 import org.apache.kafka.clients.producer.MockProducer;
 import org.apache.kafka.common.serialization.StringSerializer;
-import org.apache.kafka.clients.producer.ProducerRecord;
-import org.apache.kafka.streams.KeyValue;
 import org.junit.Test;
+
+import java.io.IOException;
+import java.util.*;
+import java.util.stream.Collectors;
+
+import static org.junit.Assert.assertEquals;
 
 
 public class KafkaProducerApplicationTest {
@@ -30,20 +26,16 @@ public class KafkaProducerApplicationTest {
         final List<String> records = Arrays.asList("foo-bar", "bar-foo", "baz-bar", "great:weather");
 
         records.forEach(producerApp::produce);
+        final Map<String, String> expected = new HashMap<>() {{
+            put("foo", "bar");
+            put("bar", "foo");
+            put("baz", "bar");
+            put(null, "great:weather");
+        }};
+        final Map<String, String> actual = mockProducer.history().stream()
+                .collect(Collectors.toMap(pr -> pr.key(), pr -> pr.value()));
 
-        final List<KeyValue<String, String>> expectedList = Arrays.asList(KeyValue.pair("foo", "bar"),
-            KeyValue.pair("bar", "foo"),
-            KeyValue.pair("baz", "bar"),
-            KeyValue.pair(null,"great:weather"));
-
-        final List<KeyValue<String, String>> actualList = mockProducer.history().stream().map(this::toKeyValue).collect(Collectors.toList());
-
-        assertThat(actualList, equalTo(expectedList));
+        assertEquals(actual, expected);
         producerApp.shutdown();
-    }
-
-
-    private KeyValue<String, String> toKeyValue(final ProducerRecord<String, String> producerRecord) {
-        return KeyValue.pair(producerRecord.key(), producerRecord.value());
     }
 }
