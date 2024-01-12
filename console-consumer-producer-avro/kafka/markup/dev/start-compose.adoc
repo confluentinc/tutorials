@@ -1,5 +1,0 @@
-Now launch Confluent Platform by running:
-
-+++++
-<pre class="snippet"><code class="shell">{% include_raw tutorials/console-consumer-producer-avro/kafka/code/tutorial-steps/dev/docker-compose-up.sh %}</code></pre>
-+++++

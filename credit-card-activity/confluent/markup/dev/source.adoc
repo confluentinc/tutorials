@@ -1,5 +1,0 @@
-If you have real end systems to connect to, adapt the sample connector configuration(s) below and run them from ksqlDB with `CREATE SOURCE CONNECTOR`.
-
-++++
-<pre class="snippet"><code class="sql">{% include_raw tutorials/credit-card-activity/confluent/code/tutorial-steps/dev/source.sql %}</code></pre>
-++++

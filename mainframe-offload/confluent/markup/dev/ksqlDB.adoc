@@ -1,1 +1,0 @@
-This code creates a real-time cache in ksqlDB of mainframe account data, which can be used to offload mainframe calls to Kafka. The sample source connector below is the https://www.confluent.io/hub/confluentinc/kafka-connect-ibmmq[IBM MQ Source Connector] since often the IBM MQ messaging platform is running on the mainframe.

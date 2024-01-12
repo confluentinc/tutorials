@@ -1,5 +1,0 @@
-Then create a `Dockerfile` to build the sqlite container. Notice that it pulls in the `cities.sql` file created in the previous step.
-
-+++++
-<pre class="snippet"><code class="shell">{% include_raw tutorials/connect-add-key-to-source/kstreams/code/Dockerfile %}</code></pre>
-+++++

@@ -1,4 +1,0 @@
-The existing pipeline, which is predicting the weight of fish based on size and species, stores its results in two MongoDB collections, which are used by other processes downstream. One collection contains the data fed to the model, along with the prediction. The other contains the actual weight as determined by a later step in the process. For this tutorial, we'll use Connect to make this data available to our ksqlDB application.
-
-Start by creating a ksqlDB stream for each of our two input topics coming from Connect. Then create another stream to join those two streams on `Fish_Id`. Finally, create a ksqlDB table with a windowed aggregation of our joined stream, where the average error rate is over 15%. This table will be used to trigger our model retraining process.
-

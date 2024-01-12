@@ -1,5 +1,0 @@
-Let's create a persistent query to continuously convert the `EVENTTIME` column into a `TIMESTAMP`. Do so with the command below.
-
-+++++
-<pre class="snippet"><code class="sql">{% include_raw tutorials/connect-sink-timestamp/ksql/code/tutorial-steps/dev/create-stream-ts.sql %}</code></pre>
-+++++

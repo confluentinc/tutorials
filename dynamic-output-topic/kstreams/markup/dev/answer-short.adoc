@@ -1,6 +1,0 @@
-Use the `TopicNameExtractor` interface to apply runtime logic to choose the output topic.
-The example below derives the output topic name from the record's value, but it can also be derived from the record's header (i.e., `recordContext`) or key.
-
-+++++
-<pre class="snippet"><code class="java">{% include_raw tutorials/dynamic-output-topic/kstreams/code/tutorial-steps/dev/answer-short.java %}</code></pre>
-+++++

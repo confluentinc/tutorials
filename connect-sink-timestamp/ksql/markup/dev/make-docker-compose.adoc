@@ -1,5 +1,0 @@
-Next create the following `docker-compose.yml` file. In this file we obtain the Confluent Platform, setup a postgres database, https://docs.ksqldb.io/en/latest/how-to-guides/use-connector-management/#embedded-mode[configure an embedded connect worker in ksqlDB] and install a https://docs.confluent.io/kafka-connect-jdbc/current/index.html#install-the-connector-using-c-hub[JDBC connector package from Confluent Hub].
-
-+++++
-<pre class="snippet"><code class="dockerfile">{% include_raw tutorials/connect-sink-timestamp/ksql/code/docker-compose.yml %}</code></pre>
-+++++

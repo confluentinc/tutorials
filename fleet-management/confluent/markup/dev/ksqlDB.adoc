@@ -1,1 +1,0 @@
-This application will enrich the fleet telemetry events with details about the associated vehicle.

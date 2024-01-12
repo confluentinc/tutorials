@@ -1,5 +1,0 @@
-Run the JDBC source connector:
-
-+++++
-<pre class="snippet"><code class="shell">{% include_raw tutorials/connect-add-key-to-source/kstreams/code/tutorial-steps/dev/run-connector.sh %}</code></pre>
-+++++

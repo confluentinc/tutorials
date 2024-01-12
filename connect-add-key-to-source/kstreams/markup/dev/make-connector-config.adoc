@@ -1,5 +1,0 @@
-Make a configuration file called `jdbc_source.config` for the JDBC source connector to pull data from the `cities` table. Notice that it uses a single message transformation (SMT) called https://docs.confluent.io/platform/current/connect/transforms/setschemametadata.html[SetSchemaMetadata] to set the schema name to the `City` class name.
-
-+++++
-<pre class="snippet"><code class="shell">{% include_raw tutorials/connect-add-key-to-source/kstreams/code/jdbc_source.config %}</code></pre>
-+++++

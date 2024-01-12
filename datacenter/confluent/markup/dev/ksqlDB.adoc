@@ -1,1 +1,0 @@
-Our datacenter power analysis applications require data from two different sources: customer tenant information and smart control panel readings.

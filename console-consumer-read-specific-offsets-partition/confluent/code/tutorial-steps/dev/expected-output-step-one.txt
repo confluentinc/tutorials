@@ -1,6 +1,0 @@
-key2-fox jumped
-key4-brown cow
-key2-streams
-key4-to
-key2-Go to
-key4-summit

@@ -1,8 +1,0 @@
-{
-  "connector.class"          : "io.confluent.connect.syslog.SyslogSourceConnector",
-  "name"                     : "recipe-syslog-source",
-  "syslog.port"              : "<port>",
-  "syslog.listener"          : "TCP",
-  "kafka.topic"              : "syslog",
-  "tasks.max"                : "1"
-}

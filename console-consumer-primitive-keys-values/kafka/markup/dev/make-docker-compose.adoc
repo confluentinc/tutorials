@@ -1,8 +1,0 @@
-Next, create the following `docker-compose.yml` file to obtain Confluent Platform (for Kafka in the cloud, see https://www.confluent.io/confluent-cloud/tryfree/[Confluent Cloud]).
-
-+++++
-<pre class="snippet"><code class="dockerfile">{% include_raw tutorials/console-consumer-primitive-keys-values/kafka/code/docker-compose.yml %}</code></pre>
-+++++
-
-Currently, the console producer only writes strings into Kafka, but we want to work with non-string primitives and the console consumer.  
-So in this tutorial, your `docker-compose.yml` file will also create a source connector embedded in `ksqldb-server` to populate a topic with keys of type `long` and values of type `double`.

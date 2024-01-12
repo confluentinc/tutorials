@@ -1,5 +1,0 @@
-In this example, the telemetry events are stored in Postgres database tables. The connector reads from the tables and writes the data into Kafka topics in Confluent Cloud.
-
-++++
-<pre class="snippet"><code class="json">{% include_raw tutorials/internet-of-things/confluent/code/tutorial-steps/dev/source.json %}</code></pre>
-++++
