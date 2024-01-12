@@ -1,10 +1,7 @@
 package io.confluent.developer;
 
 
-import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.clients.producer.Producer;
-import org.apache.kafka.clients.producer.ProducerRecord;
-import org.apache.kafka.clients.producer.RecordMetadata;
+import org.apache.kafka.clients.producer.*;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -15,20 +12,23 @@ import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class KafkaProducerApplication {
 
     private final Producer<String, String> producer;
-    final String outTopic;
-
-    public KafkaProducerApplication(final Producer<String, String> producer,
-                                    final String topic) {
+    public KafkaProducerApplication(final Producer<String, String> producer) {
         this.producer = producer;
-        outTopic = topic;
     }
 
-    public Future<RecordMetadata> produce(final String message) {
+    public KafkaProducerApplication(final Properties properties) {
+        this.producer = new KafkaProducer<>(properties);
+    }
+
+    @Deprecated
+    public Future<RecordMetadata> produce(final String outTopic, final String message) {
         final String[] parts = message.split("-");
         final String key, value;
         if (parts.length > 1) {
@@ -46,6 +46,7 @@ public class KafkaProducerApplication {
         producer.close();
     }
 
+    @Deprecated
     public static Properties loadProperties(String fileName) throws IOException {
         final Properties envProps = new Properties();
         final FileInputStream input = new FileInputStream(fileName);
@@ -55,6 +56,7 @@ public class KafkaProducerApplication {
         return envProps;
     }
 
+    @Deprecated
     public void printMetadata(final Collection<Future<RecordMetadata>> metadata,
                               final String fileName) {
         System.out.println("Offsets and timestamps committed in batch from " + fileName);
@@ -80,22 +82,50 @@ public class KafkaProducerApplication {
         final Properties props = KafkaProducerApplication.loadProperties(args[0]);
         final String topic = props.getProperty("output.topic.name");
         final Producer<String, String> producer = new KafkaProducer<>(props);
-        final KafkaProducerApplication producerApp = new KafkaProducerApplication(producer, topic);
-        
+        final KafkaProducerApplication producerApp = new KafkaProducerApplication(producer);
+
         String filePath = args[1];
         try {
             List<String> linesToProduce = Files.readAllLines(Paths.get(filePath));
             List<Future<RecordMetadata>> metadata = linesToProduce.stream()
                     .filter(l -> !l.trim().isEmpty())
-                    .map(producerApp::produce)
+                    .map(r -> producerApp.produce(topic, r))
                     .collect(Collectors.toList());
             producerApp.printMetadata(metadata, filePath);
 
         } catch (IOException e) {
             System.err.printf("Error reading file %s due to %s %n", filePath, e);
-        }
-        finally {
+        } finally {
             producerApp.shutdown();
         }
+    }
+
+
+    public Future<RecordMetadata> sendEvent(final ProducerRecord<String, String> record) {
+        return producer.send(record);
+    }
+
+    public Future<RecordMetadata> sendEvent(final ProducerRecord<String, String> record, final Callback callback) {
+        return producer.send(record, callback);
+    }
+
+    /**
+     * Convert raw `-` delimited String to a {@link ProducerRecord}.
+     *
+     * @param topic
+     * @param message
+     * @return First token is KEY, second token is VALUE of the resulting record.
+     */
+    public ProducerRecord<String, String> createRecord(final String topic, final String message) {
+        final String[] parts = message.split("-");
+        final String key, value;
+        if (parts.length > 1) {
+            key = parts[0];
+            value = parts[1];
+        } else {
+            key = null;
+            value = parts[0];
+        }
+        return new ProducerRecord<>(topic, key, value);
     }
 }
