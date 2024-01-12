@@ -1,4 +1,0 @@
-CREATE STREAM TEMPERATURE_READINGS_EVENTTIME
-    WITH (KAFKA_TOPIC='deviceEvents',
-          VALUE_FORMAT='avro',
-          TIMESTAMP='eventTime');
