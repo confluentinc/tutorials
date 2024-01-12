@@ -2,6 +2,7 @@ package io.confluent.developer;
 
 
 import org.apache.kafka.clients.producer.*;
+import org.apache.kafka.common.serialization.StringSerializer;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -12,8 +13,6 @@ import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
-import java.util.function.BiConsumer;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class KafkaProducerApplication {
@@ -46,7 +45,6 @@ public class KafkaProducerApplication {
         producer.close();
     }
 
-    @Deprecated
     public static Properties loadProperties(String fileName) throws IOException {
         final Properties envProps = new Properties();
         final FileInputStream input = new FileInputStream(fileName);
@@ -56,7 +54,6 @@ public class KafkaProducerApplication {
         return envProps;
     }
 
-    @Deprecated
     public void printMetadata(final Collection<Future<RecordMetadata>> metadata,
                               final String fileName) {
         System.out.println("Offsets and timestamps committed in batch from " + fileName);
@@ -75,21 +72,30 @@ public class KafkaProducerApplication {
     public static void main(String[] args) throws Exception {
         if (args.length < 2) {
             throw new IllegalArgumentException(
-                    "This program takes two arguments: the path to an environment configuration file and" +
-                            "the path to the file with records to send");
+                    "Usage: this program takes 2 arguments: \n" +
+                            "1) list of kafka brokers (host:port) \n" +
+                            "2) the path to the file with records to send ");
         }
 
-        final Properties props = KafkaProducerApplication.loadProperties(args[0]);
-        final String topic = props.getProperty("output.topic.name");
-        final Producer<String, String> producer = new KafkaProducer<>(props);
-        final KafkaProducerApplication producerApp = new KafkaProducerApplication(producer);
+        final String bootstrapServers = args[0];
+//Utils.loadProperties(args[1]);
+        Properties props = new Properties() {{
+            put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
+            put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+            put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+            put(ProducerConfig.ACKS_CONFIG, "1");
+        }};
+
+        final String topic = "output-topic";
+        final KafkaProducerApplication producerApp = new KafkaProducerApplication(props);
 
         String filePath = args[1];
         try {
             List<String> linesToProduce = Files.readAllLines(Paths.get(filePath));
             List<Future<RecordMetadata>> metadata = linesToProduce.stream()
                     .filter(l -> !l.trim().isEmpty())
-                    .map(r -> producerApp.produce(topic, r))
+                    .map(e -> producerApp.createRecord(topic, e))
+                    .map(producerApp::sendEvent)
                     .collect(Collectors.toList());
             producerApp.printMetadata(metadata, filePath);
 
@@ -99,7 +105,6 @@ public class KafkaProducerApplication {
             producerApp.shutdown();
         }
     }
-
 
     public Future<RecordMetadata> sendEvent(final ProducerRecord<String, String> record) {
         return producer.send(record);
