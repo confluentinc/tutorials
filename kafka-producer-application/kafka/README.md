@@ -92,7 +92,6 @@ You can run the example application in this tutorial using `confluent local`.
 ### Prerequisites
 * [Confluent CLI](https://docs.confluent.io/confluent-cli/current/install.html) 
 * Docker running via [Docker Desktop](https://docs.docker.com/desktop/) or [Docker Engine](https://docs.docker.com/engine/install/)
-* [kcat](https://github.com/edenhill/kcat)
 
 ### Start Kafka
 
@@ -140,23 +139,21 @@ java -jar kafka-producer-application/kafka/build/libs/kafka-producer-application
 ```
 
 ### Validate
-* Use `kcat` to view the events on the `output-topic` - from the beginning, including the key.
+* Use Confluent CLI to view the events on the `output-topic` - from the beginning, including the key.
 
 ```shell
-kcat -b localhost:65410 -t output-topic -K ,  -C -o beginning
-
-1,value
-2,words
-3,All Streams
-4,Lead to
-5,Kafka
-6,Go to
-7,Kafka Summit
-8,How can
-9,a 10 ounce
-10,bird carry a
-11,5lb coconut
-% Reached end of topic output-topic [0] at offset 11
+confluent local kafka topic consume output-topic --from-beginning --print-key
+1	value
+2	words
+3	All Streams
+4	Lead to
+5	Kafka
+6	Go to
+7	Kafka Summit
+8	How can
+9	a 10 ounce
+10	bird carry a
+11	5lb coconut
 ```
 
 ### Cleanup
