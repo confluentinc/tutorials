@@ -75,7 +75,7 @@ Clone the `confluentinc/tutorials` GitHub repository (if you haven't already) an
 
 ```shell
 git clone git@github.com:confluentinc/tutorials.git
-cd kafka-producer-application/kafka/
+cd tutorials
 ```
 
 To run the unit tests, use the provided Gradle Wrapper:
