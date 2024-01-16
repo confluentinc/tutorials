@@ -1,0 +1,3 @@
+rootProject.name = 'streams-to-table'
+include ':common'
+project(':common').projectDir = file('../../common')
