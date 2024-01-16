@@ -69,7 +69,7 @@ Here is an example of a `Callback` - implemented as a lambda - that prints the o
 <details>
 <summary>Execute the Unit Tests</summary>
 
-There are junit test cases in this repo, exercising examples of both implementations of the `send` method of `KafkaProducer`.
+There are JUnit test cases in this repo, exercising examples of both implementations of the `send` method of `KafkaProducer`.
 
 To run the unit tests, use the provided Gradle Wrapper:
 
