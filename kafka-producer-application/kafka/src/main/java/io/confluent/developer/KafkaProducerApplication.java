@@ -4,7 +4,6 @@ package io.confluent.developer;
 import org.apache.kafka.clients.producer.*;
 import org.apache.kafka.common.serialization.StringSerializer;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -26,32 +25,8 @@ public class KafkaProducerApplication {
         this.producer = new KafkaProducer<>(properties);
     }
 
-    @Deprecated
-    public Future<RecordMetadata> produce(final String outTopic, final String message) {
-        final String[] parts = message.split("-");
-        final String key, value;
-        if (parts.length > 1) {
-            key = parts[0];
-            value = parts[1];
-        } else {
-            key = null;
-            value = parts[0];
-        }
-        final ProducerRecord<String, String> producerRecord = new ProducerRecord<>(outTopic, key, value);
-        return producer.send(producerRecord);
-    }
-
     public void shutdown() {
         producer.close();
-    }
-
-    public static Properties loadProperties(String fileName) throws IOException {
-        final Properties envProps = new Properties();
-        final FileInputStream input = new FileInputStream(fileName);
-        envProps.load(input);
-        input.close();
-
-        return envProps;
     }
 
     public void printMetadata(final Collection<Future<RecordMetadata>> metadata,
@@ -78,7 +53,6 @@ public class KafkaProducerApplication {
         }
 
         final String bootstrapServers = args[0];
-//Utils.loadProperties(args[1]);
         Properties props = new Properties() {{
             put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
             put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
@@ -94,7 +68,7 @@ public class KafkaProducerApplication {
             List<String> linesToProduce = Files.readAllLines(Paths.get(filePath));
             List<Future<RecordMetadata>> metadata = linesToProduce.stream()
                     .filter(l -> !l.trim().isEmpty())
-                    .map(e -> producerApp.createRecord(topic, e))
+                    .map(e -> producerApp.createProducerRecord(topic, e))
                     .map(producerApp::sendEvent)
                     .collect(Collectors.toList());
             producerApp.printMetadata(metadata, filePath);
@@ -121,7 +95,7 @@ public class KafkaProducerApplication {
      * @param message
      * @return First token is KEY, second token is VALUE of the resulting record.
      */
-    public ProducerRecord<String, String> createRecord(final String topic, final String message) {
+    public ProducerRecord<String, String> createProducerRecord(final String topic, final String message) {
         final String[] parts = message.split("-");
         final String key, value;
         if (parts.length > 1) {

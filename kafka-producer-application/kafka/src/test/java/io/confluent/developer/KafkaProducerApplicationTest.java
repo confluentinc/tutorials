@@ -42,7 +42,7 @@ public class KafkaProducerApplicationTest {
         final KafkaProducerApplication producerApp = new KafkaProducerApplication(mockProducer);
 
         rawEvents.stream()
-                .map(e -> producerApp.createRecord(outputTopic, e)) // Map each element of rawEvent to ProducerRecord.
+                .map(e -> producerApp.createProducerRecord(outputTopic, e)) // Map each element of rawEvent to ProducerRecord.
                 .forEach(producerApp::sendEvent); // Send ProducerRecord.
 
         // Collect the keys and values the Producer sent to kafka.
@@ -64,7 +64,7 @@ public class KafkaProducerApplicationTest {
         Callback callback = (recordMetadata, e) -> callbackOffsets.add(recordMetadata.offset());
 
         rawEvents.stream()
-                .map(event -> producerApp.createRecord(outputTopic, event)) // Map each element of rawEvent to ProducerRecord.
+                .map(event -> producerApp.createProducerRecord(outputTopic, event)) // Map each element of rawEvent to ProducerRecord.
                 .forEach(record -> producerApp.sendEvent(record, callback)); // Send ProducerRecord with callback.
 
         // Collect the keys and values the Producer sent to kafka.
