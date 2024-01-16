@@ -1,7 +1,0 @@
-Then create a development file at `configuration/dev.properties`:
-
-+++++
-<pre class="snippet"><code class="shell">{% include_raw tutorials/kafka-producer-application-callback/kafka/code/configuration/dev.properties %}</code></pre>
-+++++
-
-include::_includes/tutorials/kafka-producer-application-callback/kafka/markup/dev/make-dev-file-cont.adoc[]
