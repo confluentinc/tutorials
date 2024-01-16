@@ -40,7 +40,7 @@ to be sent to Kafka.
 Given our `ProducerRecord`, let's send this record via our `Producer`. 
 
 ```java annotate
-    producer.send(record);
+    Future<RecordMetadata> result = producer.send(record);
 ```
 
 ## Send With Callback
@@ -61,7 +61,7 @@ Here is an example of a `Callback` - implemented as a lambda - that prints the o
               "offset: , " + recordMetadata.offset());
 
     // use the callback with the `send` method...
-    producer.send(record, callback);
+    Future<RecordMetadata> result = producer.send(record, callback);
 ```
 
 ## Using Example

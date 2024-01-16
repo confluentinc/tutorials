@@ -4,14 +4,14 @@ import org.apache.kafka.clients.producer.Callback;
 import org.apache.kafka.clients.producer.MockProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringSerializer;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class KafkaProducerApplicationTest {
     private static final String outputTopic = "output-topic";
@@ -20,7 +20,7 @@ public class KafkaProducerApplicationTest {
 
     private MockProducer<String, String> mockProducer;
 
-    @BeforeClass
+    @BeforeAll
     public static void setup() {
         rawEvents = Arrays.asList("foo-bar", "bar-foo", "baz-bar", "great:weather");
         expected = new HashMap<>() {{
@@ -31,7 +31,7 @@ public class KafkaProducerApplicationTest {
         }};
     }
 
-    @Before
+    @BeforeEach
     public void setupEach() {
         final StringSerializer stringSerializer = new StringSerializer();
         mockProducer = new MockProducer<>(true, stringSerializer, stringSerializer);
