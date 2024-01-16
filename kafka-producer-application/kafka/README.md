@@ -64,12 +64,19 @@ Here is an example of a `Callback` - implemented as a lambda - that prints the o
     Future<RecordMetadata> result = producer.send(record, callback);
 ```
 
-## Using Example
+## Using This Example
 
 <details>
 <summary>Execute the Unit Tests</summary>
 
 There are JUnit test cases in this repo, exercising examples of both implementations of the `send` method of `KafkaProducer`.
+
+Clone the `confluentinc/tutorials` GitHub repository (if you haven't already) and navigate to the `tutorials` directory:
+
+```shell
+git clone git@github.com:confluentinc/tutorials.git
+cd kafka-producer-application/kafka/
+```
 
 To run the unit tests, use the provided Gradle Wrapper:
 
