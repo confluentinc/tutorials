@@ -1,5 +1,0 @@
-The best way to interact with ksqlDB when you’re learning how things work is with the ksqlDB CLI. Fire it up as follows:
-
-+++++
-<pre class="snippet"><code class="shell">{% include_raw tutorials/time-concepts/ksql/code/tutorial-steps/dev/start-cli.sh %}</code></pre>
-+++++

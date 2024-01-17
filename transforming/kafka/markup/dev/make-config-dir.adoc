@@ -1,5 +1,0 @@
-Next, create a directory for configuration data:
-
-+++++
-<pre class="snippet"><code class="shell">mkdir configuration</code></pre>
-+++++

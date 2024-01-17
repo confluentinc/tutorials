@@ -1,5 +1,0 @@
-Run the following ksqlDB command to create a stream of events from the underlying Kafka topic `deviceEvents` (which was the topic written to by the Kafka producer application above).
-
-+++++
-<pre class="snippet"><code class="sql">{% include_raw tutorials/time-concepts/ksql/code/tutorial-steps/dev/create-stream-logtime.sql %}</code></pre>
-+++++
