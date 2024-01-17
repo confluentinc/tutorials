@@ -1,1 +1,0 @@
-cat consumer-records.out
