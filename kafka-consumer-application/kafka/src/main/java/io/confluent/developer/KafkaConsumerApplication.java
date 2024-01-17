@@ -39,7 +39,7 @@ public class KafkaConsumerApplication {
 
   public static void main(String[] args) throws Exception {
 
-    if (args.length < 3) {
+    if (args.length < 2) {
       throw new IllegalArgumentException(
           "USAGE: This program takes 3 arguments:\n" +
                   "1. bootstrap servers - comma-delimited <host:port>,<host:port>,...\n" +
