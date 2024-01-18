@@ -12,7 +12,7 @@ CREATE STREAM pageviews (msg VARCHAR)
         VALUE_FORMAT='JSON');
 ```
 Note that at this stage we’re just interested in counting the messages in their entirety, so we define the loosest schema possible, `msg VARCHAR`, for speed.
-Also, you'll need to specify for ksql start from the beginning of the topic so that all messages are included in the count:
+Also, you'll need to configure ksqlDB to start from the beginning of the topic so that all messages are included in the count:
 ```text
 SET 'auto.offset.reset' = 'earliest';
 ```

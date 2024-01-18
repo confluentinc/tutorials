@@ -2,7 +2,7 @@
 
 This tutorial demonstrates how to build a simple Kafka Streams application. You can go more in depth in the [Kafka Streams 101 course.](https://developer.confluent.io/learn-kafka/kafka-streams/get-started/)
 
-In its simplest form, a Kafka Streams application defines a source node for consuming records from a topic, performs one or more operations or transformations on the incoming records, then produces the updated results back to Kafka.
+In its simplest form, a Kafka Streams application defines a source node for consuming records from a topic, performs one or more operations or transformations on the incoming records, then produces the updated results back to Kafka.  For example, let's work through the following Kafka Streams topology definition that simply uppercases the string values from a source topic.
 
 ```java
          builder.stream(INPUT_TOPIC, Consumed.with(stringSerde, stringSerde))
@@ -22,7 +22,7 @@ This line creates a `KStream` instance using the topic `INPUT_TOPIC` as the sour
  .mapValues(s -> s.toUpperCase())
 ```
 
-Here you're performing a basic transformation on the incoming values by upper-casing each one.  
+Here you're performing a basic transformation on the incoming values by uppercasing each one.  
 Note that with the Kafka Streams DSL you can use the fluent interface approach, chaining method calls together.
 
 ```java
