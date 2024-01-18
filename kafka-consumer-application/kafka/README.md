@@ -7,7 +7,7 @@ Let's build a simple application that uses a `KafkaConsumer` to read records fro
 There are required properties needed to create a Kafka Consumer. At a minimum, the `Consumer` needs to know:
 * How to find the Kafka broker(s).
 * How to deserialize the key and value of events.
-* A group id value for consumer group coordination.
+* A group ID value for consumer group coordination.
 
 ```java annotate
   final String bootstrapServers = "localhost:9092";
