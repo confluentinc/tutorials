@@ -17,8 +17,6 @@ There are required propertied needed to create a Kafka Consumer. At a minimum, t
         put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         put(ConsumerConfig.GROUP_ID_CONFIG, consumerGroupId);
-        put(ConsumerConfig.MAX_POLL_INTERVAL_MS_CONFIG, "500");
-        put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, "2");
       }};
 ```
 

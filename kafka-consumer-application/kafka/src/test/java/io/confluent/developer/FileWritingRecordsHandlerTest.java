@@ -1,20 +1,16 @@
 package io.confluent.developer;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
- 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.common.TopicPartition;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class FileWritingRecordsHandlerTest {
 
@@ -26,7 +22,7 @@ public class FileWritingRecordsHandlerTest {
       recordsHandler.process(createConsumerRecords());
       final List<String> expectedWords = Arrays.asList("it's but", "a flesh wound", "come back");
       List<String> actualRecords = Files.readAllLines(tempFilePath);
-      assertThat(actualRecords, equalTo(expectedWords));
+      assertEquals(actualRecords, expectedWords);
     } finally {
       Files.deleteIfExists(tempFilePath);
     }

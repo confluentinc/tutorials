@@ -4,12 +4,11 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.MockConsumer;
 import org.apache.kafka.clients.consumer.OffsetResetStrategy;
 import org.apache.kafka.common.TopicPartition;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.*;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class KafkaConsumerApplicationTest {
 
@@ -33,7 +32,7 @@ public class KafkaConsumerApplicationTest {
     consumerApplication.runConsume(List.of(topic), recordsHandler);
 
     final List<String> expectedWords = Arrays.asList("foo", "bar", "baz");
-    assertThat(actualRecords, equalTo(expectedWords));
+    assertEquals(actualRecords, expectedWords);
   }
 
   private void addTopicPartitionsAssignmentAndAddConsumerRecords(final String topic,
