@@ -42,7 +42,7 @@ public class KafkaConsumerApplication {
       throw new IllegalArgumentException(
           "USAGE: This program takes 2 arguments:\n" +
                   "1. bootstrap servers - comma-delimited <host:port>,<host:port>,...\n" +
-                  "2. consumer group id.");
+                  "2. consumer group ID.");
     }
 
     final String bootstrapServers = args[0];
