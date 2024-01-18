@@ -6,7 +6,6 @@ import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.serialization.StringDeserializer;
 
-import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.List;
 import java.util.Properties;
@@ -41,10 +40,9 @@ public class KafkaConsumerApplication {
 
     if (args.length < 2) {
       throw new IllegalArgumentException(
-          "USAGE: This program takes 3 arguments:\n" +
+          "USAGE: This program takes 2 arguments:\n" +
                   "1. bootstrap servers - comma-delimited <host:port>,<host:port>,...\n" +
-                  "2. consumer group id.\n" +
-                  "3. path for output file, used in ConsumerRecordsHandler implementation.");
+                  "2. consumer group id.");
     }
 
     final String bootstrapServers = args[0];
@@ -56,9 +54,9 @@ public class KafkaConsumerApplication {
       put(ConsumerConfig.GROUP_ID_CONFIG, consumerGroupId);
     }};
 
-    final String filePath = args[2];
     final Consumer<String, String> consumer = new KafkaConsumer<>(consumerAppProps);
-    final ConsumerRecordsHandler<String, String> recordsHandler = new FileWritingRecordsHandler(Paths.get(filePath));
+    final ConsumerRecordsHandler<String, String> recordsHandler = consumerRecords -> consumerRecords.forEach(record -> System.out.println(record.value()));
+
     final KafkaConsumerApplication consumerApplication = new KafkaConsumerApplication(consumer);
 
     Runtime.getRuntime().addShutdownHook(new Thread(consumerApplication::shutdown));

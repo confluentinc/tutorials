@@ -30,11 +30,11 @@ apply plugin: "com.github.johnrengelman.shadow"
 
 dependencies {
     implementation 'org.slf4j:slf4j-simple:2.0.7'
+    implementation 'ch.qos.logback:logback-classic:1.4.14'
     implementation 'org.apache.kafka:kafka-clients:3.6.0'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
-//    testImplementation 'org.hamcrest:hamcrest:2.2'
 }
 
 test {

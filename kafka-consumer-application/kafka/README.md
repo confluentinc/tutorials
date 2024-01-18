@@ -42,11 +42,11 @@ to retrieve `ConsumerRecords`. In our example, we use an implementation of a `Co
 }
 ```
 
-The `FileWritingRecordsHandler` implementation iterates over the `ConsumerRecords` - which contains a collection of
+We implement a `ConsumerRecordsHandler` as a lambda to process `ConsumerRecords` - which contains a collection of
 `ConsumerRecord` objects. Each `ConsumerRecord` object encapsulates metadata and data for the events consumed from Kafka.
 This includes the key, value, topic, partition, headers, offset, timestamp, and many others.
 
-`FileWritingRecordsHandler` writes the `value` of each `ConsumerRecord` to a specified file name.
+Our implementation writes the `value` of each `ConsumerRecord` to the console via `System.out.println()`.
 
 ## Using This Example
 
@@ -77,7 +77,7 @@ The results of the tests can be found in the `build/reports/index.html` report:
 <details>
 <summary>Execute the Application</summary>
 
-This sample application will consume records from a Kafka topic and write them to a given file. You can run the 
+This sample application will consume records from a Kafka topic and writes each event to the console. You can run the 
 example application in this tutorial using `confluent local`.
 
 ### Prerequisites
@@ -111,13 +111,12 @@ To continue your Confluent Local experience, run `confluent local kafka topic cr
 
 ### Execute
 
-* Our application expects 3 input parameters:
+* Our application expects 2 input parameters:
     * The Kafka broker `host:port` - per the `confluent local` step.
     * Consumer Group ID
-    * Path to an output file, used by the `ConsumerRecordsHandler` implementation.
 
 ```shell
-java -jar kafka-consumer-application/kafka/build/libs/kafka-consumer-application-standalone-0.0.1.jar localhost:50277 consumer1 ~/tmp/consumer.out  
+java -jar kafka-consumer-application/kafka/build/libs/kafka-consumer-application-standalone-0.0.1.jar localhost:50277 consumer1
 ```
 
 ### Publish Events to Kafka
@@ -137,18 +136,16 @@ All streams lead
 to Kafka
 ```
 
-### Check the Output File
+### Check the Output
 
-* Have a look at the output file specified in the input parameters - in our command above that would be `~/tmp/consumer.out`.
-
-#### MacOS/Linux
+* Have a look at the console output. We should see the same strings from the input above.
 ```shell
-tail -100 <filename>
-```
-
-#### Powershell/Windows
-```shell
-Get-Content <filename> -Tail 100
+the quick brown fox
+jumped over
+the lazy dog
+Go to Kafka Summit
+All streams lead
+to Kafka
 ```
 
 ### Cleanup
