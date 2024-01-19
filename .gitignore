@@ -138,3 +138,5 @@ fabric.properties
 !gradle-wrapper.properties
 
 
+**/.DS_Store
+
