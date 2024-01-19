@@ -1,5 +1,0 @@
-First, you'll need to create a Kafka topic and stream to represent the publications. The following creates both in one shot:
-
-+++++
-<pre class="snippet"><code class="sql">{% include_raw tutorials/filtering/ksql/code/tutorial-steps/dev/create-inputs.sql %}</code></pre>
-+++++
