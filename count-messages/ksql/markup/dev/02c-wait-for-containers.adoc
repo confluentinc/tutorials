@@ -1,5 +1,0 @@
-Run this snippet of code which will block until ksqlDB is available
-
-+++++
-<pre class="snippet"><code class="shell">{% include_raw tutorials/count-messages/ksql/code/tutorial-steps/dev/02c-wait-for-containers.sh %}</code></pre>
-+++++

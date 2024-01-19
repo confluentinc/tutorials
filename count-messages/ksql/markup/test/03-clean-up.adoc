@@ -1,6 +1,0 @@
-Once the test has completed successfully you can tear down the Docker Compose stack. This will delete all data that you've stored in Kafka and ksqlDB.
-
-+++++
-<pre class="snippet"><code class="shell">{% include_raw tutorials/count-messages/ksql/code/tutorial-steps/test/03-clean-up.sh %}</code></pre>
-+++++
-

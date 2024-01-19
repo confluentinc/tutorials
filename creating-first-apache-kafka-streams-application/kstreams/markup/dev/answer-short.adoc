@@ -1,5 +1,0 @@
-Using the Apache Kafka Streams DSL, create a stream processing topology to define your business logic. The example below reads events from the input topic using the `stream` function, processes events using the `mapValues` transformation, allows for debugging with `peek`, and writes the transformed events to an output topic using `to`.
-
-+++++
-<pre class="snippet"><code class="java">{% include_raw tutorials/creating-first-apache-kafka-streams-application/kstreams/code/tutorial-steps/dev/answer-short.java %}</code></pre>
-+++++

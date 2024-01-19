@@ -1,5 +1,0 @@
-And bring up the stack of components by running:
-
-+++++
-<pre class="snippet"><code class="shell">{% include_raw tutorials/count-messages/ksql/code/tutorial-steps/dev/02b-docker-compose-up.sh %}</code></pre>
-+++++
