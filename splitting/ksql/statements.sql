@@ -1,3 +1,6 @@
+CREATE STREAM actingevents (name VARCHAR, title VARCHAR, genre VARCHAR)
+    WITH (KAFKA_TOPIC = 'acting-events', PARTITIONS = 1, VALUE_FORMAT = 'AVRO');
+
 INSERT INTO ACTINGEVENTS (name, title,genre) VALUES ('Bill Murray', 'Ghostbusters', 'fantasy');
 INSERT INTO ACTINGEVENTS (name, title,genre) VALUES ('Christian Bale', 'The Dark Knight', 'crime');
 INSERT INTO ACTINGEVENTS (name, title,genre) VALUES ('Diane Keaton', 'The Godfather: Part II', 'crime');
@@ -9,3 +12,18 @@ INSERT INTO ACTINGEVENTS (name, title,genre) VALUES ('Matt Damon', 'The Martian'
 INSERT INTO ACTINGEVENTS (name, title,genre) VALUES ('Meryl Streep', 'The Iron Lady', 'drama');
 INSERT INTO ACTINGEVENTS (name, title,genre) VALUES ('Russell Crowe', 'Gladiator', 'drama');
 INSERT INTO ACTINGEVENTS (name, title,genre) VALUES ('Will Smith', 'Men in Black', 'comedy');
+
+CREATE STREAM actingevents_drama AS
+SELECT NAME, TITLE
+FROM ACTINGEVENTS
+WHERE GENRE='drama';
+
+CREATE STREAM actingevents_fantasy AS
+SELECT NAME, TITLE
+FROM ACTINGEVENTS
+WHERE GENRE='fantasy';
+
+CREATE STREAM actingevents_other AS
+SELECT NAME, TITLE, GENRE
+FROM ACTINGEVENTS
+WHERE GENRE != 'drama' AND GENRE != 'fantasy';
