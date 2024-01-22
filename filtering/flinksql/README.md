@@ -43,7 +43,7 @@ against Flink and Kafka running in Docker, or with Confluent Cloud.
 Run the following command to execute [FlinkSqlFilteringTest#testFilter](src/test/java/io/confluent/developer/FlinkSqlFilteringTest.java):
 
   ```plaintext
-  ./gradlew test
+  ./gradlew clean :filtering:flinksql:test
   ```
 
   The test starts Kafka and Schema Registry with [Testcontainers](https://testcontainers.com/), runs the Flink SQL commands

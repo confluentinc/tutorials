@@ -61,17 +61,16 @@ Next, start ksqlDB and Kafka:
  docker compose -f ./docker/docker-compose-ksqldb-kraft-cluster.yml up -d
  ```
 
-Change into the `./udf/ksql/` directory and build an uberjar containing the UDF class:
+Build an uberjar containing the UDF class:
 
 ```shell
-cd ./udf/ksql/
-./gradlew shadowJar
+./gradlew clean :udf:ksql:shadowJar
 ```
 
 Copy the uberjar onto the `ksqldb-server` container's file system. Specifically, copy it to the `/opt/` directory since that is the extensions directory configured in the Docker Compose file we used to start ksqlDB.
 
 ```shell
-docker cp ./build/libs/ksql-udf.jar ksqldb-server:/opt/ksql-udf.jar
+docker cp ./udf/ksql/build/libs/ksql-udf.jar ksqldb-server:/opt/ksql-udf.jar
 ```
 
 Restart ksqlDB server:

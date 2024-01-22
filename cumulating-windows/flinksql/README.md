@@ -61,7 +61,7 @@ against Flink and Kafka running in Docker, or with Confluent Cloud.
 Run the following command to execute [FlinkSqlCumulatingWindowTest#testCumulatingWindows](src/test/java/io/confluent/developer/FlinkSqlCumulatingWindowTest.java):
 
   ```plaintext
-  ./gradlew test
+  ./gradlew clean :cunulating-windows:flinksql:test
   ```
 
   The test starts Kafka and Schema Registry with [Testcontainers](https://testcontainers.com/), runs the Flink SQL commands
