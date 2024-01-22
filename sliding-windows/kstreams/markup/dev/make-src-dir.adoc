@@ -1,5 +1,0 @@
-First, create a directory for the Java files in this project:
-
-+++++
-<pre class="snippet"><code class="shell">{% include_raw tutorials/sliding-windows/kstreams/code/tutorial-steps/dev/make-src-dir.sh %}</code></pre>
-+++++
