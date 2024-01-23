@@ -45,7 +45,7 @@ against Flink and Kafka running in Docker, or with Confluent Cloud.
 Run the following command to execute [FlinkSqlAggregatingCountTest#testCountAggregation](src/test/java/io/confluent/developer/FlinkSqlAggregatingCountTest.java):
 
   ```plaintext
-  ./gradlew test
+  ./gradlew clean :aggregating-count:flinksql:test
   ```
 
   The test starts Kafka and Schema Registry with [Testcontainers](https://testcontainers.com/), runs the Flink SQL commands

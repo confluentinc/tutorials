@@ -56,7 +56,7 @@ against Flink and Kafka running in Docker, or with Confluent Cloud.
 Run the following command to execute [FlinkSqlHoppingWindowTest#testHoppingWindows](src/test/java/io/confluent/developer/FlinkSqlHoppingWindowTest.java):
 
   ```plaintext
-  ./gradlew test
+  ./gradlew clean :hopping-windows:flinksql:test
   ```
 
   The test starts Kafka and Schema Registry with [Testcontainers](https://testcontainers.com/), runs the Flink SQL commands
