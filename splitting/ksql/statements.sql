@@ -14,16 +14,16 @@ INSERT INTO ACTINGEVENTS (name, title,genre) VALUES ('Russell Crowe', 'Gladiator
 INSERT INTO ACTINGEVENTS (name, title,genre) VALUES ('Will Smith', 'Men in Black', 'comedy');
 
 CREATE STREAM actingevents_drama AS
-SELECT NAME, TITLE
+SELECT name, title
 FROM ACTINGEVENTS
-WHERE GENRE='drama';
+WHERE genre='drama';
 
 CREATE STREAM actingevents_fantasy AS
-SELECT NAME, TITLE
+SELECT name, title
 FROM ACTINGEVENTS
-WHERE GENRE='fantasy';
+WHERE genre='fantasy';
 
 CREATE STREAM actingevents_other AS
-SELECT NAME, TITLE, GENRE
+SELECT name, title, genre
 FROM ACTINGEVENTS
-WHERE GENRE != 'drama' AND GENRE != 'fantasy';
+WHERE genre != 'drama' AND genre != 'fantasy';
