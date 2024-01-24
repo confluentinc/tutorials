@@ -146,8 +146,7 @@ public class FindDistinctEvents {
 
         builder.addStateStore(dedupStoreBuilder);
 
-        builder
-                .stream(INPUT_TOPIC, Consumed.with(Serdes.String(), clicksSerde))
+        builder.stream(INPUT_TOPIC, Consumed.with(Serdes.String(), clicksSerde))
                 .peek((key, value) -> LOG.info("Incoming record key[{}] value[{}]", key, value))
                 .processValues(() -> new DeduplicationProcessor<>(windowSize.toMillis(), (key, value) -> value.ip()), STORE_NAME)
                 .filter((k, v) -> v != null)
