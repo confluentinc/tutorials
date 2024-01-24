@@ -5,7 +5,7 @@ How do you filter messages in a Kafka topic to contain only those that you're in
 
 ## Setup
 
-First, you'll create a stream based on the topic you're interested in only seeing a sub-set of the records.
+First, you'll create a stream based on the topic you're interested in only seeing a subset of the records.
 
 ```sql
  CREATE STREAM all_publications (bookid BIGINT KEY, 
@@ -23,4 +23,4 @@ CREATE STREAM george_martin WITH (kafka_topic = 'george_martin_books') AS
       WHERE author = 'George R. R. Martin';
 ```
 
-Now you have a new stream that will place the filtered results in a new topic
+Now you have a new stream that will place the filtered results in a new topic.
