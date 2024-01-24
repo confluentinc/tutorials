@@ -1,5 +1,0 @@
-Next, set `cache.max.bytes.buffering` to configure the frequency of output for tables. The value of `0` instructs ksqlDB to emit each matching record as soon as it is processed. Without this configuration, the queries below could appear to "miss" some records due to the default batching behavior.
-
-+++++
-<pre class="snippet"><code class="sql">{% include_raw tutorials/finding-distinct/ksql/code/tutorial-steps/dev/set-properties2.sql %}</code></pre>
-+++++

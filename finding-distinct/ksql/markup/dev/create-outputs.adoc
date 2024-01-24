@@ -1,5 +1,0 @@
-Now let's create some continuous queries to implement this scenario.
-
-+++++
-<pre class="snippet"><code class="sql">{% include_raw tutorials/finding-distinct/ksql/code/tutorial-steps/dev/create-outputs.sql %}</code></pre>
-+++++

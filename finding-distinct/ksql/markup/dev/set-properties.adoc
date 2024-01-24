@@ -1,5 +1,0 @@
-Now that you have a stream with some events in it, let's start to leverage them. The first thing to do is set the following properties to ensure that you're reading from the beginning of the stream:
-
-+++++
-<pre class="snippet"><code class="sql">{% include_raw tutorials/finding-distinct/ksql/code/tutorial-steps/dev/set-properties.sql %}</code></pre>
-+++++

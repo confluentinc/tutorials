@@ -1,5 +1,0 @@
-Now that you have a series of statements that's doing the right thing, the last step is to put them into a file so that they can be used outside the CLI session. Create a file at `src/statements.sql` with the following content:
-
-+++++
-<pre class="snippet"><code class="sql">{% include_raw tutorials/finding-distinct/ksql/code/src/statements.sql %}</code></pre>
-+++++
