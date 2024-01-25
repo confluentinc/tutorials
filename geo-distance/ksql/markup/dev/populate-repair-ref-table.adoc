@@ -1,5 +1,0 @@
-Insert repair shop data into the ``repair_center_tab`` table.
-
-+++++
-<pre class="snippet"><code class="sql">{% include_raw tutorials/geo-distance/ksql/code/tutorial-steps/dev/populate-repair-ref-table.sql %}</code></pre>
-+++++
