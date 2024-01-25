@@ -4,14 +4,6 @@ In a new terminal window, run the following command to start a Confluent CLI pro
 <pre class="snippet"><code class="bash">{% include_raw tutorials/finding-distinct/confluent/code/tutorial-steps/dev/ccloud-produce-events.sh %}</code></pre>
 +++++
 
-You will be prompted for the Confluent Cloud Schema Registry credentials as shown below, which you can find in the `configuration/ccloud.properties` configuration file.
-Look for the configuration parameter `basic.auth.user.info`, whereby the ":" is the delimiter between the key and secret.
-
-```
-Enter your Schema Registry API key:
-Enter your Schema Registry API secret:
-```
-
 When the producer starts, it will log some messages and hang, waiting for your input. Each line represents input data for the Kafka Streams application.
 To send all of the events below, paste the following into the prompt and press enter:
 
