@@ -1,0 +1,57 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+}
+
+plugins {
+    id "java"
+    id "application"
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+application {
+    mainClass = "io.confluent.developer.FindDistinctEvents"
+}
+
+repositories {
+    mavenCentral()
+    maven { url 'https://packages.confluent.io/maven/' }
+}
+
+dependencies {
+    implementation project(':common')
+    implementation "org.slf4j:slf4j-simple:2.0.7"
+    implementation 'org.apache.kafka:kafka-streams:3.6.0'
+    implementation('org.apache.kafka:kafka-clients') {
+        version {
+            strictly '3.6.0'
+        }
+    }
+
+    testImplementation "org.apache.kafka:kafka-streams-test-utils:3.6.0"
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
+    testImplementation 'org.hamcrest:hamcrest:2.2'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
+}
+
+test {
+    useJUnitPlatform()
+    testLogging {
+        outputs.upToDateWhen { false }
+        showStandardStreams = true
+        events "PASSED", "SKIPPED", "FAILED", "STANDARD_OUT", "STANDARD_ERROR"
+        exceptionFormat = "full"
+    }
+}
+
+shadowJar {
+    archiveBaseName = "find-distinct-standalone"
+    archiveClassifier = ''
+}
