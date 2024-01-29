@@ -29,9 +29,9 @@ CREATE TABLE DETECTED_CLICKS AS
     GROUP BY IP_ADDRESS, URL;
 ```
 
-As we’re grouping by ip-address and url, these columns will become part of the primary key of the table. Primary key columns are stored in the Kafka message’s key. As we’ll need them in the value later, we use AS_VALUE to copy the columns into the value and set their name. To avoid the value column names clashing with the key columns, we add aliases to rename the key columns.
+As we’re grouping by ip-address and url, these columns will become part of the primary key of the table. Primary key columns are stored in the Kafka message’s key. As we’ll need them in the value later, we use `AS_VALUE` to copy the columns into the value and set their name. To avoid the value column names clashing with the key columns, we add aliases to rename the key columns.
 
-As it stands, the key of the DETECTED_CLICKS table contains the ip-address, and url columns, and as the table is windowed, the window start and end timestamps.
+As it stands, the key of the `DETECTED_CLICKS` table contains the ip-address, and url columns, and as the table is windowed, the window start and end timestamps.
 Create another stream that will only contain `IP_ADDRESS`, `IP_COUNT`, `URL`, and `TIMESTAMP` from the topic backing the `DETECTED_CLICKS` table:
 ```sql
 CREATE STREAM RAW_VALUES_CLICKS (IP_ADDRESS STRING, IP_COUNT BIGINT, URL STRING, TIMESTAMP STRING)

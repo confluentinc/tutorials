@@ -1,6 +1,6 @@
-# Deduplicate events from a Kafka topic based on a field in the event
+# Deduplicate events from a Kafka topic based on a field in the event with Kafka Streams
 
-Consider a topic with events that represent clicks on a website. Each event contains an IP address, a URL, and a timestamp. In this tutorial, we'll write a program that filters click events by the IP address within a window of time.
+Consider a topic with events that represent clicks on a website. Each event contains an IP address, a URL, and a timestamp. In this tutorial, we'll write a program that filters duplicate click events by the IP address within a window of time.
 
 
 ```java
