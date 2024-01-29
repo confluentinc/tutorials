@@ -21,7 +21,7 @@ For example, suppose that you have a topic with events that represent website cl
 Let's review the key points in this example.
 
 ``` java
-    .groupByKey(Grouped.with(Serdes.String(), movieRatingSerde))
+    .groupByKey()
 ```
 
 Aggregations must group records by key. By not passing an argument, we use the current key (the source IP address).

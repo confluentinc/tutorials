@@ -24,7 +24,7 @@ java {
 }
 
 application {
-    mainClass = "io.confluent.developer.TumblingWindow"
+    mainClass = "io.confluent.developer.SessionWindow"
 }
 
 repositories {

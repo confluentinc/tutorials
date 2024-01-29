@@ -2,9 +2,6 @@ buildscript {
     repositories {
         mavenCentral()
     }
-    dependencies {
-        classpath "com.google.protobuf:protobuf-gradle-plugin:0.9.2"
-    }
 }
 
 plugins {
@@ -66,7 +63,6 @@ jar {
     manifest {
         attributes(
                 "Class-Path": configurations.compileClasspath.collect { it.getName() }.join(" "),
-                "Main-Class": "io.confluent.developer.AvroToProtobuf"
         )
     }
 }
