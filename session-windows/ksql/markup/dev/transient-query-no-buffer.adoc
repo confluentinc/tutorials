@@ -1,9 +1,0 @@
-When ksqlDB builds aggregates, it emits the values as new messages are processed, meaning that you may see intermediate results on the screen too. When `ksql.streams.cache.max.bytes.buffering` was set above, this suppressed these. If you change the value to zero and re-run the above query you'll see the intermediate emissions too: 
-+++++
-<pre class="snippet"><code class="shell">{% include_raw tutorials/session-windows/ksql/code/tutorial-steps/dev/transient-query-no-buffer.sql %}</code></pre>
-+++++
-
-This time you'll see each aggregate update and be re-emitted as new messages are processed:
-+++++
-<pre class="snippet"><code class="shell">{% include_raw tutorials/session-windows/ksql/code/tutorial-steps/dev/expected-transient-query-no-buffer.log %}</code></pre>
-+++++

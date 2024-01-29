@@ -1,5 +1,0 @@
-Now that we have data generation working, let's build your application by running:
-
-+++++
-<pre class="snippet"><code class="shell">{% include_raw tutorials/session-windows/kstreams/code/tutorial-steps/dev/build-uberjar.sh %}</code></pre>
-+++++

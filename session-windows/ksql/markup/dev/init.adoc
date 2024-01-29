@@ -1,5 +1,0 @@
-To get started, make a new directory anywhere you'd like for this project:
-
-+++++
-<pre class="snippet"><code class="shell">{% include_raw tutorials/session-windows/ksql/code/tutorial-steps/dev/init.sh %}</code></pre>
-+++++
