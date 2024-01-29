@@ -1,6 +1,0 @@
-{"movieId":"1","title":"Lethal Weapon","releaseYear":1992}
-{"movieId":"2","title":"Die Hard","releaseYear":1988}
-{"movieId":"3","title":"Predator","releaseYear":1987}
-{"movieId":"128","title":"The Big Lebowski","releaseYear":1998}
-{"movieId":"354","title":"Tree of Life","releaseYear":2011}
-{"movieId":"782","title":"A Walk in the Clouds","releaseYear":1995}
