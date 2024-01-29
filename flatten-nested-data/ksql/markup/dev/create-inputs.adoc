@@ -1,6 +1,0 @@
-Create the following stream with the representation of the orders.
-We use the `STRUCT` keyword to define the fields that contain nested data.
-
-+++++
-<pre class="snippet"><code class="sql">{% include_raw tutorials/flatten-nested-data/ksql/code/tutorial-steps/dev/create-inputs.sql %}</code></pre>
-+++++

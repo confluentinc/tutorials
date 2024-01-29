@@ -1,5 +1,0 @@
-Now let's produce some events that represent temperature readings from a sensor. Note how the timestamps are increasing on intervals of 5 minutes, to indicate that the sensor emits those events every 5 minutes. Moreover, note that we simulate a temperature drop from `02:25` until `02:40`. This is the period that our alerting system should focus on.
-
-+++++
-<pre class="snippet"><code class="sql">{% include_raw tutorials/hopping-windows/ksql/code/tutorial-steps/dev/populate-stream.sql %}</code></pre>
-+++++

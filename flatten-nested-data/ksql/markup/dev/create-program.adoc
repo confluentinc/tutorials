@@ -1,5 +1,0 @@
-To begin developing interactively, open up the KSQL CLI again:
-
-+++++
-<pre class="snippet"><code class="shell">{% include_raw tutorials/flatten-nested-data/ksql/code/tutorial-steps/dev/start-cli.sh %}</code></pre>
-+++++

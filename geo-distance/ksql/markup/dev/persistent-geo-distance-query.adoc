@@ -1,5 +1,0 @@
-Now that our query reporting the distance to the nearest repair center is working, let’s update it to create a continuous query.
-
-+++++
-<pre class="snippet"><code class="sql">{% include_raw tutorials/geo-distance/ksql/code/tutorial-steps/dev/persistent-geo-distance-query.sql %}</code></pre>
-+++++
