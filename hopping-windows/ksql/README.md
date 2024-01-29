@@ -1,10 +1,10 @@
 # Hopping windows in ksqlDB
 
-How to do hopping windows in ksqlDB.  A hopping window is a fixed-size window with an advance that is smaller than the window size. Due to that fact the advance is smaller than the window size, hopping windows contain overlapping results.
+A hopping window is a fixed-size window with an advance that is smaller than the window size. Due to that fact the advance is smaller than the window size, hopping windows contain overlapping results.
 
 ## Setup
 
-Imagine you have a topic of temperature readings, the first step is to create a stream over this topic:
+Imagine you have a topic of temperature readings. The first step is to create a stream over this topic:
 
 ```sql
 CREATE STREAM TEMPERATURE_READINGS (ID VARCHAR KEY, TIMESTAMP VARCHAR, READING BIGINT)

@@ -1,6 +1,6 @@
 # Calculate lat-long
 
-You can use the ksqlDB [geo_distance]() function to calculate the distance between two latitude and longitude points.
+You can use the ksqlDB [`geo_distance`](https://docs.ksqldb.io/en/latest/developer-guide/ksqldb-reference/scalar-functions/#geo_distance) function to calculate the distance between two latitude and longitude points.
 
 ## Setup
 
