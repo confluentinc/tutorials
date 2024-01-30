@@ -16,7 +16,7 @@ This tutorial uses a complete cluster running on `docker`. Just make sure you ha
 
 ### Start the cluster
 
-1. Open a terminal and go to the tutorial folder.
+1. Open a terminal and go to the tutorial folder - python-connectors.
 2. Start the cluster: `docker-compose up -d`
 3. Wait for a few seconds and run: `docker-compose ps`. Everything container instance should be marked as running.  
 
