@@ -30,12 +30,12 @@ There are 3 examples provided with this tutorial in the `json`folder. They all u
 2. [connector-full-text.json](json/connector-full-text.json): this example publishes messages with one big string as the value. This is in the `code/full_text.py` script.
 3. [connector-with-smt.json](json/connector-with-smt.json): this example publishes simple messages and the same script also contains an SMT that is modifying the messages. It can be found in the `code/connector_with_smt.py` script.
 
-To create a connector you can use `curl` or you can use the Control Center UI. Since we already have a terminal open, let's use that.
+To create a connector you can use `curl` or you can use the Control Center UI. Since we already have a terminal open, let's use that. Wait a minute or two while the Connect container initializes. If you get a 404 error when running the command below, wait a little bit more and try again.
 
 Run `curl localhost:8083/connectors -X POST --json @./json/connector-fields.json` to create a connector with the example 1 above.
 
 To check that everything is running you can either:
-- Open Control Center at http://localhost:9021 and go to the Topics panel. Select the topic starting with `test-topic` and click on the Messages tab. You should see messages coming in.
+- Open Control Center at http://localhost:9021 and go to the Topics panel. Select the topic starting with `test-topic` and click on the Messages tab. If your Docker environment is slow, you may have to wait a few minutes for the test topic to show up. When it does, you should see messages coming in.
   ![](img/control-center.png)
 
 - Open the Docker Desktop dashboard, expand the cluster, click on the `connect` container.
