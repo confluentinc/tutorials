@@ -1,7 +1,0 @@
-In your terminal, run:
-
-+++++
-<pre class="snippet"><code class="shell">{% include_raw tutorials/serialization/kstreams/code/tutorial-steps/dev/build-uberjar.sh %}</code></pre>
-+++++
-
-This will produce an _uberjar_, which is a jar that contains your application code and all its dependencies.

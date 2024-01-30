@@ -1,6 +1,0 @@
-Out input events are in Avro format, we'll need to specify a schema for them.
-Go ahead and create a directory for your schemas: 
-
-+++++
-<pre class="snippet"><code class="shell">{% include_raw tutorials/serialization/kstreams/code/tutorial-steps/dev/make-avro-dir.sh %}</code></pre>
-+++++

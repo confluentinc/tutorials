@@ -1,5 +1,0 @@
-Create a `TABLE` with the `WINDOW SESSION` syntax, and specify the maximum inactivity period defining a session within the parentheses.
-
-+++++
-<pre class="snippet"><code class="sql">{% include_raw tutorials/session-windows/ksql/code/tutorial-steps/dev/create-table.sql %}</code></pre>
-+++++

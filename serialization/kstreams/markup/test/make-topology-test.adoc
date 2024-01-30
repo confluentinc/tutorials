@@ -1,9 +1,0 @@
-Now create the following file at `src/test/java/io/confluent/developer/serialization/SerializationTutorialTest.java`. 
-Testing a Kafka streams application requires a bit of test harness code, but the `org.apache.kafka.streams.TopologyTestDriver` class makes this easy.
-
-There is only one method in `SerializationTutorialTest` annotated with `@Test`, and that is `shouldChangeSerializationFormat()`. 
-This method actually runs our Streams topology using the `https://kafka.apache.org/{{ site.ak_javadoc_version }}/javadoc/org/apache/kafka/streams/TopologyTestDriver.html[TopologyTestDriver]` and some mocked data that is set up inside the test method.
-
-+++++
-<pre class="snippet"><code class="java">{% include_raw tutorials/serialization/kstreams/code/src/test/java/io/confluent/developer/serialization/SerializationTutorialTest.java %}</code></pre>
-+++++

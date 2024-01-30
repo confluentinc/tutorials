@@ -1,5 +1,0 @@
-Then create a development configuration file at `configuration/dev.properties`:
-
-+++++
-<pre class="snippet"><code class="shell">{% include_raw tutorials/session-windows/confluent/code/configuration/dev.properties %}</code></pre>
-+++++
