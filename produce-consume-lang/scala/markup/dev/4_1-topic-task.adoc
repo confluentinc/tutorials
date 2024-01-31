@@ -1,7 +1,0 @@
-Add the following class at `src/main/scala/io/confluent/developer/helper/TopicCreation.scala`
-
-+++++
-<pre class="snippet"><code class="java">{%
-    include_raw tutorials/produce-consume-lang/scala/code/src/main/scala/io/confluent/developer/helper/TopicCreation.scala
-%}</code></pre>
-+++++

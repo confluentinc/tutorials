@@ -1,7 +1,0 @@
-Add the classes corresponding to the HOCON configuration `src/main/scala/io/confluent/developer/Configuration.scala`:
-
-+++++
-<pre class="snippet"><code class="scala">{%
-    include_raw tutorials/produce-consume-lang/scala/code/src/main/scala/io/confluent/developer/Configuration.scala
-%}</code></pre>
-+++++

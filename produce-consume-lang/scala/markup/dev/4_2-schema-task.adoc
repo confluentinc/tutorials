@@ -1,7 +1,0 @@
-Add the following class in the file `src/main/scala/io/confluent/developer/helper/SchemaPublication.scala`
-
-+++++
-<pre class="snippet"><code class="java">{%
-    include_raw tutorials/produce-consume-lang/scala/code/src/main/scala/io/confluent/developer/helper/SchemaPublication.scala
-%}</code></pre>
-+++++

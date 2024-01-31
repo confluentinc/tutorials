@@ -1,8 +1,0 @@
-
-rootProject.name = 'produce-consume-scala'
-
-include 'app-producer'
-include 'app-consumer'
-
-project(':app-producer').name = 'produce-consume-scala-producer-app'
-project(':app-consumer').name = 'produce-consume-scala-consumer-app'

@@ -1,7 +1,0 @@
-The connector that we've created populates a Kafka topic. As such, we can consume from it using any Kafka consumer. Since we're in ksqlDB already let's declare a stream over it so that we can project and filter on the data being generated. 
-
-Note that because we're using Avro the schema is picked up automagically from the Schema Registry.
-
-+++++
-<pre class="snippet"><code class="sql">{% include_raw tutorials/generate-test-data-streams/ksql/code/tutorial-steps/dev/create-stream-01.sql %}</code></pre>
-+++++
