@@ -1,9 +1,0 @@
-In addition, the producer application and the consumer application will both have their own submodule.
-
-Create the following directories:
-
-+++++
-<pre class="snippet"><code class="bash">{%
-    include_raw tutorials/produce-consume-lang/scala/code/tutorial-steps/dev/make-subprojects-sources-dir.sh
-%}</code></pre>
-+++++

@@ -1,9 +1,0 @@
-Use the `DESCRIBE` command to inspect the schema of the stream that's been created: 
-
-+++++
-<pre class="snippet"><code class="sql">{% include_raw tutorials/generate-test-data-streams/ksql/code/tutorial-steps/dev/describe-stream-01.sql %}</code></pre>
-+++++
-
-+++++
-<pre class="snippet"><code class="sql">{% include_raw tutorials/generate-test-data-streams/ksql/code/tutorial-steps/dev/describe-stream-01_expected.log %}</code></pre>
-+++++

@@ -1,9 +1,0 @@
-Let's add some helper functions to the code making our application more interactive.
-
-Add `src/main/scala/io/confluent/developer/schema/package.scala`:
-
-+++++
-<pre class="snippet"><code class="scala">{%
-    include_raw tutorials/produce-consume-lang/scala/code/src/main/scala/io/confluent/developer/schema/package.scala
-%}</code></pre>
-+++++

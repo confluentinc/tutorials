@@ -1,7 +1,0 @@
-Create the following Gradle setting file, named `settings.gradle` for the project:
-
-+++++
-<pre class="snippet"><code class="groovy">{%
-    include_raw tutorials/produce-consume-lang/scala/code/settings.gradle
-%}</code></pre>
-+++++

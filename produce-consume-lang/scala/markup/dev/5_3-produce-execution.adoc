@@ -1,6 +1,0 @@
-Feel free to add your favorite book in the list, then run the following command to produce the prepared dataset:
-+++++
-<pre class="snippet"><code class="bash">java -jar app-producer/build/libs/app-producer-0.1.0-SNAPSHOT.jar "$(cat data.csv)"</code></pre>
-+++++
-
-Now let's see if the records have been correctly written in Kafka and if the consumer App can poll theme.
