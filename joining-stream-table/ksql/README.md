@@ -1,4 +1,4 @@
-# Joining a stream and a table
+# Joining a stream and a table in ksqlDB
 
 You have events in a Kafka topic and a table of reference data (also known as a lookup table).
 Let's see how you can join each event in the stream to a piece of data in the table based on a common key.

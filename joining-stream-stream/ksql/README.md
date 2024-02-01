@@ -1,4 +1,4 @@
-# Joining two streams
+# Joining two streams in ksqlDB
 
 In this tutorial, we'll demonstrate how to join two event streams to create a new event stream.
 
