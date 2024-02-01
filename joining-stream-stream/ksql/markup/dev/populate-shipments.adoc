@@ -1,5 +1,0 @@
-In a similar manner, create the following shipments:
-
-+++++
-<pre class="snippet"><code class="sql">{% include_raw tutorials/joining-stream-stream/ksql/code/tutorial-steps/dev/populate-shipments.sql %}</code></pre>
-+++++

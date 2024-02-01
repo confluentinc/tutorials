@@ -1,5 +1,0 @@
-And before we dive in, don't forget to tell ksqlDB that you want to read from the beginning of the streams:
-
-+++++
-<pre class="snippet"><code class="sql">{% include_raw tutorials/joining-stream-stream/ksql/code/tutorial-steps/dev/set-properties.sql %}</code></pre>
-+++++

@@ -1,7 +1,0 @@
-First, you'll need to create a Kafka stream and its underlying topic to represent the orders:
-
-+++++
-<pre class="snippet"><code class="sql">{% include_raw tutorials/joining-stream-stream/ksql/code/tutorial-steps/dev/create-orders-stream.sql %}</code></pre>
-+++++
-
-Note that we are using the field `order_ts` as the record's timestamp. This is going to be important later on when we write queries that need to know about the time each event occurred at. By using a field of the event, we can process the events at any time and get a deterministic result. This is known as _event time_.
