@@ -1,5 +1,0 @@
-Create a file at `test/output.json` with the expected outputs:
-
-+++++
-<pre class="snippet"><code class="json">{% include_raw tutorials/ksql-heterogeneous-json/ksql/code/test/output.json %}</code></pre>
-+++++

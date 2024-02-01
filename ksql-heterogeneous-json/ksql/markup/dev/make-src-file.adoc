@@ -1,5 +1,0 @@
-Now that you have a series of statements that's extracting the fields you care about, the last step is to put them into a file so that they can be used outside the CLI session. Create a file at `src/statements.sql` with the following content:
-
-+++++
-<pre class="snippet"><code class="sql">{% include_raw tutorials/ksql-heterogeneous-json/ksql/code/src/statements.sql %}</code></pre>
-+++++
