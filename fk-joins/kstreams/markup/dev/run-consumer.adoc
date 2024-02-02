@@ -1,7 +1,0 @@
-Before you start producing track purchases, it's a good idea to set up the consumer on the output topic. This way, as soon as you produce track purchases (and they're joined to albums creating a music interest trend), you'll see the results right away. Run this to get ready to consume the music interest trends:
-
-+++++
-<pre class="snippet"><code class="shell">{% include_raw tutorials/fk-joins/kstreams/code/tutorial-steps/dev/console-consumer.sh %}</code></pre>
-+++++
-
-You won't see any results until the next step.
