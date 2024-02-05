@@ -1,3 +1,0 @@
-key1:Bunch of coconuts
-foo:baz
-fun:post quarantine

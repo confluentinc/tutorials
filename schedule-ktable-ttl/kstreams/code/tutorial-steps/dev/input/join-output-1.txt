@@ -1,4 +1,0 @@
-key1 : Bunch of coconuts what a lovely
-foo : baz bar
-fun : post quarantine not quarantine
-Processed a total of 3 messages
