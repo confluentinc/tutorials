@@ -1,13 +1,18 @@
 package io.confluent.developer;
 
+import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serdes;
+import org.apache.kafka.common.utils.Bytes;
 import org.apache.kafka.streams.KafkaStreams;
+import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.Topology;
 import org.apache.kafka.streams.kstream.Consumed;
+import org.apache.kafka.streams.kstream.Grouped;
 import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.KTable;
+import org.apache.kafka.streams.kstream.Materialized;
 import org.apache.kafka.streams.kstream.Produced;
 import org.apache.kafka.streams.state.KeyValueStore;
 import org.apache.kafka.streams.state.StoreBuilder;
@@ -17,7 +22,7 @@ import java.time.Duration;
 import java.util.Properties;
 import java.util.concurrent.CountDownLatch;
 
-public class KTableTTL {
+public class KTableTTLAggregate {
 
     public static final String INPUT_TOPIC_STREAM = "input-topic-for-stream";
     public static final String INPUT_TOPIC_TABLE = "input-topic-for-table";
@@ -28,32 +33,12 @@ public class KTableTTL {
 
         final StreamsBuilder builder = new StreamsBuilder();
 
-        // Read the input data.
-        final KStream<String, String> stream =
-                builder.stream(INPUT_TOPIC_STREAM, Consumed.with(Serdes.String(), Serdes.String()));
-        final KTable<String, String> table = builder.table(INPUT_TOPIC_TABLE,
-                Consumed.with(Serdes.String(), Serdes.String()));
-
-
-        // Perform the custom join operation.
-        final KStream<String, String> joined = stream.leftJoin(table, (left, right) -> {
-            System.out.println("JOINING left=" + left + " right=" + right);
-            if (right != null)
-                return left + " " + right; // this is, of course, a completely fake join logic
-            return left;
-        });
-        // Write the join results back to Kafka.
-        joined.to(OUTPUT_TOPIC,
-                Produced.with(Serdes.String(), Serdes.String()));
-
-
         // TTL part of the topology
         // This could be in a separate application
         // Setting tombstones for records seen past a TTL of MAX_AGE
         final Duration MAX_AGE = Duration.ofMinutes(1);
         final Duration SCAN_FREQUENCY = Duration.ofSeconds(5);
         final String STATE_STORE_NAME = "test-table-purge-store";
-
 
         // adding a custom state store for the TTL transformer which has a key of type string, and a
         // value of type long
@@ -66,11 +51,44 @@ public class KTableTTL {
 
         builder.addStateStore(storeBuilder);
 
-        // tap the table topic in order to insert a tombstone after MAX_AGE based on event time
-        table.toStream()
-                .process(new TTLEmitter<String, String, String, String>(MAX_AGE,
+        // Read the input data.
+        final KStream<String, String> stream =
+                builder.stream(INPUT_TOPIC_STREAM, Consumed.with(Serdes.String(), Serdes.String()));
+
+        final KStream<String, String> stream2 =
+                builder.stream(INPUT_TOPIC_TABLE, Consumed.with(Serdes.String(), Serdes.String()));
+
+        Serde<ValueWrapper> vwSerde = StreamsSerde.serdeFor(ValueWrapper.class);
+        Serde<AggregateObject> aggObjectSerde = StreamsSerde.serdeFor(AggregateObject.class);
+
+        KTable<String, AggregateObject> table = stream2
+                .process(new TTLEmitter<String, String, String, ValueWrapper>(MAX_AGE,
                         SCAN_FREQUENCY, STATE_STORE_NAME), STATE_STORE_NAME)
-                .to(INPUT_TOPIC_TABLE, Produced.with(Serdes.String(), Serdes.String())); // write tombstones back to input topic
+                .groupByKey(Grouped.with(Serdes.String(), vwSerde))
+
+                .aggregate(AggregateObject::new, (key, value, aggregate) -> {
+                    System.out.println("aggregate() - value=" + value);
+                    if (value.deleted())
+                        return null; // signal to tombstone this key in KTable
+                    else
+                        return aggregate.add(value.value().toString());
+                }, Materialized.<String, AggregateObject, KeyValueStore<Bytes, byte[]>>as("eventstore")
+                        .withKeySerde(Serdes.String()).withValueSerde(aggObjectSerde));
+
+
+
+        // Perform the custom join operation.
+        final KStream<String, String> joined = stream.leftJoin(table, (left, right) -> {
+            System.out.println("JOINING left=" + left + " right=" + right);
+            if (right != null) {
+                int size = right.getValues().size();
+                return left + " " + right.getValues().get(size - 1); // concat the last value out of the aggregate
+            }
+            return left;
+        });
+        // Write the join results back to Kafka.
+        joined.to(OUTPUT_TOPIC, Produced.with(Serdes.String(), Serdes.String()));
+
         return builder.build(properties);
     }
 
@@ -81,10 +99,10 @@ public class KTableTTL {
         } else {
             properties = Utils.loadProperties();
         }
-        properties.put(StreamsConfig.APPLICATION_ID_CONFIG, "kafka-streams-ktable-ttl");
+        properties.put(StreamsConfig.APPLICATION_ID_CONFIG, "kafka-streams-ktable-ttl-aggregate");
 
-        KTableTTL kTableTTL = new KTableTTL();
-        Topology topology = kTableTTL.buildTopology(properties);
+        KTableTTLAggregate kTableTTLAggregate = new KTableTTLAggregate();
+        Topology topology = kTableTTLAggregate.buildTopology(properties);
 
         try (KafkaStreams kafkaStreams = new KafkaStreams(topology, properties)) {
             CountDownLatch countDownLatch = new CountDownLatch(1);

@@ -16,7 +16,7 @@ java {
 }
 
 application {
-    mainClass = "io.confluent.developer.KTableTTL"
+    mainClass = "io.confluent.developer.KTableTTLAggregate"
 }
 
 repositories {
@@ -62,6 +62,6 @@ jar {
 }
 
 shadowJar {
-    archiveBaseName = "ktable-ttl-standalone"
+    archiveBaseName = "ktable-ttl-aggregate-standalone"
     archiveClassifier = ''
 }
