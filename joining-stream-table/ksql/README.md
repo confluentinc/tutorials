@@ -11,7 +11,7 @@ descriptive, so you want to enrich it with some additional information.  So you'
 Here's the movie rating stream:
 
 ```sql
- CREATE STREAM ratings (MOVIE_ID INT KEY, rating DOUBLE)
+ CREATE STREAM ratings (movie_id INT KEY, rating DOUBLE)
     WITH (kafka_topic='ratings', 
           partitions=1, 
           value_format='JSON');
@@ -21,14 +21,14 @@ Here's the movie rating stream:
 And this is the table definition containing the movie reference data:
 
 ```sql
-CREATE TABLE movies (ID INT PRIMARY KEY, title VARCHAR, release_year INT)
+CREATE TABLE movies (id INT PRIMARY KEY, title VARCHAR, release_year INT)
     WITH (kafka_topic='movies', 
           partitions=1, 
           value_format='JSON');
 ```
 
 Note that for a stream-table join to succeed, the primary key of the table must be the key of the stream.
-For example, the `movies` primary key `ID` matches up with the `ratings` stream key of `MOVIE_ID`.
+For example, the `movies` primary key `id` matches up with the `ratings` stream key of `movie_id`.
 
 With your stream and table in place you can build a join like this:
 
@@ -36,7 +36,7 @@ With your stream and table in place you can build a join like this:
 CREATE STREAM rated_movies
     WITH (kafka_topic='rated_movies',
           value_format='avro') AS
-    SELECT ratings.movie_id as id, title, rating
+    SELECT ratings.movie_id AS id, title, rating
     FROM ratings
     LEFT JOIN movies ON ratings.movie_id = movies.id;
 ```

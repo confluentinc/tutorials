@@ -11,14 +11,14 @@ CREATE STREAM purchases (order_id INT, customer_name VARCHAR, date_of_birth VARC
                          product VARCHAR, order_total_usd DOUBLE, town VARCHAR, country VARCHAR)
     WITH (kafka_topic='purchases', value_format='json', partitions=1);
 ```
-Then create a stream that will mask the PII columns using the ksqlDB [MASK]https://docs.ksqldb.io/en/0.8.1-ksqldb/developer-guide/ksqldb-reference/scalar-functions/#mask function:
+Then create a stream that will mask the PII columns using the ksqlDB [MASK](https://docs.ksqldb.io/en/0.8.1-ksqldb/developer-guide/ksqldb-reference/scalar-functions/#mask) function:
 
 ```sql
 
 CREATE STREAM purchases_pii_obfuscated
     WITH (kafka_topic='purchases_pii_obfuscated', value_format='json', partitions=1) AS
-    SELECT MASK(CUSTOMER_NAME) AS CUSTOMER_NAME,
-           MASK(DATE_OF_BIRTH) AS DATE_OF_BIRTH,
-           ORDER_ID, PRODUCT, ORDER_TOTAL_USD, TOWN, COUNTRY
+    SELECT MASK(customer_name) AS CUSTOMER_NAME,
+           MASK(date_of_birth) AS DATE_OF_BIRTH,
+           order_id, product, order_total_usd, town, country
     FROM purchases;
 ```

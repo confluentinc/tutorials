@@ -20,7 +20,7 @@ Then you'll create your `KStream` of ratings:
 ```
 We need to have the same id as the table, so we'll use a `KStream.map` operator to set the rating id as the key.  The `Rating` class id uses the same id as the movie.
 
-Now you use a [ValueJoiner]https://kafka.apache.org/36/javadoc/org/apache/kafka/streams/kstream/ValueJoiner.html specifying how to construct the joined value of the stream and table:
+Now you use a [ValueJoiner](https://kafka.apache.org/36/javadoc/org/apache/kafka/streams/kstream/ValueJoiner.html) specifying how to construct the joined value of the stream and table:
 
 ```java
 public class MovieRatingJoiner implements ValueJoiner<Rating, Movie, RatedMovie> {

@@ -37,9 +37,9 @@ For the join between these tables, you create another table containing your desi
 
 ```sql
 CREATE TABLE MOVIES_ENRICHED AS
-    SELECT M.ID, M.TITLE, M.RELEASE_YEAR, L.ACTOR_NAME
-    FROM MOVIES M
-    INNER JOIN LEAD_ACTOR L
-    ON M.TITLE = L.TITLE;
+    SELECT m.id, m.title, m.release_year, l.actor_name
+    FROM movies m
+    INNER JOIN lead_actor l
+    ON m.title = l.title;
 ```
 
