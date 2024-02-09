@@ -4,7 +4,7 @@ CREATE STREAM purchases (order_id INT, customer_name VARCHAR, date_of_birth VARC
 
 CREATE STREAM purchases_pii_obfuscated
     WITH (kafka_topic='purchases_pii_obfuscated', value_format='json', partitions=1) AS
-    SELECT MASK(customer_name) AS CUSTOMER_NAME,
-           MASK(date_of_birth) AS DATE_OF_BIRTH,
+    SELECT MASK(customer_name) AS customer_name,
+           MASK(date_of_birth) AS date_of_birth,
            order_id, product, order_total_usd, town, country
     FROM purchases;

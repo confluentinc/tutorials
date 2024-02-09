@@ -1,15 +1,15 @@
-CREATE TABLE movies (TITLE VARCHAR PRIMARY KEY, id INT, release_year INT)
+CREATE TABLE movies (title VARCHAR PRIMARY KEY, id INT, release_year INT)
     WITH (KAFKA_TOPIC='movies',
         PARTITIONS=1,
         VALUE_FORMAT='JSON');
 
-CREATE TABLE lead_actor (TITLE VARCHAR PRIMARY KEY, actor_name VARCHAR)
+CREATE TABLE lead_actor (title VARCHAR PRIMARY KEY, actor_name VARCHAR)
     WITH (KAFKA_TOPIC='lead_actors',
         PARTITIONS=1,
         VALUE_FORMAT='JSON');
 
-CREATE TABLE MOVIES_ENRICHED AS
-SELECT M.ID, M.TITLE, M.RELEASE_YEAR, L.ACTOR_NAME
-FROM MOVIES M
-         INNER JOIN LEAD_ACTOR L
-         ON M.TITLE = L.TITLE;
+CREATE TABLE movies_enriched AS
+SELECT m.id, m.title, m.release_year, l.actor_name
+FROM movies m
+         INNER JOIN lead_actor l
+         ON m.title = l.title;

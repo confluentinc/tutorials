@@ -1,10 +1,10 @@
-CREATE STREAM ratings (MOVIE_ID INT KEY, rating DOUBLE)
+CREATE STREAM ratings (movie_id INT KEY, rating DOUBLE)
     WITH (kafka_topic='ratings',
           partitions=1,
           value_format='JSON');
 
 
-CREATE TABLE movies (ID INT PRIMARY KEY, title VARCHAR, release_year INT)
+CREATE TABLE movies (id INT PRIMARY KEY, title VARCHAR, release_year INT)
     WITH (kafka_topic='movies',
         partitions=1,
         value_format='JSON');
