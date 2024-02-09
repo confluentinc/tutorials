@@ -1,5 +1,0 @@
-And finally, create another Avro schema file at `src/main/avro/music-interest.avsc` for the result of the join:
-
-+++++
-<pre class="snippet"><code class="avro">{% include_raw tutorials/fk-joins/kstreams/code/src/main/avro/music-interest.avsc %}</code></pre>
-+++++

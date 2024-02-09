@@ -1,5 +1,0 @@
-Our purchases stream is created and should be populated with data. Prior to querying the purchases data, let's tell ksqlDB to query data from the beginning of the topic.
-
-+++++
-<pre class="snippet"><code class="shell">{% include_raw tutorials/masking-data/ksql/code/tutorial-steps/dev/set-offset-reset.sql %}</code></pre>
-+++++

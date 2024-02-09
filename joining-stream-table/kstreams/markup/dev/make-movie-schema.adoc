@@ -1,5 +1,0 @@
-Then create the following Avro schema file at `src/main/avro/movie.avsc` for the movies lookup table:
-
-+++++
-<pre class="snippet"><code class="avro">{% include_raw tutorials/joining-stream-table/kstreams/code/src/main/avro/movie.avsc %}</code></pre>
-+++++

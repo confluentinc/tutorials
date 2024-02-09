@@ -1,5 +1,0 @@
-Likewise, you'll need a Kafka topic and a second table to represent the additional movie data about leading actor:
-
-+++++
-<pre class="snippet"><code class="sql">{% include_raw tutorials/joining-table-table/ksql/code/tutorial-steps/dev/create-movies-actor-table.sql %}</code></pre>
-+++++

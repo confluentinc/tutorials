@@ -1,5 +1,0 @@
-And finally, create another Avro schema file at `src/main/avro/rated-movie.avsc` for the result of the join:
-
-+++++
-<pre class="snippet"><code class="avro">{% include_raw tutorials/joining-stream-table/kstreams/code/src/main/avro/rated-movie.avsc %}</code></pre>
-+++++
