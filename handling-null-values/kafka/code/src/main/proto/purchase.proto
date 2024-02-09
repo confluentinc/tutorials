@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package io.confluent.developer.proto;
+option java_outer_classname = "PurchaseProto";
+
+message Purchase {
+  string item = 1;
+  double total_cost = 2;
+  string customer_id = 3;
+}
+
+//This is running the way I want because in protobuf, the default values come built-in https://protobuf.dev/programming-guides/proto3/#default
+//Therefore there will be no error when I forget to .setItem()
