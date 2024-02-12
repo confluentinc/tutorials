@@ -1,7 +1,0 @@
-In your terminal, run:
-
-+++++
-<pre class="snippet"><code class="shell">{% include_raw tutorials/rekeying-function/ksql/code/tutorial-steps/dev/build-jar.sh %}</code></pre>
-+++++
-
-The `copyJar` gradle task will automatically deliver the jar to the `extensions/` directory.

@@ -1,7 +1,0 @@
-Next, create the following `docker-compose.yml` file to obtain Confluent Platform (for Kafka in the cloud, see https://www.confluent.io/confluent-cloud/tryfree/[Confluent Cloud]):
-
-+++++
-<pre class="snippet"><code class="dockerfile">{% include_raw tutorials/rekeying-function/ksql/code/docker-compose.yml %}</code></pre>
-+++++
-
-Note `docker-compose.yml` has configured the `ksqldb-server` container with `KSQL_KSQL_EXTENSION_DIR: "/etc/ksql/ext/"`, and maps the local `extensions` directory to `/etc/ksql/ext` in the container. ksqlDB is now configured to look in this location for your extensions such as custom functions.

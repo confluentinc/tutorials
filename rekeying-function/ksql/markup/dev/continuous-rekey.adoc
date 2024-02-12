@@ -1,9 +1,0 @@
-Now, using ksqlDB's appropriately-named `PARTITION BY` clause, we can apply the results of `REGEXREPLACE` as the key for each message and write the result to a new stream.
-
-As we're not partitioning by an existing column, ksqlDB will add a new column to the `customers_by_area_code` stream based on the result of our function call.
-
-We provide the name `AREA_CODE` for this new column in the projection.
-
-+++++
-<pre class="snippet"><code class="sql">{% include_raw tutorials/rekeying-function/ksql/code/tutorial-steps/dev/continuous-rekey.sql %}</code></pre>
-+++++
