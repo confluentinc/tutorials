@@ -1,9 +1,0 @@
-INSERT INTO ratings (old, id, rating) VALUES (1, 294, 8.2);
-INSERT INTO ratings (old, id, rating) VALUES (2, 294, 8.5);
-INSERT INTO ratings (old, id, rating) VALUES (3, 354, 9.9);
-INSERT INTO ratings (old, id, rating) VALUES (4, 354, 9.7);
-INSERT INTO ratings (old, id, rating) VALUES (5, 782, 7.8);
-INSERT INTO ratings (old, id, rating) VALUES (6, 782, 7.7);
-INSERT INTO ratings (old, id, rating) VALUES (7, 128, 8.7);
-INSERT INTO ratings (old, id, rating) VALUES (8, 128, 8.4);
-INSERT INTO ratings (old, id, rating) VALUES (9, 780, 2.1);
