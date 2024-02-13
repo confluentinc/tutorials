@@ -1,4 +1,4 @@
-# Running python source connectors and SMTs
+# Running Python source connectors and SMTs
 
 ## Intro
 
@@ -10,7 +10,7 @@ More details:
 - Source: https://github.com/confluentinc/csid-python-base
 - How it works: https://docs.google.com/presentation/d/1cdfVa2A5FQXwo5Oxi9FUEscQp2z78SAo5xfvjNNZhIg/
 
-## Running a python source connector
+## Running a Python source connector
 
 This tutorial uses a complete cluster running on `docker`. Just make sure you have Docker Desktop installed on your computer and you're ready to go!
 
@@ -24,7 +24,7 @@ This tutorial uses a complete cluster running on `docker`. Just make sure you ha
 
 From there, you have to create a connector in the Connect cluster.  
 
-There are 3 examples provided with this tutorial in the `json`folder. They all use a python connector and the last one also includes a python SMT.
+There are 3 examples provided with this tutorial in the `json`folder. They all use a Python connector and the last one also includes a Python SMT.
 
 1. [connector-fields.json](json/connector-fields.json): this example publishes JSON messages containing 6 fields. This corresponds to the `code/speed_traps.py` script.
 2. [connector-full-text.json](json/connector-full-text.json): this example publishes messages with one big string as the value. This is in the `code/full_text.py` script.
@@ -53,8 +53,8 @@ In our example (no 3 above), the connector and the SMT are on the same script. T
 
 ## Configuration Properties and Technical Details
 
-When you submit a json file to create a connector, it includes some settings for the python connector.
-The main one is the `entry.point` property that is telling the connector which python script to use and which method to call repeatedly.
+When you submit a json file to create a connector, it includes some settings for the Python connector.
+The main one is the `entry.point` property that is telling the connector which Python script to use and which method to call repeatedly.
 (Usually this method is called `poll` but it can be anything.)
 
 All the configuration properties and the technical are described in the [tech-details.md](./tech-details.md) file. 
