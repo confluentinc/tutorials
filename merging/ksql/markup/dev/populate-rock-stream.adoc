@@ -1,5 +1,0 @@
-Let's produce some events for rock songs:
-
-+++++
-<pre class="snippet"><code class="sql">{% include_raw tutorials/merging/ksql/code/tutorial-steps/dev/populate-rock-stream.sql %}</code></pre>
-+++++

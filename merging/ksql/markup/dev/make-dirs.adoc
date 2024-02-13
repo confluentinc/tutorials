@@ -1,5 +1,0 @@
-Then make the following directories to set up its structure:
-
-+++++
-<pre class="snippet"><code class="shell">{% include_raw tutorials/merging/ksql/code/tutorial-steps/dev/make-dirs.sh %}</code></pre>
-+++++

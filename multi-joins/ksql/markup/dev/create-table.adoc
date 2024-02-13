@@ -1,5 +1,0 @@
-That's a fine snapshot, but we want to make this rolling count of ratings continuous. The following creates a new table that is continuously populated by its query:
-
-+++++
-<pre class="snippet"><code class="sql">{% include_raw tutorials/multi-joins/ksql/code/tutorial-steps/dev/create-table.sql %}</code></pre>
-+++++

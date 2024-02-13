@@ -1,6 +1,0 @@
-First let's create an input https://docs.ksqldb.io/en/latest/concepts/collections/#tables[Table] of customer data which will hold data in JSON format.
-
-+++++
-<pre class="snippet"><code class="sql">{% include_raw tutorials/multi-joins/ksql/code/tutorial-steps/dev/create-inputs-customers.sql %}</code></pre>
-+++++
-
