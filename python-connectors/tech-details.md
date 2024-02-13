@@ -118,7 +118,7 @@ Main java class = `io.confluent.pytools.PySourceConnector`
 
 Step 1. Add the Python Tools jar to the `CLASSPATH`.
 
-Step 2. Put your python scripts, including an optional `requirements.txt` in a directory (the scripts directory).
+Step 2. Put your Python scripts, including an optional `requirements.txt` in a directory (the scripts directory).
 
 Step 3. Add the following properties to the connector you're creating:
 
