@@ -2,21 +2,21 @@
 
 ## Introduction 
 
-The interface from java to python is done using the pemja library (developed by Alibaba).
+The interface from Java to Python is done using the pemja library (developed by Alibaba).
 
 https://github.com/alibaba/pemja
 
 How pemja works:
-- It starts a thread for the python interpreter in the JVM
-- It calls python code using Java to C interface (JNI) and a C python module
+- It starts a thread for the Python interpreter in the JVM
+- It calls Python code using Java to C interface (JNI) and a C Python module
 
 ## 1. Python SMT
 
-Main java class = `io.confluent.pytools.PyConnectSmt`
+Main Java class = `io.confluent.pytools.PyConnectSmt`
 
 Step 1. Add the Python Tools jar to the `CLASSPATH`.
 
-Step 2. Put your python scripts, including an optional `requirements.txt` in a directory (the scripts directory).
+Step 2. Put your Python scripts, including an optional `requirements.txt` in a directory (the scripts directory).
 
 Step 3. Add the following properties to the connector you're adding the SMT to:
 
@@ -35,16 +35,16 @@ Step 3. Add the following properties to the connector you're adding the SMT to:
 
 ### How it works
 
-👉 When initializing (during the `configure()` call of the java SMT SDK), the SMT builds a python virtual environment 
+👉 When initializing (during the `configure()` call of the Java SMT SDK), the SMT builds a Python virtual environment 
 and (pip) installs the libraries referenced in the `requirements.txt` file. Then, it calls the `init()` method of the 
-python script (if configured). It also installs the `pemja` library in the virtual environment.
+Python script (if configured). It also installs the `pemja` library in the virtual environment.
 
-For each call of the `apply()` call of the java SMT SDK (the method calling the transformation), it calls the `entry.point` 
-python method and passes a dict with the Kafka record (see next section).
+For each call of the `apply()` call of the Java SMT SDK (the method calling the transformation), it calls the `entry.point` 
+Python method and passes a dict with the Kafka record (see next section).
 
 ### Python script and method signatures
 
-For transforms chained to source connectors, the python method called for the transform has the following signature:
+For transforms chained to source connectors, the Python method called for the transform has the following signature:
 
 `def transform(record)`
 
@@ -72,21 +72,21 @@ Depending on their type, the payload format for keys and values varies:
 
 ### Filtering out a message
 
-To filter out a message, the python transform can return `None`.
+To filter out a message, the Python transform can return `None`.
 
 ### Config properties
 
 - `<transform.prefix>.type` must be `io.confluent.pytools.PyConnectSmt`
-- `<transform.prefix>.scripts.dir`: the directory where the python scripts reside. 
-- `<transform.prefix>.working.dir`: optional, the directory where to build the python virtual environment. If not passed, the scripts directory will be used.
-- `<transform.prefix>.entry.point`: Python entry point for the transform. See details on python entry points below. 
+- `<transform.prefix>.scripts.dir`: the directory where the Python scripts reside. 
+- `<transform.prefix>.working.dir`: optional, the directory where to build the Python virtual environment. If not passed, the scripts directory will be used.
+- `<transform.prefix>.entry.point`: Python entry point for the transform. See details on Python entry points below. 
 - `<transform.prefix>.init.method`: optional, method called once by the SMT when it initializes the transform.
-- `<transform.prefix>.private.settings`: String passed to the python script. Can be used to put settings in JSON format; eg. `"{\"conf1\":\"value1\", \"conf2\":\"value2\"}"`.
-- `<transform.prefix>.offline.installation.dir`: optional, the directory containing wheel/python packages for offline installation of the packages in the virtual environment.
+- `<transform.prefix>.private.settings`: String passed to the Python script. Can be used to put settings in JSON format; eg. `"{\"conf1\":\"value1\", \"conf2\":\"value2\"}"`.
+- `<transform.prefix>.offline.installation.dir`: optional, the directory containing wheel/Python packages for offline installation of the packages in the virtual environment.
 
-**Note on python entry points**
+**Note on Python entry points**
 
-The format for the python entry points is driven by the way pemja works and the organization of python scripts inside the user modules. 
+The format for the Python entry points is driven by the way pemja works and the organization of Python scripts inside the user modules. 
 
 If the module doesn't have sub-modules, we'll import and call it this way:
 ```java
@@ -109,12 +109,12 @@ So the entry point should be provided as `algorithms.strings.decode_string` and 
 
 ### Notes/FAQ
 
-- How to provide packages for offline installation of the python environment? Put the wheel packages in a directory and provide it using `<transform.prefix>.offline.installation.dir`.
-- The python script cannot/shouldn't change the type of the key or of the value.
+- How to provide packages for offline installation of the Python environment? Put the wheel packages in a directory and provide it using `<transform.prefix>.offline.installation.dir`.
+- The Python script cannot/shouldn't change the type of the key or of the value.
 
 ## 2. Python Source Connector
 
-Main java class = `io.confluent.pytools.PySourceConnector`
+Main Java class = `io.confluent.pytools.PySourceConnector`
 
 Step 1. Add the Python Tools jar to the `CLASSPATH`.
 
@@ -232,17 +232,17 @@ def poll_single(offsets):
 On the Java side, after the `poll()` method has been called, `SourceRecord` objects are created and sent to the destination topic.
 From the Python data, Java stores the corresponding basic types:
 
-- Python strings become `String` java objects.
-- Python integers become `Long` (64-bit integers) java objects.
-- Python floats become `Double` (64-bit floats) java objects.
+- Python strings become `String` Java objects.
+- Python integers become `Long` (64-bit integers) Java objects.
+- Python floats become `Double` (64-bit floats) Java objects.
 - Python bytes arrays become `Byte` arrays.
-- Python bools become `Boolean` java objects.
+- Python bools become `Boolean` Java objects.
 
-The `poll()` method can return `None` (java: `null`) if there's nothing to produce at the time of the call. The method will be called again later.
+The `poll()` method can return `None` (Java: `null`) if there's nothing to produce at the time of the call. The method will be called again later.
 
 ### Offset management
 
-In addition to the `key` and `value` members, the records returned by the python `poll()` method can have an optional `offset` member.
+In addition to the `key` and `value` members, the records returned by the Python `poll()` method can have an optional `offset` member.
 
 The latest value of the offset returned by the `poll()` is stored by the Connect framework and passed to the `init()` method and at each invocation of the `poll()` method. 
 
@@ -276,9 +276,9 @@ If a batch has several records but not all of them have `offset` members, the la
 
 ### Config properties
 
-- `scripts.dir`: the directory where the python scripts reside.
-- `working.dir`: optional, the directory where to build the python virtual environment. If not passed, the scripts directory will be used.
-- `entry.point`: Python entry point for the connector (poll() method). See details on python entry points above.
+- `scripts.dir`: the directory where the Python scripts reside.
+- `working.dir`: optional, the directory where to build the Python virtual environment. If not passed, the scripts directory will be used.
+- `entry.point`: Python entry point for the connector (poll() method). See details on Python entry points above.
 - `init.method`: optional, method called once when it initializes the connector task.
-- `private.settings`: String passed to the python script. Can be used to put settings in JSON format; eg. `"{\"conf1\":\"value1\", \"conf2\":\"value2\"}"`.
-- `offline.installation.dir`: optional, the directory containing wheel/python packages for offline installation of the packages in the virtual environment.
+- `private.settings`: String passed to the Python script. Can be used to put settings in JSON format; eg. `"{\"conf1\":\"value1\", \"conf2\":\"value2\"}"`.
+- `offline.installation.dir`: optional, the directory containing wheel/Python packages for offline installation of the packages in the virtual environment.

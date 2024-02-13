@@ -7,8 +7,8 @@ CSID Labs have developed tools and libraries that allow you to write and run Pyt
 In addition to letting you use your favourite language (Python), they are also very simple to use. You can write a `Hello World` source connector with just 2 lines of code.
 
 More details:
-- Source: https://github.com/confluentinc/csid-python-base
-- How it works: https://docs.google.com/presentation/d/1cdfVa2A5FQXwo5Oxi9FUEscQp2z78SAo5xfvjNNZhIg/
+- Source: [github.com/confluentinc/csid-python-base](https://github.com/confluentinc/csid-python-base)
+- [How it works - Overview Slides](./Using-Python-in-Connectors-and-SMTs.pdf)
 
 ## Running a Python source connector
 
