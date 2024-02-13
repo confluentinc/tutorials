@@ -149,12 +149,12 @@ Step 3. Add the following properties to the connector you're creating:
 
 See https://docs.confluent.io/platform/current/connect/devguide.html for Kafka Connect development concepts.
 
-👉 When initializing the connector task, the connector builds a python virtual environment
+👉 When initializing the connector task, the connector builds a Python virtual environment
 and (pip) installs the libraries referenced in the `requirements.txt` file. Then, it calls the `init()` method of the
-python script (if configured). It also installs the `pemja` library in the virtual environment.
+Python script (if configured). It also installs the `pemja` library in the virtual environment.
 
-For each call of the `poll()` call of the java Source connector SDK, it calls the `entry.point`
-python method and expects a single Kafka record or a list of Kafka records (see next section).
+For each call of the `poll()` call of the Java Source connector SDK, it calls the `entry.point`
+Python method and expects a single Kafka record or a list of Kafka records (see next section).
 
 ### Python script and method signatures
 
