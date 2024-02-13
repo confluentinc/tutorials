@@ -167,7 +167,7 @@ The `poll()` method has the following signature:
 
 The `poll()` method can return either a list of records (described below) or a single one. 
 
-Records are expressed as python dicts containing 2 keys: `key` and `value`.
+Records are expressed as Python dicts containing 2 keys: `key` and `value`.
 
 The data for those keys is either directly a basic type (integer, float, boolean, string or bytes), or a dict (with keys and values of basic types).
 
