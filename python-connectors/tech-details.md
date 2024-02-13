@@ -230,7 +230,7 @@ def poll_single(offsets):
 ```
 
 On the Java side, after the `poll()` method has been called, `SourceRecord` objects are created and sent to the destination topic.
-From the python data, java stores the corresponding basic types:
+From the Python data, Java stores the corresponding basic types:
 
 - Python strings become `String` java objects.
 - Python integers become `Long` (64-bit integers) java objects.
