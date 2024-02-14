@@ -1,6 +1,7 @@
-# Merging multiple streams into one
+# Merging multiple streams
 
-In this tutorial, we take a look at the case when you have multiple streams, but you'd like to merge them into one.  We'll use the example of streams of a music catalog to demonstrate.
+In this tutorial, we take a look at the case when you have multiple streams, but you'd like to merge them into one.  
+We'll use multiple streams of a music catalog to demonstrate.
 
 ## Setup
 
