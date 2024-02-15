@@ -1,7 +1,0 @@
-Let's fix that. Using KSQL's appropriately named `PARTITION BY` clause we can apply a key to the messages and write it to a new stream. Here we'll use the movie identifier, `ID`.
-
-First we tell ksqlDB to query data from the beginning of the topic:
-
-+++++
-<pre class="snippet"><code class="sql">{% include_raw tutorials/rekeying/ksql/code/tutorial-steps/dev/set-properties.sql %}</code></pre>
-+++++

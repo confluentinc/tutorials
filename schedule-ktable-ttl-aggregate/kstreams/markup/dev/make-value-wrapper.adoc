@@ -1,7 +1,0 @@
-We need to create some supporting classes first.
-
-Let's create a ValueWrapper class used to signal a delete by copying the following file to src/main/java/io/confluent/developer/ValueWrapper.java:
-
-+++++
-<pre class="snippet"><code class="java">{% include_raw tutorials/schedule-ktable-ttl-aggregate/kstreams/code/src/main/java/io/confluent/developer/ValueWrapper.java %}</code></pre>
-+++++

@@ -1,5 +1,0 @@
-Create the JSONSerdeCompatible class by copying the following file to src/main/java/io/confluent/developer/serdes/JSONSerdeCompatible.java:
-
-+++++
-<pre class="snippet"><code class="java">{% include_raw tutorials/schedule-ktable-ttl-aggregate/kstreams/code/src/main/java/io/confluent/developer/serdes/JSONSerdeCompatible.java %}</code></pre>
-+++++

@@ -1,5 +1,0 @@
-Then make the following directories:
-
-+++++
-<pre class="snippet"><code class="shell">{% include_raw tutorials/rekeying-function/ksql/code/tutorial-steps/dev/make-dirs.sh %}</code></pre>
-+++++
