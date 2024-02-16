@@ -1,5 +1,0 @@
-Set the `ProducerConfig` configuration parameters relevant to the idempotent producer:
-
-+++++
-<pre class="snippet"><code class="bash">{% include_raw tutorials/message-ordering/kafka/code/tutorial-steps/dev/answer-code-short.java %}</code></pre>
-+++++
