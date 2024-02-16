@@ -1,2 +1,0 @@
-docker exec -t broker kafka-topics --create --topic proto-events --bootstrap-server broker:9092 --replication-factor 1 --partitions 1
-docker exec -t broker kafka-topics --create --topic avro-events --bootstrap-server broker:9092 --replication-factor 1 --partitions 1

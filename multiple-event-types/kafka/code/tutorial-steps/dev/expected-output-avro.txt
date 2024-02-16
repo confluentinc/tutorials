@@ -1,2 +1,0 @@
-[main] INFO io.confluent.developer.MultiEventAvroProduceConsumeApp - Producing Avro events
-[main] INFO io.confluent.developer.MultiEventAvroProduceConsumeApp - Consumed Avro Events [Avro Pageview event -> http://acme/traps, Avro Pageview event -> http://acme/bombs, Avro Pageview event -> http://acme/bait, Avro Purchase event -> road-runner-bait]
