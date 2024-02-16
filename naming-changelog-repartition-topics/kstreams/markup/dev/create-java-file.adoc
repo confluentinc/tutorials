@@ -1,8 +1,0 @@
-
-
-
-Now go ahead and create the following file at `src/main/java/io/confluent/developer/NamingChangelogAndRepartitionTopics.java`.
-
-+++++
-<pre class="snippet"><code class="java">{% include_raw tutorials/naming-changelog-repartition-topics/kstreams/code/src/main/java/io/confluent/developer/NamingChangelogAndRepartitionTopics.java %}</code></pre>
-+++++
