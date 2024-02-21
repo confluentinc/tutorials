@@ -20,4 +20,4 @@ To merge these two streams you'll use the [KStream.merge](https://javadoc.io/sta
 ```java
 KStream<String, SongEvent> allSongs = rockSongs.merge(classicalSongs);
 ```
-The `KStream.merge` does not guarantee any order of the merged record streams.  The records maintain their ordering relative to the original source topic.
+The `KStream.merge` method does not guarantee any order of the merged record streams.  The records maintain their ordering relative to the original source topic.

@@ -2,7 +2,7 @@
 
 You'd like to have some periodic functionality execute in your Kafka Streams application. In this tutorial, you'll learn how to use punctuations in Kafka Streams to execute work at regular intervals.
 
-To schedule operations in Kafka Streams, you'll need to use the [Processor API].  In this example, you will use the [KStream.process](https://javadoc.io/static/org.apache.kafka/kafka-streams/3.6.1/org/apache/kafka/streams/kstream/KStream.html#process-org.apache.kafka.streams.processor.api.ProcessorSupplier-org.apache.kafka.streams.kstream.Named-java.lang.String...-) which mixes the Processor API into the Kafka Streams DSL.
+To schedule operations in Kafka Streams, you'll need to use the [Processor API](https://kafka.apache.org/36/documentation/streams/developer-guide/processor-api.html).  In this example, you will use the [KStream.process](https://javadoc.io/static/org.apache.kafka/kafka-streams/3.6.1/org/apache/kafka/streams/kstream/KStream.html#process-org.apache.kafka.streams.processor.api.ProcessorSupplier-org.apache.kafka.streams.kstream.Named-java.lang.String...-) method which mixes the Processor API into the Kafka Streams DSL.
 
 ```java
  final KStream<String, LoginTime> loginTimeStream = builder.stream(INPUT_TOPIC, Consumed.with(Serdes.String(), loginTimeSerde));
