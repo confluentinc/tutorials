@@ -1,6 +1,0 @@
-Similarly, we create a second table containing items available in our online store:
-
-+++++
-<pre class="snippet"><code class="sql">{% include_raw tutorials/multi-joins/ksql/code/tutorial-steps/dev/create-inputs-items.sql %}</code></pre>
-+++++
-

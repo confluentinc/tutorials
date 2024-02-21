@@ -1,5 +1,0 @@
-First, you'll need to create a series of Kafka topics and streams to represent the different genres of music:
-
-+++++
-<pre class="snippet"><code class="sql">{% include_raw tutorials/merging/ksql/code/tutorial-steps/dev/create-inputs.sql %}</code></pre>
-+++++

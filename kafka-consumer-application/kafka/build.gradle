@@ -2,21 +2,25 @@ buildscript {
     repositories {
         mavenCentral()
     }
-    dependencies {
-        classpath "gradle.plugin.com.github.jengelman.gradle.plugins:shadow:7.0.0"
-    }
 }
 
 plugins {
     id "java"
-    id "com.google.cloud.tools.jib" version "3.3.1"
     id "idea"
     id "eclipse"
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
+    id 'application'
 }
 
-sourceCompatibility = JavaVersion.VERSION_17
-targetCompatibility = JavaVersion.VERSION_17
-version = "0.0.1"
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+application {
+    mainClass = "io.confluent.developer.KafkaConsumerApplication"
+}
+
 
 repositories {
     mavenCentral()
@@ -25,8 +29,6 @@ repositories {
         url "https://packages.confluent.io/maven"
     }
 }
-
-apply plugin: "com.github.johnrengelman.shadow"
 
 dependencies {
     implementation 'org.slf4j:slf4j-simple:2.0.7'
@@ -47,8 +49,7 @@ test {
 jar {
   manifest {
     attributes(
-      "Class-Path": configurations.compileClasspath.collect { it.getName() }.join(" "),
-      "Main-Class": "io.confluent.developer.KafkaConsumerApplication"
+      "Class-Path": configurations.compileClasspath.collect { it.getName() }.join(" ")
     )
   }
 }

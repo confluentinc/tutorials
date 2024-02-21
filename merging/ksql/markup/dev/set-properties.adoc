@@ -1,5 +1,0 @@
-Now that the streams are populated with events, let's start to merge the genres back together. The first thing to do is set the following properties to ensure that you're reading from the beginning of the stream in your queries:
-
-+++++
-<pre class="snippet"><code class="sql">{% include_raw tutorials/merging/ksql/code/tutorial-steps/dev/set-properties.sql %}</code></pre>
-+++++

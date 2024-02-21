@@ -24,11 +24,6 @@ repositories {
   maven { url 'https://packages.confluent.io/maven/' }
 }
 
-repositories {
-  mavenCentral()
-  maven { url 'https://packages.confluent.io/maven/' }
-}
-
 dependencies {
   implementation project(':common')
   implementation "org.slf4j:slf4j-simple:2.0.7"
@@ -59,7 +54,7 @@ test {
 jar {
   manifest {
     attributes(
-        'Class-Path': configurations.compileClasspath.collect { it.getName() }.join(' '),
+        'Class-Path': configurations.compileClasspath.collect { it.getName() }.join(' ')
     )
   }
 }

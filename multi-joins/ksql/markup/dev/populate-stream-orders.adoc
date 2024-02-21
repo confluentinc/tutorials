@@ -1,5 +1,0 @@
-Then we insert some orders.  Each order contains a unique order id, a customer id, an item id, and a purchase date:
-
-+++++
-<pre class="snippet"><code class="sql">{% include_raw tutorials/multi-joins/ksql/code/tutorial-steps/dev/populate-stream-orders.sql %}</code></pre>
-+++++
