@@ -37,13 +37,6 @@ public class ProtoConsumerApp {
          protoConsumerConfigs.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, KafkaProtobufDeserializer.class);
          protoConsumerConfigs.put(KafkaProtobufDeserializerConfig.SPECIFIC_PROTOBUF_VALUE_TYPE, Purchase.class);
 
-         // Duplication of configs loaded from confluent.properties to emphasize what's needed to use SchemaRegistry
-         protoConsumerConfigs.put("schema.registry.url", "SR_URL");
-         protoConsumerConfigs.put("basic.auth.credentials.source", "USER_INFO");
-         protoConsumerConfigs.put("basic.auth.user.info", "KEY:SECRET");
-
-
-
          Consumer<String, Purchase> protoConsumer = new KafkaConsumer<>(protoConsumerConfigs);
          protoConsumer.subscribe(Collections.singletonList("proto-purchase"));
 

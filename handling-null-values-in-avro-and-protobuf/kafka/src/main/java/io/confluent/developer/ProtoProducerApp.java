@@ -39,12 +39,6 @@ public class ProtoProducerApp {
         // Setting schema auto-registration to false since we already registered the schema manually following best practice
         protoProducerConfigs.put(AbstractKafkaSchemaSerDeConfig.AUTO_REGISTER_SCHEMAS, false);
 
-        // Duplication of configs loaded from confluent.properties to emphasize what's needed to use SchemaRegistry
-        protoProducerConfigs.put("schema.registry.url", "SR_URL");
-        protoProducerConfigs.put("basic.auth.credentials.source", "USER_INFO");
-        protoProducerConfigs.put("basic.auth.user.info", "KEY:SECRET");
-
-
         System.out.printf("Producer now configured for using SchemaRegistry %n");
         List<Purchase> protoPurchaseEvents = new ArrayList<>();
 

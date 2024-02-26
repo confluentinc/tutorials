@@ -43,12 +43,6 @@ public class AvroConsumerApp implements AutoCloseable{
             avroConsumerConfigs.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, KafkaAvroDeserializer.class);
             avroConsumerConfigs.put(KafkaAvroDeserializerConfig.SPECIFIC_AVRO_READER_CONFIG, true);
 
-
-            // Duplication of configs loaded from confluent.properties to emphasize what's needed to use SchemaRegistry
-            avroConsumerConfigs.put("schema.registry.url", "SR_URL");
-            avroConsumerConfigs.put("basic.auth.credentials.source", "USER_INFO");
-            avroConsumerConfigs.put("basic.auth.user.info", "KEY:SECRET");
-
             Consumer<String, PurchaseAvro> avroConsumer = new KafkaConsumer<>(avroConsumerConfigs);
 
             avroConsumer.subscribe(Collections.singletonList("avro-purchase"));
