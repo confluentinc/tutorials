@@ -85,7 +85,7 @@ You can run this example either with Confluent Cloud or by running the unit test
 #### Run the test
 
 ```
-./gradlew test
+gradle test
 ```
 <details>
   <summary>Confluent Cloud</summary>
@@ -161,7 +161,7 @@ Inside `handling-null-values/kafka/code/src/main/avro/purchase.avsc` you'll see:
 }
 ```
 
-When you run `./gradlew runAvroProducer` and furthermore, `./gradlew runAvroConsumer`, you'll see that the events with null items are produced and consumed successfully. 
+When you run `gradle runAvroProducer` and furthermore, `gradle runAvroConsumer`, you'll see that the events with null items are produced and consumed successfully. 
 
 Now remove the `["string", "null"]` in the first field and replace it with `"string"`:
 
@@ -178,7 +178,7 @@ Now remove the `["string", "null"]` in the first field and replace it with `"str
 }
 ```
 
-Now, if you run the code using `./gradlew runAvroProducer`, you will see that the producer "hangs" and does not produce events. If Avro schemas are to accept null values they need it set explicitly on the field.
+Now, if you run the code using `gradle runAvroProducer`, you will see that the producer does not produce events. If Avro schemas are to accept null values they need it set explicitly on the field.
 
 How about null values in Protobuf schema fields? See: `handling-null-values/kafka/code/src/main/proto/purchase.proto`:
 
@@ -202,7 +202,23 @@ Look at `ProtoProducerApp.java`, lines 76-77:
                 .setTotalCost(random.nextDouble() * random.nextInt(100));
 ``` 
 
-We can see that the developer who wrote this app 'forgot' to write the `setItem()` method that adds an item. This means that the value will be null. But when you run you run `./gradlew runProtoProducer` and `./gradlew runProtoConsumer` no errors will arise. That's because Protobuf automatically handles default values. 
+We can see that the developer who wrote this app 'forgot' to write the `setItem()` method that adds an item. This means that the value will be null. But when you run you run `gradle runProtoProducer` and `gradle runProtoConsumer` no errors will arise. That's because Protobuf automatically handles default values.
+
+The message will look something like this in Confluent Cloud:
+
+```json
+{
+  "totalCost": 41.20575583194131,
+  "customerId": "Customer Null"
+}
+```
+
+and like this in the console:
+
+```json
+{ Customer: Customer Null, Total Cost: 21.075714, Item:  } 
+
+```
 
 Now, if you _explicitly_ set the value of the item to null like so:
 
@@ -212,4 +228,4 @@ Now, if you _explicitly_ set the value of the item to null like so:
                 .setTotalCost(random.nextDouble() * random.nextInt(100));
 ``` 
 
-In this case, you'll receive a NullPointer error. 
+In this case, you'll receive a NullPointer error. You can allow null values to be explicitly set with a [protocol wrapper type](https://protobuf.dev/reference/protobuf/google.protobuf/https://protobuf.dev/reference/protobuf/google.protobuf/).
