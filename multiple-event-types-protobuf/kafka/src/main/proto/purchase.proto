@@ -1,6 +1,8 @@
 syntax = "proto3";
 
 package io.confluent.developer.proto;
+
+option java_multiple_files = true;
 option java_outer_classname = "PurchaseProto";
 
 message Purchase {

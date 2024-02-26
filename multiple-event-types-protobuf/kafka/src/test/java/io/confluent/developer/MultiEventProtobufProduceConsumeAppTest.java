@@ -22,7 +22,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import io.confluent.developer.proto.CustomerEventProto;
+import io.confluent.developer.proto.CustomerEvent;
 import io.confluent.kafka.serializers.protobuf.KafkaProtobufSerializer;
 
 import static io.confluent.developer.MultiEventProtobufProduceConsumeApp.TOPIC;
@@ -41,30 +41,30 @@ public class MultiEventProtobufProduceConsumeAppTest {
 
     @Test
     public void testProduceProtobufMultipleEvents() {
-        KafkaProtobufSerializer<CustomerEventProto.CustomerEvent> protobufSerializer
+        KafkaProtobufSerializer<CustomerEvent> protobufSerializer
                 = new KafkaProtobufSerializer<>();
         commonConfigs.put("schema.registry.url", "mock://multi-event-produce-consume-test");
         protobufSerializer.configure(commonConfigs, false);
-        MockProducer<String, CustomerEventProto.CustomerEvent> mockProtoProducer
+        MockProducer<String, CustomerEvent> mockProtoProducer
                 = new MockProducer<>(true, stringSerializer, protobufSerializer);
-        List<CustomerEventProto.CustomerEvent> events = produceConsumeApp.protobufEvents();
+        List<CustomerEvent> events = produceConsumeApp.protobufEvents();
         produceConsumeApp.produceProtobufEvents(() -> mockProtoProducer, TOPIC, events);
-        List<KeyValue<String, CustomerEventProto.CustomerEvent>> expectedKeyValues =
+        List<KeyValue<String, CustomerEvent>> expectedKeyValues =
                 produceConsumeApp.protobufEvents().stream().map((e -> KeyValue.pair(e.getId(), e))).collect(Collectors.toList());
 
-        List<KeyValue<String, CustomerEventProto.CustomerEvent>> actualKeyValues =
+        List<KeyValue<String, CustomerEvent>> actualKeyValues =
                 mockProtoProducer.history().stream().map(this::toKeyValue).collect(Collectors.toList());
         assertThat(actualKeyValues, equalTo(expectedKeyValues));
     }
 
     @Test
     public void testConsumeProtobufEvents() {
-        MockConsumer<String, CustomerEventProto.CustomerEvent> mockConsumer = new MockConsumer<>(OffsetResetStrategy.EARLIEST);
+        MockConsumer<String, CustomerEvent> mockConsumer = new MockConsumer<>(OffsetResetStrategy.EARLIEST);
         List<String> expectedProtoResults = Arrays.asList("Protobuf Pageview event -> http://acme/traps", "Protobuf Pageview event -> http://acme/bombs", "Protobuf Pageview event -> http://acme/bait", "Protobuf Purchase event -> road-runner-bait");
         List<String> actualProtoResults = new ArrayList<>();
         mockConsumer.schedulePollTask(()-> {
             addTopicPartitionsAssignment(TOPIC, mockConsumer);
-            addConsumerRecords(mockConsumer, produceConsumeApp.protobufEvents(), CustomerEventProto.CustomerEvent::getId, TOPIC);
+            addConsumerRecords(mockConsumer, produceConsumeApp.protobufEvents(), CustomerEvent::getId, TOPIC);
         });
         mockConsumer.schedulePollTask(() -> produceConsumeApp.close());
         produceConsumeApp.consumeProtoEvents(() -> mockConsumer, TOPIC, actualProtoResults);

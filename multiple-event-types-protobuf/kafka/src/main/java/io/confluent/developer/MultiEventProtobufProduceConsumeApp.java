@@ -24,9 +24,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Supplier;
 
-import io.confluent.developer.proto.CustomerEventProto;
-import io.confluent.developer.proto.PageviewProto;
-import io.confluent.developer.proto.PurchaseProto;
+import io.confluent.developer.proto.CustomerEvent;
+import io.confluent.developer.proto.Pageview;
+import io.confluent.developer.proto.Purchase;
 import io.confluent.kafka.serializers.protobuf.KafkaProtobufDeserializer;
 import io.confluent.kafka.serializers.protobuf.KafkaProtobufDeserializerConfig;
 import io.confluent.kafka.serializers.protobuf.KafkaProtobufSerializer;
@@ -39,11 +39,11 @@ public class MultiEventProtobufProduceConsumeApp implements AutoCloseable {
     private volatile boolean keepConsumingProto = true;
     final ExecutorService executorService = Executors.newFixedThreadPool(2);
 
-    public void produceProtobufEvents(final Supplier<Producer<String, CustomerEventProto.CustomerEvent>> producerSupplier,
+    public void produceProtobufEvents(final Supplier<Producer<String, CustomerEvent>> producerSupplier,
                                       final String topic,
-                                      final List<CustomerEventProto.CustomerEvent> protoCustomerEvents) {
+                                      final List<CustomerEvent> protoCustomerEvents) {
 
-        try (Producer<String, CustomerEventProto.CustomerEvent> producer = producerSupplier.get()) {
+        try (Producer<String, CustomerEvent> producer = producerSupplier.get()) {
             protoCustomerEvents.stream()
                     .map((event -> new ProducerRecord<>(topic, event.getId(), event)))
                     .forEach(producerRecord -> producer.send(producerRecord, ((metadata, exception) -> {
@@ -56,16 +56,16 @@ public class MultiEventProtobufProduceConsumeApp implements AutoCloseable {
         }
     }
 
-    public void consumeProtoEvents(final Supplier<Consumer<String, CustomerEventProto.CustomerEvent>> consumerSupplier,
+    public void consumeProtoEvents(final Supplier<Consumer<String, CustomerEvent>> consumerSupplier,
                                    final String topic,
                                    final List<String> eventTracker) {
 
-        try (Consumer<String, CustomerEventProto.CustomerEvent> eventConsumer = consumerSupplier.get()) {
+        try (Consumer<String, CustomerEvent> eventConsumer = consumerSupplier.get()) {
             eventConsumer.subscribe(Collections.singletonList(topic));
             while (keepConsumingProto) {
-                ConsumerRecords<String, CustomerEventProto.CustomerEvent> consumerRecords = eventConsumer.poll(Duration.ofSeconds(1));
+                ConsumerRecords<String, CustomerEvent> consumerRecords = eventConsumer.poll(Duration.ofSeconds(1));
                 consumerRecords.forEach(consumerRec -> {
-                    CustomerEventProto.CustomerEvent customerEvent = consumerRec.value();
+                    CustomerEvent customerEvent = consumerRec.value();
                     switch (customerEvent.getActionCase()) {
                         case PURCHASE:
                             eventTracker.add(String.format("Protobuf Purchase event -> %s", customerEvent.getPurchase().getItem()));
@@ -81,16 +81,16 @@ public class MultiEventProtobufProduceConsumeApp implements AutoCloseable {
         }
     }
 
-    public List<CustomerEventProto.CustomerEvent> protobufEvents() {
-        CustomerEventProto.CustomerEvent.Builder customerEventBuilder = CustomerEventProto.CustomerEvent.newBuilder();
-        PageviewProto.Pageview.Builder pageviewBuilder = PageviewProto.Pageview.newBuilder();
-        PurchaseProto.Purchase.Builder purchaseBuilder = PurchaseProto.Purchase.newBuilder();
-        List<CustomerEventProto.CustomerEvent> events = new ArrayList<>();
+    public List<CustomerEvent> protobufEvents() {
+        CustomerEvent.Builder customerEventBuilder = CustomerEvent.newBuilder();
+        Pageview.Builder pageviewBuilder = Pageview.newBuilder();
+        Purchase.Builder purchaseBuilder = Purchase.newBuilder();
+        List<CustomerEvent> events = new ArrayList<>();
 
-        PageviewProto.Pageview pageview = pageviewBuilder.setCustomerId(CUSTOMER_ID).setUrl("http://acme/traps").setIsSpecial(false).build();
-        PageviewProto.Pageview pageviewII = pageviewBuilder.setCustomerId(CUSTOMER_ID).setUrl("http://acme/bombs").setIsSpecial(false).build();
-        PageviewProto.Pageview pageviewIII = pageviewBuilder.setCustomerId(CUSTOMER_ID).setUrl("http://acme/bait").setIsSpecial(true).build();
-        PurchaseProto.Purchase purchase = purchaseBuilder.setCustomerId(CUSTOMER_ID).setItem("road-runner-bait").setAmount(99.99).build();
+        Pageview pageview = pageviewBuilder.setCustomerId(CUSTOMER_ID).setUrl("http://acme/traps").setIsSpecial(false).build();
+        Pageview pageviewII = pageviewBuilder.setCustomerId(CUSTOMER_ID).setUrl("http://acme/bombs").setIsSpecial(false).build();
+        Pageview pageviewIII = pageviewBuilder.setCustomerId(CUSTOMER_ID).setUrl("http://acme/bait").setIsSpecial(true).build();
+        Purchase purchase = purchaseBuilder.setCustomerId(CUSTOMER_ID).setItem("road-runner-bait").setAmount(99.99).build();
 
         events.add(customerEventBuilder.setId(CUSTOMER_ID).setPageview(pageview).build());
         events.add(customerEventBuilder.setId(CUSTOMER_ID).setPageview(pageviewII).build());
@@ -138,7 +138,7 @@ public class MultiEventProtobufProduceConsumeApp implements AutoCloseable {
         Map<String, Object> protoConsumeConfigs = new HashMap<>(commonConfigs);
         protoConsumeConfigs.put(ConsumerConfig.GROUP_ID_CONFIG, "protobuf-consumer-group");
         protoConsumeConfigs.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, KafkaProtobufDeserializer.class);
-        protoConsumeConfigs.put(KafkaProtobufDeserializerConfig.SPECIFIC_PROTOBUF_VALUE_TYPE, CustomerEventProto.CustomerEvent.class);
+        protoConsumeConfigs.put(KafkaProtobufDeserializerConfig.SPECIFIC_PROTOBUF_VALUE_TYPE, CustomerEvent.class);
         return protoConsumeConfigs;
     }
 
