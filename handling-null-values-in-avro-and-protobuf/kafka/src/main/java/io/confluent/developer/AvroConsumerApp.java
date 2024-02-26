@@ -36,9 +36,8 @@ public class AvroConsumerApp implements AutoCloseable{
 
 
             properties.forEach((key, value) -> avroConsumerConfigs.put((String) key, value));
-            avroConsumerConfigs.put(ConsumerConfig.GROUP_ID_CONFIG, "schema-registry-course-consumer");
+            avroConsumerConfigs.put(ConsumerConfig.GROUP_ID_CONFIG, "null-value-consumer");
             avroConsumerConfigs.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
-
             avroConsumerConfigs.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
             avroConsumerConfigs.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, KafkaAvroDeserializer.class);
             avroConsumerConfigs.put(KafkaAvroDeserializerConfig.SPECIFIC_AVRO_READER_CONFIG, true);
@@ -48,18 +47,17 @@ public class AvroConsumerApp implements AutoCloseable{
             avroConsumer.subscribe(Collections.singletonList("avro-purchase"));
 
             ConsumerRecords<String, PurchaseAvro> avroConsumerRecords = avroConsumer.poll(Duration.ofSeconds(2));
+
             avroConsumerRecords.forEach(avroConsumerRecord -> {
+                System.out.printf("TEST");
                 PurchaseAvro avroPurchase = avroConsumerRecord.value();
                 System.out.print("Purchase details consumed from topic with Avro schema { ");
                 System.out.printf("Customer: %s, ", avroPurchase.getCustomerId());
                 System.out.printf("Total Cost: %f, ", avroPurchase.getTotalCost());
                 System.out.printf("Item: %s } %n", avroPurchase.getItem());
-
             });
             return avroConsumerRecords;
         }
-
-
         Properties loadProperties () {
             try (InputStream inputStream = this.getClass()
                     .getClassLoader()
@@ -71,13 +69,9 @@ public class AvroConsumerApp implements AutoCloseable{
                 throw new RuntimeException(exception);
             }
         }
-
-
         public static void main (String[]args){
             io.confluent.developer.AvroConsumerApp consumerApp = new io.confluent.developer.AvroConsumerApp();
             consumerApp.consumePurchaseEvents();
         }
-
-
 
 }
