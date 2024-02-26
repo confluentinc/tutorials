@@ -1,6 +1,89 @@
+# How to allow `null` field values in Avro and Protobuf
+
 In this tutorial let's say we're tracking purchase events in Kafka with Confluent Cloud, each with an `item`, a `total_cost`, and a `customer_id`. 
 
-Let's say you're using an avro schema, and sometimes you want to set the `item` to null. How to adjust the schema to allow a null value? Let's get started. 
+Let's say you're using an avro schema, and sometimes you want to set the `item` to null. How to adjust the schema to allow a null value? Let's walk through some pertinent bits of the code before running it. 
+
+
+In the `AvroProducer.java` file, there's a Kafka producer to send purchase events to a Kafka topic:
+
+```java
+List<PurchaseAvro> avroPurchaseEvents = new ArrayList<>();
+
+            try (final Producer<String, PurchaseAvro> producer = new KafkaProducer<>(avroProducerConfigs)) {
+                String avroTopic = "avro-purchase";
+
+                PurchaseAvro avroPurchase = getPurchaseObjectAvro(purchaseBuilder);
+                PurchaseAvro avroPurchaseII = getPurchaseObjectAvro(purchaseBuilder);
+
+                avroPurchaseEvents.add(avroPurchase);
+                avroPurchaseEvents.add(avroPurchaseII);
+
+                avroPurchaseEvents.forEach(event -> producer.send(new ProducerRecord<>(avroTopic, event.getCustomerId(), event), ((metadata, exception) -> {
+                    if (exception != null) {
+                        System.err.printf("Producing %s resulted in error %s %n", event, exception);
+                    } else {
+                        System.out.printf("Produced record to topic with Avro schema at offset %s with timestamp %d %n", metadata.offset(), metadata.timestamp());
+                    }
+                })));
+
+
+            }
+            return avroPurchaseEvents;
+        }
+```
+
+In this file, we're setting the `item` in each event explicitly to `null`:
+
+```java
+        PurchaseAvro getPurchaseObjectAvro(PurchaseAvro.Builder purchaseAvroBuilder) {
+            purchaseAvroBuilder.setCustomerId("Customer Null").setItem(null)
+                    .setTotalCost(random.nextDouble() * random.nextInt(100));
+            return purchaseAvroBuilder.build();
+        }
+```
+
+In the `AvroConsumer.java` file, those events are consumed and printed to the console:
+
+```java
+avroConsumer.subscribe(Collections.singletonList("avro-purchase"));
+
+            ConsumerRecords<String, PurchaseAvro> avroConsumerRecords = avroConsumer.poll(Duration.ofSeconds(2));
+            avroConsumerRecords.forEach(avroConsumerRecord -> {
+                PurchaseAvro avroPurchase = avroConsumerRecord.value();
+                System.out.print("Purchase details consumed from topic with Avro schema { ");
+                System.out.printf("Customer: %s, ", avroPurchase.getCustomerId());
+                System.out.printf("Total Cost: %f, ", avroPurchase.getTotalCost());
+                System.out.printf("Item: %s } %n", avroPurchase.getItem());
+
+            });
+
+```
+
+## Running the example
+
+You can run this example either with Confluent Cloud or by running the unit test. 
+
+<details>
+  <summary>Kafka Streams-based test</summary>
+
+#### Prerequisites
+
+* Java 17, e.g., follow the OpenJDK installation instructions [here](https://openjdk.org/install/) if you don't have Java. 
+
+#### Run the test
+
+```
+./gradlew test
+```
+<details>
+  <summary>Confluent Cloud</summary>
+
+#### Prerequisites
+
+  * A [Confluent Cloud](https://confluent.cloud/signup) account
+
+#### Run the commands
 
 [Sign up](https://www.confluent.io/) for a Confluent Cloud account if you haven't already. 
 
@@ -52,78 +135,24 @@ basic.auth.user.info=API_KEY:SECRET
 
 Replace the USERNAME and PASSWORD values with the Confluent Cloud key and secret respectively. Add the url from the schema registry client configuration snippet for `SR_URL/S` and add the schema registry API key and secret for `basic.auth.user.info`, retaining the colon in the placeholder. 
 
-Set up an Avro file for the Kafka producers and consumer at:
-
-```bash
-handling-null-values/kafka/code/src/main/java/io/confluent/developer/AvroProducer.java
-```
-
-and
-
-```bash
-handling-null-values/kafka/code/src/main/java/io/confluent/developer/AvroConsumer.java
-```
-
-In the `AvroProducer.java` file, we'll create a Kafka producer and send purchase events to a Kafka topic:
-
-```java
-List<PurchaseAvro> avroPurchaseEvents = new ArrayList<>();
-
-            try (final Producer<String, PurchaseAvro> producer = new KafkaProducer<>(avroProducerConfigs)) {
-                String avroTopic = "avro-purchase";
-
-                PurchaseAvro avroPurchase = getPurchaseObjectAvro(purchaseBuilder);
-                PurchaseAvro avroPurchaseII = getPurchaseObjectAvro(purchaseBuilder);
-
-                avroPurchaseEvents.add(avroPurchase);
-                avroPurchaseEvents.add(avroPurchaseII);
-
-                avroPurchaseEvents.forEach(event -> producer.send(new ProducerRecord<>(avroTopic, event.getCustomerId(), event), ((metadata, exception) -> {
-                    if (exception != null) {
-                        System.err.printf("Producing %s resulted in error %s %n", event, exception);
-                    } else {
-                        System.out.printf("Produced record to topic with Avro schema at offset %s with timestamp %d %n", metadata.offset(), metadata.timestamp());
-                    }
-                })));
-
-
-            }
-            return avroPurchaseEvents;
-        }
-```
-
-In this file, we're setting the `item` in each event explicitly to `null`:
-
-```java
-        PurchaseAvro getPurchaseObjectAvro(PurchaseAvro.Builder purchaseAvroBuilder) {
-            purchaseAvroBuilder.setCustomerId("Customer Null").setItem(null)
-                    .setTotalCost(random.nextDouble() * random.nextInt(100));
-            return purchaseAvroBuilder.build();
-        }
-```
-
-In the `AvroConsumer.java` file, we'll consume those events and print them to the console:
-
-```java
-avroConsumer.subscribe(Collections.singletonList("avro-purchase"));
-
-            ConsumerRecords<String, PurchaseAvro> avroConsumerRecords = avroConsumer.poll(Duration.ofSeconds(2));
-            avroConsumerRecords.forEach(avroConsumerRecord -> {
-                PurchaseAvro avroPurchase = avroConsumerRecord.value();
-                System.out.print("Purchase details consumed from topic with Avro schema { ");
-                System.out.printf("Customer: %s, ", avroPurchase.getCustomerId());
-                System.out.printf("Total Cost: %f, ", avroPurchase.getTotalCost());
-                System.out.printf("Item: %s } %n", avroPurchase.getItem());
-
-            });
+Inside `handling-null-values/kafka/code/src/main/avro/purchase.avsc` you'll see: 
 
 ```
+{
+  "type":"record",
+  "namespace": "io.confluent.developer.avro",
+  "name":"PurchaseAvro",
+  "fields": [
+    {"name": "item", "type": ["string", "null"] },
+    {"name": "total_cost", "type": "double" },
+    {"name": "customer_id", "type": "string"}
+  ]
+}
+```
 
-Copy and paste the contents of `path to file/s on GitHub` into the `AvroConsumer.java` and `AvroProducer.java` files.
+When you run `./gradlew runAvroProducer` and furthermore, `./gradlew runAvroConsumer`, you'll see that the events with null items are produced and consumed successfully. 
 
-Create a file at `handling-null-values/kafka/code/src/main/avro/purchase.avsc`. 
-
-Copy and paste the following into that file:
+Now remove the `["string", "null"]` in the first field and replace it with `"string"`:
 
 ```
 {
@@ -138,29 +167,9 @@ Copy and paste the following into that file:
 }
 ```
 
-If you run the code using `./gradlew runAvroProducer`, you will see that the producer "hangs" and does not produce events.
+Now, if you run the code using `./gradlew runAvroProducer`, you will see that the producer "hangs" and does not produce events. If Avro schemas are to accept null values they need it set explicitly on the field.
 
-For the "item" field in `purchase.avsc`, put:
-
-```
-{
-  "type":"record",
-  "namespace": "io.confluent.developer.avro",
-  "name":"PurchaseAvro",
-  "fields": [
-    {"name": "item", "type": ["string", "null"] },
-    {"name": "total_cost", "type": "double" },
-    {"name": "customer_id", "type": "string"}
-  ]
-}
-```
-When you run `./gradlew runAvroProducer` and furthermore, `./gradlew runAvroConsumer`, you'll see that the events with null items are produced and consumed successfully. 
-
-Next, copy and paste the contents of `path to file/s on GitHub` into the `ProtoConsumer.java` and `ProtoProducer.java` files.
-
-Create a file at `handling-null-values/kafka/code/src/main/proto/purchase.proto`. 
-
-Copy and paste the following into that file:
+How about null values in Protobuf schema fields? See: `handling-null-values/kafka/code/src/main/proto/purchase.proto`:
 
 ```
 syntax = "proto3";
@@ -184,7 +193,7 @@ Look at `ProtoProducerApp.java`, lines 76-77:
 
 We can see that the developer who wrote this app 'forgot' to write the `setItem()` method that adds an item. This means that the value will be null. But when you run you run `./gradlew runProtoProducer` and `./gradlew runProtoConsumer` no errors will arise. That's because Protobuf automatically handles default values. 
 
-Now, if you _explicitly_ set the value of the item to null:
+Now, if you _explicitly_ set the value of the item to null like so:
 
 
 ```java
