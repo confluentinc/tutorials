@@ -1,8 +1,19 @@
 # How to allow `null` field values in Avro and Protobuf
 
-In this tutorial let's say we're tracking purchase events in Kafka with Confluent Cloud, each with an `item`, a `total_cost`, and a `customer_id`. 
+Let's say you're using an Avro or Protobuf schema, and sometimes you want to set a field named `item` to null. Say it's a pipeline that takes both donations and purchases to be filtered later, and the donations are processed as purchases with null items. How to adjust the schema to allow for a null value? 
 
-Let's say you're using an avro schema, and sometimes you want to set the `item` to null. How to adjust the schema to allow a null value? Let's walk through some pertinent bits of the code before running it. 
+Avro natively supports null fields with the 'null' type. In the above example, in order to make the `item` field nullable, you can allow the type to be "string" or "null" in the following manner:
+
+```
+{"name": "item", "type": ["string", "null"] }
+```
+
+In Protobuf, null values that occur due to the item not being set are handled automatically. But if you want to explicitly set the item to null, you'd have to use a [wrapper](https://tomasbasham.dev/development/2017/09/13/protocol-buffers-and-optional-values.html).
+
+
+Let's walk through some pertinent bits of the code before running it. 
+
+In this tutorial let's say we're tracking purchase events in Kafka with Confluent Cloud, each with an `item`, a `total_cost`, and a `customer_id`. 
 
 
 In the `AvroProducer.java` file, there's a Kafka producer to send purchase events to a Kafka topic:
