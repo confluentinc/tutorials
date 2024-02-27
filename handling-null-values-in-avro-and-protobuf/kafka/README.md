@@ -159,7 +159,7 @@ Inside `handling-null-values/kafka/code/src/main/avro/purchase.avsc` you'll see:
 }
 ```
 
-When you run `gradle runAvroProducer` and furthermore, `gradle runAvroConsumer`, you'll see that the events with null items are produced and consumed successfully. 
+When you run `./gradlew :handling-null-values-in-avro-and-protobuf:kafka:runAvroProducer` and furthermore, `./gradlew :handling-null-values-in-avro-and-protobuf:kafka:runAvroConsumer`, you'll see that the events with null items are produced and consumed successfully. 
 
 Now remove the `["string", "null"]` in the first field and replace it with `"string"`:
 
@@ -176,7 +176,7 @@ Now remove the `["string", "null"]` in the first field and replace it with `"str
 }
 ```
 
-Now, if you run the code using `gradle runAvroProducer`, you will see that the producer does not produce events. If Avro schemas are to accept null values they need it set explicitly on the field.
+Now, if you run the code using `./gradlew :handling-null-values-in-avro-and-protobuf:kafka:runAvroProducer`, you will see that the producer does not produce events. If Avro schemas are to accept null values they need it set explicitly on the field.
 
 How about null values in Protobuf schema fields? See: `handling-null-values/kafka/code/src/main/proto/purchase.proto`:
 
@@ -200,7 +200,7 @@ Look at `ProtoProducerApp.java`, lines 76-77:
                 .setTotalCost(random.nextDouble() * random.nextInt(100));
 ``` 
 
-We can see that the developer who wrote this app 'forgot' to write the `setItem()` method that adds an item. This means that the value will be null. But when you run you run `gradle runProtoProducer` and `gradle runProtoConsumer` no errors will arise. That's because Protobuf automatically handles default values.
+We can see that the developer who wrote this app 'forgot' to write the `setItem()` method that adds an item. This means that the value will be null. But when you run you run `./gradlew :handling-null-values-in-avro-and-protobuf:kafka:runProtoProducer` and `./gradlew :handling-null-values-in-avro-and-protobuf:kafka:runProtoConsumer` no errors will arise. That's because Protobuf automatically handles default values.
 
 The message will look something like this in Confluent Cloud:
 
