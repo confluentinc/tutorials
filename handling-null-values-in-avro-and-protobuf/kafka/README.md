@@ -73,7 +73,8 @@ avroConsumer.subscribe(Collections.singletonList("avro-purchase"));
 
 ## Running the example
 
-You can run this example either with Confluent Cloud or by running the unit test. 
+You can run this example either with Confluent Cloud or by running the unit test. Before getting started with either method,
+clone `https://github.com/confluentinc/tutorials.git` and `cd` into `tutorials/handling-null-values-in-avro-and-protobuf`.
 
 <details>
   <summary>Kafka Streams-based test</summary>
@@ -84,9 +85,12 @@ You can run this example either with Confluent Cloud or by running the unit test
 
 #### Run the test
 
+From the top-level directory:
+
 ```
-gradle test
+./gradlew clean :handling-null-values-in-avro-and-protobuf:kafka:test --info  
 ```
+
 <details>
   <summary>Confluent Cloud</summary>
 
@@ -107,12 +111,6 @@ Click 'Topics -> Add topic' to create two topics with the default values, one na
 On the right-hand navbar, click 'API keys -> Add key -> Global access'. Download the values as you will need them to run this tutorial. 
 
 In the same navbar, click 'Clients -> Choose Your Language -> Java -> Create Schema Registry API key'. Save this key and secret as well as the URL listed in the configuration snippet. 
-
-Create a folder anywhere you like to house the code this tutorial:
-
-```bach
-mkdir handling-null-values
-```
 
 Now, create a file at `handling-null-values/resources/confluent.properties` with these values in it:
 
