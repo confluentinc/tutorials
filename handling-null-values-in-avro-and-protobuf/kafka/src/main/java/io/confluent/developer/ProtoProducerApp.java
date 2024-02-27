@@ -1,9 +1,8 @@
 package io.confluent.developer;
 
 
-import io.confluent.developer.proto.PurchaseProto;
-import io.confluent.developer.proto.PurchaseProto.Purchase;
-import io.confluent.developer.proto.PurchaseProto.Purchase.Builder;
+import io.confluent.developer.proto.Purchase;
+import io.confluent.developer.proto.Purchase.Builder;
 import io.confluent.kafka.serializers.AbstractKafkaSchemaSerDeConfig;
 import io.confluent.kafka.serializers.protobuf.KafkaProtobufSerializer;
 import org.apache.kafka.clients.producer.KafkaProducer;
@@ -26,7 +25,7 @@ import java.util.Random;
 public class ProtoProducerApp {
     private static final Logger LOG = LoggerFactory.getLogger(ProtoProducerApp.class);
     private final Random random = new Random();
-    public List<PurchaseProto.Purchase>  producePurchaseEvents() {
+    public List<Purchase>  producePurchaseEvents() {
         Builder purchaseBuilder = Purchase.newBuilder();
         Properties properties = loadProperties();
 
