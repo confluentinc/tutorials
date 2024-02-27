@@ -19,29 +19,29 @@ In this tutorial let's say we're tracking purchase events in Kafka with Confluen
 In the `AvroProducer.java` file, there's a Kafka producer to send purchase events to a Kafka topic:
 
 ```java
-List<PurchaseAvro> avroPurchaseEvents = new ArrayList<>();
+        List<PurchaseAvro> avroPurchaseEvents = new ArrayList<>();
 
-            try (final Producer<String, PurchaseAvro> producer = new KafkaProducer<>(avroProducerConfigs)) {
-                String avroTopic = "avro-purchase";
+                    try (final Producer<String, PurchaseAvro> producer = new KafkaProducer<>(avroProducerConfigs)) {
+                        String avroTopic = "avro-purchase";
 
-                PurchaseAvro avroPurchase = getPurchaseObjectAvro(purchaseBuilder);
-                PurchaseAvro avroPurchaseII = getPurchaseObjectAvro(purchaseBuilder);
+                        PurchaseAvro avroPurchase = getPurchaseObjectAvro(purchaseBuilder);
+                        PurchaseAvro avroPurchaseII = getPurchaseObjectAvro(purchaseBuilder);
 
-                avroPurchaseEvents.add(avroPurchase);
-                avroPurchaseEvents.add(avroPurchaseII);
+                        avroPurchaseEvents.add(avroPurchase);
+                        avroPurchaseEvents.add(avroPurchaseII);
 
-                avroPurchaseEvents.forEach(event -> producer.send(new ProducerRecord<>(avroTopic, event.getCustomerId(), event), ((metadata, exception) -> {
-                    if (exception != null) {
-                        System.err.printf("Producing %s resulted in error %s %n", event, exception);
-                    } else {
-                        System.out.printf("Produced record to topic with Avro schema at offset %s with timestamp %d %n", metadata.offset(), metadata.timestamp());
+                        avroPurchaseEvents.forEach(event -> producer.send(new ProducerRecord<>(avroTopic, event.getCustomerId(), event), ((metadata, exception) -> {
+                            if (exception != null) {
+                                System.err.printf("Producing %s resulted in error %s %n", event, exception);
+                            } else {
+                                System.out.printf("Produced record to topic with Avro schema at offset %s with timestamp %d %n", metadata.offset(), metadata.timestamp());
+                            }
+                        })));
+
+
                     }
-                })));
-
-
-            }
-            return avroPurchaseEvents;
-        }
+                    return avroPurchaseEvents;
+                }
 ```
 
 In this file, we're setting the `item` in each event explicitly to `null`:
@@ -57,17 +57,17 @@ In this file, we're setting the `item` in each event explicitly to `null`:
 In the `AvroConsumer.java` file, those events are consumed and printed to the console:
 
 ```java
-avroConsumer.subscribe(Collections.singletonList("avro-purchase"));
+        avroConsumer.subscribe(Collections.singletonList("avro-purchase"));
 
-            ConsumerRecords<String, PurchaseAvro> avroConsumerRecords = avroConsumer.poll(Duration.ofSeconds(2));
-            avroConsumerRecords.forEach(avroConsumerRecord -> {
-                PurchaseAvro avroPurchase = avroConsumerRecord.value();
-                System.out.print("Purchase details consumed from topic with Avro schema { ");
-                System.out.printf("Customer: %s, ", avroPurchase.getCustomerId());
-                System.out.printf("Total Cost: %f, ", avroPurchase.getTotalCost());
-                System.out.printf("Item: %s } %n", avroPurchase.getItem());
+                    ConsumerRecords<String, PurchaseAvro> avroConsumerRecords = avroConsumer.poll(Duration.ofSeconds(2));
+                    avroConsumerRecords.forEach(avroConsumerRecord -> {
+                        PurchaseAvro avroPurchase = avroConsumerRecord.value();
+                        System.out.print("Purchase details consumed from topic with Avro schema { ");
+                        System.out.printf("Customer: %s, ", avroPurchase.getCustomerId());
+                        System.out.printf("Total Cost: %f, ", avroPurchase.getTotalCost());
+                        System.out.printf("Item: %s } %n", avroPurchase.getItem());
 
-            });
+                    });
 
 ```
 
