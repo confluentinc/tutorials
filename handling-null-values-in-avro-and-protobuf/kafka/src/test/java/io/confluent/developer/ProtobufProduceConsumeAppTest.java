@@ -1,7 +1,7 @@
 package io.confluent.developer;
 
 
-import io.confluent.developer.proto.PurchaseProto;
+import io.confluent.developer.proto.Purchase;
 import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
@@ -41,7 +41,8 @@ public class ProtobufProduceConsumeAppTest {
 
     @BeforeClass
     public static void beforeAllTests() throws IOException {
-        try (FileInputStream fis = new FileInputStream("../main/resources/test.properties")) {
+        
+        try (FileInputStream fis = new FileInputStream("resources/test.properties")) {
             properties.load(fis);
             properties.forEach((key, value) -> commonConfigs.put((String) key, value));
         }
@@ -64,9 +65,9 @@ public class ProtobufProduceConsumeAppTest {
         MockProducer<String, SpecificRecordBase> mockProtoProducer
                 = new MockProducer<String, SpecificRecordBase>(true, stringSerializer, (Serializer) protoSerializer);
 
-        List<PurchaseProto.Purchase> actualKeyValues = protoProducerApp.producePurchaseEvents();
+        List<Purchase> actualKeyValues = protoProducerApp.producePurchaseEvents();
 
-        List<PurchaseProto.Purchase> returnedAvroResults = protoProducerApp.producePurchaseEvents();
+        List<Purchase> returnedAvroResults = protoProducerApp.producePurchaseEvents();
 
         List<KeyValue<String, SpecificRecordBase>> expectedKeyValues =
                 mockProtoProducer.history().stream().map(this::toKeyValue).collect(Collectors.toList());
@@ -82,19 +83,19 @@ public class ProtobufProduceConsumeAppTest {
 
     @Test
     public void testConsumeProtoEvents() {
-        MockConsumer<String, PurchaseProto.Purchase> mockConsumer = new MockConsumer<>(OffsetResetStrategy.LATEST);
+        MockConsumer<String, Purchase> mockConsumer = new MockConsumer<>(OffsetResetStrategy.LATEST);
         String topic = (String) commonConfigs.get("proto.topic");
 
         mockConsumer.schedulePollTask(() -> {
             addTopicPartitionsAssignment(topic, mockConsumer);
-            addConsumerRecords(mockConsumer, protoProducerApp.producePurchaseEvents(), PurchaseProto.Purchase::getCustomerId, topic);
+            addConsumerRecords(mockConsumer, protoProducerApp.producePurchaseEvents(), Purchase::getCustomerId, topic);
         });
 
-        ConsumerRecords<String,PurchaseProto.Purchase> returnedProtoResults = protoConsumerApp.consumePurchaseEvents();
-        List<PurchaseProto> actualProtoResults = new ArrayList<>();
+        ConsumerRecords<String,Purchase> returnedProtoResults = protoConsumerApp.consumePurchaseEvents();
+        List<Purchase> actualProtoResults = new ArrayList<>();
         returnedProtoResults.forEach(c ->
         {
-            PurchaseProto.Purchase purchaseProto = c.value();
+            Purchase purchaseProto = c.value();
             assertEquals("Customer Null", purchaseProto.getCustomerId());
             assertEquals(null, purchaseProto.getItem());
             assertEquals(actualProtoResults.size(), 2);
