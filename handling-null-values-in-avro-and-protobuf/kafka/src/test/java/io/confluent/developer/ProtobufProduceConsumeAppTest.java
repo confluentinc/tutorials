@@ -41,8 +41,7 @@ public class ProtobufProduceConsumeAppTest {
 
     @BeforeClass
     public static void beforeAllTests() throws IOException {
-        
-        try (FileInputStream fis = new FileInputStream("resources/test.properties")) {
+        try (FileInputStream fis = new FileInputStream("src/test/java/io/confluent/developer/resources/test.properties")) {
             properties.load(fis);
             properties.forEach((key, value) -> commonConfigs.put((String) key, value));
         }
