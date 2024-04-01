@@ -1,0 +1,17 @@
+CREATE TABLE clicks (
+    ip_address VARCHAR, 
+    url VARCHAR,
+    ts TIMESTAMP(3),
+    -- declare ts as event time attribute and use strictly ascending timestamp watermark strategy
+    WATERMARK FOR ts AS ts
+) WITH (
+    'connector' = 'kafka',
+    'topic' = 'clicks',
+    'properties.bootstrap.servers' = 'localhost:KAFKA_PORT',
+    'scan.startup.mode' = 'earliest-offset',
+    'key.format' = 'raw',
+    'key.fields' = 'ip_address',
+    'value.format' = 'avro-confluent',
+    'value.avro-confluent.url' = 'http://localhost:SCHEMA_REGISTRY_PORT',
+    'value.fields-include' = 'EXCEPT_KEY'
+);

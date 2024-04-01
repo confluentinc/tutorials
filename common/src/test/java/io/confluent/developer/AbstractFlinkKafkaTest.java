@@ -54,7 +54,7 @@ public class AbstractFlinkKafkaTest {
     // be configured with 'value.format' = 'avro-confluent'
     Network network = Network.newNetwork();
 
-    KafkaContainer kafka = new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:7.4.1"))
+    KafkaContainer kafka = new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:7.6.0"))
         .withKraft()
         .withEnv("KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR", "1")
         .withEnv("KAFKA_TRANSACTION_STATE_LOG_MIN_ISR", "1")
@@ -66,7 +66,7 @@ public class AbstractFlinkKafkaTest {
     kafka.start();
     kafkaPort = kafka.getMappedPort(KAFKA_PORT);
 
-    GenericContainer schemaRegistry = new GenericContainer(DockerImageName.parse("confluentinc/cp-schema-registry:7.4.1"))
+    GenericContainer schemaRegistry = new GenericContainer(DockerImageName.parse("confluentinc/cp-schema-registry:7.6.0"))
         .withExposedPorts(8081)
         .withNetwork(kafka.getNetwork())
         .withEnv("SCHEMA_REGISTRY_HOST_NAME", "localhost")

@@ -1,4 +1,4 @@
-# How to filter duplicate events from a Kafka topic with ksqlDB
+# How to filter duplicate events per-time window from a Kafka topic with ksqlDB
 
 Consider a topic with events that represent clicks on a website. Each event contains an IP address, a URL, and a timestamp.
 In this tutorial, we'll use ksqlDB to deduplicate these click events.
