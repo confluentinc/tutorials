@@ -4,15 +4,13 @@ package io.confluent.developer;
 import org.apache.flink.table.api.TableResult;
 import org.apache.flink.types.Row;
 import org.apache.flink.types.RowKind;
-import org.apache.flink.util.CloseableIterator;
 import org.junit.Test;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static io.confluent.developer.TestUtils.*;
 import static org.junit.Assert.assertEquals;
 
 public class FlinkSqlTumblingWindowTest extends AbstractFlinkKafkaTest {
@@ -26,7 +24,7 @@ public class FlinkSqlTumblingWindowTest extends AbstractFlinkKafkaTest {
    
     TableResult tableResult = streamTableEnv.executeSql(getResourceFileContents("query-ratings-by-6hr-window.sql"));
 
-    List<Row> actualResults = getRowObjectsInList(tableResult);
+    List<Row> actualResults = rowObjectsFromTableResult(tableResult);
 
     List<Row> expectedRowResults = getExpectedFinalUpdateRowObjects();
     Row actualFirstRow = actualResults.get(0);
@@ -35,26 +33,10 @@ public class FlinkSqlTumblingWindowTest extends AbstractFlinkKafkaTest {
 
   }
 
-
   private List<Row> getExpectedFinalUpdateRowObjects() {
     List<Row> rowList = new ArrayList<>();
-    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-    rowList.add(Row.ofKind(RowKind.INSERT, "Die Hard", 2L, 6.35D, dateTime("2023-07-09 00:00:00",dtf), dateTime("2023-07-09 06:00:00",dtf)));
+    rowList.add(Row.ofKind(RowKind.INSERT, "Die Hard", 2L, 6.35D, yyyy_MM_dd("2023-07-09 00:00:00"), yyyy_MM_dd("2023-07-09 06:00:00")));
     return rowList;
-  }
-
-  private LocalDateTime dateTime(String dateString, DateTimeFormatter formatter){
-    return LocalDateTime.parse(dateString, formatter);
-  }
-
-  private List<Row> getRowObjectsInList(TableResult tableResult) throws Exception {
-    try(CloseableIterator<Row> closeableIterator = tableResult.collect()) {
-      List<Row> rows = new ArrayList<>();
-      while (closeableIterator.hasNext()) {
-        rows.add(closeableIterator.next());
-      }
-      return rows;
-    }
   }
 
 }
