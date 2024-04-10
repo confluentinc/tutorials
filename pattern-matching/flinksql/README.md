@@ -1,6 +1,6 @@
-# How to search for event patterns using Flink SQL's `MATCH_RECOGNIZE`
+# Pattern matching using Flink SQL's `MATCH_RECOGNIZE`
 
-Consider a topic containing temperature readings from device sensors, and imagine you want to detect upward or downward trends in temperature for a given device. This is a use case requiring pattern matching across *multiple* events in a stream. Flink SQL's `MATCH_RECOGNIZE` function is a powerful tool for implementing this kind of streaming pattern recognition.
+Consider a topic containing temperature readings from device sensors, and imagine you want to detect upward or downward trends in temperature for a given device. This is a use case requiring pattern matching across *multiple* events in a stream. Flink SQL's `MATCH_RECOGNIZE` function is a powerful tool for implementing this kind of streaming [pattern recognition](https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/table/sql/queries/match_recognize/#pattern-recognition).
 
 ## Setup
 
@@ -70,7 +70,7 @@ against Flink and Kafka running in Docker, or with Confluent Cloud.
 Run the following command to execute [FlinkSqlFilteringTest#testFilter](src/test/java/io/confluent/developer/FlinkSqlFilteringTest.java):
 
   ```plaintext
-  ./gradlew clean :multiple-event-pattern-matching:flinksql:test
+  ./gradlew clean :pattern-matching:flinksql:test
   ```
 
   The test starts Kafka and Schema Registry with [Testcontainers](https://testcontainers.com/), runs the Flink SQL commands
