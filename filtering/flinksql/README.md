@@ -35,7 +35,7 @@ against Flink and Kafka running in Docker, or with Confluent Cloud.
 
   #### Prerequisites
 
-  * Java 11, e.g., follow the OpenJDK installation instructions [here](https://openjdk.org/install/) if you don't have Java. 
+  * Java 17, e.g., follow the OpenJDK installation instructions [here](https://openjdk.org/install/) if you don't have Java. 
   * Docker running via [Docker Desktop](https://docs.docker.com/desktop/) or [Docker Engine](https://docs.docker.com/engine/install/)
 
   #### Run the test
