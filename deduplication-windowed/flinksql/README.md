@@ -36,7 +36,7 @@ Let's look at this from the inside subquery out. The subquery orders events by t
 1. `ROW_NUMBER()` starting at one, this assigns a unique, sequential number to each row
 2. `PARTITION BY` specifies how to partition the data for deduplication. This should be the column(s) which will only have one row per value after deduplication. In our case here it’s the window boundaries plus the IP address and URL.
 3. `ORDER BY` orders by the provided column, and it’s required to be a time attribute. The time attribute column can be processing time (system time of the machine running the Flink job) or event time. By default `ORDER BY` puts rows in ascending (`ASC`) order. By using `ASC` order you’ll keep the first row. Should you want to keep the last row you should use `ORDER BY <time_attribute> DESC`
-4. `FROM TABLE(TUMBLE(...))` is where we specify 1-hour tumbling windows via the `TUMBLE` windowing TVF (table-valued function). 
+4. `FROM TABLE(TUMBLE(...))` is where we specify 1-hour tumbling windows via the `TUMBLE` [windowing TVF](https://docs.confluent.io/cloud/current/flink/reference/queries/window-tvf.html) (table-valued function). 
 
 
 ## Running the example
