@@ -20,10 +20,16 @@ public class TestUtils {
     }
 
     public static List<Row> rowObjectsFromTableResult(TableResult tableResult) throws Exception {
+        return rowObjectsFromTableResult(tableResult, Integer.MAX_VALUE);
+    }
+
+    public static List<Row> rowObjectsFromTableResult(TableResult tableResult, int maxRows) throws Exception {
         try(CloseableIterator<Row> closeableIterator = tableResult.collect()) {
             List<Row> rows = new ArrayList<>();
-            while (closeableIterator.hasNext()) {
+            int numRows = 0;
+            while (numRows < maxRows && closeableIterator.hasNext()) {
                 rows.add(closeableIterator.next());
+                numRows++;
             }
             return rows;
         }
