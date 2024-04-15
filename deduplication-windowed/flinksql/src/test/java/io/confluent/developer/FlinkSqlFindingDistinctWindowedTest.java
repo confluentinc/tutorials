@@ -25,7 +25,7 @@ public class FlinkSqlFindingDistinctWindowedTest extends AbstractFlinkKafkaTest 
 
     // execute query to get deduplicated clicks
     TableResult tableResult = streamTableEnv.executeSql(getResourceFileContents("query-deduplicated-clicks.sql"));
-    List<Row> actualResults = rowObjectsFromTableResult(tableResult);
+    List<Row> actualResults = rowObjectsFromTableResult(tableResult, 4);
     List<Row> expectedResults = getExpectedFinalUpdateRowObjects();
     assertEquals(expectedResults, actualResults);
   }
