@@ -2,10 +2,15 @@ package io.confluent.developer;
 
 
 import org.apache.flink.table.api.TableResult;
+import org.apache.flink.types.Row;
+import org.apache.flink.types.RowKind;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
+import static io.confluent.developer.TestUtils.rowObjectsFromTableResult;
 import static org.junit.Assert.assertEquals;
 
 public class FlinkSqlAggregatingCountTest extends AbstractFlinkKafkaTest {
@@ -17,14 +22,32 @@ public class FlinkSqlAggregatingCountTest extends AbstractFlinkKafkaTest {
         Optional.of(kafkaPort), Optional.of(schemaRegistryPort))).await();
     streamTableEnv.executeSql(getResourceFileContents("populate-movie-sales.sql")).await();
 
-    // execute query that counts ticket sales per title
     TableResult tableResult = streamTableEnv.executeSql(getResourceFileContents("query-movie-sales-by-title.sql"));
 
-    // Compare actual and expected results. Convert result output to line sets to compare so that order
-    // doesn't matter, because the grouped result order doesn't matter -- 2017's could come before or after 2019's.
-    String actualTableauResults = tableauResults(tableResult);
-    String expectedTableauResults = getResourceFileContents("expected-movie-sales-by-title.txt");
-    assertEquals(stringToLineSet(actualTableauResults), stringToLineSet(expectedTableauResults));
+    List<Row> actualResults = rowObjectsFromTableResult(tableResult);
+    List<Row> expectedResults = getExpectedFinalUpdateRowObjects();
+    assertEquals(expectedResults, actualResults);
+  }
+
+  private List<Row> getExpectedFinalUpdateRowObjects() {
+    List<Row> rowList = new ArrayList<>();
+    rowList.add(Row.ofKind(RowKind.INSERT, "Aliens", 1L));
+    rowList.add(Row.ofKind(RowKind.INSERT, "Die Hard", 1L));
+    rowList.add(Row.ofKind(RowKind.UPDATE_BEFORE, "Die Hard", 1L));
+    rowList.add(Row.ofKind(RowKind.UPDATE_AFTER, "Die Hard", 2L));
+    rowList.add(Row.ofKind(RowKind.INSERT, "The Godfather", 1L));
+    rowList.add(Row.ofKind(RowKind.UPDATE_BEFORE, "Die Hard", 2L));
+    rowList.add(Row.ofKind(RowKind.UPDATE_AFTER, "Die Hard", 3L));
+    rowList.add(Row.ofKind(RowKind.UPDATE_BEFORE, "The Godfather", 1L));
+    rowList.add(Row.ofKind(RowKind.UPDATE_AFTER, "The Godfather", 2L));
+    rowList.add(Row.ofKind(RowKind.INSERT, "The Big Lebowski", 1L));
+    rowList.add(Row.ofKind(RowKind.UPDATE_BEFORE, "The Big Lebowski", 1L));
+    rowList.add(Row.ofKind(RowKind.UPDATE_AFTER, "The Big Lebowski", 2L));
+    rowList.add(Row.ofKind(RowKind.UPDATE_BEFORE, "The Godfather", 2L));
+    rowList.add(Row.ofKind(RowKind.UPDATE_AFTER, "The Godfather", 3L));
+    rowList.add(Row.ofKind(RowKind.UPDATE_BEFORE, "The Godfather", 3L));
+    rowList.add(Row.ofKind(RowKind.UPDATE_AFTER, "The Godfather", 4L));
+    return rowList;
   }
 
 }
