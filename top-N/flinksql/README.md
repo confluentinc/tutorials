@@ -8,20 +8,19 @@ Let's assume the following DDL for our base `movie_views` table:
 
 ```sql
 CREATE TABLE movie_views (
-    cust_id INT,
+    id INT,
     title STRING,
     genre STRING,
-    views BIGINT,
-    view_ts TS(3)
+    num_views BIGINT
 );
 ```
 
 ## Compute the Top-N views
 
-Given the `movie_views` table definition above, we can get the top five movies by genre that have max views in realtime.
+Given the `movie_views` table definition above, we can retrieve the top five movies by genre that have max views in realtime.
 
 ```sql
-SELECT title, views, view_ts
+SELECT title, views, genre
   FROM (
         SELECT *,
                ROW_NUMBER() OVER (PARTTIION BY genre ORDER BY views DESC) as row_num
@@ -88,14 +87,14 @@ Run the following command to execute [FlinkSqlTopNTest#testTopN](src/test/java/i
   test data, and run the aggregating min/max query.
 
   ```sql
-  CREATE TABLE movie_sales (
-      id INT,
-      title STRING,
-      release_year INT,
-      total_sales INT
+  CREATE TABLE movie_views (
+                    id INT,
+                    title STRING,
+                    genre STRING,
+                    num_views BIGINT                 
   ) WITH (
       'connector' = 'kafka',
-      'topic' = 'movie-sales',
+      'topic' = 'movie_views',
       'properties.bootstrap.servers' = 'broker:9092',
       'scan.startup.mode' = 'earliest-offset',
       'key.format' = 'raw',
@@ -104,30 +103,40 @@ Run the following command to execute [FlinkSqlTopNTest#testTopN](src/test/java/i
       'value.avro-confluent.url' = 'http://schema-registry:8081',
       'value.fields-include' = 'EXCEPT_KEY'
   );
-
   ```
 
   ```sql
-  INSERT INTO movie_sales VALUES
-      (0, 'Avengers: Endgame', 2019, 856980506),
-      (1, 'Captain Marvel', 2019, 426829839),
-      (2, 'Toy Story 4', 2019, 401486230),
-      (3, 'The Lion King', 2019, 385082142),
-      (4, 'Black Panther', 2018, 700059566),
-      (5, 'Avengers: Infinity War', 2018, 678815482),
-      (6, 'Deadpool 2', 2018, 324512774),
-      (7, 'Beauty and the Beast', 2017, 517218368),
-      (8, 'Wonder Woman', 2017, 412563408),
-      (9, 'Star Wars Ep. VIII: The Last Jedi', 2017, 517218368);
+  INSERT INTO movie_views (id, title, genre, num_views)
+  VALUES (123, 'The Dark Knight', 'Action', 100240),
+         (456, 'Avengers: Endgame', 'Action', 200010),
+         (789, 'Inception', 'Sci-Fi', 150000),
+         (147, 'Joker', 'Drama', 120304),
+         (258, 'The Godfather', 'Drama', 300202),
+         (369, 'Casablanca', 'Romance', 400400),
+         (321, 'The Shawshank Redemption', 'Drama', 500056),
+         (654, 'Forrest Gump', 'Drama', 350345),
+         (987, 'Fight Club', 'Drama', 250250),
+         (135, 'Pulp Fiction', 'Crime', 160160),
+         (246, 'The Godfather: Part II', 'Crime', 170170),
+         (357, 'The Departed', 'Crime', 180180),
+         (842, 'Toy Story 3', 'Animation', 190190),
+         (931, 'Up', 'Animation', 200200),
+         (624, 'The Lion King', 'Animation', 210210),
+         (512, 'Star Wars: The Force Awakens', 'Sci-Fi', 220220),
+         (678, 'The Matrix', 'Sci-Fi', 230230),
+         (753, 'Interstellar', 'Sci-Fi', 240240),
+         (834, 'Titanic', 'Romance', 250250),
+         (675, 'Pride and Prejudice', 'Romance', 260260);
   ```
 
   ```sql
-  SELECT
-      release_year,
-      MIN(total_sales) AS min_total_sales,
-      MAX(total_sales) AS max_total_sales
-  FROM movie_sales
-  GROUP BY release_year;
+ SELECT title, genre, num_views
+ FROM (
+        SELECT *,
+               ROW_NUMBER() OVER (PARTITION BY genre ORDER BY num_views desc) as rownum
+        FROM movie_views
+      )
+ WHERE rownum <= 3;
   ```
 
   The query output should look like this:
