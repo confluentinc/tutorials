@@ -17,14 +17,14 @@ public class FlinkSqlTopNTest extends AbstractFlinkKafkaTest {
 
   @Test
   public void testTopN() throws Exception {
-    // create base movie sales table and aggregation table, and populate with test data
+    
     streamTableEnv.getConfig().set("table.exec.source.idle-timeout", "5 ms");
     streamTableEnv.executeSql(getResourceFileContents("create-movie-views.sql.template",
         Optional.of(kafkaPort), Optional.of(schemaRegistryPort))).await();
+
     streamTableEnv.executeSql(getResourceFileContents("populate-movie-views.sql")).await();
 
-    // execute query on result table that should have movie sales aggregated by release year
-    TableResult tableResult = streamTableEnv.executeSql(getResourceFileContents("query-movie-views-for-top-5-dynamic.sql"));
+    TableResult tableResult = streamTableEnv.executeSql(getResourceFileContents("query-movie-views-for-top-3-dynamic.sql"));
 
     List<Row> actualResults = rowObjectsFromTableResult(tableResult);
     List<Row> expectedResults = getExpectedFinalUpdateRowObjects();
