@@ -1,6 +1,6 @@
-# Get top (or bottom) 'N' events with Flink SQL
+# Windowed TopN in Flink SQL
 
-Suppose you some service or product, and you want to see the top uses from an eventstream.  For example, consider work for a video streaming service like NetFlix or Hulu.  You want to see the top five movies by max number of views in realtime.  To do this ranking, you can use a [Top-N query](https://nightlies.apache.org/flink/flink-docs-release-1.19/docs/dev/table/sql/queries/topn/). 
+The TopN functionality in Flink SQL is excellent for tracking the top (or bottom) records in an event stream.  But what if you wanted the top records within distinct time ranges?  For example, consider you work for a video streaming service like NetFlix or Hulu.  You need to see the top genre of movies subscribers watch by the hour to make more accurate recommendations.  To do this ranking by hour, you can use a [Windowed Top-N query](https://nightlies.apache.org/flink/flink-docs-release-1.19/docs/dev/table/sql/queries/window-topn/) and [windowing table-valued functions](https://nightlies.apache.org/flink/flink-docs-release-1.19/docs/dev/table/sql/queries/window-tvf/).
 
 ## Setup
 
@@ -16,30 +16,54 @@ TABLE movie_views (
 )
 ```
 
-## Compute the Windowed Top-N views
+## Compute the Windowed Top-N
 
-Given the `movie_views` table definition above, we can retrieve the top three movies by genre that have max views in realtime.
+Given the `movie_views` table definition above, we can retrieve the top genre by hour with this query.
 
 ```sql
 SELECT  *
 FROM (
-       SELECT *, ROW_NUMBER() OVER (PARTITION BY window_start, window_end ORDER BY genre ) as hour_rank
+       SELECT *, ROW_NUMBER() OVER (PARTITION BY window_start, window_end ORDER BY category_count DESC ) as hour_rank
        FROM (
-              SELECT window_start, window_end, genre
-              FROM TABLE(
-                      TUMBLE(TABLE movie_views, DESCRIPTOR(movie_start), INTERVAL '1' HOUR)
-                   )
+              SELECT window_start, window_end, genre, COUNT(*) as category_count
+                 FROM TABLE(TUMBLE(TABLE movie_views, DESCRIPTOR(movie_start), INTERVAL '1' HOUR))
               GROUP BY window_start, window_end, genre
             )
 ) WHERE hour_rank = 1 ;
 ```
+ 
+There are a few moving parts to this query, so let's break it down starting from the inside and working our way out.
 
-The subquery here is doing the heavy lifting, so let's take a detailed look at it.  The subquery orders the movies by the number views (descending) and assigns a unique number to each row.  This process makes it possible to rank movies where the row number is less than or equal to five. Let’s discuss the critical parts of the subquery:
+The innermost query is a [TUMBLE windowing tvf](https://nightlies.apache.org/flink/flink-docs-release-1.19/docs/dev/table/sql/queries/window-tvf/#tumble) that selects the window start, window end, genre and a count of genre for each movie started in a 1-hour tumbling window.
 
-1. `ROW_NUMBER()` starting at one, this assigns a unique, sequential number to each row which we've labeled `category_rank`
-2. `PARTITION BY` specifies how to partition the data. By using a partition you'll get the ranking per genre.  If you left off the `PARTITION BY` clause you would get the top 3 ranking of all movies across all categories.
-3. `ORDER BY` orders by the provided column.  By default `ORDER BY` puts rows in ascending (`ASC`) order. By using `ASC` order you’ll get the least viewed movies, but since you want the top viewed the query uses `DESC`.
+```sql
+SELECT window_start, window_end, genre, COUNT(*) as category_count
+    FROM TABLE(TUMBLE(TABLE movie_views, DESCRIPTOR(movie_start), INTERVAL '1' HOUR))
+GROUP BY window_start, window_end, genre
+```
 
+Working our way out to the next query, it selects all results from the tumbling window query.  It performs an [over aggregation](https://nightlies.apache.org/flink/flink-docs-release-1.19/docs/dev/table/sql/queries/over-agg/) partitioning results by the window start and window end and ordering them (descending) by the count.  This query gives us the rank of movies by genre started each hour.
+
+```sql
+ SELECT *, SELECT *, ROW_NUMBER() OVER (PARTITION BY window_start, window_end ORDER BY category_count DESC )
+       FROM ( 
+           ....
+        )
+```
+
+The outermost query selects all results from the `OVER` aggregation where the `hour_rank` column equals 1, indicating it was the top genre of the movie that started in that hour.
+
+```sql
+SELECT  *
+     FROM ( .... )
+WHERE hour_rank = 1 ;
+```
+
+Here are some essential concepts used to calculate the windowed TopN results
+
+1. `ROW_NUMBER()`, starting at one, assigns a unique, sequential number to each row representing its place in the result set, which we've labeled `hour_rank.`
+2. `PARTITION BY` specifies how to partition the data. Using a partition of window starting and ending, you'll rank the movie genres in each 1-hour tumbling window.
+3. `ORDER BY` orders results by the number calculated by the `ROW_NUMBER()` function which is its position in the window.
 
 ## Running the example
 
@@ -128,35 +152,35 @@ Run the following command to execute [FlinkSqlTopNTest#testTopN](src/test/java/i
          (842, 'Toy Story 3', 'Animation', TO_TIMESTAMP('2024-04-23 23:12:00')),
          (931, 'Up', 'Animation', TO_TIMESTAMP('2024-04-23 22:17:00')),
          (624, 'The Lion King', 'Animation', TO_TIMESTAMP('2024-04-23 22:28:00')),
-         (512, 'Star Wars: The Force Awakens', 'Sci-Fi', TO_TIMESTAMP('2024-04-23 21:22:00')),
+         (512, 'Star Wars: The Force Awakens', 'Sci-Fi', TO_TIMESTAMP('2024-04-23 20:42:00')),
          (678, 'The Matrix', 'Sci-Fi', TO_TIMESTAMP('2024-04-23 19:25:00')),
          (753, 'Interstellar', 'Sci-Fi', TO_TIMESTAMP('2024-04-23 20:14:00')),
          (834, 'Titanic', 'Romance', TO_TIMESTAMP('2024-04-23 20:25:00')),
-         (675, 'Pride and Prejudice', 'Romance', TO_TIMESTAMP('2024-04-23 23:37:00'));
+         (675, 'Pride and Prejudice', 'Romance', TO_TIMESTAMP('2024-04-23 23:37:00')),
+         (333, 'The Pride of Archbishop Carroll', 'History', TO_TIMESTAMP('2024-04-24 03:37:00'));
   ```
 
-  ```sql
+```sql
 SELECT  *
 FROM (
-       SELECT *, ROW_NUMBER() OVER (PARTITION BY window_start, window_end ORDER BY genre ) as hour_rank
+       SELECT *, ROW_NUMBER() OVER (PARTITION BY window_start, window_end ORDER BY category_count DESC ) as hour_rank
        FROM (
               SELECT window_start, window_end, genre, COUNT(*) as category_count
-              FROM TABLE(
-                      TUMBLE(TABLE movie_views, DESCRIPTOR(movie_start), INTERVAL '1' HOUR)
-                   )
+                  FROM TABLE(TUMBLE(TABLE movie_views, DESCRIPTOR(movie_start), INTERVAL '1' HOUR))
               GROUP BY window_start, window_end, genre
-            )
+        )
 ) WHERE hour_rank = 1 ;
   ```
 
   The query output should look like this:
 
   ```plaintext
-                   window_start              window_end                         genre            hour_rank
-             2024-04-23 19:00:00      2024-04-23 20:00:00                       Action               1                                     
-             2024-04-23 20:00:00      2024-04-23 21:00:00                       Drama                1 
-             2024-04-23 21:00:00      2024-04-23 22:00:00                       Drama                1                                                 
-             2024-04-23 22:00:00      2024-04-23 23:00:00                       Action               1 
+              window_start         window_end         genre      category_count    hour_rank 
+          2024-04-23 19:00:00  2024-04-23 20:00:00    Crime           2               1 
+          2024-04-23 20:00:00  2024-04-23 21:00:00    Sci-Fi          3               1 
+          2024-04-23 21:00:00  2024-04-23 22:00:00    Drama           1               1 
+          2024-04-23 22:00:00  2024-04-23 23:00:00    Animation       2               1 
+          2024-04-23 23:00:00  2024-04-24 00:00:00    Animation       1               1   
   ```
 
   When you are finished, clean up the containers used for this tutorial by running:
@@ -211,28 +235,27 @@ FROM (
          (842, 'Toy Story 3', 'Animation', TO_TIMESTAMP('2024-04-23 23:12:00')),
          (931, 'Up', 'Animation', TO_TIMESTAMP('2024-04-23 22:17:00')),
          (624, 'The Lion King', 'Animation', TO_TIMESTAMP('2024-04-23 22:28:00')),
-         (512, 'Star Wars: The Force Awakens', 'Sci-Fi', TO_TIMESTAMP('2024-04-23 21:22:00')),
+         (512, 'Star Wars: The Force Awakens', 'Sci-Fi', TO_TIMESTAMP('2024-04-23 20:42:00')),
          (678, 'The Matrix', 'Sci-Fi', TO_TIMESTAMP('2024-04-23 19:25:00')),
          (753, 'Interstellar', 'Sci-Fi', TO_TIMESTAMP('2024-04-23 20:14:00')),
          (834, 'Titanic', 'Romance', TO_TIMESTAMP('2024-04-23 20:25:00')),
-         (675, 'Pride and Prejudice', 'Romance', TO_TIMESTAMP('2024-04-23 23:37:00'));
+         (675, 'Pride and Prejudice', 'Romance', TO_TIMESTAMP('2024-04-23 23:37:00')),
+         (333, 'The Pride of Archbishop Carroll', 'History', TO_TIMESTAMP('2024-04-24 03:37:00'));
   ```
 
   ```sql
   SELECT  *
   FROM (
-         SELECT *, ROW_NUMBER() OVER (PARTITION BY window_start, window_end ORDER BY genre ) as hour_rank
+         SELECT *, ROW_NUMBER() OVER (PARTITION BY window_start, window_end ORDER BY category_count DESC ) as hour_rank
          FROM (
-                SELECT window_start, window_end, genre
-                FROM TABLE(
-                        TUMBLE(TABLE movie_views, DESCRIPTOR(movie_start), INTERVAL '1' HOUR)
-                     )
+                SELECT window_start, window_end, genre, COUNT(*) as category_count
+                   FROM TABLE(TUMBLE(TABLE movie_views, DESCRIPTOR(movie_start), INTERVAL '1' HOUR))
                 GROUP BY window_start, window_end, genre
-              )
+        )
 ) WHERE hour_rank = 1 ;
 
   ```
 
   The query output should look like this:
 
-  ![](img/query-output_1.png)
+  ![](img/query-output.png)

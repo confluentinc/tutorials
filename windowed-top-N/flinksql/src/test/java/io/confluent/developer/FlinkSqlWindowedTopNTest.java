@@ -34,11 +34,11 @@ public class FlinkSqlWindowedTopNTest extends AbstractFlinkKafkaTest {
 
   private List<Row> getExpectedFinalUpdateRowObjects() {
     List<Row> rowList = new ArrayList<>();
-    rowList.add(Row.ofKind(RowKind.INSERT, yyyy_MM_dd("2024-04-23 19:00:00"), yyyy_MM_dd("2024-04-23 20:00:00"), "Action", 1L));
-    rowList.add(Row.ofKind(RowKind.INSERT, yyyy_MM_dd("2024-04-23 20:00:00"), yyyy_MM_dd("2024-04-23 21:00:00"), "Drama",  1L));
-    rowList.add(Row.ofKind(RowKind.INSERT, yyyy_MM_dd("2024-04-23 21:00:00"), yyyy_MM_dd("2024-04-23 22:00:00"), "Drama", 1L));
-    rowList.add(Row.ofKind(RowKind.INSERT, yyyy_MM_dd("2024-04-23 22:00:00"), yyyy_MM_dd("2024-04-23 23:00:00"), "Action", 1L));
-    rowList.add(Row.ofKind(RowKind.INSERT, yyyy_MM_dd("2024-04-23 23:00:00"), yyyy_MM_dd("2024-04-24 00:00:00"), "Animation", 1L));
+    rowList.add(Row.ofKind(RowKind.INSERT, yyyy_MM_dd("2024-04-23 19:00:00"), yyyy_MM_dd("2024-04-23 20:00:00"), "Crime", 2L, 1L));
+    rowList.add(Row.ofKind(RowKind.INSERT, yyyy_MM_dd("2024-04-23 20:00:00"), yyyy_MM_dd("2024-04-23 21:00:00"), "Sci-Fi", 3L,  1L));
+    rowList.add(Row.ofKind(RowKind.INSERT, yyyy_MM_dd("2024-04-23 21:00:00"), yyyy_MM_dd("2024-04-23 22:00:00"), "Drama", 1L, 1L));
+    rowList.add(Row.ofKind(RowKind.INSERT, yyyy_MM_dd("2024-04-23 22:00:00"), yyyy_MM_dd("2024-04-23 23:00:00"), "Animation", 2L, 1L));
+    rowList.add(Row.ofKind(RowKind.INSERT, yyyy_MM_dd("2024-04-23 23:00:00"), yyyy_MM_dd("2024-04-24 00:00:00"), "Animation", 1L, 1L));
     return rowList;
   }
 
