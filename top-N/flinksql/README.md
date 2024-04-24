@@ -1,6 +1,6 @@
 # Get top (or bottom) 'N' events with Flink SQL
 
-Suppose you some service or product, and you want to see the top uses from an eventstream.  For example, consider work for a video streaming service like NetFlix or Hulu.  You want to see the top five movies by max number of views in realtime.  To do this ranking, you can use a [Top-N query](https://nightlies.apache.org/flink/flink-docs-release-1.19/docs/dev/table/sql/queries/topn/). 
+Suppose you some service or product, and you want to see the top uses from an event stream.  For example, consider working as an analyst for a video streaming service like Netflix or Hulu.  You want to see the top three movies by max number of views in real time.  To do this ranking, you can use a [Top-N query](https://nightlies.apache.org/flink/flink-docs-release-1.19/docs/dev/table/sql/queries/topn/). 
 
 ## Setup
 
@@ -17,7 +17,7 @@ TABLE movie_views (
 
 ## Compute the Top-N views
 
-Given the `movie_views` table definition above, we can retrieve the top three movies by genre that have max views in realtime.
+Given the `movie_views` table definition above, we can retrieve the top three movies by genre that have max views in real time.
 
 ```sql
 SELECT title, genre, num_views, category_rank
@@ -29,7 +29,7 @@ FROM (
 WHERE category_rank <= 3;
 ```
 
-The subquery here is doing the heavy lifting, so let's take a detailed look at it.  The subquery orders the movies by the number views (descending) and assigns a unique number to each row.  This process makes it possible to rank movies where the row number is less than or equal to five. Let’s discuss the critical parts of the subquery:
+The subquery here is doing the heavy lifting, so let's take a detailed look at it.  The subquery orders the movies by the number of views (descending) and assigns a unique number to each row.  This process makes it possible to rank movies where the row number is less than or equal to three. Let’s discuss the critical parts of the subquery:
 
 1. `ROW_NUMBER()` starting at one, this assigns a unique, sequential number to each row which we've labeled `category_rank`
 2. `PARTITION BY` specifies how to partition the data. By using a partition you'll get the ranking per genre.  If you left off the `PARTITION BY` clause you would get the top 3 ranking of all movies across all categories.
@@ -184,7 +184,7 @@ WHERE category_rank <= 3;
 
   Select the default catalog (Confluent Cloud environment) and database (Kafka cluster) to use with the dropdowns at the top right.
 
-  Finally, run following SQL statements to create the `movie_sales` table, populate it with test data, and run the aggregating min/max query.
+  Finally, run following SQL statements to create the `movie_views` table, populate it with test data, and run the Top-N query.
 
   ```sql
  CREATE TABLE movie_views (
