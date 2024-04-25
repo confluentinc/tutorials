@@ -1,0 +1,3 @@
+rootProject.name = 'windowed-top-N'
+include ':common'
+project(':common').projectDir = file('../../common')
