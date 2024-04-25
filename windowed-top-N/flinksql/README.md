@@ -1,6 +1,6 @@
-# Windowed TopN in Flink SQL
+# Windowed Top-N in Flink SQL
 
-The TopN functionality in Flink SQL is excellent for tracking the top (or bottom) records in an event stream.  But what if you wanted the top records within distinct time ranges?  For example, consider you work for a video streaming service like NetFlix or Hulu.  You need to see the top genre of movies subscribers watch by the hour to make more accurate recommendations.  To do this ranking by hour, you can use a [Windowed Top-N query](https://nightlies.apache.org/flink/flink-docs-release-1.19/docs/dev/table/sql/queries/window-topn/) and [windowing table-valued functions](https://nightlies.apache.org/flink/flink-docs-release-1.19/docs/dev/table/sql/queries/window-tvf/).
+The Top-N functionality in Flink SQL is excellent for tracking the top (or bottom) records in an event stream.  But what if you wanted the top records within distinct time ranges?  For example, consider you work for a video streaming service like Netflix or Hulu.  You need to see the top genre of movies subscribers watch by the hour to make more accurate recommendations.  To do this ranking by hour, you can use a [Windowed Top-N query](https://nightlies.apache.org/flink/flink-docs-release-1.19/docs/dev/table/sql/queries/window-topn/) and [windowing table-valued functions](https://nightlies.apache.org/flink/flink-docs-release-1.19/docs/dev/table/sql/queries/window-tvf/).
 
 ## Setup
 
@@ -59,7 +59,7 @@ SELECT  *
 WHERE hour_rank = 1 ;
 ```
 
-Here are some essential concepts used to calculate the windowed TopN results
+Here are some essential concepts used to calculate the windowed Top-N results
 
 1. `ROW_NUMBER()`, starting at one, assigns a unique, sequential number to each row representing its place in the result set, which we've labeled `hour_rank.`
 2. `PARTITION BY` specifies how to partition the data. Using a partition of window starting and ending, you'll rank the movie genres in each 1-hour tumbling window.
@@ -206,7 +206,7 @@ FROM (
 
   Select the default catalog (Confluent Cloud environment) and database (Kafka cluster) to use with the dropdowns at the top right.
 
-  Finally, run following SQL statements to create the `movie_sales` table, populate it with test data, and run the aggregating min/max query.
+  Finally, run following SQL statements to create the `movie_views` table, populate it with test data, and run the windowed Top-N query.
 
   ```sql
  CREATE TABLE movie_views (
