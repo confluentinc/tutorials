@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package io.confluent.developer.proto;
+option java_outer_classname = "PurchaseProto";
+option java_multiple_files = true;
+
+message Purchase {
+  string item = 1;
+  double total_cost = 2;
+  string customer_id = 3;
+}
