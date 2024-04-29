@@ -1,3 +1,6 @@
+<!-- title: How to join two streams of data with Flink SQL -->
+<!-- description: In this tutorial, learn how to join two streams of data with Flink SQL, with step-by-step instructions and supporting code. -->
+
 # How to join two streams of data with Flink SQL
 
 Suppose you have two streams containing events for orders and shipments. In this tutorial, we'll use Flink SQL to join

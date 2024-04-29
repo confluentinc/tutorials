@@ -1,5 +1,7 @@
-# How to split a stream of events into substreams with ksqlDB
+<!-- title: How to split a stream of events into substreams with ksqlDB -->
+<!-- description: In this tutorial, learn how to split a stream of events into substreams with ksqlDB, with step-by-step instructions and supporting code. -->
 
+# How to split a stream of events into substreams with ksqlDB
 
 If you have a stream of events in a Kafka topic and wish to split it into substreams based on a field in each event (a.k.a. content-based routing), you an use ksqlDB's [WHERE](https://docs.ksqldb.io/en/latest/developer-guide/ksqldb-reference/quick-reference/#where) clause to accomplish the task.
 

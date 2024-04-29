@@ -1,4 +1,7 @@
-# Running Python source connectors and SMTs
+<!-- title: How to write Kafka connectors and SMTs in Python -->
+<!-- description: In this tutorial, learn how to write Kafka connectors and SMTs in Python, with step-by-step instructions and supporting code. -->
+
+# How to write Kafka connectors and SMTs in Python
 
 ## Intro
 

@@ -1,4 +1,7 @@
-# Kafka Streams Aggregation - Min-Max
+<!-- title: How to compute the minimum or maximum value of a field with Kafka Streams -->
+<!-- description: In this tutorial, learn how to compute the minimum or maximum value of a field with Kafka Streams, with step-by-step instructions and supporting code. -->
+
+# How to compute the minimum or maximum value of a field with Kafka Streams
 
 An aggregation in Kafka Streams is a stateful operation used to perform a "clustering" or "grouping" of values with
 the same key.  An aggregation in Kafka Streams may return a different type than the input value.  In this example

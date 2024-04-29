@@ -1,4 +1,7 @@
-# Joining a stream and a table in ksqlDB
+<!-- title: How to join a stream and a table in ksqlDB -->
+<!-- description: In this tutorial, learn how to join a stream and a table in ksqlDB, with step-by-step instructions and supporting code. -->
+
+# How to join a stream and a table in ksqlDB
 
 You have events in a Kafka topic and a table of reference data (also known as a lookup table).
 Let's see how you can join each event in the stream to a piece of data in the table based on a common key.

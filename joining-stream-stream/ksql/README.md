@@ -1,4 +1,7 @@
-# Joining two streams in ksqlDB
+<!-- title: How to join two streams of data with ksqlDB -->
+<!-- description: In this tutorial, learn how to join two streams of data with ksqlDB, with step-by-step instructions and supporting code. -->
+
+# How to join two streams of data with ksqlDB
 
 In this tutorial, we'll demonstrate how to join two event streams to create a new event stream.
 

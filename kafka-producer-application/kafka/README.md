@@ -1,4 +1,7 @@
-# Kafka Producer
+<!-- title: How to create a Kafka producer application in Java -->
+<!-- description: In this tutorial, learn how to create a Kafka producer application in Java, with step-by-step instructions and supporting code. -->
+
+# How to create a Kafka producer application in Java
 
 An Apache Kafka® `Producer` is a client application that publishes (writes) events to a Kafka cluster.
 

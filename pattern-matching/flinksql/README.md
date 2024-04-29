@@ -1,4 +1,7 @@
-# Pattern matching using Flink SQL's `MATCH_RECOGNIZE`
+<!-- title: How to pattern match with Flink SQL's `MATCH_RECOGNIZE` -->
+<!-- description: In this tutorial, learn how to pattern match with Flink SQL's `MATCH_RECOGNIZE`, with step-by-step instructions and supporting code. -->
+
+# How to pattern match with Flink SQL's `MATCH_RECOGNIZE`
 
 Consider a topic containing temperature readings from device sensors, and imagine you want to detect upward or downward trends in temperature for a given device. This is a use case requiring pattern matching across *multiple* events in a stream. Flink SQL's `MATCH_RECOGNIZE` function is a powerful tool for implementing this kind of streaming [pattern recognition](https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/table/sql/queries/match_recognize/#pattern-recognition).
 

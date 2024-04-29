@@ -1,4 +1,7 @@
-# Kafka Streams Final Result
+<!-- title: How to emit only the final result of a windowed aggregation in Kafka Streams -->
+<!-- description: In this tutorial, learn how to emit only the final result of a windowed aggregation in Kafka Streams, with step-by-step instructions and supporting code. -->
+
+# How to emit only the final result of a windowed aggregation in Kafka Streams
 
 A windowed aggregation in Kafka Streams is a stateful operation used to perform a "clustering" or "grouping" of values with
 the same key over a specified time window. A windowed aggregation will generally return intermediate results while a window is still

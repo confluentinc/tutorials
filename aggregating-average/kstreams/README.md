@@ -1,7 +1,7 @@
-<!-- title: Compute an average aggregation using Kafka Streams -->
-<!-- description: In this tutorial, learn how to compute an average aggregation like count or sum using Kafka Streams, with step-by-step instructions and examples. -->
+<!-- title: How to compute an average aggregation with Kafka Streams -->
+<!-- description: In this tutorial, learn how to compute an average aggregation like count or sum using Kafka Streams, with step-by-step instructions and supporting code. -->
 
-# Kafka Streams Aggregation
+# How to compute an average across events with Kafka Streams
 
 An aggregation in Kafka Streams is a stateful operation used to perform a "clustering" or "grouping" of values with
 the same key.  An aggregation in Kafka Streams may return a different type than the input value.  In our example here

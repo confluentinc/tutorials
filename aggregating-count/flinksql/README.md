@@ -1,3 +1,6 @@
+<!-- title: How to count the number of events in a Kafka topic with Flink SQL -->
+<!-- description: In this tutorial, learn how to count the number of events in a Kafka topic with Flink SQL, with step-by-step instructions and supporting code. -->
+
 # How to count the number of events in a Kafka topic with Flink SQL
 
 Suppose you have a topic with events that represent ticket sales for movies. In this tutorial, use Flink SQL to

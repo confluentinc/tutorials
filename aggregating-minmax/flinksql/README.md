@@ -1,4 +1,7 @@
-# How to get the minimum or maximum value of a field from all records in a Kafka topic with Flink SQL
+<!-- title: How to compute the minimum or maximum value of a field with Flink SQL -->
+<!-- description: In this tutorial, learn how to compute the minimum or maximum value of a field with Flink SQL, with step-by-step instructions and supporting code. -->
+
+# How to compute the minimum or maximum value of a field with Flink SQL
 
 Suppose you have a topic with events that represent ticket sales of movies. In this tutorial, we'll use Flink SQL to
 calculate the maximum and minimum revenue of movies by year.

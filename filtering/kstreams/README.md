@@ -1,4 +1,7 @@
-# Filtering records in Kafka Streams
+<!-- title: How to filter messages in a Kafka topic with Kafka Streams -->
+<!-- description: In this tutorial, learn how to filter messages in a Kafka topic with Kafka Streams, with step-by-step instructions and supporting code. -->
+
+# How to filter messages in a Kafka topic with Kafka Streams
 
 Consider a topic with events, and you want to filter out records not matching a given attribute.
 

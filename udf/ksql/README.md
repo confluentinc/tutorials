@@ -1,4 +1,7 @@
-# Build a ksqlDB user-defined function (UDF) to transform events
+<!-- title: How to build a ksqlDB scalar user-defined function (UDF) to transform events -->
+<!-- description: In this tutorial, learn how to build a ksqlDB scalar user-defined function (UDF) to transform events, with step-by-step instructions and supporting code. -->
+
+# How to build a ksqlDB scalar user-defined function (UDF) to transform events
 
 Suppose you want to transform the values of a Kafka topic using a stateless scalar function not already provided by ksqlDB. As a concrete example,
 consider a topic containing stock price events over which you want to calculate the [volume-weighted average price](https://en.wikipedia.org/wiki/Volume-weighted_average_price) (VWAP) for each event.

@@ -1,3 +1,6 @@
+<!-- title: How to handle multiple event types in a Kafka topic with Protobuf -->
+<!-- description: In this tutorial, learn how to handle multiple event types in a Kafka topic with Protobuf, with step-by-step instructions and supporting code. -->
+
 # How to handle multiple event types in a Kafka topic with Protobuf
 
 It's sometimes advantageous to produce distinct but related event types to the same topic, e.g., to guarantee the exact order of different events for the same key.

@@ -1,3 +1,6 @@
+<!-- title: How to split a stream of events into substreams with Flink SQL -->
+<!-- description: In this tutorial, learn how to split a stream of events into substreams with Flink SQL, with step-by-step instructions and supporting code. -->
+
 # How to split a stream of events into substreams with Flink SQL
 
 Suppose that you have a Kafka topic representing appearances of an actor or actress in a film, with each event denoting the genre. In this tutorial, we'll use Flink SQL to split the stream into substreams based on the genre. We'll have a topic for drama films, a topic for fantasy films, and a topic for everything else.

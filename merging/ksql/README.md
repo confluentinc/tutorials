@@ -1,4 +1,7 @@
-# Merging multiple streams
+<!-- title: How to merge multiple streams with ksqlDB -->
+<!-- description: In this tutorial, learn how to merge multiple streams with ksqlDB, with step-by-step instructions and supporting code. -->
+
+# How to merge multiple streams with ksqlDB
 
 In this tutorial, we take a look at the case when you have multiple streams, but you'd like to merge them into one.  
 We'll use multiple streams of a music catalog to demonstrate.

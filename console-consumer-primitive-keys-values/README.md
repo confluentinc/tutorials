@@ -1,7 +1,9 @@
-# Consuming non-string primitive keys and values with the Apache Kafka &reg; console consumer 
+<!-- title: How to consume non-string primitive keys and values with the Apache Kafka &reg; console consumer  -->
+<!-- description: In this tutorial, learn how to consume non-string primitive keys and values with the Apache Kafka &reg; console consumer. -->
+
+# How to consume non-string primitive keys and values with the Apache Kafka &reg; console consumer
 
 You want to inspect or debug records written to a topic. Each record key and value is a long and double, respectively. In this tutorial, you'll learn how to specify key and value deserializers with the Apache Kafka console consumer.
-
 
 ## Setup
 

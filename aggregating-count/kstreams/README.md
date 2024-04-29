@@ -1,4 +1,7 @@
-# Kafka Streams Aggregation-Count
+<!-- title: How to count the number of events in a Kafka topic with Kafka Streams -->
+<!-- description: In this tutorial, learn how to count the number of events in a Kafka topic with Kafka Streams, with step-by-step instructions and supporting code. -->
+
+# How to count the number of events in a Kafka topic with Kafka Streams
 
 An aggregation in Kafka Streams is a stateful operation used to perform a "clustering" or "grouping" of values with
 the same key.  An aggregation in Kafka Streams may return a different type than the input value.  In our example here

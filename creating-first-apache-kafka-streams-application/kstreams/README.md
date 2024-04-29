@@ -1,4 +1,7 @@
-# Creating your first Kafka Streams application
+<!-- title: How to create a Kafka Streams application -->
+<!-- description: In this tutorial, learn how to create a Kafka Streams application, with step-by-step instructions and supporting code. -->
+
+# How to create a Kafka Streams application
 
 This tutorial demonstrates how to build a simple Kafka Streams application. You can go more in depth in the [Kafka Streams 101 course.](https://developer.confluent.io/learn-kafka/kafka-streams/get-started/)
 

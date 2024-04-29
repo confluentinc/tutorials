@@ -1,7 +1,9 @@
-# Filtering
+<!-- title: How to filter messages in a Kafka topic with ksqlDB -->
+<!-- description: In this tutorial, learn how to filter messages in a Kafka topic with ksqlDB, with step-by-step instructions and supporting code. -->
+
+# How to filter messages in a Kafka topic with ksqlDB
 
 How do you filter messages in a Kafka topic to contain only those that you're interested in?
-
 
 ## Setup
 

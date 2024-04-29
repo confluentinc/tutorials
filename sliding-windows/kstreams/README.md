@@ -1,4 +1,7 @@
-# Sliding Windows in Kafka Streams
+<!-- title: How to aggregate over sliding windows with Kafka Streams -->
+<!-- description: In this tutorial, learn how to aggregate over sliding windows with Kafka Streams, with step-by-step instructions and supporting code. -->
+
+# How to aggregate over sliding windows with Kafka Streams
 
 If you have time series events in a Kafka topic, sliding windows let you group and aggregate them in _small_ fixed-size, contiguous time intervals. Semantically,
 this is the same idea as hopping windows; however, for performance reasons, hopping windows aren't the best solution for small time increments.

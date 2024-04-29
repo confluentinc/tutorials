@@ -1,4 +1,7 @@
-# Deduplicate events from a Kafka topic per-time window based on a field in the event with Kafka Streams
+<!-- title: How to filter duplicate events per-time window from a Kafka topic with Kafka Streams -->
+<!-- description: In this tutorial, learn how to filter duplicate events per-time window from a Kafka topic with Kafka Streams, with step-by-step instructions and supporting code. -->
+
+# How to filter duplicate events per-time window from a Kafka topic with Kafka Streams
 
 Consider a topic with events that represent clicks on a website. Each event contains an IP address, a URL, and a timestamp. In this tutorial, we'll write a program that filters duplicate click events by the IP address within a window of time.
 

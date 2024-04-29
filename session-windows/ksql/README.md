@@ -1,4 +1,7 @@
-# Session Windows in ksqlDB
+<!-- title: How to aggregate over session windows with ksqlDB -->
+<!-- description: In this tutorial, learn how to aggregate over session windows with ksqlDB, with step-by-step instructions and supporting code. -->
+
+# How to aggregate over session windows with ksqlDB
 
 If you have time series events in a Kafka topic, session windows let you group and aggregate them into variable-size, non-overlapping time intervals based on a configurable inactivity period.
 

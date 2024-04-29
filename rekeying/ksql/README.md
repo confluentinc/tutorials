@@ -1,3 +1,6 @@
+<!-- title: How to rekey a stream with ksqlDB -->
+<!-- description: In this tutorial, learn how to rekey a stream with ksqlDB, with step-by-step instructions and supporting code. -->
+
 # How to rekey a stream with ksqlDB
 
 If you have a stream that is either unkeyed (the key is null) or not keyed by the desired field, you can rekey the stream

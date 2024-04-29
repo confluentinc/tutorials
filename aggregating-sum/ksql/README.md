@@ -1,8 +1,9 @@
+<!-- title: How to compute the sum of a field with ksqlDB -->
+<!-- description: In this tutorial, learn how to compute the sum of a field with ksqlDB, with step-by-step instructions and supporting code. -->
 
-# Aggregations - sum
+# How to compute the sum of a field with ksqlDB
 
 Suppose you have a topic with events that represent ticket sales for movies. Each event contains the movie that the ticket was purchased for, as well as its price. In this tutorial, we'll write a program that calculates the sum of all ticket sales per movie.
-
 
 ## Setup
 

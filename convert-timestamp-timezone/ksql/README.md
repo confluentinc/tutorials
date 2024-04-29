@@ -1,7 +1,9 @@
-# Convert a timestamp into a different timezone
+<!-- title: How to convert a timestamp into a different timezone with ksqlDB -->
+<!-- description: In this tutorial, learn how to convert a timestamp into a different timezone with ksqlDB, with step-by-step instructions and supporting code. -->
+
+# How to convert a timestamp into a different timezone with ksqlDB
 
 Suppose you want to create reports from a table and all the timestamps must be in a particular timezone, which happens to be different from the timezone of the Kafka data source. This tutorial shows how you can convert timestamp data into another timezone.
-
 
 ## Setup
 

@@ -1,4 +1,7 @@
-# Scheduling operations
+<!-- title: How to schedule periodic operations in a Kafka Streams application -->
+<!-- description: In this tutorial, learn how to schedule periodic operations in a Kafka Streams application, with step-by-step instructions and supporting code. -->
+
+# How to schedule periodic operations in a Kafka Streams application
 
 You'd like to have some periodic functionality execute in your Kafka Streams application. In this tutorial, you'll learn how to use punctuations in Kafka Streams to execute work at regular intervals.
 

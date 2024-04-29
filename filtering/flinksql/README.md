@@ -1,3 +1,6 @@
+<!-- title: How to filter messages in a Kafka topic with Flink SQL -->
+<!-- description: In this tutorial, learn how to filter messages in a Kafka topic with Flink SQL, with step-by-step instructions and supporting code. -->
+
 # How to filter messages in a Kafka topic with Flink SQL
 
 Consider a topic with events that represent book publications. In this tutorial, we'll use Flink SQL to find only the

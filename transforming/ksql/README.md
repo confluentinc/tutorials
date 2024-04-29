@@ -1,5 +1,7 @@
-# Event Transformation in ksqlDB
+<!-- title: How to transform events with ksqlDB scalar functions -->
+<!-- description: In this tutorial, learn how to transform events with ksqlDB scalar functions, with step-by-step instructions and supporting code. -->
 
+# How to transform events with ksqlDB scalar functions
 
 If you have a stream of events in a Kafka topic and wish to transform a field in each event, you an use ksqlDB's [scalar functions](https://docs.ksqldb.io/en/latest/developer-guide/ksqldb-reference/scalar-functions/) or implement your own [scalar UDF](https://docs.ksqldb.io/en/latest/how-to-guides/create-a-user-defined-function/#scalar-functions) if
 your needs aren't met by the built-in functions.
