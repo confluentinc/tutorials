@@ -1,3 +1,6 @@
+<!-- title: How to split a stream of events into substreams with Kafka Streams -->
+<!-- description: In this tutorial, learn how to split a stream of events into substreams with Kafka Streams, with step-by-step instructions and supporting code. -->
+
 # How to split a stream of events into substreams with Kafka Streams
 
 If you have a stream of events in a Kafka topic and wish to route those events to different topics based on data in the events, [KStream.split](https://kafka.apache.org/36/javadoc/org/apache/kafka/streams/kstream/KStream.html#split()) and [BranchedKStream.branch](https://kafka.apache.org/36/javadoc/org/apache/kafka/streams/kstream/KStream.html#split()) can be used to route the source topic's events.

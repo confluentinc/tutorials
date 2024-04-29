@@ -1,4 +1,7 @@
-# Column difference
+<!-- title: How to compute the difference between two columns with ksqlDB -->
+<!-- description: In this tutorial, learn to compute the difference between two columns with ksqlDB. -->
+
+# How to compute the difference between two columns with ksqlDB
 
 This tutorial demonstrates how to calculate the difference between two columns.
 

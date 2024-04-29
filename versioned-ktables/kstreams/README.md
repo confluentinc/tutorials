@@ -1,4 +1,7 @@
-# Versioned KTables for temporal join accuracy
+<!-- title: How to achieve temporal join accuracy in Kafka Streams with versioned KTables -->
+<!-- description: In this tutorial, learn how to achieve temporal join accuracy in Kafka Streams with versioned KTables, with step-by-step instructions and supporting code. -->
+
+# How to achieve temporal join accuracy in Kafka Streams with versioned KTables
 
 Proper handling of time in Kafka Stream stream-table joins has historically been difficult to achieve. It used to be when 
 Kafka Streams executes a stream-table join the stream side event would join the latest available record with the same key on the table side.

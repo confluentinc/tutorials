@@ -1,4 +1,7 @@
-# Working with heterogeneous JSON
+<!-- title: How to handle heterogeneous JSON with ksqlDB -->
+<!-- description: In this tutorial, learn how to handle heterogeneous JSON with ksqlDB, with step-by-step instructions and supporting code. -->
+
+# How to handle heterogeneous JSON with ksqlDB
 
 Suppose you have a topic with records formatted in JSON, but not all the records have the same structure and value types. 
 In this tutorial, we'll demonstrate how to work with JSON of different structures.

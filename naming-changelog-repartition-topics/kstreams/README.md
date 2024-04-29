@@ -1,3 +1,6 @@
+<!-- title: How to change a Kafka Streams topology and maintain compatibility -->
+<!-- description: In this tutorial, learn how to change a Kafka Streams topology and maintain compatibility, with step-by-step instructions and supporting code. -->
+
 # How to change a Kafka Streams topology and maintain compatibility
 
 One of the primary conveniences of Kafka Streams is that it handles the internal state required to repartition data (e.g., from calling [`KStream.selectKey()`](https://kafka.apache.org/36/javadoc/org/apache/kafka/streams/kstream/KStream.html#selectKey(org.apache.kafka.streams.kstream.KeyValueMapper))) 

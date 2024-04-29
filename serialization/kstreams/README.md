@@ -1,3 +1,6 @@
+<!-- title: How to change the serialization format of messages with Kafka Streams -->
+<!-- description: In this tutorial, learn how to change the serialization format of messages with Kafka Streams, with step-by-step instructions and supporting code. -->
+
 # How to change the serialization format of messages with Kafka Streams
 
 If you have a stream of Avro-formatted events in a Kafka topic, Kafka Streams makes it very easy to convert the format to Protobuf.

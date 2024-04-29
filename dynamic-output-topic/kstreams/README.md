@@ -1,4 +1,7 @@
-# Dynamically choose output topics
+<!-- title: How to dynamically choose output topics with Kafka Streams -->
+<!-- description: In this tutorial, learn how to dynamically choose output topics with Kafka Streams, with step-by-step instructions and supporting code. -->
+
+# How to dynamically choose output topics with Kafka Streams
 
 Consider a situation where you want to direct the output of different records to different topics, like a "topic exchange." 
 In this tutorial, you'll learn how to instruct Kafka Streams to choose the output topic at runtime, 

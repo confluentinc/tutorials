@@ -1,4 +1,7 @@
-# Get top (or bottom) 'N' events with Flink SQL
+<!-- title: How to get the top (or bottom) N events with Flink SQL -->
+<!-- description: In this tutorial, learn how to get the top (or bottom) N events with Flink SQL, with step-by-step instructions and supporting code. -->
+
+# How to get the top (or bottom) N events with Flink SQL
 
 Suppose you monitor some service or product, and you want to see the top uses from an event stream.  For example, consider working as an analyst for a video streaming service like Netflix or Hulu.  You want to see the top three movies by max number of views in real time.  To do this ranking, you can use a [Top-N query](https://nightlies.apache.org/flink/flink-docs-release-1.19/docs/dev/table/sql/queries/topn/). 
 

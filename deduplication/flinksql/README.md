@@ -1,3 +1,6 @@
+<!-- title: How to filter duplicate events from a Kafka topic with Flink SQL -->
+<!-- description: In this tutorial, learn how to filter duplicate events from a Kafka topic with Flink SQL, with step-by-step instructions and supporting code. -->
+
 # How to filter duplicate events from a Kafka topic with Flink SQL
 
 Consider a topic with events that represent clicks on a website. Each event contains an IP address, a URL, and a timestamp.

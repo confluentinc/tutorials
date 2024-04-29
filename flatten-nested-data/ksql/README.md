@@ -1,4 +1,7 @@
-# Transform nested JSON with ksqlDB
+<!-- title: How to flatten nested JSON with ksqlDB -->
+<!-- description: In this tutorial, learn how to flatten nested JSON with ksqlDB, with step-by-step instructions and supporting code. -->
+
+# How to flatten nested JSON with ksqlDB
 
 Consider a topic containing product orders. Each order contains data about the customer and the product, specified as nested data. In this tutorial, we'll write a program that transforms each order into a new version that contains all the data as flat fields.
 

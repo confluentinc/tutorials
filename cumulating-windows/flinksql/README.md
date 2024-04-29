@@ -1,4 +1,7 @@
-# How to create cumulating windows in Flink SQL
+<!-- title: How to aggregate over cumulating windows with Flink SQL -->
+<!-- description: In this tutorial, learn how to aggregate over cumulating windows with Flink SQL, with step-by-step instructions and supporting code. -->
+
+# How to aggregate over cumulating windows with Flink SQL
 
 Suppose you have time series events in a Kafka topic and wish to simultaneously group them into fixed-size tumbling 
 windows in addition to splitting each tumbling window into several windows having the same window start but having 

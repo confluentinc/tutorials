@@ -1,5 +1,7 @@
+<!-- title: How to count the number of events in a Kafka topic with ksqlDB -->
+<!-- description: In this tutorial, learn how to count the number of events in a Kafka topic with ksqlDB, with step-by-step instructions and supporting code. -->
 
-#  Aggregations - counting
+#  How to count the number of events in a Kafka topic with ksqlDB
 
 This tutorial takes a stream of individual movie ticket sales events and counts the total number of tickets sold per movie. Not all ticket prices are the same (apparently some of these theaters are fancier than others), but the task of the ksqlDB query is just to group and count regardless of ticket price.
 

@@ -1,7 +1,9 @@
-# Foreign Key joins on KTables
+<!-- title: How to join on a foreign key in Kafka Streams -->
+<!-- description: In this tutorial, learn how to join on a foreign key in Kafka Streams, with step-by-step instructions and supporting code. -->
+
+# How to join on a foreign key in Kafka Streams
 
 Suppose you are running an internet streaming music service where you offer albums or individual music tracks for sale. You'd like to track trends in listener preferences by joining the track purchases against the table of albums. The track purchase key doesn't align with the primary key for the album table, but since the value of the track purchase contains the ID of the album, you can extract the album ID from the track purchase and complete a foreign key join against the album table.
-
 
 ```java
 final KTable<Long, Album> albums = builder.table(ALBUM_TOPIC, Consumed.with(longSerde, albumSerde));

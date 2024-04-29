@@ -1,4 +1,7 @@
-# Handling ksqlDB deserialization errors
+<!-- title: How to handle deserialization errors in ksqlDB -->
+<!-- description: In this tutorial, learn how to handle deserialization errors in ksqlDB, with step-by-step instructions and supporting code. -->
+
+# How to handle deserialization errors in ksqlDB
 
 How can you identify and manage deserialization errors that cause some events from a Kafka topic to not be written into a stream or table?
 

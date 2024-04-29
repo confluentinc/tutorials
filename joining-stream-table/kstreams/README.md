@@ -1,7 +1,9 @@
-# KStream - KTable joins in Kafka Streams
+<!-- title: How to join a KStream and a KTable in Kafka Streams -->
+<!-- description: In this tutorial, learn how to join a KStream and a KTable in Kafka Streams, with step-by-step instructions and supporting code. -->
+
+# How to join a KStream and a KTable in Kafka Streams
 
 Suppose you have a set of movies that have been released and a stream of ratings from moviegoers about how entertaining they are. In this tutorial, we'll write a program that joins each rating with content about the movie.
-
 
 First you'll create a `KTable` for the reference movie data
 ```java

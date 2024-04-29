@@ -1,4 +1,7 @@
-# How to create tumbling windows in Flink SQL
+<!-- title: How to aggregate over tumbling windows with Flink SQL -->
+<!-- description: In this tutorial, learn how to aggregate over tumbling windows with Flink SQL, with step-by-step instructions and supporting code. -->
+
+# How to aggregate over tumbling windows with Flink SQL
 
 Suppose you have time series events in a Kafka topic and wish to calculate statistics on the events grouped into 
 fixed-size, non-overlapping, contiguous time intervals called *tumbling windows*. For example, let's say you have a topic

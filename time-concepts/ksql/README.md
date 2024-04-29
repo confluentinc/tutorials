@@ -1,5 +1,7 @@
-# Event-time Semantics in ksqlDB
+<!-- title: How to implement event-time Semantics in ksqlDB -->
+<!-- description: In this tutorial, learn how to implement event-time Semantics in ksqlDB, with step-by-step instructions and supporting code. -->
 
+# How to implement event-time Semantics in ksqlDB
 
 By default, time-based aggregations in ksqlDB (tumbling windows, hopping windows, etc.) operate on the timestamp in the record metadata, which could be either 'CreateTime' (the producer system time) or 'LogAppendTime' (the broker system time), depending on the `message.timestamp.type` topic configuration value. 'CreateTime' may help with event time semantics, but in some use cases, the desired event time is a timestamp embedded inside the record payload itself.
 

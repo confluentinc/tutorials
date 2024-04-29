@@ -1,4 +1,7 @@
-# Windowed Top-N in Flink SQL
+<!-- title: How to get the top (or bottom) N events per-time window with Flink SQL -->
+<!-- description: In this tutorial, learn how to get the top (or bottom) N events per-time window with Flink SQL, with step-by-step instructions and supporting code. -->
+
+# How to get the top (or bottom) N events per-time window with Flink SQL
 
 The Top-N functionality in Flink SQL is excellent for tracking the top (or bottom) records in an event stream.  But what if you wanted the top records within distinct time ranges?  For example, consider you work for a video streaming service like Netflix or Hulu.  You need to see the top genre of movies subscribers watch by the hour to make more accurate recommendations.  To do this ranking by hour, you can use a [Windowed Top-N query](https://nightlies.apache.org/flink/flink-docs-release-1.19/docs/dev/table/sql/queries/window-topn/) and [windowing table-valued functions](https://nightlies.apache.org/flink/flink-docs-release-1.19/docs/dev/table/sql/queries/window-tvf/).
 

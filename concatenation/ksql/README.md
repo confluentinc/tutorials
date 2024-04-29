@@ -1,7 +1,9 @@
-# Concatenation
+<!-- title: How to concatenate column values in ksqlDB -->
+<!-- description: In this tutorial, learn how to concatenate column values in ksqlDB, with step-by-step instructions and supporting code. -->
+
+# How to concatenate column values in ksqlDB
 
 In this tutorial, we'll show how to use the concatenation operator to create a single value from multiple columns.
-       
 
 ## Setup
 

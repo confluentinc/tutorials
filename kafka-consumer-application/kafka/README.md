@@ -1,4 +1,7 @@
-# Kafka Consumer Application
+<!-- title: How to create a Kafka consumer application in Java -->
+<!-- description: In this tutorial, learn how to create a Kafka consumer application in Java, with step-by-step instructions and supporting code. -->
+
+# How to create a Kafka consumer application in Java
 
 Let's build a simple application that uses a `KafkaConsumer` to read records from Kafka.
 

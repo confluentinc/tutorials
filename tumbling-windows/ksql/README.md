@@ -1,4 +1,7 @@
-# Tumbling Windows in ksqlDB
+<!-- title: How to aggregate over tumbling windows with ksqlDB -->
+<!-- description: In this tutorial, learn how to aggregate over tumbling windows with ksqlDB, with step-by-step instructions and supporting code. -->
+
+# How to aggregate over tumbling windows with ksqlDB
 
 If you have time series events in a Kafka topic, tumbling windows let you group and aggregate them in fixed-size, non-overlapping, contiguous time intervals.
 

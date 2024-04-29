@@ -1,5 +1,7 @@
+<!-- title: How to compute the minimum or maximum value of a field with ksqlDB -->
+<!-- description: In this tutorial, learn how to compute the minimum or maximum value of a field with ksqlDB, with step-by-step instructions and supporting code. -->
 
-# Aggregations - min/max
+# How to compute the minimum or maximum value of a field with ksqlDB
 
 This tutorial computes the highest grossing and lowest grossing films per year in a sample data set. To keep things simple, we’re going to create a source Kafka topic and ksqlDB stream with annual sales data in it.
 ## Setup

@@ -1,4 +1,7 @@
-# Handling uncaught exceptions in Kafka Streams
+<!-- title: How to handle uncaught exceptions in Kafka Streams -->
+<!-- description: In this tutorial, learn how to handle uncaught exceptions in Kafka Streams, with step-by-step instructions and supporting code. -->
+
+# How to handle uncaught exceptions in Kafka Streams
 
 You have an event streaming application, and you want to make sure that it's robust in the face of unexpected errors. Depending on the situation, you'll want the application to either continue running or shut down.  Using an implementation of the [StreamsUncaughtExceptionHandler](https://kafka.apache.org/36/javadoc/org/apache/kafka/streams/errors/StreamsUncaughtExceptionHandler.html) can provide this functionality.
 

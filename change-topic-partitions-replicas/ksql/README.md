@@ -1,4 +1,7 @@
-# Updating the number of partitions for a Kafka Topic
+<!-- title: How to update the number of partitions of a Kafka topic with ksqlDB -->
+<!-- description: In this tutorial, learn how to update the number of partitions of a Kafka topic with ksqlDB. -->
+
+# How to update the number of partitions of a Kafka topic with ksqlDB
 
 Imagine you want to change the partitions of your Kafka topic. You can use a streaming transformation to automatically stream all the messages from the original topic into a new Kafka topic that has the desired number of partitions or replicas.
 

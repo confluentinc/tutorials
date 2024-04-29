@@ -1,4 +1,7 @@
-# Cogrouping in Kafka Streams
+<!-- title: How to compute an aggregate from multiple streams using cogrouping in Kafka Streams -->
+<!-- description: In this tutorial, learn how to compute an aggregate from multiple streams using cogrouping in Kafka Streams, with step-by-step instructions and supporting code. -->
+
+# How to compute an aggregate from multiple streams using cogrouping in Kafka Streams
 
 Cogrouping is combining an aggregate, like `count`, from multiple streams into a single result.
 In this tutorial, you will compute the count of user login events per application in your system, grouping the individual result from each source stream into one aggregated object using Kafka Streams [Cogroup](https://javadoc.io/static/org.apache.kafka/kafka-streams/3.6.1/org/apache/kafka/streams/kstream/CogroupedKStream.html#cogroup-org.apache.kafka.streams.kstream.KGroupedStream-org.apache.kafka.streams.kstream.Aggregator-) functionality.

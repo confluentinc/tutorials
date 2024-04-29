@@ -1,7 +1,9 @@
-# Multi-join expressions
+<!-- title: How to join multiple streams and tables with ksqlDB -->
+<!-- description: In this tutorial, learn how to join multiple streams and tables with ksqlDB, with step-by-step instructions and supporting code. -->
+
+# How to join multiple streams and tables with ksqlDB
 
 In this tutorial, we demonstrate how to join multiple streams and tables together using an example from retail sales.
-
 
 ## Setup
 

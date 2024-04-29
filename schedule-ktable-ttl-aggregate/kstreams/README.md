@@ -1,4 +1,7 @@
-# How to expire KTable rows created via `aggregate` based on TTL
+<!-- title: How to expire KTable rows created via `aggregate` based on TTL in Kafka Streams -->
+<!-- description: In this tutorial, learn how to expire KTable rows created via `aggregate` based on TTL in Kafka Streams, with step-by-step instructions and supporting code. -->
+
+# How to expire KTable rows created via `aggregate` based on TTL in Kafka Streams
 
 If you have a Kafka Streams application or ksqlDB application which creates a `KTable` in the middle of a topology by calling `aggregate()`, you can purge older data by making clever use of tombstones. Specifically, by maintaining a state store containing TTLs, you can write tombstones out to the topic underlying the KTable in order to expire data.
 

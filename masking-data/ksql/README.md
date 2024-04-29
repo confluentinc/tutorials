@@ -1,4 +1,7 @@
-# Masking Data
+<!-- title: How to mask data with ksqlDB -->
+<!-- description: In this tutorial, learn how to mask data with ksqlDB, with step-by-step instructions and supporting code. -->
+
+# How to mask data with ksqlDB
 
 Suppose you have a topic that contains personally identifiable information (PII), and you want to mask those fields. In this tutorial, we'll write a program that persists the events in the original topic to a new Kafka topic with the PII removed or obfuscated.
 

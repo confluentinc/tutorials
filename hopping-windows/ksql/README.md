@@ -1,4 +1,7 @@
-# Hopping windows in ksqlDB
+<!-- title: How to aggregate over hopping windows with ksqlDB -->
+<!-- description: In this tutorial, learn how to aggregate over hopping windows with ksqlDB, with step-by-step instructions and supporting code. -->
+
+# How to aggregate over hopping windows with ksqlDB
 
 A hopping window is a fixed-size window with an advance that is smaller than the window size. Due to that fact the advance is smaller than the window size, hopping windows contain overlapping results.
 

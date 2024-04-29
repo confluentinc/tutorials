@@ -1,4 +1,7 @@
-# Event Transformation in Kafka Streams
+<!-- title: How to transform events with Kafka Streams -->
+<!-- description: In this tutorial, learn how to transform events with Kafka Streams, with step-by-step instructions and supporting code. -->
+
+# How to transform events with Kafka Streams
 
 If you have a stream of events in a Kafka topic and wish to transform a field in each event, you simply need to use the `KStream.map` method to process each event.
 

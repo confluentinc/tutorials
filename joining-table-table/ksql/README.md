@@ -1,4 +1,7 @@
-# Joining two tables in ksqlDB
+<!-- title: How to join two tables in ksqlDB -->
+<!-- description: In this tutorial, learn how to join two tables in ksqlDB, with step-by-step instructions and supporting code. -->
+
+# How to join two tables in ksqlDB
 
 Consider that you have two tables of reference data in Kafka topics, and you want to join them on a common key.
 

@@ -1,4 +1,7 @@
-# Count the number of messages in a topic
+<!-- title: How to count the number of messages in a topic with ksqlDB -->
+<!-- description: In this tutorial, learn how to count the number of messages in a topic with ksqlDB, with step-by-step instructions and supporting code. -->
+
+# How to count the number of messages in a topic with ksqlDB
 
 It can be useful to know how many messages are currently in a topic, but you cannot calculate this directly based on the offsets, because you need to consider the topic's retention policy, log compaction, and potential duplicate messages. In this example, we'll take a topic of pageview data and see how we can count all the messages in the topic. Note that the time complexity for this tutorial is O(n) (linear); processing time will depend on the number of messages in the topic, and large data sets will require long running times.
 

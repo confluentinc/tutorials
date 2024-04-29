@@ -1,3 +1,6 @@
+<!-- title: How to optimize a Kafka producer for throughput -->
+<!-- description: In this tutorial, learn how to optimize a Kafka producer for throughput, with step-by-step instructions and supporting code. -->
+
 # How to optimize a Kafka producer for throughput
 
 When optimizing for Kafka producer performance, you'll typically need to consider tradeoffs between throughput and latency. Because of Kafka’s design, 

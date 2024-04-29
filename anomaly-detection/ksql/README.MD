@@ -1,5 +1,7 @@
+<!-- title: How to use a join in ksqlDB for anomaly detection -->
+<!-- description: In this tutorial, learn how to use a join in ksqlDB for anomaly detection, with step-by-step instructions and supporting code. -->
 
-# Anomaly Detection
+# How to use a join in ksqlDB for anomaly detection
 
 This tutorial gives examples of using a Stream-Table join to populate a table and then use windowing on the result table.  The use case for this tutorial 
 is alerting of suspicious financial transactions over a 24-hour period.
