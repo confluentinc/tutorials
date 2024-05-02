@@ -31,16 +31,16 @@ Then at the command prompt enter the values to send and hit enter:
 This example assumes using Avro with the following schema:
 ```commandline
 {
-"type": "record",
-"namespace": "io.confluent.tutorial",
-"name": "OrderDetail",
-"fields": [
-    {"name": "number", "type": "long", "doc": "The order number."},
-    {"name": "shipping_address", "type": "string", "doc": "The shipping address."},
-    {"name": "subtotal", "type": "double", "doc": "The amount without shipping cost and tax."},
-    {"name": "shipping_cost", "type": "double", "doc": "The shipping cost."},
-    {"name": "tax", "type": "double", "doc": "The applicable tax."},
-    {"name": "grand_total", "type": "double", "doc": "The order grand total ."}
+    "type": "record",
+    "namespace": "io.confluent.tutorial",
+    "name": "OrderDetail",
+    "fields": [
+        {"name": "number", "type": "long", "doc": "The order number."},
+        {"name": "shipping_address", "type": "string", "doc": "The shipping address."},
+        {"name": "subtotal", "type": "double", "doc": "The amount without shipping cost and tax."},
+        {"name": "shipping_cost", "type": "double", "doc": "The shipping cost."},
+        {"name": "tax", "type": "double", "doc": "The applicable tax."},
+        {"name": "grand_total", "type": "double", "doc": "The order grand total ."}
     ]
 }
 ```
