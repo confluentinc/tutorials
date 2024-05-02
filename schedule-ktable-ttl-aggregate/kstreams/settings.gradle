@@ -1,0 +1,3 @@
+rootProject.name = 'schedule-ktable-ttl-aggregate'
+include ':common'
+project(':common').projectDir = file('../../common')

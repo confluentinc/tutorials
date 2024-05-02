@@ -1,7 +1,0 @@
-
-
-builder.stream(<INPUT TOPIC>, Consumed.with(<KEY SERDE>, <VALUE SERDE>))
-                .groupByKey()
-                .windowedBy(SlidingWindows.withTimeDifferenceAndGrace(Duration.ofSeconds(1), Duration.ofSeconds(1)))
-                .<Aggregation Operation>....
-

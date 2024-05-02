@@ -1,5 +1,0 @@
-Create a `Dockerfile` that builds a custom container for Kafka Connect bundled with the free and open source https://www.confluent.io/hub/confluentinc/kafka-connect-datagen[Kafka Connect Datagen] connector, installed from https://www.confluent.io/hub/[Confluent Hub].
-
-+++++
-<pre class="snippet"><code class="shell">{% include_raw tutorials/kafka-connect-datagen/kafka/code/Dockerfile %}</code></pre>
-+++++

@@ -1,3 +1,0 @@
-1foo
-1bar
-1baz

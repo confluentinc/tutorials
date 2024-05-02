@@ -1,5 +1,0 @@
-Now let's play with some events. Create the following orders:
-
-+++++
-<pre class="snippet"><code class="sql">{% include_raw tutorials/joining-stream-stream/ksql/code/tutorial-steps/dev/populate-orders.sql %}</code></pre>
-+++++

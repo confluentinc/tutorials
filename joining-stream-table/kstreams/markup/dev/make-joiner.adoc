@@ -1,9 +1,0 @@
-For the ValueJoiner class, create the following file at `src/main/java/io/confluent/developer/MovieRatingJoiner.java`.
-
-When you join two tables in a relational database, by default you get a new table containing all of the columns of the left table plus all of the columns of the right table. When you join a stream and a table, you get a new stream, but you must be explicit about the value of that stream—the combination between the value in the stream and the associated value in the table. The `https://kafka.apache.org/{{ site.ak_javadoc_version }}/javadoc/org/apache/kafka/streams/kstream/ValueJoiner.html[ValueJoiner]` interface in the Streams API does this work. The single `apply()` method takes the stream and table values as parameters, and returns the value of the joined stream as output. (Their keys are not a part of the equation, because they are equal by definition and do not change in the result.) As you can see here, this is just a matter of creating a `RatedMovie` object and populating it with the relevant fields of the input movie and rating.
-
-You can do this in a Java Lambda in the call to the `join()` method where you're building the stream topology, but the joining logic may become complex, and breaking it off into its own trivially testable class is a good move.
-
-+++++
-<pre class="snippet"><code class="java">{% include_raw tutorials/joining-stream-table/kstreams/code/src/main/java/io/confluent/developer/MovieRatingJoiner.java %}</code></pre>
-+++++

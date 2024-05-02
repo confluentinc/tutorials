@@ -1,7 +1,0 @@
-Then create the following file at `src/main/java/io/confluent/developer/RegexReplace.java`.  This file contains the Java logic of your custom function.  Read through the code to familiarize yourself.  You will see that the code is checking for `null` values in each of the parameters.  We do this because, the custom function could be used with unpopulated data that will send a `null` to the `input` parameter.  As as extra sanity we check the `regex` and `replacement` parameters are not sent null.
-
-+++++
-<pre class="snippet"><code class="java">{% include_raw tutorials/rekeying-function/ksql/code/src/main/java/io/confluent/developer/RegexReplace.java %}</code></pre>
-+++++
-
-See more about ksqlDB User-Defined Functions at the https://docs.ksqldb.io/en/latest/concepts/functions/#udfs[KSQL Custom Function Reference^].

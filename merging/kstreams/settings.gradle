@@ -1,0 +1,3 @@
+rootProject.name = 'merging'
+include ':common'
+project(':common').projectDir = file('../../common')

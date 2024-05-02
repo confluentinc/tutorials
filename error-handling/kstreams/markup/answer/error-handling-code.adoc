@@ -1,7 +1,0 @@
-KafkaStreams kafkaStreams = new KafkaStreams(topologyBuilder.build(), properties);
-
-// Using a lambda, take a static approach to errors regardless of the exception
-kafkaStreams.setUncaughtExceptionHander((exception) -> StreamsUncaughtExceptionHandler.StreamThreadExceptionResponse.REPLACE_THREAD);
-
-// Using a concrete implementation
-kafkaStreams.setUncaughtExceptionHander(new MyExceptionHandler());

@@ -1,5 +1,0 @@
-Create a new client session for KSQL using the following command:
-
-+++++
-<pre class="snippet"><code class="shell">{% include_raw tutorials/deserialization-errors/ksql/code/tutorial-steps/dev/start-cli.sh %}</code></pre>
-+++++

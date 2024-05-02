@@ -1,5 +1,0 @@
-Then create the following file at `src/main/java/io/confluent/developer/FilterEvents.java`. Notice the `buildTopology` method, which uses the Kafka Streams DSL. The `filter` method takes a boolean function of each record's key and value. The function you give it determines whether to pass each event through to the next stage of the topology. In this case, we're only interested in books authored by George R. R. Martin.
-
-+++++
-<pre class="snippet"><code class="java">{% include_raw tutorials/filtering/kstreams/code/src/main/java/io/confluent/developer/FilterEvents.java %}</code></pre>
-+++++

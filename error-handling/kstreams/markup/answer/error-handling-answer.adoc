@@ -1,7 +1,0 @@
-To handle uncaught exceptions, use the  https://kafka.apache.org/28/javadoc/org/apache/kafka/streams/KafkaStreams.html#setUncaughtExceptionHandler-org.apache.kafka.streams.errors.StreamsUncaughtExceptionHandler-[KafkaStreams.setUncaughtExceptionHandler] method.
-
-+++++
-<pre class="snippet"><code class="java">{% include_raw tutorials/error-handling/kstreams/markup/answer/error-handling-code.adoc %}</code></pre>
-+++++
-
-The `StreamsUncaughtExceptionHandler` interface gives you an opportunity to respond to exceptions not handled by Kafka Streams.  It has one method, `handle`, and it returns an `enum` of type https://kafka.apache.org/28/javadoc/org/apache/kafka/streams/errors/StreamsUncaughtExceptionHandler.StreamThreadExceptionResponse.html[StreamThreadExceptionResponse] which provides you the opportunity to instruct Kafka Streams how to respond to the exception.  There are three possible values: `REPLACE_THREAD`, `SHUTDOWN_CLIENT`, or `SHUTDOWN_APPLICATION`.

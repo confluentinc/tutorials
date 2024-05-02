@@ -1,5 +1,0 @@
-Because this Avro schema is used in the Java code, it needs to compile it. Run the following:
-
-+++++
-<pre class="snippet"><code class="shell">{% include_raw tutorials/time-concepts/ksql/code/tutorial-steps/dev/build-project.sh %}</code></pre>
-+++++

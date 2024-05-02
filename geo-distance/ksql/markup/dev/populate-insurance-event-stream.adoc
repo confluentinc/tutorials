@@ -1,5 +1,0 @@
-Now populate the stream with sample events:
-
-+++++
-<pre class="snippet"><code class="sql">{% include_raw tutorials/geo-distance/ksql/code/tutorial-steps/dev/populate-insurance-event-stream.sql %}</code></pre>
-+++++

@@ -1,5 +1,0 @@
-Now run the tests, which is as simple as:
-
-+++++
-<pre class="snippet"><code class="shell">{% include_raw tutorials/multiple-event-types/kafka/code/tutorial-steps/test/invoke-tests.sh %}</code></pre>
-+++++

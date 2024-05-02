@@ -1,7 +1,0 @@
-Now that you have input data, let's create a stream that produces orders enriched with data from the customers and items tables.
-
-The first thing to do is set the following property to ensure that you're reading from the beginning of the stream:
-
-+++++
-<pre class="snippet"><code class="sql">{% include_raw tutorials/multi-joins/ksql/code/tutorial-steps/dev/set-properties.sql %}</code></pre>
-+++++

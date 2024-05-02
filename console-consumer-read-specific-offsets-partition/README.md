@@ -1,6 +1,7 @@
-# Read from specific offset and partition with the Apache Kafka &reg; console consumer
+<!-- title: How to read from a specific offset and partition with the Apache Kafka &reg; console consumer -->
+<!-- description: In this tutorial, learn how to read from a specific offset and partition with the Apache Kafka &reg; console consumer. -->
 
-
+# How to read from a specific offset and partition with the Apache Kafka &reg; console consumer
 
 ## Setup
 

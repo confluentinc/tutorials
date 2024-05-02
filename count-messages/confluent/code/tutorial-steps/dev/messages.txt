@@ -1,5 +1,0 @@
-Apache
-Kafka
-Is
-The
-Best

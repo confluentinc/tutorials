@@ -1,5 +1,0 @@
-Query the ksqlDB stream `KSQL_PROCESSING_LOG`:
-
-+++++
-<pre class="snippet"><code class="sql">{% include_raw tutorials/deserialization-errors/ksql/code/tutorial-steps/dev/check-errors-query.sql %}</code></pre>
-+++++

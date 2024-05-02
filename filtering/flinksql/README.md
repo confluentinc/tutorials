@@ -1,3 +1,6 @@
+<!-- title: How to filter messages in a Kafka topic with Flink SQL -->
+<!-- description: In this tutorial, learn how to filter messages in a Kafka topic with Flink SQL, with step-by-step instructions and supporting code. -->
+
 # How to filter messages in a Kafka topic with Flink SQL
 
 Consider a topic with events that represent book publications. In this tutorial, we'll use Flink SQL to find only the
@@ -35,7 +38,7 @@ against Flink and Kafka running in Docker, or with Confluent Cloud.
 
   #### Prerequisites
 
-  * Java 11, e.g., follow the OpenJDK installation instructions [here](https://openjdk.org/install/) if you don't have Java. 
+  * Java 17, e.g., follow the OpenJDK installation instructions [here](https://openjdk.org/install/) if you don't have Java. 
   * Docker running via [Docker Desktop](https://docs.docker.com/desktop/) or [Docker Engine](https://docs.docker.com/engine/install/)
 
   #### Run the test
@@ -43,7 +46,7 @@ against Flink and Kafka running in Docker, or with Confluent Cloud.
 Run the following command to execute [FlinkSqlFilteringTest#testFilter](src/test/java/io/confluent/developer/FlinkSqlFilteringTest.java):
 
   ```plaintext
-  ./gradlew test
+  ./gradlew clean :filtering:flinksql:test
   ```
 
   The test starts Kafka and Schema Registry with [Testcontainers](https://testcontainers.com/), runs the Flink SQL commands

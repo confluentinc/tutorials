@@ -1,7 +1,0 @@
-Now let's see how many clicks were made in each user session (based on IP address), and also calculate the duration of the session. To do that, we issue the following transient push query to aggregate the clicks grouped by the IP address. We declare that we want to use session windowing, with a gap of five minutes or more denoting the end of the previous session. The query also captures the window start and end times, and it uses these to calculate the session duration.
-
-For the purposes of this example only, we are also going to configure ksqlDB to buffer the aggregates as it builds them. This makes the query feel like it responds more slowly, but it means that you get just one row per window. This makes it simpler to understand the concept: 
-
-+++++
-<pre class="snippet"><code class="shell">{% include_raw tutorials/session-windows/ksql/code/tutorial-steps/dev/set-properties_cache.sql %}</code></pre>
-+++++

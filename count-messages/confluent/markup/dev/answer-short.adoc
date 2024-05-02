@@ -1,7 +1,0 @@
-If your Kafka topic is in https://www.confluent.io/confluent-cloud/tryfree/[Confluent Cloud], consume the entire topic using `kcat` and count how many messages are read.
-  
-+++++
-<pre class="snippet"><code class="java">{% include_raw tutorials/count-messages/confluent/code/tutorial-steps/dev/03a-count-messages.sh %}</code></pre>
-+++++
-
-With the Confluent Cloud Metrics API, you could also sum up the values of the metric `io.confluent.kafka.server/received_records`, which is "The delta count of records received. Each sample is the number of records received since the previous data sample. The count is sampled every 60 seconds." See the https://api.telemetry.confluent.cloud/docs/descriptors/datasets/cloud[documentation] for details.

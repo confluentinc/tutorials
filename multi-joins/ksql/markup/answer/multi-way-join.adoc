@@ -1,5 +1,0 @@
-Multi-way joins:
-
-+++++
-<pre class="snippet"><code class="sql">{% include_raw tutorials/multi-joins/ksql/code/tutorial-steps/dev/multi-way-join.sql %}</code></pre>
-+++++

@@ -1,5 +1,0 @@
-To start off the implementation of this scenario, we will create a stream that represents the clicks from the users. Since we will be handling time, it is important that each click timestamp indicating when that click was done.  A bit later in the tutorial you'll see how to use https://docs.ksqldb.io/en/latest/developer-guide/ksqldb-reference/create-stream/#rowtime[ROWTIME] for that purpose.
-
-+++++
-<pre class="snippet"><code class="sql">{% include_raw tutorials/finding-distinct/ksql/code/tutorial-steps/dev/create-inputs.sql %}</code></pre>
-+++++

@@ -1,7 +1,0 @@
-Use the `.filter()` function as seen below. The `filter` method takes a boolean function of each record’s key and value. The function you give it determines whether to pass each event through to the next stage of the topology.
-
-```
-builder.stream(inputTopic, Consumed.with(Serdes.String(), publicationSerde))
-        .filter((name, publication) -> "George R. R. Martin".equals(publication.getName()))
-        .to(outputTopic, Produced.with(Serdes.String(), publicationSerde));
-```

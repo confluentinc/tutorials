@@ -1,7 +1,0 @@
-ALL
-ALL
-STREAMS
-LEAD
-TO
-CONFLUENT
-Processed a total of 6 messages

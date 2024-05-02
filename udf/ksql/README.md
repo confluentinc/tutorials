@@ -1,4 +1,7 @@
-# Build a ksqlDB user-defined function (UDF) to transform events
+<!-- title: How to build a ksqlDB scalar user-defined function (UDF) to transform events -->
+<!-- description: In this tutorial, learn how to build a ksqlDB scalar user-defined function (UDF) to transform events, with step-by-step instructions and supporting code. -->
+
+# How to build a ksqlDB scalar user-defined function (UDF) to transform events
 
 Suppose you want to transform the values of a Kafka topic using a stateless scalar function not already provided by ksqlDB. As a concrete example,
 consider a topic containing stock price events over which you want to calculate the [volume-weighted average price](https://en.wikipedia.org/wiki/Volume-weighted_average_price) (VWAP) for each event.
@@ -61,17 +64,16 @@ Next, start ksqlDB and Kafka:
  docker compose -f ./docker/docker-compose-ksqldb-kraft-cluster.yml up -d
  ```
 
-Change into the `./udf/ksql/` directory and build an uberjar containing the UDF class:
+Build an uberjar containing the UDF class:
 
 ```shell
-cd ./udf/ksql/
-./gradlew shadowJar
+./gradlew clean :udf:ksql:shadowJar
 ```
 
 Copy the uberjar onto the `ksqldb-server` container's file system. Specifically, copy it to the `/opt/` directory since that is the extensions directory configured in the Docker Compose file we used to start ksqlDB.
 
 ```shell
-docker cp ./build/libs/ksql-udf.jar ksqldb-server:/opt/ksql-udf.jar
+docker cp ./udf/ksql/build/libs/ksql-udf.jar ksqldb-server:/opt/ksql-udf.jar
 ```
 
 Restart ksqlDB server:

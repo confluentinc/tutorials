@@ -1,7 +1,0 @@
-Now create a utility class that provides functions to support our tutorial. You may decide not to include these types of functions in the production version of your application, however, they are useful for getting started quickly. This utility class includes functions to create our Kafka topics and generate sample event data we can use to exercise our Kafka Streams topology.
-
-Create the following file at +++<code class="copy-inline">src/main/java/io/confluent/developer/Util.java</code>+++.
-
-+++++
-<pre class="snippet"><code class="java">{% include_raw tutorials/creating-first-apache-kafka-streams-application/kstreams/code/src/main/java/io/confluent/developer/Util.java %}</code></pre>
-+++++

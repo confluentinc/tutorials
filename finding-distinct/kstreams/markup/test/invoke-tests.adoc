@@ -1,5 +1,0 @@
-Now run the test, which is as simple as:
-
-+++++
-<pre class="snippet"><code class="shell">{% include_raw tutorials/finding-distinct/kstreams/code/tutorial-steps/test/invoke-tests.sh %}</code></pre>
-+++++

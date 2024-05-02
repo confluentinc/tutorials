@@ -1,0 +1,16 @@
+CREATE TABLE movie_views (
+    id INT,
+    title STRING,
+    genre STRING,
+    num_views BIGINT
+) WITH (
+    'connector' = 'kafka',
+    'topic' = 'movie_views',
+    'properties.bootstrap.servers' = 'localhost:KAFKA_PORT',
+    'scan.startup.mode' = 'earliest-offset',
+    'scan.bounded.mode' = 'latest-offset',
+    'key.format' = 'raw',
+    'key.fields' = 'id',
+    'value.format' = 'json',
+    'value.fields-include' = 'EXCEPT_KEY'
+);

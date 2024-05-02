@@ -1,6 +1,0 @@
-The first thing we'll need is to create a Kafka topic and stream to represent the movie data. 
-We declare the `VALUE_FORMAT` of the stream to be `avro` to denote the format of the events.
-
-+++++
-<pre class="snippet"><code class="sql">{% include_raw tutorials/serialization/ksql/code/tutorial-steps/dev/create-avro-movies.sql %}</code></pre>
-+++++

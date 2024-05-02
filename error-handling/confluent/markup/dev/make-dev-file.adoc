@@ -1,5 +1,0 @@
-Then create a development file at `configuration/dev.properties`:
-
-+++++
-<pre class="snippet"><code class="shell">{% include_raw tutorials/error-handling/confluent/code/configuration/dev.properties %}</code></pre>
-+++++

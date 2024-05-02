@@ -1,5 +1,0 @@
-Then make the following directories to set up its structure:
-
-+++++
-<pre class="snippet"><code class="shell">{% include_raw tutorials/count-messages/ksql/code/tutorial-steps/dev/01b-make-dirs.sh %}</code></pre>
-+++++

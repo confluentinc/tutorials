@@ -1,8 +1,0 @@
-First, create a test file at `configuration/test.properties`:
-
-+++++
-<pre class="snippet"><code class="shell">{% include_raw tutorials/fk-joins/kstreams/code/configuration/test.properties %}</code></pre>
-+++++
-
-You should take note of the `schema.registry.url` configuration.  The config is using a special pseudo-protocol `mock://..` which means our test
-code doesn't need to have an actual `Schema Registry` instance running. The test uses a `MockSchemaRegistry` instead, specifically for unit testing.

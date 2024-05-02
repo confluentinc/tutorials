@@ -1,5 +1,0 @@
-Make a local directory anywhere you'd like for this project:
-
-+++++
-<pre class="snippet"><code class="shell">{% include_raw tutorials/optimize-producer-throughput/confluent/code/tutorial-steps/dev/init.sh %}</code></pre>
-+++++

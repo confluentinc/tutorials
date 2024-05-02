@@ -1,4 +1,7 @@
-#  Console Producer and Consumer with Schema Registry
+<!-- title: How to produce and consume Avro-formatted data the Apache Kafka &reg; Avro console tools  -->
+<!-- description: In this tutorial, learn how to produce and consume Avro-formatted data the Apache Kafka &reg; Avro console tools. -->
+
+# How to produce and consume Avro-formatted data the Apache Kafka &reg; Avro console tools
 
 You'd like to produce and consume some basic messages, using (de)serializers and Schema Registry. In this tutorial, we'll show you how to produce and consume messages from the command line without any code.
 

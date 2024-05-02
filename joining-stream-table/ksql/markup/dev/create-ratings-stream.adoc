@@ -1,5 +1,0 @@
-Likewise, you'll need a Kafka topic and a stream to represent the ratings of those movies:
-
-+++++
-<pre class="snippet"><code class="sql">{% include_raw tutorials/joining-stream-table/ksql/code/tutorial-steps/dev/create-ratings-stream.sql %}</code></pre>
-+++++

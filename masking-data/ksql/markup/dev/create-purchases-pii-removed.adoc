@@ -1,6 +1,0 @@
-Next we will highlight two ways to mask PII data, both methods will result in new streams. +
-Our first masking technique will be to create a derived topic in which all PII is excluded. This technique masks data by refraining from pulling in PII fields like `CUSTOMER_NAME` and `DATE_OF_BIRTH`.
-
-+++++
-<pre class="snippet"><code class="shell">{% include_raw tutorials/masking-data/ksql/code/tutorial-steps/dev/create-purchases-pii-removed.sql %}</code></pre>
-+++++

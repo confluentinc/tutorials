@@ -1,5 +1,0 @@
-Then produce the following events to the stream:
-
-+++++
-<pre class="snippet"><code class="sql">{% include_raw tutorials/filtering/ksql/code/tutorial-steps/dev/populate-stream.sql %}</code></pre>
-+++++

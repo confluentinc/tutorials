@@ -1,7 +1,0 @@
-To create our application, we'll first model some input data to mimic an online store. We will then use the ksqlDB multi-join feature to create a https://docs.ksqldb.io/en/latest/#what-are-the-components-of-ksqldb[Stream] of orders enriched with data from the inputs.
-
-To begin developing interactively, open up the ksqlDB CLI:
-
-+++++
-<pre class="snippet"><code class="shell">{% include_raw tutorials/multi-joins/ksql/code/tutorial-steps/dev/start-cli.sh %}</code></pre>
-+++++

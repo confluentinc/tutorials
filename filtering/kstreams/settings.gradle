@@ -1,0 +1,3 @@
+rootProject.name = 'filtering'
+include ':common'
+project(':common').projectDir = file('../../common')

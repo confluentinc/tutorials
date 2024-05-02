@@ -1,7 +1,0 @@
-In another terminal start the consumer application
-
-+++++
-<pre class="snippet"><code class="bash">{%
-    include_raw tutorials/produce-consume-lang/scala/code/tutorial-steps/dev/consume.sh
-%}</code></pre>
-+++++

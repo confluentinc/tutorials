@@ -1,4 +1,7 @@
-# How to create hopping windows in Flink SQL
+<!-- title: How to aggregate over hopping windows with Flink SQL -->
+<!-- description: In this tutorial, learn how to aggregate over hopping windows with Flink SQL, with step-by-step instructions and supporting code. -->
+
+# How to aggregate over hopping windows with Flink SQL
 
 Suppose you have time series events in a Kafka topic and wish to calculate statistics on the events grouped into 
 fixed-size, possibly overlapping, contiguous time intervals called *hopping windows*. For example, let's say you have a topic
@@ -48,7 +51,7 @@ against Flink and Kafka running in Docker, or with Confluent Cloud.
 
   #### Prerequisites
 
-  * Java 11, e.g., follow the OpenJDK installation instructions [here](https://openjdk.org/install/) if you don't have Java. 
+  * Java 17, e.g., follow the OpenJDK installation instructions [here](https://openjdk.org/install/) if you don't have Java. 
   * Docker running via [Docker Desktop](https://docs.docker.com/desktop/) or [Docker Engine](https://docs.docker.com/engine/install/)
 
   #### Run the test
@@ -56,7 +59,7 @@ against Flink and Kafka running in Docker, or with Confluent Cloud.
 Run the following command to execute [FlinkSqlHoppingWindowTest#testHoppingWindows](src/test/java/io/confluent/developer/FlinkSqlHoppingWindowTest.java):
 
   ```plaintext
-  ./gradlew test
+  ./gradlew clean :hopping-windows:flinksql:test
   ```
 
   The test starts Kafka and Schema Registry with [Testcontainers](https://testcontainers.com/), runs the Flink SQL commands

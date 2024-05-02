@@ -1,4 +1,0 @@
-Once the stream is created, insert some data to it. Note how the timestamps show how there are different sessions for each IP address.
-+++++
-<pre class="snippet"><code class="shell">{% include_raw tutorials/session-windows/ksql/code/tutorial-steps/dev/populate-stream.sql %}</code></pre>
-+++++

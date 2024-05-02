@@ -1,5 +1,0 @@
-Now that you have an uberjar for the Apache Kafka application, you can launch it locally. When you run the following, the prompt won't return because the application will keep running until you exit it. In Streaming-based applications, records are always coming in and the application must be kept running continuously so future records can also be processed.
-
-+++++
-<pre class="snippet"><code class="shell">{% include_raw tutorials/transforming/kafka/code/tutorial-steps/dev/run-dev-app.sh %}</code></pre>
-+++++

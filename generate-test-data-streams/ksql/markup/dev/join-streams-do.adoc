@@ -1,9 +1,0 @@
-Now we can join the traffic to find out which device it was associated with 
-
-+++++
-<pre class="snippet"><code class="sql">{% include_raw tutorials/generate-test-data-streams/ksql/code/tutorial-steps/dev/join-streams-do.sql %}</code></pre>
-+++++
-
-+++++
-<pre class="snippet"><code class="shell">{% include_raw tutorials/generate-test-data-streams/ksql/code/tutorial-steps/dev/join-streams-do_expected.log %}</code></pre>
-+++++

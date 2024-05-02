@@ -1,5 +1,0 @@
-Use the ``geo_distance`` ksqlDB function
-
-+++++
-<pre class="snippet"><code class="sql">{% include_raw tutorials/geo-distance/ksql/code/tutorial-steps/dev/geo-distance-query.sql %}</code></pre>
-+++++

@@ -1,5 +1,0 @@
-Then create the following Avro schema file at `src/main/avro/publication.avsc` for the publication events:
-
-+++++
-<pre class="snippet"><code class="avro">{% include_raw tutorials/filtering/kstreams/code/src/main/avro/publication.avsc %}</code></pre>
-+++++

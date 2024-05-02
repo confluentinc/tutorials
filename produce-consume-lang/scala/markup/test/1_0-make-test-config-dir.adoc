@@ -1,7 +1,0 @@
-Before we write any tests we will create the test resources used to configure the tests:
-
-+++++
-<pre class="snippet"><code class="bash">{%
-    include_raw tutorials/produce-consume-lang/scala/code/tutorial-steps/test/make-test-config-dir.sh
-%}</code></pre>
-+++++

@@ -1,5 +1,0 @@
-Create a file at `test/input.json` with the inputs for testing:
-
-+++++
-<pre class="snippet"><code class="json">{% include_raw tutorials/merging/ksql/code/test/input.json %}</code></pre>
-+++++

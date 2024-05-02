@@ -1,5 +1,0 @@
-Create the Kafka topic `myTopic` with 2 partitions:
-
-+++++
-<pre class="snippet"><code class="shell">{% include_raw tutorials/message-ordering/kafka/code/tutorial-steps/dev/create-topic.sh %}</code></pre>
-+++++

@@ -1,9 +1,0 @@
-We will use case classes to represent Book records in our Scala code.
-Add the following case class in the schema package.
-
-`src/main/scala/io/confluent/developer/schema/Book.scala`:
-+++++
-<pre class="snippet"><code class="scala">{%
-    include_raw tutorials/produce-consume-lang/scala/code/src/main/scala/io/confluent/developer/schema/Book.scala
-%}</code></pre>
-+++++
