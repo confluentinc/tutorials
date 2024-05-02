@@ -40,7 +40,7 @@ This example assumes using Avro with the following schema:
         {"name": "subtotal", "type": "double", "doc": "The amount without shipping cost and tax."},
         {"name": "shipping_cost", "type": "double", "doc": "The shipping cost."},
         {"name": "tax", "type": "double", "doc": "The applicable tax."},
-        {"name": "grand_total", "type": "double", "doc": "The order grand total ."}
+        {"name": "grand_total", "type": "double", "doc": "The order grand total."}
     ]
 }
 ```
