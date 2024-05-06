@@ -1,0 +1,15 @@
+CREATE TABLE classical_songs (
+    artist STRING,
+    title STRING
+) WITH (
+    'connector' = 'kafka',
+    'topic' = 'classical-songs',
+    'properties.bootstrap.servers' = 'localhost:KAFKA_PORT',
+    'scan.startup.mode' = 'earliest-offset',
+    'key.format' = 'avro-confluent',
+    'key.avro-confluent.url' = 'http://localhost:SCHEMA_REGISTRY_PORT',
+    'key.fields' = 'artist;title',
+    'value.format' = 'avro-confluent',
+    'value.avro-confluent.url' = 'http://localhost:SCHEMA_REGISTRY_PORT',
+    'value.fields-include' = 'ALL'
+);
