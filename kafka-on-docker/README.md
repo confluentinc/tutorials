@@ -1,14 +1,14 @@
-<!-- title: How to run Kafka locally on Docker -->
-<!-- description: In this tutorial, learn how to run Kafka broker locally on your laptop, with step-by-step instructions and supporting code. -->
+<!-- title: How to run Kafka locally with Docker -->
+<!-- description: In this tutorial, learn how to run a Kafka broker locally on your laptop, with step-by-step instructions and supporting code. -->
 
 # How to run a Kafka broker locally with Docker
 
-When building or testing Apache®Kafka applications, it can be very helpful to have a local Kafka broker running locally.  Using [Docker](https://www.docker.com/) is possibly the fastest way to get a locally running Kafka broker
+When building or testing Apache Kafka® applications, it can be very helpful to have a Kafka broker running locally.  Using [Docker](https://www.docker.com/) is possibly the fastest way to get a locally running Kafka broker.
 
 ## Set up
 
-To run Kafka on Docker, you'll need to install [Docker Desktop](https://www.docker.com/products/docker-desktop/). Then, after you've installed Docker Desktop, you'll use [Docker Compose](https://docs.docker.com/compose/) to create your Kafka container.  Docker Compose uses a YAML configuration file to manage your Docker components (services, volumes, networks, etc.) in an easy-to-maintain approach.  Docker Desktop includes Docker Compose, so there are no additional steps you need to take.
-Finally, you'll need an account on [docker hub](https://hub.docker.com/explore) so Docker Desktop can pull the images specified in the Docker Compose file.
+To run Kafka in Docker, you'll need to install [Docker Desktop](https://www.docker.com/products/docker-desktop/). Then, after you've installed Docker Desktop, you'll use [Docker Compose](https://docs.docker.com/compose/) to create your Kafka container.  Docker Compose uses a YAML configuration file to manage your Docker components (services, volumes, networks, etc.) in an easy-to-maintain approach.  Docker Desktop includes Docker Compose, so there are no additional steps you need to take.
+Finally, you'll need an account on [Docker Hub](https://hub.docker.com/explore) so that Docker Desktop can pull the images specified in the Docker Compose file.
   
 ## The Docker Compose file
 
@@ -65,7 +65,7 @@ These settings affect topic replication and min-in-sync replicas and should only
 KAFKA_PROCESS_ROLES: broker,controller
 ```
 
-Since the introduction of [KRaft]() Kafka no longer uses [Apache ZooKeeper®](https://zookeeper.apache.org/) for managing cluster metadata, using Kafka itself instead.  One advantage of the new KRaft mode is that you can have a single Kafka broker to handle both metadata and handling client requests in small, local development environment.  The `docker-compose.yml` file for this tutorial uses this approach leading to faster startup times and simpler configuration.  Note that in a production setting you'll have distinct Kafka brokers for handling requests and operating as a cluster controller.
+Since the introduction of [KRaft](https://docs.confluent.io/platform/current/kafka-metadata/kraft.html) Kafka no longer requires [Apache ZooKeeper®](https://zookeeper.apache.org/) for managing cluster metadata, using Kafka itself instead.  One advantage of the new KRaft mode is that you can have a single Kafka broker to handle both metadata and client requests in small, local development environment.  The `docker-compose.yml` file for this tutorial uses this approach, leading to faster startup times and simpler configuration.  Note that, in a production setting, you'll have distinct Kafka brokers for handling requests and operating as a cluster controller.
 
 ## Running Kafka on Docker
 
@@ -75,7 +75,7 @@ To run Kafka on Docker, first confirm your Docker Desktop is running.  Then exec
  docker compose up -d
 ```
 
-The `-d` flag runs the docker container in detached mode which is similar to running unix commands in the background with a `&`.  To confirm the container is running run this command:
+The `-d` flag runs the docker container in detached mode which is similar to running Unix commands in the background by appending `&`.  To confirm the container is running, run this command:
 ```shell
 docker logs broker
 ```
@@ -111,9 +111,9 @@ Created topic my-topic.
 ```
 
 **Important**   
-Take note of the `--bootstrap-server` flag.  Because you're connecting to Kafka *_inside_* the container you use `broker:29092` for the host:port.  If you were to use a client outside the container to connect to Kafka, a producer application running on your laptop for example, you'd use `localhost:9092` as the host:port combo to connect.
+Take note of the `--bootstrap-server` flag.  Because you're connecting to Kafka *_inside_* the container, you use `broker:29092` for the host:port.  If you were to use a client outside the container to connect to Kafka, a producer application running on your laptop for example, you'd use `localhost:9092` instead.
 
-Next start a console producer with this command:
+Next, start a console producer with this command:
  
 ```shell
 ./kafka-console-producer.sh  --topic my-topic --bootstrap-server broker:29092
@@ -139,7 +139,7 @@ lead to Kafka
 
 Enter a `CTRL-C` to close the consumer and then type `exit` to close the docker shell.
 
-To shut down the container run
+To shut down the container, run
 ```shell
 docker compose down -v
 ```
