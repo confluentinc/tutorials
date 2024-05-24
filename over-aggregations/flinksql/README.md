@@ -118,8 +118,8 @@ test data, and run the Top-N query.
   ```
 
   ```sql
-  INSERT INTO movie_views (id, title, genre, movie_start)
-  VALUES (123, 'The Dark Knight', 'Action', TO_TIMESTAMP('2024-04-23 19:04:00')),
+  INSERT INTO movie_views VALUES 
+         (123, 'The Dark Knight', 'Action', TO_TIMESTAMP('2024-04-23 19:04:00')),
          (456, 'Avengers: Endgame', 'Action', TO_TIMESTAMP('2024-04-23 22:01:00')),
          (789, 'Inception', 'Sci-Fi', TO_TIMESTAMP('2024-04-23 20:24:00')),
          (147, 'Joker', 'Drama', TO_TIMESTAMP('2024-04-23 22:56:00')),
@@ -216,8 +216,8 @@ Finally, run following SQL statements to create the `movie_views` table, populat
   ```
 
   ```sql
-  INSERT INTO movie_views (id, title, genre, movie_start)
-  VALUES (123, 'The Dark Knight', 'Action', TO_TIMESTAMP('2024-04-23 19:04:00')),
+  INSERT INTO movie_views VALUES     
+         (123, 'The Dark Knight', 'Action', TO_TIMESTAMP('2024-04-23 19:04:00')),
          (456, 'Avengers: Endgame', 'Action', TO_TIMESTAMP('2024-04-23 22:01:00')),
          (789, 'Inception', 'Sci-Fi', TO_TIMESTAMP('2024-04-23 20:24:00')),
          (147, 'Joker', 'Drama', TO_TIMESTAMP('2024-04-23 22:56:00')),
@@ -248,7 +248,6 @@ Finally, run following SQL statements to create the `movie_views` table, populat
       RANGE BETWEEN INTERVAL '1' HOUR PRECEDING AND CURRENT ROW
       ) AS genre_count
   FROM movie_views;
-
   ```
 
 The query output should look like this:

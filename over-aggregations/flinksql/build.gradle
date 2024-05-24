@@ -34,4 +34,5 @@ dependencies {
     testImplementation 'org.apache.flink:flink-table-planner_2.12:1.18.0'
     testImplementation 'org.apache.flink:flink-table-planner_2.12:1.18.0:tests'
     testImplementation 'org.apache.flink:flink-statebackend-rocksdb:1.18.0'
+    testImplementation 'org.apache.flink:flink-json:1.19.0'
 }
