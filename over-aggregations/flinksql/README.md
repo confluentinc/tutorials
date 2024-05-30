@@ -3,11 +3,11 @@
 
 # Perform an aggregation for all rows
 
-When you perform an aggregation in SQL, the query reduces the number of result rows to one for every group specified in the `GROUP BY`.  But [OVER aggregates](https://nightlies.apache.org/flink/flink-docs-release-1.19/docs/dev/table/sql/queries/over-agg/#over-aggregation) do not reduce the number of result rows to a single row for every group, instead they produce an aggregated value for every input row.  OVER aggregations also serve as the basis for more advanced queries like [Top-N](https://nightlies.apache.org/flink/flink-docs-release-1.19/docs/dev/table/sql/queries/topn/#top-n), [Window Top-N](https://nightlies.apache.org/flink/flink-docs-release-1.19/docs/dev/table/sql/queries/window-topn/#window-top-n), and [Deduplication](https://nightlies.apache.org/flink/flink-docs-release-1.19/docs/dev/table/sql/queries/deduplication/#deduplication). 
+When you perform an aggregation in SQL, generally the query reduces the number of result rows to one for every group specified in the `GROUP BY`.  In contrast, [OVER aggregates](https://nightlies.apache.org/flink/flink-docs-release-1.19/docs/dev/table/sql/queries/over-agg/#over-aggregation) do not reduce the number of result rows to a single row for every group; instead, they produce an aggregated value for every input row.  OVER aggregations also serve as the basis for more advanced queries like [Top-N](https://nightlies.apache.org/flink/flink-docs-release-1.19/docs/dev/table/sql/queries/topn/#top-n), [Window Top-N](https://nightlies.apache.org/flink/flink-docs-release-1.19/docs/dev/table/sql/queries/window-topn/#window-top-n), and [Deduplication](https://nightlies.apache.org/flink/flink-docs-release-1.19/docs/dev/table/sql/queries/deduplication/#deduplication). 
 
 ## Setup
 
-Let's assume the following DDL for our base `movie_views` table:
+Let's assume the following DDL for a `movie_views` table representing streaming movie service subscriber views:
 
 ```sql
 TABLE movie_views (
@@ -95,7 +95,7 @@ Next, open the Flink SQL Client CLI:
   ```
 
 Finally, run following SQL statements to create the `movie_views` table backed by Kafka running in Docker, populate it with
-test data, and run the Top-N query.
+test data, and run the OVER aggregation query.
 
   ```sql
   CREATE TABLE movie_views (
@@ -203,7 +203,7 @@ pool that you have created.
 
 Select the default catalog (Confluent Cloud environment) and database (Kafka cluster) to use with the dropdowns at the top right.
 
-Finally, run following SQL statements to create the `movie_views` table, populate it with test data, and run the windowed Top-N query.
+Finally, run following SQL statements to create the `movie_views` table, populate it with test data, and run the OVER aggregation query.
 
   ```sql
  CREATE TABLE movie_views (
