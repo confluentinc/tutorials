@@ -212,7 +212,7 @@ Finally, run following SQL statements to create the `movie_views` table, populat
         genre STRING,
         movie_start TIMESTAMP(3),
         WATERMARK FOR movie_start as movie_start
- )
+ ) DISTRIBUTED BY (id) INTO 1 BUCKETS;
   ```
 
   ```sql
