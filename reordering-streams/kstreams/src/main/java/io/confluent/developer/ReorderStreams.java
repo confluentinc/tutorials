@@ -29,11 +29,11 @@ public class ReorderStreams {
         String reorderStore = "reorder-store";
         builder.stream(INPUT, Consumed.with(stringSerde, eventSerde))
                 .peek((key, value) -> LOG.info("Incoming event key[{}] value[{}]", key, value))
-                .process(new ReorderingProcessorSupplier<String, String, Event>(reorderStore,
+                .process(new ReorderingProcessorSupplier<>(reorderStore,
                         Duration.ofHours(10),
-                        (k, v) -> v + "-" + k,
-                        (k, v) -> k.substring(k.indexOf('-') + 1),
-                        stringSerde,
+                        (k, v) -> v.eventTime(),
+                        (k, v) -> v.name(),
+                        Serdes.Long(),
                         eventSerde))
                 .to(OUTPUT, Produced.with(stringSerde, eventSerde));
 

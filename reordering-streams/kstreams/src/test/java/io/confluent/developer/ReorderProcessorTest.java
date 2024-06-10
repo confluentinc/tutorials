@@ -23,6 +23,7 @@ import org.junit.jupiter.api.Test;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
@@ -33,7 +34,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * End-to-end integration test that demonstrates how to reorder the stream of incoming messages
  * by the timestamp embedded in the message payload.
  * <p>
- * Makes sense only on per partition basis.
+ * Makes sense only on per-partition basis.
  * <p>
  * Reordering occurs within time windows defined by the
  *
@@ -43,7 +44,7 @@ class ReorderProcessorTest {
 
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-    private static long ts(final String timeString) throws ParseException {
+    private static long parseTimeStringToLong(final String timeString) throws ParseException {
         return dateFormat.parse(timeString).getTime();
     }
 
@@ -63,46 +64,49 @@ class ReorderProcessorTest {
              
             //  Input not ordered by time
             final List<KeyValue<String,Event>> inputValues = Arrays.asList(
-                    KeyValue.pair("A", new Event("A", ts("2021-11-03 23:00:00Z"))),    // stream time calibration
-                    KeyValue.pair("B", new Event("B", ts("2021-11-04 01:05:00Z"))),    // 10-hours interval border is at "2021-11-04 01:00:00Z"
-                    KeyValue.pair("C", new Event("C", ts("2021-11-04 01:10:00Z"))),
-                    KeyValue.pair("D", new Event("D", ts("2021-11-04 01:40:00Z"))),
-                    KeyValue.pair("E", new Event("E", ts("2021-11-04 02:25:00Z"))),
-                    KeyValue.pair("F", new Event("F", ts("2021-11-04 01:20:00Z"))),
-                    KeyValue.pair("G", new Event("G", ts("2021-11-04 02:45:00Z"))),
-                    KeyValue.pair("H", new Event("H", ts("2021-11-04 02:00:00Z"))),
-                    KeyValue.pair("I", new Event("I", ts("2021-11-04 03:00:00Z"))),
-                    KeyValue.pair("J", new Event("J", ts("2021-11-04 02:40:00Z"))),
-                    KeyValue.pair("K", new Event("K", ts("2021-11-04 02:20:00Z"))),    // 10-hours interval border is at "2021-11-04 11:00:00Z"
-                    KeyValue.pair("L", new Event("L", ts("2021-11-05 00:00:00Z")))     // stream time calibration
+                    KeyValue.pair("A", new Event("A", parseTimeStringToLong("2021-11-03 23:00:00Z"))),    // stream time calibration
+                    KeyValue.pair("B", new Event("B", parseTimeStringToLong("2021-11-04 01:05:00Z"))),    // 10-hours interval border is at "2021-11-04 01:00:00Z"
+                    KeyValue.pair("C", new Event("C", parseTimeStringToLong("2021-11-04 01:10:00Z"))),
+                    KeyValue.pair("D", new Event("D", parseTimeStringToLong("2021-11-04 01:40:00Z"))),
+                    KeyValue.pair("E", new Event("E", parseTimeStringToLong("2021-11-04 02:25:00Z"))),
+                    KeyValue.pair("F", new Event("F", parseTimeStringToLong("2021-11-04 01:20:00Z"))),
+                    KeyValue.pair("G", new Event("G", parseTimeStringToLong("2021-11-04 02:45:00Z"))),
+                    KeyValue.pair("H", new Event("H", parseTimeStringToLong("2021-11-04 02:00:00Z"))),
+                    KeyValue.pair("I", new Event("I", parseTimeStringToLong("2021-11-04 03:00:00Z"))),
+                    KeyValue.pair("J", new Event("J", parseTimeStringToLong("2021-11-04 02:40:00Z"))),
+                    KeyValue.pair("K", new Event("K", parseTimeStringToLong("2021-11-04 02:20:00Z"))),    // 10-hours interval border is at "2021-11-04 11:00:00Z"
+                    KeyValue.pair("L", new Event("L", parseTimeStringToLong("2021-11-05 00:00:00Z")))     // stream time calibration
             );
 
             //  Expected ordered by time
             final List<KeyValue<String,Event>> expectedValues = Arrays.asList(
-                    KeyValue.pair("A", new Event("A", ts("2021-11-03 23:00:00Z"))),    // stream time calibration
-                    KeyValue.pair("B", new Event("B", ts("2021-11-04 01:05:00Z"))),
-                    KeyValue.pair("C", new Event("C", ts("2021-11-04 01:10:00Z"))),
-                    KeyValue.pair("F", new Event("F", ts("2021-11-04 01:20:00Z"))),
-                    KeyValue.pair("D", new Event("D", ts("2021-11-04 01:40:00Z"))),
-                    KeyValue.pair("H", new Event("H", ts("2021-11-04 02:00:00Z"))),
-                    KeyValue.pair("K", new Event("K", ts("2021-11-04 02:20:00Z"))),
-                    KeyValue.pair("E", new Event("E", ts("2021-11-04 02:25:00Z"))),
-                    KeyValue.pair("J", new Event("J", ts("2021-11-04 02:40:00Z"))),
-                    KeyValue.pair("G", new Event("G", ts("2021-11-04 02:45:00Z"))),
-                    KeyValue.pair("I", new Event("I", ts("2021-11-04 03:00:00Z"))),
-                    KeyValue.pair("L", new Event("L", ts("2021-11-05 00:00:00Z")))
+                    KeyValue.pair("A", new Event("A", parseTimeStringToLong("2021-11-03 23:00:00Z"))),    // stream time calibration
+                    KeyValue.pair("B", new Event("B", parseTimeStringToLong("2021-11-04 01:05:00Z"))),
+                    KeyValue.pair("C", new Event("C", parseTimeStringToLong("2021-11-04 01:10:00Z"))),
+                    KeyValue.pair("F", new Event("F", parseTimeStringToLong("2021-11-04 01:20:00Z"))),
+                    KeyValue.pair("D", new Event("D", parseTimeStringToLong("2021-11-04 01:40:00Z"))),
+                    KeyValue.pair("H", new Event("H", parseTimeStringToLong("2021-11-04 02:00:00Z"))),
+                    KeyValue.pair("K", new Event("K", parseTimeStringToLong("2021-11-04 02:20:00Z"))),
+                    KeyValue.pair("E", new Event("E", parseTimeStringToLong("2021-11-04 02:25:00Z"))),
+                    KeyValue.pair("J", new Event("J", parseTimeStringToLong("2021-11-04 02:40:00Z"))),
+                    KeyValue.pair("G", new Event("G", parseTimeStringToLong("2021-11-04 02:45:00Z"))),
+                    KeyValue.pair("I", new Event("I", parseTimeStringToLong("2021-11-04 03:00:00Z"))),
+                    KeyValue.pair("L", new Event("L", parseTimeStringToLong("2021-11-05 00:00:00Z")))
             );
-
-              inputValues.forEach(input -> {
-                  testInputTopic.pipeInput(input.key, input.value, input.value.eventTime());
-              });
+            Instant now = Instant.now();
+            var recordCount = 1;
+            var secondsToAdvance = 60L;
+            
+              for (KeyValue<String,Event> input : inputValues) {
+                  testInputTopic.pipeInput(input.key, input.value, now.plusSeconds(recordCount++ * secondsToAdvance));
+                  if (recordCount == 11) {
+                      // Need to advance stream-time beyond 10 hours to trigger punctuation
+                      secondsToAdvance = 60 * 60 * 10;
+                  }
+              }
               List<KeyValue<String, Event>> actualValues = testOutputTopic.readKeyValuesToList();
               assertEquals(expectedValues.size(), actualValues.size());
-            for (int i = 0; i < expectedValues.size(); i++) {
-                System.out.printf("Comparing %s with %s%n", expectedValues.get(i), actualValues.get(i));
-                assertEquals(expectedValues.get(i), actualValues.get(i));
-
-            }
+              assertEquals(expectedValues, actualValues);
         }
 
     }

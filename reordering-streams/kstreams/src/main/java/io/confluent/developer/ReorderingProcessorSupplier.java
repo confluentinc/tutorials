@@ -7,8 +7,10 @@ import org.apache.kafka.streams.processor.api.Processor;
 import org.apache.kafka.streams.processor.api.ProcessorContext;
 import org.apache.kafka.streams.processor.api.ProcessorSupplier;
 import org.apache.kafka.streams.processor.api.Record;
-import org.apache.kafka.streams.state.*;
-import org.apache.kafka.streams.state.internals.RocksDBKeyValueBytesStoreSupplier;
+import org.apache.kafka.streams.state.KeyValueIterator;
+import org.apache.kafka.streams.state.KeyValueStore;
+import org.apache.kafka.streams.state.StoreBuilder;
+import org.apache.kafka.streams.state.Stores;
 
 import java.time.Duration;
 import java.util.Collections;
@@ -20,12 +22,11 @@ import java.util.Set;
  * Time: 1:54 PM
  */
 public class ReorderingProcessorSupplier<KOrder, K, V> implements ProcessorSupplier<K, V, K, V> {
-
     private final String storeName;
     private final Duration grace;
     private final ReorderKeyGenerator<K, V, KOrder> storeKeyGenerator;
     private final OriginalKeyExtractor<KOrder, V, K> originalKeyExtractor;
-    private final Serde<K> keySerde;
+    private final Serde<KOrder> keySerde;
     private final Serde<V> valueSerde;
 
 
@@ -41,7 +42,7 @@ public class ReorderingProcessorSupplier<KOrder, K, V> implements ProcessorSuppl
                                        Duration grace,
                                        ReorderKeyGenerator<K, V, KOrder> storeKeyGenerator,
                                        OriginalKeyExtractor<KOrder, V, K> originalKeyExtractor,
-                                       Serde<K> keySerde,
+                                       Serde<KOrder> keySerde,
                                        Serde<V> valueSerde) {
         this.storeName = storeName;
         this.grace = grace;
@@ -57,7 +58,7 @@ public class ReorderingProcessorSupplier<KOrder, K, V> implements ProcessorSuppl
 
     @Override
     public Set<StoreBuilder<?>> stores() {
-        return Collections.singleton(Stores.keyValueStoreBuilder(new RocksDBKeyValueBytesStoreSupplier(storeName,false),keySerde, valueSerde));
+        return Collections.singleton(Stores.keyValueStoreBuilder(Stores.persistentKeyValueStore(storeName),keySerde, valueSerde));
     }
 
     private class ReorderProcessor implements Processor<K, V, K, V> {
@@ -65,8 +66,8 @@ public class ReorderingProcessorSupplier<KOrder, K, V> implements ProcessorSuppl
         private final Duration grace;
         private ProcessorContext<K, V> context;
         private KeyValueStore<KOrder, V> reorderStore;
-        ReorderKeyGenerator<K, V, KOrder> storeKeyGenerator;
-        OriginalKeyExtractor<KOrder, V, K> originalKeyExtractor;
+        private final ReorderKeyGenerator<K, V, KOrder> storeKeyGenerator;
+        private final OriginalKeyExtractor<KOrder, V, K> originalKeyExtractor;
 
         public ReorderProcessor(String storeName,
                                 Duration grace,

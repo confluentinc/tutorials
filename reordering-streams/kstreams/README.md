@@ -3,7 +3,7 @@
 
 # How to reorder out-of-order events in Kafka Streams
 
-In this tutorial, we take a look at the case when the order of the event time embedded in the event payload is different from the order of the timestamps applied by the Kafka Producer.  The reordering will only occur per-partition and within a specific time window provided at startup. 
+In this tutorial, we take a look at the case when the order of the event time embedded in the event payload is different from the order of the timestamps applied by the Kafka Producer.  The reordering will only occur per-partition and within a specific time window provided at startup.
 
 NOTE: This tutorial was adapted from an [original contribution](https://github.com/confluentinc/kafka-streams-examples/pull/411) by [Sergey Shcherbakov](https://github.com/sshcherbakov)
 
