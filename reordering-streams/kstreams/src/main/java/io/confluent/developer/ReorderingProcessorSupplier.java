@@ -89,7 +89,6 @@ public class ReorderingProcessorSupplier<KOrder, K, V> implements ProcessorSuppl
                     PunctuationType.STREAM_TIME,
                     this::punctuate
             );
-
         }
 
         @Override
