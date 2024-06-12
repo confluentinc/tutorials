@@ -23,7 +23,7 @@ import java.util.Set;
  */
 public class ReorderingProcessorSupplier<KOrder, K, V> implements ProcessorSupplier<K, V, K, V> {
     private final String storeName;
-    private final Duration grace;
+    private final Duration reorderWindow;
     private final ReorderKeyGenerator<K, V, KOrder> storeKeyGenerator;
     private final OriginalKeyExtractor<KOrder, V, K> originalKeyExtractor;
     private final Serde<KOrder> keySerde;
@@ -39,13 +39,13 @@ public class ReorderingProcessorSupplier<KOrder, K, V> implements ProcessorSuppl
     }
 
     public ReorderingProcessorSupplier(String storeName,
-                                       Duration grace,
+                                       Duration reorderWindow,
                                        ReorderKeyGenerator<K, V, KOrder> storeKeyGenerator,
                                        OriginalKeyExtractor<KOrder, V, K> originalKeyExtractor,
                                        Serde<KOrder> keySerde,
                                        Serde<V> valueSerde) {
         this.storeName = storeName;
-        this.grace = grace;
+        this.reorderWindow = reorderWindow;
         this.storeKeyGenerator = storeKeyGenerator;
         this.originalKeyExtractor = originalKeyExtractor;
         this.keySerde = keySerde;
@@ -53,7 +53,7 @@ public class ReorderingProcessorSupplier<KOrder, K, V> implements ProcessorSuppl
     }
 
     public Processor<K, V, K, V> get() {
-         return new ReorderProcessor(storeName, grace, storeKeyGenerator, originalKeyExtractor);
+         return new ReorderProcessor(storeName, reorderWindow, storeKeyGenerator, originalKeyExtractor);
     }
 
     @Override
@@ -63,19 +63,19 @@ public class ReorderingProcessorSupplier<KOrder, K, V> implements ProcessorSuppl
 
     private class ReorderProcessor implements Processor<K, V, K, V> {
         private final String storeName;
-        private final Duration grace;
+        private final Duration reorderWindow;
         private ProcessorContext<K, V> context;
         private KeyValueStore<KOrder, V> reorderStore;
         private final ReorderKeyGenerator<K, V, KOrder> storeKeyGenerator;
         private final OriginalKeyExtractor<KOrder, V, K> originalKeyExtractor;
 
         public ReorderProcessor(String storeName,
-                                Duration grace,
+                                Duration reorderWindow,
                                 ReorderKeyGenerator<K, V, KOrder> reorderKeyGenerator,
                                 OriginalKeyExtractor<KOrder, V, K> originalKeyExtractor) {
 
             this.storeName = storeName;
-            this.grace = grace;
+            this.reorderWindow = reorderWindow;
             this.storeKeyGenerator = reorderKeyGenerator;
             this.originalKeyExtractor = originalKeyExtractor;
         }
@@ -85,9 +85,9 @@ public class ReorderingProcessorSupplier<KOrder, K, V> implements ProcessorSuppl
             this.reorderStore = context.getStateStore(this.storeName);
             this.context = context;
             context.schedule(
-                    this.grace,
+                    this.reorderWindow,
                     PunctuationType.STREAM_TIME,
-                    this::punctuate
+                    this::forwardOrderedByEventTime
             );
         }
 
@@ -107,13 +107,13 @@ public class ReorderingProcessorSupplier<KOrder, K, V> implements ProcessorSuppl
          * <p>
          * Outputs downstream accumulated records sorted by their timestamp.
          * <p>
-         * 1) read the store using a ranged fetch from 0 to timestamp - 60'000 (=1 minute)
+         * 1) read the store
          * 2) send the fetched messages in order using context.forward() and deletes
          * them from the store
          *
          * @param timestamp – stream time of the punctuate function call
          */
-        void punctuate(final long timestamp) {
+        void forwardOrderedByEventTime(final long timestamp) {
             try (KeyValueIterator<KOrder, V> it = reorderStore.all()) {
                 while (it.hasNext()) {
                     final KeyValue<KOrder, V> kv = it.next();

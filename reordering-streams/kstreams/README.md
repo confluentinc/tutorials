@@ -27,9 +27,9 @@ public void init(ProcessorContext<K, V> context) {
     this.reorderStore = context.getStateStore(this.storeName);
     this.context = context;
     context.schedule(
-            this.grace,
+            this.reorderWindow,
             PunctuationType.STREAM_TIME,
-            this::punctuate
+            this::forwardOrderedByEventTime
     );
 }
 ```
@@ -52,7 +52,72 @@ public void process(Record<K, V> kvRecord) {
   }
 ```
 Here is the `process` method which is where the `Processor` takes action for each incoming record.
-There's a `StoreKeyGenerator` interface that takes the incoming key and value and returns a new key
+There's a `ReorderKeyGenerator` interface that takes the incoming key and value and returns the new key to order the records.  In our case, it simply returns the 
+timestamp embedded in the event.  We'll discuss the `ReorderKeyGenerator` interface later in the tutorial.
+
+So we've seen how you'll update the key needed for sorting, now let's take a look at how Kafka Streams propagates this new order to any downstream 
+operators:
+```java
+void forwardOrderedByEventTime(final long timestamp) {
+    try (KeyValueIterator<KOrder, V> it = reorderStore.all()) {
+        while (it.hasNext()) {
+            final KeyValue<KOrder, V> kv = it.next();
+            K origKey = originalKeyExtractor.key(kv.key, kv.value);
+            context.forward(new Record<>(origKey, kv.value, timestamp));
+            reorderStore.delete(kv.key);
+        }
+    }
+}
+```
+
+The `forwardOrderedByEventTime` method does the following:
+1. Iterate over the current contents of the store.
+2. Perform the reverse operation of the `ReorderKeyGenerator` with a `OriginalKeyExtractor` interface and provide the original key 
+3. Forward each record to the next downstream operator then delete it.
+
+It's critical whatever operation you use to extract the key for the sorting, you must be able to 
+reverse the operation, so you can forward records with the original key. This is essential because if you do any downstream
+aggregations or writing results out to a topic, the record will remain on the correct partition.
+
+Now let's take a look at how you'll write the Kafka Steams application:
+
+```java
+StreamBuider builder = new StreamBuilder();
+ builder.stream(INPUT, Consumed.with(stringSerde, eventSerde))
+         .process(new ReorderingProcessorSupplier<>(reorderStore,
+                        Duration.ofHours(10),
+                        (k, v) -> v.eventTime(),
+                        (k, v) -> v.name(),
+                        Serdes.Long(),
+                        eventSerde))
+         .to(OUTPUT, Produced.with(stringSerde, eventSerde));
+```
+
+This is a simple Kafka Streams topology, in the `process` operator you pass in a [ProcessorSupplier]() which Kafka Streams will use to extract your `Processor` implementation. The third parameter is a lambda implementation of the `ReorderKeyGenerator` interface and the fourth is same for the `OriginalKeyExtractor` interface.  The `ReorderingProcessorSupplier` defines these two interfaces you've see before in the tutorial:
+
+```java
+public class ReorderingProcessorSupplier<KOrder, K, V> implements ProcessorSupplier<K, V, K, V> {
+   // Details left out for clarity
+   public interface ReorderKeyGenerator<K, V, KOrder> {
+       KOrder key(K key, V val);
+   }
+
+    public interface OriginalKeyExtractor<KOrder, V, K> {
+        K key(KOrder key, V val);
+    }
+}
+```
+## Important Notes 
+
+You've seen in this tutorial how to re-order events in the stream by timestamps on the event object.  But you're not limited to timestamps only, you could use the same approach to order events in the stream by any attribute on the event.  There are a couple of points you need to keep in mind when doing so:
+
+1. It's essential to have a way to restore the incoming key, you don't want to lose the original key-partition mapping.
+2. This re-ordering strategy only applies to a single partition, not across multiple partitions.
+3. Since an event stream is infinite, re-ordering can only be applied to distinct windows of time, and you'll balance the trade-off of large windows and iterating over the entire contents of a state store.
+
+
+
+
 
 
 
