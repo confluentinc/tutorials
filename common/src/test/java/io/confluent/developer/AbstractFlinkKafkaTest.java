@@ -3,8 +3,9 @@ package io.confluent.developer;
 
 import com.google.common.io.Resources;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.apache.flink.api.common.restartstrategy.RestartStrategies;
-import org.apache.flink.contrib.streaming.state.EmbeddedRocksDBStateBackend;
+import org.apache.flink.configuration.Configuration;
+import org.apache.flink.configuration.RestartStrategyOptions;
+import org.apache.flink.configuration.StateBackendOptions;
 import org.apache.flink.runtime.client.JobCancellationException;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.table.api.EnvironmentSettings;
@@ -42,10 +43,11 @@ public class AbstractFlinkKafkaTest {
   @BeforeClass
   public static void setup() {
     // create Flink table environment that test subclasses will use to execute SQL statements
-    StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+    Configuration config = new Configuration();
+    config.set(RestartStrategyOptions.RESTART_STRATEGY, "none");
+    config.set(StateBackendOptions.STATE_BACKEND, "hashmap");
+    StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment(config);
     env.setParallelism(1);
-    env.getConfig().setRestartStrategy(RestartStrategies.noRestart());
-    env.setStateBackend(new EmbeddedRocksDBStateBackend());
     streamTableEnv = StreamTableEnvironment.create(env, EnvironmentSettings.newInstance().inStreamingMode().build());
 
 

@@ -34,7 +34,7 @@ services:
       SCHEMA_REGISTRY_HOST_NAME: schema-registry
       SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: broker:9092
   flink-sql-client:
-    image: cnfldemos/flink-sql-client-kafka:1.16.0-scala_2.12-java11
+    image: cnfldemos/flink-sql-client-kafka:1.19.1-scala_2.12-java17
     hostname: flink-sql-client
     container_name: flink-sql-client
     depends_on:
@@ -44,7 +44,7 @@ services:
     volumes:
       - ./settings/:/settings
   flink-jobmanager:
-    image: cnfldemos/flink-kafka:1.16.0-scala_2.12-java11
+    image: cnfldemos/flink-kafka:1.19.1-scala_2.12-java17
     hostname: flink-jobmanager
     container_name: flink-jobmanager
     ports:
@@ -56,7 +56,7 @@ services:
         jobmanager.rpc.address: flink-jobmanager
         rest.bind-port: 9081
   flink-taskmanager:
-    image: cnfldemos/flink-kafka:1.16.0-scala_2.12-java11
+    image: cnfldemos/flink-kafka:1.19.1-scala_2.12-java17
     hostname: flink-taskmanager
     container_name: flink-taskmanager
     depends_on:
