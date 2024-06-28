@@ -1,0 +1,22 @@
+FROM flink:1.19.1-scala_2.12-java11
+
+# Create CLI lib folder
+#COPY ./bin/* /opt/sql-client/
+RUN mkdir -p /opt/sql-client/lib
+
+# Download connector libraries
+RUN wget -P /opt/sql-client/lib/ https://repo.maven.apache.org/maven2/org/apache/flink/flink-sql-connector-kafka/3.2.0-1.19/flink-sql-connector-kafka-3.2.0-1.19.jar; \
+    wget -P /opt/sql-client/lib/ https://repo.maven.apache.org/maven2/org/apache/flink/flink-json/1.19.1/flink-json-1.19.1.jar; \
+    wget -P /opt/sql-client/lib/ https://repo.maven.apache.org/maven2/org/apache/flink/flink-sql-avro-confluent-registry/1.19.1/flink-sql-avro-confluent-registry-1.19.1.jar;
+
+# Also copy to Flink lib so that, e.g., other catalog types can be used if desired
+RUN cp /opt/sql-client/lib/* /opt/flink/lib/
+
+# Copy configuration
+COPY ./conf/* /opt/flink/conf/
+
+WORKDIR /opt/sql-client
+ENV SQL_CLIENT_HOME=/opt/sql-client
+
+COPY ./docker-entrypoint.sh /
+ENTRYPOINT ["/docker-entrypoint.sh"]

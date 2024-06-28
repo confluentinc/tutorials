@@ -148,10 +148,8 @@ Run the following command to execute [FlinkSqlTopNTest#testTopN](src/test/java/i
          (369, 'Casablanca', 'Romance', TO_TIMESTAMP('2024-04-23 20:26:00')),
          (321, 'The Shawshank Redemption', 'Drama', TO_TIMESTAMP('2024-04-23 20:20:00')),
          (654, 'Forrest Gump', 'Drama', TO_TIMESTAMP('2024-04-23 21:54:00')),
-         (987, 'Fight Club', 'Drama', TO_TIMESTAMP('2024-04-23 23:24:00')),
          (135, 'Pulp Fiction', 'Crime', TO_TIMESTAMP('2024-04-23 22:09:00')),
          (246, 'The Godfather: Part II', 'Crime', TO_TIMESTAMP('2024-04-23 19:28:00')),
-         (357, 'The Departed', 'Crime', TO_TIMESTAMP('2024-04-23 23:11:00')),
          (842, 'Toy Story 3', 'Animation', TO_TIMESTAMP('2024-04-23 23:12:00')),
          (931, 'Up', 'Animation', TO_TIMESTAMP('2024-04-23 22:17:00')),
          (624, 'The Lion King', 'Animation', TO_TIMESTAMP('2024-04-23 22:28:00')),
@@ -159,7 +157,6 @@ Run the following command to execute [FlinkSqlTopNTest#testTopN](src/test/java/i
          (678, 'The Matrix', 'Sci-Fi', TO_TIMESTAMP('2024-04-23 19:25:00')),
          (753, 'Interstellar', 'Sci-Fi', TO_TIMESTAMP('2024-04-23 20:14:00')),
          (834, 'Titanic', 'Romance', TO_TIMESTAMP('2024-04-23 20:25:00')),
-         (675, 'Pride and Prejudice', 'Romance', TO_TIMESTAMP('2024-04-23 23:37:00')),
          (333, 'The Pride of Archbishop Carroll', 'History', TO_TIMESTAMP('2024-04-24 03:37:00'));
   ```
 
@@ -231,10 +228,8 @@ FROM (
          (369, 'Casablanca', 'Romance', TO_TIMESTAMP('2024-04-23 20:26:00')),
          (321, 'The Shawshank Redemption', 'Drama', TO_TIMESTAMP('2024-04-23 20:20:00')),
          (654, 'Forrest Gump', 'Drama', TO_TIMESTAMP('2024-04-23 21:54:00')),
-         (987, 'Fight Club', 'Drama', TO_TIMESTAMP('2024-04-23 23:24:00')),
          (135, 'Pulp Fiction', 'Crime', TO_TIMESTAMP('2024-04-23 22:09:00')),
          (246, 'The Godfather: Part II', 'Crime', TO_TIMESTAMP('2024-04-23 19:28:00')),
-         (357, 'The Departed', 'Crime', TO_TIMESTAMP('2024-04-23 23:11:00')),
          (842, 'Toy Story 3', 'Animation', TO_TIMESTAMP('2024-04-23 23:12:00')),
          (931, 'Up', 'Animation', TO_TIMESTAMP('2024-04-23 22:17:00')),
          (624, 'The Lion King', 'Animation', TO_TIMESTAMP('2024-04-23 22:28:00')),
@@ -242,7 +237,6 @@ FROM (
          (678, 'The Matrix', 'Sci-Fi', TO_TIMESTAMP('2024-04-23 19:25:00')),
          (753, 'Interstellar', 'Sci-Fi', TO_TIMESTAMP('2024-04-23 20:14:00')),
          (834, 'Titanic', 'Romance', TO_TIMESTAMP('2024-04-23 20:25:00')),
-         (675, 'Pride and Prejudice', 'Romance', TO_TIMESTAMP('2024-04-23 23:37:00')),
          (333, 'The Pride of Archbishop Carroll', 'History', TO_TIMESTAMP('2024-04-24 03:37:00'));
   ```
 
