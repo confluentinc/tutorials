@@ -1,0 +1,3 @@
+rootProject.name = 'interactive-queries'
+include ':common'
+project(':common').projectDir = file('../../common')

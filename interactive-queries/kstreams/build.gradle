@@ -1,0 +1,77 @@
+buildscript {
+  repositories {
+    mavenCentral()
+  }
+}
+
+plugins {
+  id "java"
+  id "application"
+  id 'com.github.johnrengelman.shadow' version '8.1.1'
+}
+
+java {
+  sourceCompatibility = JavaVersion.VERSION_17
+  targetCompatibility = JavaVersion.VERSION_17
+}
+
+application {
+  mainClass = "io.confluent.developer.JoinStreamToTable"
+}
+
+repositories {
+  mavenCentral()
+  maven { url 'https://packages.confluent.io/maven/' }
+}
+
+def jettyVersion = '12.0.10'
+def jacksonVersion = '2.17.1'
+def jerseyVersion = '3.1.7'
+
+dependencies {
+  implementation project(':common')
+  implementation "org.slf4j:slf4j-simple:2.0.7"
+  implementation 'org.apache.kafka:kafka-streams:3.7.0'
+  implementation('org.apache.kafka:kafka-clients') {
+    version {
+      strictly '3.7.0'
+    }
+  }
+  implementation 'javax.ws.rs:javax.ws.rs-api:2.1'
+  implementation 'org.eclipse.jetty:jetty-server:12.0.10'
+  implementation 'org.eclipse.jetty:jetty-servlet:11.0.21'
+  implementation 'org.glassfish.jersey.containers:jersey-container-servlet:4.0.0-M1'
+  implementation 'org.glassfish.jersey.inject:jersey-hk2:4.0.0-M1'
+  implementation 'org.glassfish.jersey.media:jersey-media-json-jackson:4.0.0-M1'
+  implementation 'com.fasterxml.jackson.core:jackson-annotations:2.17.1'
+  implementation 'com.fasterxml.jackson.core:jackson-databind:2.17.1'
+
+  testImplementation "org.apache.kafka:kafka-streams-test-utils:3.7.0"
+  testImplementation 'org.junit.jupiter:junit-jupiter-api:5.11.0-M2'
+  testImplementation 'org.hamcrest:hamcrest:2.2'
+  testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+  testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.11.0-M2'
+}
+
+test {
+  useJUnitPlatform()
+  testLogging {
+    outputs.upToDateWhen { false }
+    showStandardStreams = true
+    events "PASSED", "SKIPPED", "FAILED", "STANDARD_OUT", "STANDARD_ERROR"
+    exceptionFormat = "full"
+  }
+}
+
+jar {
+  manifest {
+    attributes(
+        'Class-Path': configurations.compileClasspath.collect { it.getName() }.join(' ')
+    )
+  }
+}
+
+shadowJar {
+  archiveBaseName = "kstreams-iq-standalone"
+  archiveClassifier = ''
+}
