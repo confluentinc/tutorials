@@ -1,4 +1,4 @@
-version: '2'
+
 services:
   broker:
     image: confluentinc/cp-kafka:7.4.1

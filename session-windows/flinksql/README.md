@@ -134,7 +134,12 @@ GROUP BY url, window_start, window_end;
   The query output should look like this:
 
   ```plaintext
-        TODO UPDATE this result
+              url              visited_count                           window_start                window_end      
+/acme/jeep-stuff/                       3                  2023-07-09 01:00:00.000   2023-07-09 01:03:00.000
+/farm-for-all/chickens/                 3                  2023-07-09 02:00:10.000   2023-07-09 02:03:00.000
+/farm-for-all/tractors/                 1                  2023-07-09 02:30:00.000   2023-07-09 02:32:00.000
+/amc-rio/movies/                        2                  2023-07-09 09:00:00.000   2023-07-09 09:02:30.000
+/trips/packages/                        1                  2023-07-09 12:00:00.000   2023-07-09 12:02:00.000
   ```
 
   When you are finished, clean up the containers used for this tutorial by running:
