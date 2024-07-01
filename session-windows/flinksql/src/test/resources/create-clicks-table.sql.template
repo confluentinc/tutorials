@@ -1,0 +1,18 @@
+CREATE TABLE clicks (
+        ip STRING,
+        url STRING,
+        click_ts TIMESTAMP(3),
+        -- declare ts as event time attribute and use strictly ascending timestamp watermark strategy
+        WATERMARK FOR click_ts AS click_ts
+  ) WITH (
+      'connector' = 'kafka',
+      'topic' = 'clicks',
+      'connector' = 'kafka',
+      'properties.bootstrap.servers' = 'localhost:KAFKA_PORT',
+      'scan.startup.mode' = 'earliest-offset',
+      'scan.bounded.mode' = 'latest-offset',
+      'key.format' = 'raw',
+      'key.fields' = 'ip',
+      'value.format' = 'json',
+      'value.fields-include' = 'EXCEPT_KEY'
+ );
