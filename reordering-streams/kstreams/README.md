@@ -114,11 +114,3 @@ You've seen in this tutorial how to re-order events in the stream by timestamps 
 1. It's essential to have a way to restore the incoming key, you don't want to lose the original key-partition mapping.
 2. This re-ordering strategy only applies to a single partition, not across multiple partitions.
 3. Since an event stream is infinite, re-ordering can only be applied to distinct windows of time, and you'll balance the trade-off of large windows and iterating over the entire contents of a state store.
-
-
-
-
-
-
-
-

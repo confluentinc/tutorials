@@ -16,11 +16,6 @@ import java.time.Duration;
 import java.util.Collections;
 import java.util.Set;
 
-/**
- * User: Bill Bejeck
- * Date: 6/7/24
- * Time: 1:54 PM
- */
 public class ReorderingProcessorSupplier<KOrder, K, V> implements ProcessorSupplier<K, V, K, V> {
     private final String storeName;
     private final Duration reorderWindow;
