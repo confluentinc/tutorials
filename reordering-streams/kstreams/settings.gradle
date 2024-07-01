@@ -1,0 +1,3 @@
+rootProject.name = 'reorder-streams'
+include ':common'
+project(':common').projectDir = file('../../common')
