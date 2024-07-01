@@ -1,24 +1,24 @@
 <!-- title: How to reorder out-of-order events in Kafka Streams -->
 <!-- description: In this tutorial, learn reorder out-of-order events Kafka Streams, with step-by-step instructions and supporting code. -->
 
-# How to reorder out-of-order events in Kafka Streams
+# How to reorder events in Kafka Streams
 
-Consider the case when the order of the events in a topic is out-of-order.
-To be clear, the producer delivered the events in-order, but they are out-of-order from the perspective of the timestamps embedded in the event payload.
+Consider the case where the events in a Kafka topic are out of order.
+Specifically, the producer delivered the events in order, but they are out of order from the perspective of the timestamps embedded in the event payload.
 
-In this tutorial, we'll cover how you can re-order these records in the event stream using the embedded event timestamps.
+In this tutorial, we'll cover how you can reorder these records in the event stream using the embedded event timestamps.
 The reordering will only occur per-partition and within a specific time window provided at startup.
 
 NOTE: This tutorial was adapted from an [original contribution](https://github.com/confluentinc/kafka-streams-examples/pull/411) by [Sergey Shcherbakov](https://github.com/sshcherbakov)
 
 ## Setup
 
-To accomplish the re-ordering, we'll leverage the fact that RocksDB stores all entries sorted by key.  
-So you'll use [KStream.process](https://javadoc.io/static/org.apache.kafka/kafka-streams/3.7.0/org/apache/kafka/streams/kstream/KStream.html#process-org.apache.kafka.streams.processor.api.ProcessorSupplier-java.lang.String...-) method that will store incoming records into a state store using an embedded timestamp for the key, then schedule a [punctuation](https://docs.confluent.io/platform/current/streams/developer-guide/processor-api.html#defining-a-stream-processor) to occur at a given interval that will iterate over the contents of the store and forward them to downstream operators, but now in-order with respect to the embedded timestamps.
+To accomplish the reordering, we'll leverage the fact that RocksDB stores all entries sorted by key.  
+So we'll use the [KStream.process](https://javadoc.io/static/org.apache.kafka/kafka-streams/3.7.0/org/apache/kafka/streams/kstream/KStream.html#process-org.apache.kafka.streams.processor.api.ProcessorSupplier-java.lang.String...-) method that will store incoming records into a state store using an embedded timestamp for the key. Then, we'll schedule a [punctuation](https://docs.confluent.io/platform/current/streams/developer-guide/processor-api.html#defining-a-stream-processor) to occur at a given interval that will iterate over the contents of the store and forward them to downstream operators, but now in order with respect to the embedded timestamps.
    
 ## Reordering by event timestamp
 
-While the code is fairly straightforward, let's take a step-by-step walk through of the key parts of the application. 
+While the code is fairly straightforward, let's take a step-by-step walk-through of the key parts of the application. 
 First we'll look at the `Processor.init` method details:
 
 ```java
@@ -34,9 +34,9 @@ public void init(ProcessorContext<K, V> context) {
 }
 ```
  
-Kafka Streams calls the`Procerssor.init` method when creating the topology and the method performs setup actions defined by the developer.  
+Kafka Streams calls the`Processor.init` method when creating the topology and the method performs setup actions defined by the developer.  
 In this case, the initialization steps are:
-1. Store a reference to the state store used to re-order the records.
+1. Store a reference to the state store used to reorder the records.
 2. Store a [ProcessorContext](https://javadoc.io/static/org.apache.kafka/kafka-streams/3.7.0/org/apache/kafka/streams/processor/api/ProcessorContext.html) reference which you'll use to forward records to downstream operators.
 3. Using the `ProcessorContext` to schedule a punctuation - the main part of this tutorial.
 
@@ -51,11 +51,11 @@ public void process(Record<K, V> kvRecord) {
     }
   }
 ```
-Here is the `process` method which is where the `Processor` takes action for each incoming record.
+Here is the `process` method, which is where the `Processor` takes action for each incoming record.
 There's a `ReorderKeyGenerator` interface that takes the incoming key and value and returns the new key to order the records.  In our case, it simply returns the 
 timestamp embedded in the event.  We'll discuss the `ReorderKeyGenerator` interface later in the tutorial.
 
-So we've seen how you'll update the key needed for sorting, now let's take a look at how Kafka Streams propagates this new order to any downstream 
+Having seen how to update the key needed for sorting, now let's take a look at how Kafka Streams propagates this new order to any downstream 
 operators:
 ```java
 void forwardOrderedByEventTime(final long timestamp) {
@@ -73,7 +73,7 @@ void forwardOrderedByEventTime(final long timestamp) {
 The `forwardOrderedByEventTime` method does the following:
 1. Iterate over the current contents of the store.
 2. Perform the reverse operation of the `ReorderKeyGenerator` with a `OriginalKeyExtractor` interface and provide the original key 
-3. Forward each record to the next downstream operator then delete it.
+3. Forward each record to the next downstream operator, and then delete it.
 
 It's critical whatever operation you use to extract the key for the sorting, you must be able to 
 reverse the operation, so you can forward records with the original key. This is essential because if you do any downstream
@@ -109,8 +109,8 @@ public class ReorderingProcessorSupplier<KOrder, K, V> implements ProcessorSuppl
 ```
 ## Important Notes 
 
-You've seen in this tutorial how to re-order events in the stream by timestamps on the event object.  But you're not limited to timestamps only, you could use the same approach to order events in the stream by any attribute on the event.  There are a couple of points you need to keep in mind when doing so:
+You've seen in this tutorial how to reorder events in the stream by timestamps on the event object, but you're not limited to timestamps only -- you could use the same approach to order events in the stream by any attribute on the event.  There are a couple of points you need to keep in mind when doing so:
 
 1. It's essential to have a way to restore the incoming key, you don't want to lose the original key-partition mapping.
-2. This re-ordering strategy only applies to a single partition, not across multiple partitions.
+2. This reordering strategy only applies to a single partition, not across multiple partitions.
 3. Since an event stream is infinite, re-ordering can only be applied to distinct windows of time, and you'll balance the trade-off of large windows and iterating over the entire contents of a state store.
