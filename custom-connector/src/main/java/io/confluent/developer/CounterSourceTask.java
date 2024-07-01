@@ -1,4 +1,4 @@
-package io.confluent.developer.connect;
+package io.confluent.developer;
 
 import org.apache.kafka.connect.data.Schema;
 import org.apache.kafka.connect.source.SourceRecord;

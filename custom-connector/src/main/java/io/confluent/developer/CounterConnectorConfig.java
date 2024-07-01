@@ -1,4 +1,4 @@
-package io.confluent.developer.connect;
+package io.confluent.developer;
 
 import org.apache.kafka.common.config.AbstractConfig;
 import org.apache.kafka.common.config.ConfigDef;
