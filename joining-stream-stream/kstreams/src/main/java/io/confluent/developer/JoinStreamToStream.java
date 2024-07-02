@@ -64,7 +64,7 @@ public class JoinStreamToStream {
                 kafkaStreams.close(Duration.ofSeconds(5));
                 countDownLatch.countDown();
             }));
-            // For local running only don't do this in production as it wipes out all local state
+            // For local running only; don't do this in production as it wipes out all local state
             kafkaStreams.cleanUp();
             kafkaStreams.start();
             countDownLatch.await();

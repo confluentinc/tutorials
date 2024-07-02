@@ -5,13 +5,13 @@
 
 Suppose you have a stream of movies that have been released and a stream of ratings from moviegoers about how entertaining they are. In this tutorial, we'll write a program that joins each rating with content about the movie.
 
-First you'll create a `KStream` for the recently released movies
+First you'll create a `KStream` for the recently released movies:
 ```java
  KStream<Long, Movie> movieStream = builder.stream(MOVIE_INPUT_TOPIC,
                 Consumed.with(Serdes.Long(), movieSerde))
         .peek((key, value) -> LOG.info("Incoming movies key[{}] value[{}]", key, value));
 ```
-Here you've started with a `KStream` with a `peek` statement to view the incoming records.  Here we are assuming the underlying topic is keyed with the movie id.
+Here you've started with a `KStream` with a `peek` statement to view the incoming records. We assume that the underlying topic is keyed on the movie ID.
 
 Then you'll create your `KStream` of ratings:
 ```java
@@ -19,7 +19,7 @@ Then you'll create your `KStream` of ratings:
                         Consumed.with(Serdes.Long(), ratingSerde))
                 .map((key, rating) -> new KeyValue<>(rating.id(), rating));
 ```
-We need to have the same id as the movie stream, so we'll use a `KStream.map` operator to set the rating id as the key.  The `Rating` class id uses the same id as the movie.
+We need to have the same ID as the movie stream, so we'll use a `KStream.map` operator to set the rating ID as the key.  The `Rating` class ID uses the same ID as the movie.
 
 Now you use a [ValueJoiner](https://kafka.apache.org/36/javadoc/org/apache/kafka/streams/kstream/ValueJoiner.html) specifying how to construct the joined value of both streams:
 
