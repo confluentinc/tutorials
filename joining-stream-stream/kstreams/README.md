@@ -46,10 +46,3 @@ Now, you'll put all this together using a `KStream.join` operation:
             Produced.with(Serdes.Long(), ratedMovieSerde));
 ```
 Notice that you're supplying the `Serde` for the key, the stream value and the value of the other stream via the `StreamJoined` configuration object.
-
-
-
-
-
-
-
