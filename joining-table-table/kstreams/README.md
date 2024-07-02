@@ -43,10 +43,3 @@ Now, you'll put all this together using a `KTable.join` operation:
 ```
 Notice that you're supplying the `Serde` for the key, and the value of the joined result via the `Materialized` configuration object.
 Also, to produce the joined results to Kafka, we need to convert the `KTable` into a `KStream` vi the `KTable.toStream()` method.
-
-
-
-
-
-
-
