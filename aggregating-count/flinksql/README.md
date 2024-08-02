@@ -186,4 +186,4 @@ Run the following command to execute [FlinkSqlAggregatingCountTest#testCountAggr
 
   The query output should look like this:
 
-  ![](img/query-output.png)
+  ![Query output](https://raw.githubusercontent.com/confluentinc/tutorials/master/aggregating-count/flinksql/img/query-output.png)
