@@ -27,7 +27,7 @@ Testing in this way is as easy as declaring the [Testcontainers Kafka dependency
         // Collect outputs, e.g., if the application produces events, then create a Consumer instantiated with 
         // properties than include:
         //
-        //     properties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
+        //     properties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, kafka.getBootstrapServers());
         
         // Assert that collected outputs are as expected!
 
