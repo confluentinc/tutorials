@@ -3,7 +3,7 @@
 
 # How to integration test a Kafka application with a native (non-JVM) Kafka binary in Testcontainers
 
-In this tutorial we will use the `apache/kafka-native` Docker Image released in Apache Kafka® 3.8 to integration test a basic event routing Kafka consumer / producer application. This [GraalVM](https://www.graalvm.org/)-based image runs a [native binary](https://www.graalvm.org/latest/reference-manual/native-image/) Kafka broker running in KRaft [combined mode](https://kafka.apache.org/documentation/#kraft_role) by default (i.e., it serves as both broker and KRaft controller). As a native binary executable, it offers the following test scenario benefits compared to the JVM-based `apache/kafka` image:
+In this tutorial, we will use the `apache/kafka-native` Docker Image released in Apache Kafka® 3.8 to integration test a basic event routing Kafka consumer / producer application. This [GraalVM](https://www.graalvm.org/)-based image runs a [native binary](https://www.graalvm.org/latest/reference-manual/native-image/) Kafka broker running in KRaft [combined mode](https://kafka.apache.org/documentation/#kraft_role) by default (i.e., it serves as both broker and KRaft controller). As a native binary executable, it offers the following test scenario benefits compared to the JVM-based `apache/kafka` image:
 
 1. Smaller image size (faster download time)
 2. Faster startup time
@@ -11,24 +11,24 @@ In this tutorial we will use the `apache/kafka-native` Docker Image released in 
 
 Given these benefits, this image is well-suited for non-production development and testing scenarios that require an actual Kafka broker. [Testcontainers](https://java.testcontainers.org/modules/kafka/) supports this image as of version `1.20.1` of `org.testcontainers`'s `kafka` artifact.
 
-Testing in this way is as easy as declaring the [Testcontainers Kafka dependency](https://mvnrepository.com/artifact/org.testcontainers/kafka/1.20.1) in your dependency manager and then writing a test like so:
+Testing in this way is as easy as declaring the [Testcontainers Kafka dependency](https://mvnrepository.com/artifact/org.testcontainers/kafka/1.20.1) in your dependency manager and then writing a test like this:
 
 ```java
     try (KafkaContainer kafka = new KafkaContainer(DockerImageName.parse("apache/kafka-native:<VERSION>>"))) {
         kafka.start();
-        
+
         // Instantiate and start your application with kafka.getBootstrapServers() as your bootstrap servers endpoint
-        
-        // Generate inputs, e.g., if the application is a consumer, then create a Producer instantiated with 
+
+        // Generate inputs. E.g., if the application is a consumer, then create a Producer instantiated with 
         // properties that include:
         //
         //     properties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, kafka.getBootstrapServers());
-        
-        // Collect outputs, e.g., if the application produces events, then create a Consumer instantiated with 
-        // properties than include:
+
+        // Collect outputs. E.g., if the application produces events, then create a Consumer instantiated with 
+        // properties that include:
         //
         //     properties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, kafka.getBootstrapServers());
-        
+
         // Assert that collected outputs are as expected!
 
         kafka.stop();
@@ -42,10 +42,10 @@ event routing application that routes input numbers to three potential output to
 composite numbers, and a third dead-letter queue where we will send any naughty events (e.g., if the event is not 
 deserializable as an integer).
 
-Note: this kind of simple routing logic would be better implemented in Kafka Streams by implementing a 
+_*Note that this kind of simple routing logic would be better implemented in Kafka Streams by implementing a 
 [`TopicNameExtractor`](https://javadoc.io/static/org.apache.kafka/kafka-streams/3.7.0/org/apache/kafka/streams/processor/TopicNameExtractor.html)
 that dynamically routes events as described above. We're just having some math fun with a basic consumer / producer application for 
-testing demonstration purposes.
+testing demonstration purposes.*_
 
 The anatomy of `KafkaPrimalityRouter` has a `main` method that mostly just does some argument parsing and then hands off
 to a function that does the event routing given injected `Producer` and `Consumer` instances. Specifically, `runConsume`
