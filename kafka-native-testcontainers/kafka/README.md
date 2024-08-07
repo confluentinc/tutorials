@@ -1,7 +1,7 @@
-<!-- title: How to integration test a Kafka application with a native (non-JVM) Kafka binary in Testcontainers -->
-<!-- description: In this tutorial, learn how to integration test a Kafka application with a native (non-JVM) Kafka binary in Testcontainers, with step-by-step instructions and supporting code. -->
+<!-- title: How to integration test a Kafka application with a native (non-JVM) Kafka binary with Testcontainers -->
+<!-- description: In this tutorial, learn how to integration test a Kafka application with a native (non-JVM) Kafka binary with Testcontainers, with step-by-step instructions and supporting code. -->
 
-# How to integration test a Kafka application with a native (non-JVM) Kafka binary in Testcontainers
+# How to integration test a Kafka application with a native (non-JVM) Kafka binary with Testcontainers
 
 In this tutorial, we will use the `apache/kafka-native` Docker Image released in Apache Kafka® 3.8 to integration test a basic event routing Kafka consumer / producer application. This [GraalVM](https://www.graalvm.org/)-based image runs a [native binary](https://www.graalvm.org/latest/reference-manual/native-image/) Kafka broker running in KRaft [combined mode](https://kafka.apache.org/documentation/#kraft_role) by default (i.e., it serves as both broker and KRaft controller). As a native binary executable, it offers the following test scenario benefits compared to the JVM-based `apache/kafka` image:
 
@@ -9,12 +9,12 @@ In this tutorial, we will use the `apache/kafka-native` Docker Image released in
 2. Faster startup time
 3. Lower memory usage
 
-Given these benefits, this image is well-suited for non-production development and testing scenarios that require an actual Kafka broker. [Testcontainers](https://java.testcontainers.org/modules/kafka/) supports this image as of version `1.20.1` of `org.testcontainers`'s `kafka` artifact.
+Given these benefits, this image is well-suited for non-production development and testing scenarios that require an actual Kafka broker. [Testcontainers](https://java.testcontainers.org/modules/kafka/) supports this image as of version `1.20.1` of `org.testcontainers`'s `kafka` module.
 
 Testing in this way is as easy as declaring the [Testcontainers Kafka dependency](https://mvnrepository.com/artifact/org.testcontainers/kafka/1.20.1) in your dependency manager and then writing a test like this:
 
 ```java
-    try (KafkaContainer kafka = new KafkaContainer(DockerImageName.parse("apache/kafka-native:<VERSION>>"))) {
+    try (KafkaContainer kafka = new KafkaContainer(DockerImageName.parse("apache/kafka-native:<VERSION>"))) {
         kafka.start();
 
         // Instantiate and start your application with kafka.getBootstrapServers() as your bootstrap servers endpoint
@@ -30,8 +30,6 @@ Testing in this way is as easy as declaring the [Testcontainers Kafka dependency
         //     properties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, kafka.getBootstrapServers());
 
         // Assert that collected outputs are as expected!
-
-        kafka.stop();
     }
 ```
         
@@ -119,17 +117,24 @@ docker rmi apache/kafka-native:3.8.0
 docker rmi apache/kafka:3.8.0
 ```
 
-Now run the test twice, once using the `apache/kafka` image and again using the `apache/kafka-native` image. In test
-runs from a laptop with 400 Mbps download speed, the `apache/kafka-native`-based test took 7.3 seconds while the 
-`apache/kafka`-based test took 16 seconds. Once the images were downloaded, the `apache/kafka-native`-based test
-took 4.1 seconds while the `apache/kafka`-based test took 7.2 seconds. Note that these integration tests are on the slow
-and heavyweight side, e.g., they take time to validate that no more events show up after the expected events show up, a 
-condition which requires waiting 200ms in the test:
+Next, run the test twice, once using the `apache/kafka` image, and again using the `apache/kafka-native` image. Test
+runs from a laptop with 300 Mbps download speed resulted in the following performance numbers:
+
+| Image                 | Image Download Time | Container Startup Time | Test Execution Time | Total Time |
+|:----------------------|--------------------:|-----------------------:|--------------------:|-----------:|
+| apache/kafka          |               6 sec |                3.5 sec |               5 sec |   14.5 sec |
+| apache/kafka-native   |             1.5 sec |                0.6 sec |             4.5 sec |    6.6 sec |
+
+
+Note that the image download time only applies the first time that you run the test, i.e., a subsequent test
+run on the same laptop takes about 8.5 seconds using the `apache/kafka` image and 5.1 seconds using the `apache/kafka-native` image. 
+Also, keep in mind that this integration test is on the slow and heavyweight side, e.g., it takes time to validate that no more 
+events show up after the expected events show up, a condition that requires waiting 200 ms in the test:
 
 ```java
     // make sure no more events show up in prime / composite topics
     assertEquals(0, consumer.poll(Duration.ofMillis(200)).count());
 ```
 
-So, a more streamlined test that doesn't wait for unexpected events would run much more quickly, making the shorter
-download and Kafka startup times that much more valuable for development and automated testing.
+So, a more streamlined test that doesn't wait for unexpected events would run much more quickly, making the shorter image
+download and container startup times that much more valuable for development and automated testing.
