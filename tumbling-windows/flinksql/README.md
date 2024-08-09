@@ -217,4 +217,6 @@ Run the following command to execute [FlinkSqlTumblingWindowTest#testTumblingWin
 
   The query output should look like this:
 
-  ![](img/query-output.png)
+  ![Query output](https://raw.githubusercontent.com/confluentinc/tutorials/master/tumbling-windows/flinksql/img/query-output.png)
+
+</details>

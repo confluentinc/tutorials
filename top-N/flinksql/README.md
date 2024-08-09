@@ -234,7 +234,9 @@ WHERE category_rank <= 3;
 
   The query output should look like this:
 
-  ![](img/query-output_1.png)
-  ![](img/query-output_2.png)
-  ![](img/query-output_3.png)
-  ![](img/query-output_4.png)
+  ![Query output 1](https://raw.githubusercontent.com/confluentinc/tutorials/master/top-N/flinksql/img/query-output_1.png)
+  ![Query output 2](https://raw.githubusercontent.com/confluentinc/tutorials/master/top-N/flinksql/img/query-output_2.png)
+  ![Query output 3](https://raw.githubusercontent.com/confluentinc/tutorials/master/top-N/flinksql/img/query-output_3.png)
+  ![Query output 4](https://raw.githubusercontent.com/confluentinc/tutorials/master/top-N/flinksql/img/query-output_4.png)
+
+</details>

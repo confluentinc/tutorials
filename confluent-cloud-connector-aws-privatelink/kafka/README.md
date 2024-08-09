@@ -59,7 +59,7 @@ confluent connect cluster create --config-file /tmp/datagen-connector.json
 ```
 * After a minute or so, validate in the Confluent Cloud Console that the connector is running. In the lefhand navigation, select `Environments`, click into the environment, then click the PrivateLink cluster. In the lefthand navigation, select `Connectors` and verify that the connector state is `Running` and generating messages:
 
-![](img/cc-datagen.png)
+![Datagen](https://raw.githubusercontent.com/confluentinc/tutorials/master/confluent-cloud-connector-aws-privatelink/kafka/img/cc-datagen.png)
 
 ## Create AWS egress access point
 
@@ -166,7 +166,7 @@ Create a JSON file `/tmp/s3-connector.json`. Be sure to populate values specific
 
 To validate that the connector is sinking data into S3, navigate to the Connectors page in the Confluent Cloud Console. Check that the connector state is `Running` and processing messages:
 
-![](img/cc-s3-sink.png).
+![S3 Sink](https://raw.githubusercontent.com/confluentinc/tutorials/master/confluent-cloud-connector-aws-privatelink/kafka/img/cc-s3-sink.png)
 
 It may take some time for data to show up since the connector sinks on an hourly basis. You can also check in S3 to make sure that data is showing up in the bucket that you created above.
 

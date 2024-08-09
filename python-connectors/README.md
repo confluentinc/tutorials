@@ -39,12 +39,12 @@ Run `curl localhost:8083/connectors -X POST --json @./json/connector-fields.json
 
 To check that everything is running you can either:
 - Open Control Center at http://localhost:9021 and go to the Topics panel. Select the topic starting with `test-topic` and click on the Messages tab. If your Docker environment is slow, you may have to wait a few minutes for the test topic to show up. When it does, you should see messages coming in.
-  ![](img/control-center.png)
+  ![Control center](https://raw.githubusercontent.com/confluentinc/tutorials/master/python-connectors/img/control-center.png)
 
 - Open the Docker Desktop dashboard, expand the cluster, click on the `connect` container.
-  ![](img/docker-desktop.png)
+  ![Docker Desktop](https://raw.githubusercontent.com/confluentinc/tutorials/master/python-connectors/img/docker-desktop.png)
   The Logs tab should list messages being published by the connector and modified by the SMT if there's one. 
-  ![](img/docker-desktop-log.png)
+  ![Docker Desktop logs](https://raw.githubusercontent.com/confluentinc/tutorials/master/python-connectors/img/docker-desktop-log.png)
 
 ### Note on SMTs
 

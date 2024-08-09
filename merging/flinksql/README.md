@@ -296,4 +296,6 @@ Run the following command to execute [FlinkSqlMergeTablesTest#testMerge](src/tes
 
   The scrollable query output should start like this:
 
-  ![](img/query-output.png)
+  ![Query output](https://raw.githubusercontent.com/confluentinc/tutorials/master/merging/flinksql/img/query-output.png)
+
+</details>

@@ -252,7 +252,6 @@ Finally, run following SQL statements to create the `movie_views` table, populat
 
 The query output should look like this:
 
-![](img/query-output.png)
+![Query output](https://raw.githubusercontent.com/confluentinc/tutorials/master/over-aggregations/flinksql/img/query-output.png)
 
-
-
+</details>
