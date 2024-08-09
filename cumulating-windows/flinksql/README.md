@@ -208,4 +208,6 @@ Run the following command to execute [FlinkSqlCumulatingWindowTest#testCumulatin
 
   The query output should look like this:
 
-  ![](img/query-output.png)
+  ![Query output](https://raw.githubusercontent.com/confluentinc/tutorials/master/cumulating-windows/flinksql/img/query-output.png)
+
+</details>

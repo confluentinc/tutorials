@@ -181,4 +181,6 @@ Run the following command to execute [FlinkSqlFilteringTest#testFilter](src/test
 
   The query output should look like this:
 
-  ![](img/query-output.png)
+  ![Query output](https://raw.githubusercontent.com/confluentinc/tutorials/master/filtering/flinksql/img/query-output.png)
+
+<details>

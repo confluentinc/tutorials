@@ -245,4 +245,6 @@ Run the following command to execute [FlinkSqlSplitStreamTest#testSplit](src/tes
 
   The query output should look like this:
 
-  ![](img/query-output.png)
+  ![Query output](https://raw.githubusercontent.com/confluentinc/tutorials/master/splitting/flinksql/img/query-output.png)
+
+</details>

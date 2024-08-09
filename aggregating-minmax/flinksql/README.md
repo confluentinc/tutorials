@@ -194,4 +194,6 @@ Run the following command to execute [FlinkSqlAggregatingMinMaxTest#testMinMax](
 
   The query output should look like this:
 
-  ![](img/query-output.png)
+  ![Query output](https://raw.githubusercontent.com/confluentinc/tutorials/master/aggregating-minmax/flinksql/img/query-output.png)
+
+</details>

@@ -202,4 +202,6 @@ Run the following command to execute [FlinkSqlFindingDistinctTest#testFindDistin
 
   The query output should look like this. Note that there is no row for the event that occurred at time `03:10:00` because the `03:00:00 - 04:00:00` window is still open.
 
-  ![](img/query-output.png)
+  ![Query output](https://raw.githubusercontent.com/confluentinc/tutorials/master/deduplication-windowed/flinksql/img/query-output.png)
+
+</details>

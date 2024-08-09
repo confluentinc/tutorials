@@ -316,4 +316,6 @@ Run the following command to execute [FlinkSqlIntervalJoinTest#testJoin](src/tes
 
   The query output should look like this:
 
-  ![](img/query-output.png)
+  ![Query output](https://raw.githubusercontent.com/confluentinc/tutorials/master/joining-stream-stream/flinksql/img/query-output.png)
+
+</details>

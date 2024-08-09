@@ -473,6 +473,6 @@ Run the following command to execute [FlinkSqlFilteringTest#testFilter](src/test
 
   This query's output includes the same two matches for Sensors 1 and 2:
 
-  ![](img/query-output.png)
+  ![Query output](https://raw.githubusercontent.com/confluentinc/tutorials/master/pattern-matching/flinksql/img/query-out)
 
 </details>

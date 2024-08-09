@@ -202,4 +202,6 @@ Run the following command to execute [FlinkSqlHoppingWindowTest#testHoppingWindo
 
   The query output should look like this:
 
-  ![](img/query-output.png)
+  ![Query output](https://raw.githubusercontent.com/confluentinc/tutorials/master/hopping-windows/flinksql/img/query-output.png)
+
+</details>
