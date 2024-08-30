@@ -80,14 +80,21 @@ against Flink and Kafka running in Docker, or with Confluent Cloud.
 <details>
   <summary>Flink Table API-based test</summary>
 
-  #### Prerequisites
+  ### Prerequisites
 
   * Java 17, e.g., follow the OpenJDK installation instructions [here](https://openjdk.org/install/) if you don't have Java. 
   * Docker running via [Docker Desktop](https://docs.docker.com/desktop/) or [Docker Engine](https://docs.docker.com/engine/install/)
 
-  #### Run the test
+  ### Run the test
 
-Run the following command to execute [FlinkSqlIntervalJoinTest#testJoin](src/test/java/io/confluent/developer/FlinkSqlIntervalJoinTest.java):
+  Clone the `confluentinc/tutorials` GitHub repository (if you haven't already) and navigate to the `tutorials` directory:
+
+  ```shell
+  git clone git@github.com:confluentinc/tutorials.git
+  cd tutorials
+  ```
+
+  Run the following command to execute [FlinkSqlIntervalJoinTest#testJoin](src/test/java/io/confluent/developer/FlinkSqlIntervalJoinTest.java):
 
   ```plaintext
   ./gradlew clean :joining-stream-stream:flinksql:test
@@ -100,14 +107,21 @@ Run the following command to execute [FlinkSqlIntervalJoinTest#testJoin](src/tes
 <details>
   <summary>Flink SQL Client CLI</summary>
 
-  #### Prerequisites
+  ### Prerequisites
 
   * Docker running via [Docker Desktop](https://docs.docker.com/desktop/) or [Docker Engine](https://docs.docker.com/engine/install/)
   * [Docker Compose](https://docs.docker.com/compose/install/). Ensure that the command `docker compose version` succeeds.
 
-  #### Run the commands
+  ### Run the commands
 
-  First, start Flink and Kafka:
+  Clone the `confluentinc/tutorials` GitHub repository (if you haven't already) and navigate to the `tutorials` directory:
+
+  ```shell
+  git clone git@github.com:confluentinc/tutorials.git
+  cd tutorials
+  ```
+
+  Start Flink and Kafka:
 
   ```shell
   docker compose -f ./docker/docker-compose-flinksql.yml up -d
@@ -234,12 +248,12 @@ Run the following command to execute [FlinkSqlIntervalJoinTest#testJoin](src/tes
 <details>
   <summary>Confluent Cloud</summary>
 
-  #### Prerequisites
+  ### Prerequisites
 
   * A [Confluent Cloud](https://confluent.cloud/signup) account
   * A Flink compute pool created in Confluent Cloud. Follow [this](https://docs.confluent.io/cloud/current/flink/get-started/quick-start-cloud-console.html) quick start to create one.
 
-  #### Run the commands
+  ### Run the commands
 
   In the Confluent Cloud Console, navigate to your environment and then click the `Open SQL Workspace` button for the compute
   pool that you have created.

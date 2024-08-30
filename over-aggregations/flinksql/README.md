@@ -55,47 +55,61 @@ against Flink and Kafka running in Docker, or with Confluent Cloud.
 <details>
   <summary>Flink Table API-based test</summary>
 
-#### Prerequisites
+  ### Prerequisites
 
-* Java 17, e.g., follow the OpenJDK installation instructions [here](https://openjdk.org/install/) if you don't have Java.
-* Docker running via [Docker Desktop](https://docs.docker.com/desktop/) or [Docker Engine](https://docs.docker.com/engine/install/)
+  * Java 17, e.g., follow the OpenJDK installation instructions [here](https://openjdk.org/install/) if you don't have Java.
+  * Docker running via [Docker Desktop](https://docs.docker.com/desktop/) or [Docker Engine](https://docs.docker.com/engine/install/)
 
-#### Run the test
+  ### Run the test
 
-Run the following command to execute [FlinkSqlOverAggregationTest#testTopN](src/test/java/io/confluent/developer/FlinkSqlOverAggregationTest.java):
+  Clone the `confluentinc/tutorials` GitHub repository (if you haven't already) and navigate to the `tutorials` directory:
+
+  ```shell
+  git clone git@github.com:confluentinc/tutorials.git
+  cd tutorials
+  ```
+
+  Run the following command to execute [FlinkSqlOverAggregationTest#testTopN](src/test/java/io/confluent/developer/FlinkSqlOverAggregationTest.java):
 
   ```plaintext
   ./gradlew clean :over-aggregations:flinksql:test
   ```
 
-The test starts Kafka and Schema Registry with [Testcontainers](https://testcontainers.com/), runs the Flink SQL commands
-above against a local Flink `StreamExecutionEnvironment`, and ensures that the aggregation results are what we expect.
+  The test starts Kafka and Schema Registry with [Testcontainers](https://testcontainers.com/), runs the Flink SQL commands
+  above against a local Flink `StreamExecutionEnvironment`, and ensures that the aggregation results are what we expect.
 </details>
 
 <details>
   <summary>Flink SQL Client CLI</summary>
 
-#### Prerequisites
+  ### Prerequisites
 
-* Docker running via [Docker Desktop](https://docs.docker.com/desktop/) or [Docker Engine](https://docs.docker.com/engine/install/)
-* [Docker Compose](https://docs.docker.com/compose/install/). Ensure that the command `docker compose version` succeeds.
+  * Docker running via [Docker Desktop](https://docs.docker.com/desktop/) or [Docker Engine](https://docs.docker.com/engine/install/)
+  * [Docker Compose](https://docs.docker.com/compose/install/). Ensure that the command `docker compose version` succeeds.
 
-#### Run the commands
+  ### Run the commands
 
-First, start Flink and Kafka:
+  Clone the `confluentinc/tutorials` GitHub repository (if you haven't already) and navigate to the `tutorials` directory:
+
+  ```shell
+  git clone git@github.com:confluentinc/tutorials.git
+  cd tutorials
+  ```
+
+  Start Flink and Kafka:
 
   ```shell
   docker compose -f ./docker/docker-compose-flinksql.yml up -d
   ```
 
-Next, open the Flink SQL Client CLI:
+  Next, open the Flink SQL Client CLI:
 
   ```shell
   docker exec -it flink-sql-client sql-client.sh
   ```
 
-Finally, run following SQL statements to create the `movie_views` table backed by Kafka running in Docker, populate it with
-test data, and run the OVER aggregation query.
+  Finally, run following SQL statements to create the `movie_views` table backed by Kafka running in Docker, populate it with
+  test data, and run the OVER aggregation query.
 
   ```sql
   CREATE TABLE movie_views (
@@ -113,8 +127,7 @@ test data, and run the OVER aggregation query.
       'key.fields' = 'id',
       'value.format' = 'json',
       'value.fields-include' = 'EXCEPT_KEY'
-);
-
+  );
   ```
 
   ```sql
@@ -142,17 +155,17 @@ test data, and run the OVER aggregation query.
          (333, 'The Pride of Archbishop Carroll', 'History', TO_TIMESTAMP('2024-04-24 03:37:00'));
   ```
 
-```sql
-SELECT title, genre, movie_start, COUNT(*)
-  OVER (
-    PARTITION BY genre
-    ORDER BY movie_start
-    RANGE BETWEEN INTERVAL '1' HOUR PRECEDING AND CURRENT ROW
-    ) AS genre_count
-FROM movie_views;
+  ```sql
+  SELECT title, genre, movie_start, COUNT(*)
+    OVER (
+      PARTITION BY genre
+      ORDER BY movie_start
+      RANGE BETWEEN INTERVAL '1' HOUR PRECEDING AND CURRENT ROW
+      ) AS genre_count
+  FROM movie_views;
   ```
 
-The query output should look like this:
+  The query output should look like this:
 
   ```plaintext
                           title                          genre                   movie_start          genre_count
@@ -176,43 +189,41 @@ The query output should look like this:
                     Toy Story 3                      Animation       2024-04-23 23:12:00.000                    3
                      Fight Club                          Drama       2024-04-23 23:24:00.000                    2
             Pride and Prejudice                        Romance       2024-04-23 23:37:00.000                    1
-The Pride of Archbishop Carro~                       History       2024-04-24 03:37:00.000                    1
-
+  The Pride of Archbishop Carro~                       History       2024-04-24 03:37:00.000                    1
 ```                                                                                 
 
-When you are finished, clean up the containers used for this tutorial by running:
+  When you are finished, clean up the containers used for this tutorial by running:
 
   ```shell
   docker compose -f ./docker/docker-compose-flinksql.yml down
   ```
-
 </details>
 
 <details>
   <summary>Confluent Cloud</summary>
 
-#### Prerequisites
+  ### Prerequisites
 
-* A [Confluent Cloud](https://confluent.cloud/signup) account
-* A Flink compute pool created in Confluent Cloud. Follow [this](https://docs.confluent.io/cloud/current/flink/get-started/quick-start-cloud-console.html) quick start to create one.
+  * A [Confluent Cloud](https://confluent.cloud/signup) account
+  * A Flink compute pool created in Confluent Cloud. Follow [this](https://docs.confluent.io/cloud/current/flink/get-started/quick-start-cloud-console.html) quick start to create one.
 
-#### Run the commands
+  ### Run the commands
 
-In the Confluent Cloud Console, navigate to your environment and then click the `Open SQL Workspace` button for the compute
-pool that you have created.
+  In the Confluent Cloud Console, navigate to your environment and then click the `Open SQL Workspace` button for the compute
+  pool that you have created.
 
-Select the default catalog (Confluent Cloud environment) and database (Kafka cluster) to use with the dropdowns at the top right.
+  Select the default catalog (Confluent Cloud environment) and database (Kafka cluster) to use with the dropdowns at the top right.
 
-Finally, run following SQL statements to create the `movie_views` table, populate it with test data, and run the OVER aggregation query.
+  Finally, run following SQL statements to create the `movie_views` table, populate it with test data, and run the OVER aggregation query.
 
   ```sql
- CREATE TABLE movie_views (
+  CREATE TABLE movie_views (
         id INT,
         title STRING,
         genre STRING,
         movie_start TIMESTAMP(3),
         WATERMARK FOR movie_start as movie_start
- ) DISTRIBUTED BY (id) INTO 1 BUCKETS;
+  ) DISTRIBUTED BY (id) INTO 1 BUCKETS;
   ```
 
   ```sql
@@ -250,8 +261,8 @@ Finally, run following SQL statements to create the `movie_views` table, populat
   FROM movie_views;
   ```
 
-The query output should look like this:
+ The query output should look like this:
 
-![Query output](https://raw.githubusercontent.com/confluentinc/tutorials/master/over-aggregations/flinksql/img/query-output.png)
+ ![Query output](https://raw.githubusercontent.com/confluentinc/tutorials/master/over-aggregations/flinksql/img/query-output.png)
 
 </details>

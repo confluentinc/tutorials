@@ -28,12 +28,12 @@ You can run the example backing this tutorial locally in Docker, or with Conflue
 <details>
   <summary>Docker</summary>
 
-#### Prerequisites
+### Prerequisites
 
 * Docker running via [Docker Desktop](https://docs.docker.com/desktop/) or [Docker Engine](https://docs.docker.com/engine/install/)
 * [Docker Compose](https://docs.docker.com/compose/install/). Ensure that the command `docker compose version` succeeds.
 
-#### Run the commands
+### Run the commands
 
 First, start Kafka:
 
@@ -87,12 +87,12 @@ Now run the same test but with producer configuration tuned for higher throughpu
 <details>
   <summary>Confluent Cloud</summary>
 
-#### Prerequisites
+### Prerequisites
 
 * Docker running via [Docker Desktop](https://docs.docker.com/desktop/) or [Docker Engine](https://docs.docker.com/engine/install/)
 * A [Confluent Cloud](https://confluent.cloud/signup) account
 
-#### Run the commands
+### Run the commands
 
 First, create a cluster if you haven't already. You can do this in the Confluent Cloud Console by navigating to your environment and then clicking `Add cluster`.
 

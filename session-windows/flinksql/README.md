@@ -48,14 +48,21 @@ against Flink and Kafka running in Docker, or with Confluent Cloud.
 <details>
   <summary>Flink Table API-based test</summary>
 
-  #### Prerequisites
+  ### Prerequisites
 
   * Java 17, e.g., follow the OpenJDK installation instructions [here](https://openjdk.org/install/) if you don't have Java. 
   * Docker running via [Docker Desktop](https://docs.docker.com/desktop/) or [Docker Engine](https://docs.docker.com/engine/install/)
 
-  #### Run the test
+  ### Run the test
 
-Run the following command to execute [FlinkSqlMergeTablesTest#testMerge](src/test/java/io/confluent/developer/FlinkSqlMergeTablesTest.java):
+  Clone the `confluentinc/tutorials` GitHub repository (if you haven't already) and navigate to the `tutorials` directory:
+
+  ```shell
+  git clone git@github.com:confluentinc/tutorials.git
+  cd tutorials
+  ```
+
+  Run the following command to execute [FlinkSqlMergeTablesTest#testMerge](src/test/java/io/confluent/developer/FlinkSqlMergeTablesTest.java):
 
   ```plaintext
   ./gradlew clean :session-windows:flinksql:test
@@ -68,14 +75,21 @@ Run the following command to execute [FlinkSqlMergeTablesTest#testMerge](src/tes
 <details>
   <summary>Flink SQL Client CLI</summary>
 
-  #### Prerequisites
+  ### Prerequisites
 
   * Docker running via [Docker Desktop](https://docs.docker.com/desktop/) or [Docker Engine](https://docs.docker.com/engine/install/)
   * [Docker Compose](https://docs.docker.com/compose/install/). Ensure that the command `docker compose version` succeeds.
 
-  #### Run the commands
+  ### Run the commands
 
-  First, start Flink and Kafka:
+  Clone the `confluentinc/tutorials` GitHub repository (if you haven't already) and navigate to the `tutorials` directory:
+
+  ```shell
+  git clone git@github.com:confluentinc/tutorials.git
+  cd tutorials
+  ```
+
+  Start Flink and Kafka:
 
   ```shell
   docker compose -f ./docker/docker-compose-flinksql.yml up -d
@@ -107,39 +121,41 @@ Run the following command to execute [FlinkSqlMergeTablesTest#testMerge](src/tes
       'value.format' = 'json',
       'value.fields-include' = 'EXCEPT_KEY'
   );
- ``` 
-```sql
- INSERT INTO clicks VALUES
-        ('9.62.201.241','/acme/jeep-stuff/', TO_TIMESTAMP('2023-07-09 01:00:00')),
-        ('122.65.213.141', '/farm-for-all/chickens/', TO_TIMESTAMP('2023-07-09 02:00:10')),
-        ('122.65.213.141', '/farm-for-all/chickens/', TO_TIMESTAMP('2023-07-09 02:00:20')),
-        ('122.65.213.141', '/farm-for-all/chickens/', TO_TIMESTAMP('2023-07-09 02:01:00')),
-        ('9.62.201.241', '/acme/jeep-stuff/', TO_TIMESTAMP('2023-07-09 01:00:30')),
-        ('9.62.201.241', '/acme/jeep-stuff/', TO_TIMESTAMP('2023-07-09 01:01:00')),
-        ('21.229.87.11', '/amc-rio/movies/', TO_TIMESTAMP('2023-07-09 09:00:00')),
-        ('234.112.107.50', '/trips/packages/', TO_TIMESTAMP('2023-07-09 12:00:00')),
-        ('21.229.87.11', '/amc-rio/movies/', TO_TIMESTAMP('2023-07-09 09:00:30')),
-        ('122.65.213.141', '/farm-for-all/tractors/', TO_TIMESTAMP('2023-07-09 02:30:00')),
-        ('122.65.213.141', '/farm-for-all/tractors/', TO_TIMESTAMP('2023-07-10 02:31:00'));
-```
-```sql
-SELECT url,
-    COUNT(url) AS visited_count,
-    window_start,
-    window_end
-FROM TABLE(SESSION(TABLE clicks PARTITION BY url, DESCRIPTOR(click_ts), INTERVAL '2' MINUTES))
-GROUP BY url, window_start, window_end;
-```
+  ```
+
+  ```sql
+  INSERT INTO clicks VALUES
+      ('9.62.201.241','/acme/jeep-stuff/', TO_TIMESTAMP('2023-07-09 01:00:00')),
+      ('122.65.213.141', '/farm-for-all/chickens/', TO_TIMESTAMP('2023-07-09 02:00:10')),
+      ('122.65.213.141', '/farm-for-all/chickens/', TO_TIMESTAMP('2023-07-09 02:00:20')),
+      ('122.65.213.141', '/farm-for-all/chickens/', TO_TIMESTAMP('2023-07-09 02:01:00')),
+      ('9.62.201.241', '/acme/jeep-stuff/', TO_TIMESTAMP('2023-07-09 01:00:30')),
+      ('9.62.201.241', '/acme/jeep-stuff/', TO_TIMESTAMP('2023-07-09 01:01:00')),
+      ('21.229.87.11', '/amc-rio/movies/', TO_TIMESTAMP('2023-07-09 09:00:00')),
+      ('234.112.107.50', '/trips/packages/', TO_TIMESTAMP('2023-07-09 12:00:00')),
+      ('21.229.87.11', '/amc-rio/movies/', TO_TIMESTAMP('2023-07-09 09:00:30')),
+      ('122.65.213.141', '/farm-for-all/tractors/', TO_TIMESTAMP('2023-07-09 02:30:00')),
+      ('122.65.213.141', '/farm-for-all/tractors/', TO_TIMESTAMP('2023-07-10 02:31:00'));
+  ```
+
+  ```sql
+  SELECT url,
+      COUNT(url) AS visited_count,
+      window_start,
+      window_end
+  FROM TABLE(SESSION(TABLE clicks PARTITION BY url, DESCRIPTOR(click_ts), INTERVAL '2' MINUTES))
+  GROUP BY url, window_start, window_end;
+  ```
 
   The query output should look like this:
 
   ```plaintext
-              url              visited_count                           window_start                window_end      
-/acme/jeep-stuff/                       3                  2023-07-09 01:00:00.000   2023-07-09 01:03:00.000
-/farm-for-all/chickens/                 3                  2023-07-09 02:00:10.000   2023-07-09 02:03:00.000
-/farm-for-all/tractors/                 1                  2023-07-09 02:30:00.000   2023-07-09 02:32:00.000
-/amc-rio/movies/                        2                  2023-07-09 09:00:00.000   2023-07-09 09:02:30.000
-/trips/packages/                        1                  2023-07-09 12:00:00.000   2023-07-09 12:02:00.000
+                      url     visited_count                             window_start                window_end      
+  /acme/jeep-stuff/                       3                  2023-07-09 01:00:00.000   2023-07-09 01:03:00.000
+  /farm-for-all/chickens/                 3                  2023-07-09 02:00:10.000   2023-07-09 02:03:00.000
+  /farm-for-all/tractors/                 1                  2023-07-09 02:30:00.000   2023-07-09 02:32:00.000
+  /amc-rio/movies/                        2                  2023-07-09 09:00:00.000   2023-07-09 09:02:30.000
+  /trips/packages/                        1                  2023-07-09 12:00:00.000   2023-07-09 12:02:00.000
   ```
 
   When you are finished, clean up the containers used for this tutorial by running:
