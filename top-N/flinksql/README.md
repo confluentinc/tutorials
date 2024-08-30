@@ -47,14 +47,21 @@ against Flink and Kafka running in Docker, or with Confluent Cloud.
 <details>
   <summary>Flink Table API-based test</summary>
 
-  #### Prerequisites
+  ### Prerequisites
 
   * Java 17, e.g., follow the OpenJDK installation instructions [here](https://openjdk.org/install/) if you don't have Java. 
   * Docker running via [Docker Desktop](https://docs.docker.com/desktop/) or [Docker Engine](https://docs.docker.com/engine/install/)
 
-  #### Run the test
+  ### Run the test
 
-Run the following command to execute [FlinkSqlTopNTest#testTopN](src/test/java/io/confluent/developer/FlinkSqlTopNTest.java):
+  Clone the `confluentinc/tutorials` GitHub repository (if you haven't already) and navigate to the `tutorials` directory:
+
+  ```shell
+  git clone git@github.com:confluentinc/tutorials.git
+  cd tutorials
+  ```
+
+  Run the following command to execute [FlinkSqlTopNTest#testTopN](src/test/java/io/confluent/developer/FlinkSqlTopNTest.java):
 
   ```plaintext
   ./gradlew clean :top-N:flinksql:test
@@ -67,14 +74,21 @@ Run the following command to execute [FlinkSqlTopNTest#testTopN](src/test/java/i
 <details>
   <summary>Flink SQL Client CLI</summary>
 
-  #### Prerequisites
+  ### Prerequisites
 
   * Docker running via [Docker Desktop](https://docs.docker.com/desktop/) or [Docker Engine](https://docs.docker.com/engine/install/)
   * [Docker Compose](https://docs.docker.com/compose/install/). Ensure that the command `docker compose version` succeeds.
 
-  #### Run the commands
+  ### Run the commands
 
-  First, start Flink and Kafka:
+  Clone the `confluentinc/tutorials` GitHub repository (if you haven't already) and navigate to the `tutorials` directory:
+
+  ```shell
+  git clone git@github.com:confluentinc/tutorials.git
+  cd tutorials
+  ```
+
+  Start Flink and Kafka:
 
   ```shell
   docker compose -f ./docker/docker-compose-flinksql.yml up -d
@@ -132,19 +146,19 @@ Run the following command to execute [FlinkSqlTopNTest#testTopN](src/test/java/i
   ```
 
   ```sql
-SELECT title, genre, num_views, category_rank
-FROM (
-       SELECT *,
-              ROW_NUMBER() OVER (PARTITION BY genre ORDER BY num_views DESC) as category_rank
-       FROM movie_views
-     )
-WHERE category_rank <= 3;
+  SELECT title, genre, num_views, category_rank
+  FROM (
+      SELECT *,
+             ROW_NUMBER() OVER (PARTITION BY genre ORDER BY num_views DESC) as category_rank
+      FROM movie_views
+  )
+  WHERE category_rank <= 3;
   ```
 
   The query output should look like this:
 
   ```plaintext
-                            title                          genre            num_views        category_rank
+                          title                          genre            num_views        category_rank
               Avengers: Endgame                         Action               200010                    1
                 The Dark Knight                         Action               100240                    2
                      Casablanca                        Romance               400400                    1
@@ -175,12 +189,12 @@ WHERE category_rank <= 3;
 <details>
   <summary>Confluent Cloud</summary>
 
-  #### Prerequisites
+  ### Prerequisites
 
   * A [Confluent Cloud](https://confluent.cloud/signup) account
   * A Flink compute pool created in Confluent Cloud. Follow [this](https://docs.confluent.io/cloud/current/flink/get-started/quick-start-cloud-console.html) quick start to create one.
 
-  #### Run the commands
+  ### Run the commands
 
   In the Confluent Cloud Console, navigate to your environment and then click the `Open SQL Workspace` button for the compute
   pool that you have created.
@@ -190,12 +204,12 @@ WHERE category_rank <= 3;
   Finally, run following SQL statements to create the `movie_views` table, populate it with test data, and run the Top-N query.
 
   ```sql
- CREATE TABLE movie_views (
-            id INT,
-            title STRING,
-            genre STRING,
-            num_views BIGINT
- );
+  CREATE TABLE movie_views (
+      id INT,
+      title STRING,
+      genre STRING,
+      num_views BIGINT
+  );
   ```
 
   ```sql
