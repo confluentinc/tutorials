@@ -25,8 +25,7 @@ Given the `acting_events` table definition above, we can create separate tables 
 
 CREATE TABLE acting_events_drama (
     name STRING,
-    title STRING,
-    genre STRING
+    title STRING
 );
 INSERT INTO acting_events_drama
     SELECT name, title
@@ -35,8 +34,7 @@ INSERT INTO acting_events_drama
 
 CREATE TABLE acting_events_fantasy (
     name STRING,
-    title STRING,
-    genre STRING
+    title STRING
 );
 INSERT INTO acting_events_fantasy
     SELECT name, title
@@ -45,8 +43,7 @@ INSERT INTO acting_events_fantasy
 
 CREATE TABLE acting_events_other (
     name STRING,
-    title STRING,
-    genre STRING
+    title STRING
 );
 INSERT INTO acting_events_other
     SELECT name, title
