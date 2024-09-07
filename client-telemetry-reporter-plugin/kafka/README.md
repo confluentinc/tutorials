@@ -1,11 +1,12 @@
-<!-- title: How to use KIP-714 for centralized monitoring of Kafka Clients -->
-<!-- description: In this tutorial, learn how to use KIP-714 for centralized monitoring of Kafka Clients. -->
+<!-- title: How to centrally monitor Kafka clients via broker configuration -->
+<!-- description: In this tutorial, learn how to centrally monitor Kafka clients via broker configuration (using KIP-714). -->
 
-# How to use KIP-714 for centralized monitoring of Kafka Clients
+# How to centrally monitor Kafka clients via broker configuration
 
-Kafka's [KIP-714](https://cwiki.apache.org/confluence/display/KAFKA/KIP-714%3A+Client+metrics+and+observability) introduces a new capability that allows applications to send client metrics to the
-broker for centralized monitoring. The broker can subsequently relay these metrics to a remote monitoring
-system, facilitating the effective monitoring of Kafka client health and the identification of any problems.
+Kafka's [KIP-714](https://cwiki.apache.org/confluence/display/KAFKA/KIP-714%3A+Client+metrics+and+observability)
+introduces a new capability that allows the Kafka broker to centrally track client metrics on behalf of
+applications. The broker can subsequently relay these metrics to a remote monitoring system, facilitating
+the effective monitoring of Kafka client health and the identification of any problems.
 
 The broker requires a Metrics Reporter plugin which implements the `ClientTelemetry` interface to
 send client metrics to a remote monitoring system. This tutorial demonstrates how to use the plugin
@@ -23,93 +24,31 @@ instance for visualization.
 
 ## Prerequisites
 
-- Java 17 or higher
-- [Otel Collector](#otel-collector)
-- [Prometheus](#prometheus)
-- [Client Telemetry Reporter Plugin jar](#build-the-client-telemetry-reporter-plugin)
+* Java 17 or higher, e.g., follow the OpenJDK installation instructions [here](https://openjdk.org/install/) if you don't have Java.
+* Docker running via [Docker Desktop](https://docs.docker.com/desktop/) or [Docker Engine](https://docs.docker.com/engine/install/)
+
+## Setup and Cleanup
+- [Start OpenTelemetry Collector and Prometheus](#start-opentelemetry-collector-and-prometheus)
+- [Build Client Telemetry Reporter Plugin jar](#build-the-client-telemetry-reporter-plugin)
 - [Apache Kafka Broker 3.7.0 or higher](#apache-kafka-broker)
 - [Apache Kafka Client 3.7.0 or higher](#create-a-kafka-client)
+- [Cleanup](#cleanup)
 
-### Otel Collector
+### Start OpenTelemetry Collector and Prometheus
 
-Pull the otel-collector docker image:
-
-```shell
-docker pull otel/opentelemetry-collector-contrib
-```
-
-#### Configuration
-
-Create a configuration file `config.yaml` for the otel-collector.
-
-Example: Below configuration defines a pipeline that receives OTLP metrics from Kafka broker on `4317 gRPC port`
-and forwards them to `Prometheus on 8889 port`. The configuration adds a namespace `kip-714` to the metrics
-which can be used to identify the source of the metrics. The configuration also enables resource to telemetry
-conversion to add labels to the metrics.
-
-```yaml
-receivers:
-  otlp:
-    protocols:
-      grpc:
-        endpoint: 0.0.0.0:4317
-
-processors:
-  batch:
-    send_batch_max_size: 100
-    send_batch_size: 10
-    timeout: 10s
-
-exporters:
-  prometheus:
-    endpoint: 0.0.0.0:8889
-    namespace: kip-714
-    resource_to_telemetry_conversion:
-      enabled: true
-
-service:
-  pipelines:
-    metrics:
-      receivers: [otlp]
-      processors: [batch]
-      exporters: [prometheus]
-
-```
-
-#### Start the otel-collector
-
-Replace `<local_path>` with the path to the `config.yaml` file.
+Clone the [confluentinc/tutorials](https://github.com/confluentinc/tutorials) GitHub repository
+(if you haven't already) and navigate to the tutorials directory:
 
 ```shell
-docker run \
-    -p 127.0.0.1:4317:4317 -p 8889:8889 -p 8888:8888 \
-    -v <local_path>/config.yaml:/etc/otelcol-contrib/config.yaml \
-    otel/opentelemetry-collector-contrib
- ```
-
-### Prometheus
-
-Download prometheus from [here](https://prometheus.io/download/).
-
-#### Configuration
-
-Update configuration file for prometheus `prometheus.yml` to scrape metrics from otel-collector.
-```yaml
-global:
-  scrape_interval: 15s
-  evaluation_interval: 15s
-
-scrape_configs:
-  - job_name: "prometheus"
-    static_configs:
-      - targets: ["localhost:8889"]
+git clone git@github.com:confluentinc/tutorials.git
+cd tutorials
+docker compose -f ./client-telemetry-reporter-plugin/kafka/docker-compose.yml up -d
 ```
 
-#### Start Prometheus
-
-```shell
-./prometheus --config.file=prometheus.yml
-```
+In this example, we've configured the OTel collector (in `client-telemetry-reporter-plugin/kafka/otel-collector-config.yaml`)
+to receive OTLP metrics from the Kafka broker via gRPC on port 4317 and forwards them to `Prometheus` on port 8889.
+The configuration adds a namespace `kip-714` to the metrics which can be used to identify the source of the metrics.
+The configuration also enables resource to telemetry conversion to add labels to the metrics.
 
 ### Build the client-telemetry-reporter-plugin
 
@@ -117,11 +56,10 @@ Build the `client-telemetry-reporter-plugin` JAR.
 
 ```shell
 ./gradlew clean :client-telemetry-reporter-plugin:kafka:build
+```
 
 The above command builds the `client-telemetry-reporter-plugin` JAR located at:
-```
-client-telemetry-reporter-plugin/kafka/build/libs/client-telemetry-reporter-plugin.jar
-```
+`client-telemetry-reporter-plugin/kafka/build/libs/client-telemetry-reporter-plugin.jar`
 
 ### Apache Kafka Broker
 
@@ -203,4 +141,19 @@ Following log line indicates that the metrics are being sent by the plugin to th
 
 ```shell
 [grpc-default-executor-0] INFO io.confluent.developer.ClientOtlpMetricsReporter - Successfully exported metrics request to 127.0.0.1:4317
+```
+
+### Cleanup
+
+Stop the Kafka broker, either by pressing `Ctrl+C` in the terminal where the broker is running or by running
+the following command from the Kafka directory:
+
+```shell
+./bin/kafka-server-stop.sh
+```
+
+Stop the OpenTelemetry Collector and Prometheus containers by running the following command from the tutorials directory:
+
+```shell
+docker compose -f ./client-telemetry-reporter-plugin/kafka/docker-compose.yml down
 ```
