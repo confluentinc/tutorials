@@ -138,7 +138,7 @@ cd kafka_2.13-3.8.0
 
 #### Add the client-telemetry-reporter-plugin to the Kafka Broker
 
-Copy the `client-telemetry-reporter-plugin.jar` to the Kafka broker libs directory.
+Copy the `client-telemetry-reporter-plugin.jar` to the Kafka broker `libs` directory.
 
 ```shell
 cp <tutorials_repo_path>/tutorials/client-telemetry-reporter-plugin/kafka/build/libs/client-telemetry-reporter-plugin.jar <kafka_path>/kafka_2.13-3.8.0/libs/
