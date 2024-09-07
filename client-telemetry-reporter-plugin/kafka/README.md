@@ -121,7 +121,7 @@ cd tutorials
 ./gradlew clean :client-telemetry-reporter-plugin:kafka:build
 ```
 
-The above command builds the `client-telemetry-reporter-plugin` jar. The jar is located at:
+The above command builds the `client-telemetry-reporter-plugin` JAR located at:
 ```
 client-telemetry-reporter-plugin/kafka/build/libs/client-telemetry-reporter-plugin.jar
 ```
