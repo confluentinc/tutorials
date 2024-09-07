@@ -113,13 +113,10 @@ scrape_configs:
 
 ### Build the client-telemetry-reporter-plugin
 
-Clone the `tutorials` repository and build the `client-telemetry-reporter-plugin` jar.
+Build the `client-telemetry-reporter-plugin` JAR.
 
 ```shell
-git clone git@github.com:confluentinc/tutorials.git
-cd tutorials
 ./gradlew clean :client-telemetry-reporter-plugin:kafka:build
-```
 
 The above command builds the `client-telemetry-reporter-plugin` JAR located at:
 ```
