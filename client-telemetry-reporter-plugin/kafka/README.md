@@ -3,7 +3,7 @@
 
 # How to use KIP-714 for centralized monitoring of Kafka Clients
 
-Kafka's KIP-714 introduces a new capability that allows applications to send client metrics to the
+Kafka's [KIP-714](https://cwiki.apache.org/confluence/display/KAFKA/KIP-714%3A+Client+metrics+and+observability) introduces a new capability that allows applications to send client metrics to the
 broker for centralized monitoring. The broker can subsequently relay these metrics to a remote monitoring
 system, facilitating the effective monitoring of Kafka client health and the identification of any problems.
 
