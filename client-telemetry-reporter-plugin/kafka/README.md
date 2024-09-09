@@ -3,19 +3,18 @@
 
 # How to centrally monitor Kafka clients via broker configuration
 
-Kafka's [KIP-714](https://cwiki.apache.org/confluence/display/KAFKA/KIP-714%3A+Client+metrics+and+observability)
-introduced in Apache Kafka 3.7 adds new capability that allows the Kafka broker to centrally track client
-metrics on behalf of applications. The broker can subsequently relay these metrics to a remote monitoring
-system, facilitating the effective monitoring of Kafka client health and the identification of any problems.
+Apache Kafka introduced [KIP-714](https://cwiki.apache.org/confluence/display/KAFKA/KIP-714%3A+Client+metrics+and+observability)
+in 3.7 release, which allows the Kafka broker to centrally track client metrics on behalf of applications.
+The broker can subsequently relay these metrics to a remote monitoring system, facilitating the effective
+monitoring of Kafka client health and the identification of any problems.
 
 The broker requires a Metrics Reporter plugin which implements the `ClientTelemetry` interface to
-send client metrics to a remote monitoring system. This tutorial demonstrates how to use the plugin
+send client metrics to a remote monitoring system. This tutorial demonstrates how to use a plugin
 to monitor Kafka clients.
 
 This tutorial adds `ClientOtlpMetricsReporter` that aggregates [OpenTelemetry Protocol](https://opentelemetry.io/docs/specs/otel/protocol/) (OTLP) metrics
 received from client, enhances them with additional client labels and forwards them via gRPC client
-to an external OTLP receiver. The OTLP receiver can be any OpenTelemetry compatible backend like
-Prometheus, Jaeger, Zipkin, etc. The plugin is implemented in Java and requires the jar to be
+to an external OTLP receiver. The plugin is implemented in Java and requires the jar to be
 added to the Kafka broker libs.
 
 The OTLP receiver for the tutorial is [otel-collector](https://opentelemetry.io/docs/collector/), which is a part of the OpenTelemetry project.
@@ -31,7 +30,7 @@ instance for visualization.
 - [Start OpenTelemetry Collector and Prometheus](#start-opentelemetry-collector-and-prometheus)
 - [Build Client Telemetry Reporter Plugin jar](#build-the-client-telemetry-reporter-plugin)
 - [Download and Setup Apache Kafka Broker](#apache-kafka-broker)
-- [Start Apache Kafka Client 3.7.0 or higher](#create-a-kafka-client)
+- [Start Apache Kafka Client](#create-a-kafka-client)
 - [Cleanup](#cleanup)
 
 ### Start OpenTelemetry Collector and Prometheus
