@@ -37,7 +37,7 @@ instance for visualization.
 ### Start OpenTelemetry Collector and Prometheus
 
 Clone the [confluentinc/tutorials](https://github.com/confluentinc/tutorials) GitHub repository
-(if you haven't already) and navigate to the tutorials directory:
+(if you haven't already), navigate to the tutorials directory, and start the OpenTelemetry collector and Prometheus:
 
 ```shell
 git clone git@github.com:confluentinc/tutorials.git
