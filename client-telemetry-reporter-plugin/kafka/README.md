@@ -141,7 +141,7 @@ can be accessed at `http://localhost:9090`. The metrics shall appear prefixed wi
 
 ![prometheus_metric.png](img/prometheus_metric.png)
 
-Following log line indicates that the metrics are being sent by the plugin to the gRPC endpoint:
+The following log line indicates that the metrics are being sent by the plugin to the gRPC endpoint:
 
 ```
 [grpc-default-executor-0] INFO io.confluent.developer.ClientOtlpMetricsReporter - Successfully exported metrics request to 127.0.0.1:4317
