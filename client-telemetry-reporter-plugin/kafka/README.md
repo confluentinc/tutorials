@@ -4,9 +4,9 @@
 # How to centrally monitor Kafka clients via broker configuration
 
 Kafka's [KIP-714](https://cwiki.apache.org/confluence/display/KAFKA/KIP-714%3A+Client+metrics+and+observability)
-introduces a new capability that allows the Kafka broker to centrally track client metrics on behalf of
-applications. The broker can subsequently relay these metrics to a remote monitoring system, facilitating
-the effective monitoring of Kafka client health and the identification of any problems.
+introduced in Apache Kafka 3.7 adds new capability that allows the Kafka broker to centrally track client
+metrics on behalf of applications. The broker can subsequently relay these metrics to a remote monitoring
+system, facilitating the effective monitoring of Kafka client health and the identification of any problems.
 
 The broker requires a Metrics Reporter plugin which implements the `ClientTelemetry` interface to
 send client metrics to a remote monitoring system. This tutorial demonstrates how to use the plugin
@@ -30,8 +30,8 @@ instance for visualization.
 ## Setup and Cleanup
 - [Start OpenTelemetry Collector and Prometheus](#start-opentelemetry-collector-and-prometheus)
 - [Build Client Telemetry Reporter Plugin jar](#build-the-client-telemetry-reporter-plugin)
-- [Apache Kafka Broker 3.7.0 or higher](#apache-kafka-broker)
-- [Apache Kafka Client 3.7.0 or higher](#create-a-kafka-client)
+- [Download and Setup Apache Kafka Broker](#apache-kafka-broker)
+- [Start Apache Kafka Client 3.7.0 or higher](#create-a-kafka-client)
 - [Cleanup](#cleanup)
 
 ### Start OpenTelemetry Collector and Prometheus
@@ -47,7 +47,8 @@ docker compose -f ./client-telemetry-reporter-plugin/kafka/docker-compose.yml up
 
 In this example, we've configured the OTel collector (in `client-telemetry-reporter-plugin/kafka/otel-collector-config.yaml`)
 to receive OTLP metrics from the Kafka broker via gRPC on port 4317 and forwards them to `Prometheus` on port 8889.
-The configuration adds a namespace `kip-714` to the metrics which can be used to identify the source of the metrics.
+The configuration adds a namespace `kip-714` to the metrics, which means that the metrics in Prometheus
+will all start with `kip_714_`, and can be used to identify the source of the metrics.
 The configuration also enables resource to telemetry conversion to add labels to the metrics.
 
 ### Build the client-telemetry-reporter-plugin
@@ -63,7 +64,8 @@ The above command builds the `client-telemetry-reporter-plugin` JAR located at:
 
 ### Apache Kafka Broker
 
-Download the Apache Kafka 3.7.0 or higher release from [here](https://kafka.apache.org/downloads).
+Download the Apache Kafka 3.8.0 or higher release from [here](https://kafka.apache.org/downloads).
+Any version of Kafka 3.7.0 or higher will work for client metrics but the plugin is written for Kafka 3.8.0 or higher.
 
 ```shell
 wget https://downloads.apache.org/kafka/3.8.0/kafka_2.13-3.8.0.tgz
@@ -71,12 +73,14 @@ tar -xvf kafka_2.13-3.8.0.tgz
 cd kafka_2.13-3.8.0
 ```
 
+The `pwd` directory is referred to as `<kafka_path>` in the rest of the tutorial.
+
 #### Add the client-telemetry-reporter-plugin to the Kafka Broker
 
 Copy the `client-telemetry-reporter-plugin.jar` to the Kafka broker `libs` directory.
 
 ```shell
-cp <tutorials_repo_path>/tutorials/client-telemetry-reporter-plugin/kafka/build/libs/client-telemetry-reporter-plugin.jar <kafka_path>/kafka_2.13-3.8.0/libs/
+cp <tutorials_repo_path>/tutorials/client-telemetry-reporter-plugin/kafka/build/libs/client-telemetry-reporter-plugin.jar <kafka_path>/libs/
 ```
 
 #### Configure the Kafka Broker
@@ -133,13 +137,13 @@ version 3.7.0 or higher.
 ### Access Client Metrics
 
 Produce messages to the topic `test` and observe the metrics in the Prometheus instance. Prometheus
-can be accessed at `http://localhost:9090`.
+can be accessed at `http://localhost:9090`. The metrics shall appear prefixed with `kip_714` namespace.
 
 ![prometheus_metric.png](img/prometheus_metric.png)
 
 Following log line indicates that the metrics are being sent by the plugin to the gRPC endpoint:
 
-```shell
+```
 [grpc-default-executor-0] INFO io.confluent.developer.ClientOtlpMetricsReporter - Successfully exported metrics request to 127.0.0.1:4317
 ```
 

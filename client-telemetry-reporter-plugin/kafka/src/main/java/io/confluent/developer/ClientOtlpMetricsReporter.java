@@ -36,7 +36,7 @@ import io.opentelemetry.proto.metrics.v1.ResourceMetrics;
 import io.opentelemetry.proto.resource.v1.Resource;
 
 /**
- * Client MetricsReporter that aggregates OpenTelemetry Protocol(OTLP) metrics received from client,
+ * Client MetricsReporter that aggregates OpenTelemetry Protocol (OTLP) metrics received from client,
  * enhances them with additional client labels and forwards them via gRPC Client to an external OTLP
  * receiver.
  */
@@ -159,8 +159,10 @@ public class ClientOtlpMetricsReporter implements MetricsReporter, ClientTelemet
   /**
    * Returns a list of ResourceMetrics where each metrics is enhanced by adding client information as
    * additional resource level attributes
-   * @param resourceMetrics resource metrics sent by client
-   * @param labels broker added labels containing client information
+   *
+   * @param resourceMetrics     resource metrics sent by client
+   * @param labels              broker added labels containing client information
+   *
    * @return enhanced ResourceMetrics list
    */
   private List<ResourceMetrics> appendLabelsToResource(
@@ -235,7 +237,8 @@ public class ClientOtlpMetricsReporter implements MetricsReporter, ClientTelemet
 
     /**
      * Exports a ExportMetricsServiceRequest to an external endpoint
-     * @param resourceMetrics metrics to export
+     *
+     * @param resourceMetrics     metrics to export
      */
     private void export(List<ResourceMetrics> resourceMetrics) {
       ExportMetricsServiceRequest request = ExportMetricsServiceRequest.newBuilder()
