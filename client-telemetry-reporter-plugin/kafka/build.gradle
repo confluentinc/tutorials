@@ -1,0 +1,68 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+}
+
+plugins {
+    id "java"
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+repositories {
+    mavenCentral()
+    maven { url 'https://packages.confluent.io/maven/' }
+}
+
+dependencies {
+    implementation project(':common')
+    implementation "org.slf4j:slf4j-simple:2.0.7"
+    implementation "io.opentelemetry.proto:opentelemetry-proto:1.0.0-alpha"
+    implementation "io.grpc:grpc-api:1.66.0"
+    implementation "io.grpc:grpc-netty-shaded:1.66.0"
+    implementation "io.grpc:grpc-protobuf:1.66.0"
+    implementation "io.grpc:grpc-stub:1.66.0"
+    implementation('org.apache.kafka:kafka-clients') {
+        version {
+            strictly '3.8.0'
+        }
+    }
+}
+
+test {
+    useJUnitPlatform()
+    testLogging {
+        outputs.upToDateWhen { false }
+        showStandardStreams = true
+        events "PASSED", "SKIPPED", "FAILED", "STANDARD_OUT", "STANDARD_ERROR"
+        exceptionFormat = "full"
+    }
+}
+
+jar {
+    enabled false
+    dependsOn 'shadowJar'
+}
+
+shadowJar {
+    archiveBaseName = "client-telemetry-reporter-plugin"
+    archiveClassifier = ''
+    mergeServiceFiles()
+
+    relocate('io.opentelemetry.proto', 'io.confluent.developer.shaded.io.opentelemetry.proto')
+    relocate('org.slf4j', 'io.confluent.developer.shaded.org.slf4j')
+    relocate('io.grpc.api', 'io.confluent.developer.shaded.io.grpc.api')
+    relocate('io.grpc.protobuf', 'io.confluent.developer.shaded.io.protobuf')
+    relocate('io.grpc.stub', 'io.confluent.developer.shaded.io.stub')
+    // dependencies excluded from the final jar, since they are declared as runtime dependencies
+    dependencies {
+        exclude(dependency('org.apache.kafka:kafka-clients'))
+        // exclude proto files from the jar
+        exclude "**/opentelemetry/proto/**/*.proto"
+    }
+}
