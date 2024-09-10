@@ -13,8 +13,8 @@ send client metrics to a remote monitoring system. This tutorial demonstrates ho
 to monitor Kafka clients.
 
 This tutorial adds `ClientOtlpMetricsReporter` that aggregates [OpenTelemetry Protocol](https://opentelemetry.io/docs/specs/otel/protocol/) (OTLP) metrics
-received from client, enhances them with additional client labels and forwards them via gRPC client
-to an external OTLP receiver. The plugin is implemented in Java and requires the jar to be
+received from the client, enhances them with additional client labels and forwards them via gRPC client
+to an external OTLP receiver. The plugin is implemented in Java and requires the JAR to be
 added to the Kafka broker libs.
 
 The OTLP receiver for the tutorial is [otel-collector](https://opentelemetry.io/docs/collector/), which is a part of the OpenTelemetry project.
@@ -138,7 +138,7 @@ version 3.7.0 or higher.
 Produce messages to the topic `test` and observe the metrics in the Prometheus instance. Prometheus
 can be accessed at `http://localhost:9090`. The metrics shall appear prefixed with `kip_714` namespace.
 
-![prometheus_metric.png](img/prometheus_metric.png)
+![Prometheus metric](https://raw.githubusercontent.com/confluentinc/tutorials/master/client-telemetry-reporter-plugin/kafka/img/prometheus_metric.png)
 
 The following log line indicates that the metrics are being sent by the plugin to the gRPC endpoint:
 
