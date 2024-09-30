@@ -1,4 +1,3 @@
-version: '3'
 services:
   controller:
     image: confluentinc/cp-kafka:7.5.1

@@ -80,7 +80,7 @@ To run the unit tests, use the provided Gradle Wrapper:
 Start Kafka by running:
 
 ```shell
-docker compose -f ./docker/docker-compose-ksqldb-kraft-cluster.yml up -d
+docker compose -f ./docker/docker-compose-ksqldb.yml up -d
 ```
 
 ### Create topic
@@ -112,7 +112,7 @@ java -jar multiple-event-types-protobuf/kafka/build/libs/multiple-event-types-pr
 Stop Kafka and Schema Registry:
 
 ```shell
-docker compose -f ./docker/docker-compose-ksqldb-kraft-cluster.yml down
+docker compose -f ./docker/docker-compose-ksqldb.yml down
 ```
 
 </details>

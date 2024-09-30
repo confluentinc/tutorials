@@ -82,9 +82,9 @@ public class PressureDatetimeExtractorTest {
             testDriverInputTopic =
             testDriver.createInputTopic(this.inputTopic, Serdes.Bytes().serializer(), this.pressureSerde.serializer());
         List<PressureAlert> inputs = Arrays.asList(
-            new PressureAlert("101", "2019-09-21T05:25:01.+0200", Integer.MAX_VALUE),
-            new PressureAlert("102", "2019-09-21T05:30:02.+0200", Integer.MAX_VALUE),
-            new PressureAlert("103", "2019-09-21T05:45:03.+0200", Integer.MAX_VALUE),
+            new PressureAlert("101", "2024-09-21T05:25:01.+0200", Integer.MAX_VALUE),
+            new PressureAlert("102", "2024-09-21T05:30:02.+0200", Integer.MAX_VALUE),
+            new PressureAlert("103", "2024-09-21T05:45:03.+0200", Integer.MAX_VALUE),
             new PressureAlert("104", "DEFINITELY-NOT-PARSABLE!!", Integer.MAX_VALUE),
             new PressureAlert("105", "1500-06-24T09:11:03.+0200", Integer.MAX_VALUE)
         );
@@ -113,17 +113,17 @@ public class PressureDatetimeExtractorTest {
         assertFalse(resultFive.isPresent());
 
         assertEquals(
-            formatter.parse("2019-09-21T05:25:01.+0200", Instant::from).toEpochMilli(),
+            formatter.parse("2024-09-21T05:25:01.+0200", Instant::from).toEpochMilli(),
             resultOne.get().timestamp().longValue()
         );
 
         assertEquals(
-            formatter.parse("2019-09-21T05:30:02.+0200", Instant::from).toEpochMilli(),
+            formatter.parse("2024-09-21T05:30:02.+0200", Instant::from).toEpochMilli(),
             resultTwo.get().timestamp().longValue()
         );
 
         assertEquals(
-            formatter.parse("2019-09-21T05:45:03.+0200", Instant::from).toEpochMilli(),
+            formatter.parse("2024-09-21T05:45:03.+0200", Instant::from).toEpochMilli(),
             resultThree.get().timestamp().longValue()
         );
     }

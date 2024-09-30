@@ -1,7 +1,0 @@
-CREATE STREAM TEMPERATURE_READINGS_RAW (eventTime BIGINT, temperature INT)
-    WITH (kafka_topic='deviceEvents', partitions=2, value_format='JSON');
-
-
-CREATE STREAM TEMPERATURE_READINGS_TIMESTAMP_CONVERTED AS
-      SELECT temperature, CONVERT_TZ(FROM_UNIXTIME(eventTime),'UTC', 'America/Denver') AS EVENTTIME_MT
-FROM TEMPERATURE_READINGS_RAW;
