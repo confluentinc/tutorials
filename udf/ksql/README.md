@@ -13,7 +13,7 @@ Imagine you have a stream of raw stock quotes created as follows:
 
 ```sql
 CREATE STREAM raw_quotes(ticker VARCHAR KEY, bid DOUBLE, ask DOUBLE, bidqty INT, askqty INT)
-    WITH (kafka_topic='stockquotes', value_format='avro', partitions=1);
+    WITH (KAFKA_TOPIC='stockquotes', VALUE_FORMAT='AVRO', PARTITIONS=1);
 ```
 
 The ksqlDB UDF Java API provides annotations to declare a UDF (its name and description) as well as its parameters and implementation:
@@ -61,7 +61,7 @@ git clone git@github.com:confluentinc/tutorials.git
 Next, start ksqlDB and Kafka:
 
  ```shell
- docker compose -f ./docker/docker-compose-ksqldb-kraft-cluster.yml up -d
+ docker compose -f ./docker/docker-compose-ksqldb.yml up -d
  ```
 
 Build an uberjar containing the UDF class:
@@ -118,7 +118,7 @@ Let's see the UDF in action. First, create a Kafka topic and ksqlDB stream to re
 
 ```sql
 CREATE STREAM raw_quotes(ticker VARCHAR KEY, bid DOUBLE, ask DOUBLE, bidqty INT, askqty INT)
-    WITH (kafka_topic='stockquotes', value_format='avro', partitions=1);
+    WITH (KAFKA_TOPIC='stockquotes', VALUE_FORMAT='AVRO', PARTITIONS=1);
 ```
 
 Then produce the following events to the stream:
@@ -149,7 +149,7 @@ SET 'auto.offset.reset' = 'earliest';
 Let’s invoke the `VWAP` function for every observed raw quote. Pay attention to the parameter ordering of the UDF.
 
 ```sql
-SELECT ticker, vwap(bid, bidqty, ask, askqty) AS vwap FROM raw_quotes EMIT CHANGES LIMIT 12;
+SELECT ticker, vwap(bid, bidqty, ask, askqty) AS vwap FROM raw_quotes EMIT CHANGES;
 ```
 
 This should yield the following output:
@@ -169,12 +169,11 @@ This should yield the following output:
 |ZVV                                                                                                  |30.17                                                                                                |
 |ZVZZT                                                                                                |40.38                                                                                                |
 |ZXZZT                                                                                                |50.245                                                                                               |
-Limit Reached
-Query terminated
++-----------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------+
 ```
 
 When you are finished exploring, clean up the containers used for this tutorial by running the following command from the top level of the `tutorials` repository:
 
 ```shell
-docker compose -f ./docker/docker-compose-ksqldb-kraft-cluster.yml down
+docker compose -f ./docker/docker-compose-ksqldb.yml down
 ```

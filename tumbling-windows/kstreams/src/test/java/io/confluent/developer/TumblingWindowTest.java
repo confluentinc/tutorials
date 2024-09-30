@@ -44,16 +44,16 @@ public class TumblingWindowTest {
              Serde<MovieRating> movieRatingSerde = StreamsSerde.serdeFor(MovieRating.class)) {
 
             List<MovieRating> ratings = new ArrayList<>();
-            ratings.add(new MovieRating("Super Mario Bros.", 1993, 3.5, "2019-04-25T11:15:00-0000"));
-            ratings.add(new MovieRating("Super Mario Bros.", 1993, 2.0, "2019-04-25T11:40:00-0000"));
-            ratings.add(new MovieRating("A Walk in the Clouds", 1998, 3.6, "2019-04-25T13:00:00-0000"));
-            ratings.add(new MovieRating("A Walk in the Clouds", 1998, 7.1, "2019-04-25T13:01:00-0000"));
-            ratings.add(new MovieRating("Die Hard", 1988, 8.2, "2019-04-25T18:00:00-0000"));
-            ratings.add(new MovieRating("Die Hard", 1988, 7.6, "2019-04-25T18:05:00-0000"));
-            ratings.add(new MovieRating("The Big Lebowski", 1998, 8.6, "2019-04-25T19:30:00-0000"));
-            ratings.add(new MovieRating("The Big Lebowski", 1998, 7.0, "2019-04-25T19:35:00-0000"));
-            ratings.add(new MovieRating("Tree of Life", 2011, 4.9, "2019-04-25T21:00:00-0000"));
-            ratings.add(new MovieRating("Tree of Life", 2011, 9.9, "2019-04-25T21:11:00-0000"));
+            ratings.add(new MovieRating("Super Mario Bros.", 1993, 3.5, "2024-09-25T11:15:00-0000"));
+            ratings.add(new MovieRating("Super Mario Bros.", 1993, 2.0, "2024-09-25T11:40:00-0000"));
+            ratings.add(new MovieRating("A Walk in the Clouds", 1998, 3.6, "2024-09-25T13:00:00-0000"));
+            ratings.add(new MovieRating("A Walk in the Clouds", 1998, 7.1, "2024-09-25T13:01:00-0000"));
+            ratings.add(new MovieRating("Die Hard", 1988, 8.2, "2024-09-25T18:00:00-0000"));
+            ratings.add(new MovieRating("Die Hard", 1988, 7.6, "2024-09-25T18:05:00-0000"));
+            ratings.add(new MovieRating("The Big Lebowski", 1998, 8.6, "2024-09-25T19:30:00-0000"));
+            ratings.add(new MovieRating("The Big Lebowski", 1998, 7.0, "2024-09-25T19:35:00-0000"));
+            ratings.add(new MovieRating("Tree of Life", 2011, 4.9, "2024-09-25T21:00:00-0000"));
+            ratings.add(new MovieRating("Tree of Life", 2011, 9.9, "2024-09-25T21:11:00-0000"));
 
             List<RatingCount> ratingCounts = new ArrayList<>();
             ratingCounts.add(new RatingCount("Super Mario Bros.", 1L));

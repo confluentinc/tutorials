@@ -1,25 +1,30 @@
-<!-- title: How to change the serialization format of messages with ksqlDB -->
-<!-- description: In this tutorial, learn how to change the serialization format of messages with ksqlDB, with step-by-step instructions and supporting code. -->
+<!-- title: How to update the number of partitions of a Kafka topic with ksqlDB -->
+<!-- description: In this tutorial, learn how to update the number of partitions of a Kafka topic with ksqlDB. -->
 
-# How to change the serialization format of messages with ksqlDB
+# How to update the number of partitions of a Kafka topic with ksqlDB
 
-If you have a stream of Avro-formatted events in a Kafka topic, it's trivial to convert the events to Protobuf format by using a [CREATE STREAM AS SELECT](https://docs.ksqldb.io/en/latest/developer-guide/ksqldb-reference/create-stream-as-select/) (CSAS) statement to populate the Protobuf-formatted stream with values from the Avro-formatted stream.
+Imagine you want to change the partitions of your Kafka topic. You can use a streaming transformation to automatically stream all the messages from the original topic into a new Kafka topic that has the desired number of partitions.
 
-For example, suppose that you have a stream with Avro-formatted values that represent movie releases:
+## Setup
+
+To accomplish this transformation, first create a stream based on the original topic:
 
 ```sql
-CREATE STREAM movies_avro (movie_id BIGINT KEY, title VARCHAR, release_year INT)
-    WITH (KAFKA_TOPIC='movies_avro',
-          PARTITIONS=1,
-          VALUE_FORMAT='AVRO');
+CREATE STREAM s1 (k VARCHAR KEY, v VARCHAR)
+    WITH (KAFKA_TOPIC='topic',
+          VALUE_FORMAT='JSON');
 ```
 
-Then the analogous stream with Protobuf-formatted values can be created and populated as follows:
+Then, create a second stream that reads everything from the original topic and puts into a new topic with the desired number of partitions:
 
 ```sql
-CREATE STREAM movies_proto
-    WITH (KAFKA_TOPIC='movies_proto', VALUE_FORMAT='PROTOBUF') AS
-    SELECT * FROM movies_avro;
+CREATE STREAM s2
+    WITH (KAFKA_TOPIC='topic2',
+          VALUE_FORMAT='JSON',
+          PARTITIONS=2) AS
+    SELECT *
+    FROM s1
+    EMIT CHANGES;
 ```
 
 ## Running the example
@@ -55,38 +60,44 @@ You can run the example backing this tutorial in one of two ways: locally with t
   docker exec -it ksqldb-cli ksql http://ksqldb-server:8088
   ```
 
-  Run the following SQL statements to create the `movies_avro` stream backed by Kafka running in Docker and populate it with
-  test data.
+  Run the following SQL statements to create the `s1` stream backed by Kafka running in Docker and populate it with test data.
 
   ```sql
-  CREATE STREAM movies_avro (movie_id BIGINT KEY, title VARCHAR, release_year INT)
-      WITH (KAFKA_TOPIC='movies_avro',
+  CREATE STREAM s1 (k VARCHAR KEY, v VARCHAR)
+      WITH (KAFKA_TOPIC='topic',
             PARTITIONS=1,
-            VALUE_FORMAT='AVRO');
+            VALUE_FORMAT='JSON');
   ```
 
   ```sql
-  INSERT INTO movies_avro (movie_id, title, release_year) VALUES (1, 'Lethal Weapon', 1992);
-  INSERT INTO movies_avro (movie_id, title, release_year) VALUES (2, 'The Batman', 2022);
-  INSERT INTO movies_avro (movie_id, title, release_year) VALUES (3, 'Beetlejuice Beetlejuice', 2024);
+  INSERT INTO s1 (k, v) VALUES ('hello', 'world');
+  INSERT INTO s1 (k, v) VALUES ('foo', 'bar');
+  INSERT INTO s1 (k, v) VALUES ('bar', 'baz');
   ```
 
-  Finally, run the `CREATE STREAM AS SELECT` query to create an analogous stream with Protobuf-formatted values.
-  Note that we first tell ksqlDB to consume from the beginning of the stream.
+  Next, run the `CREATE STREAM AS SELECT` query to populate a new topic, `topic2` with the same
+  events in `topic` but having 2 partitions.
 
   ```sql
   SET 'auto.offset.reset'='earliest';
 
-  CREATE STREAM movies_proto
-      WITH (KAFKA_TOPIC='movies_proto', VALUE_FORMAT='PROTOBUF') AS
-      SELECT * FROM movies_avro;
+  CREATE STREAM s2
+      WITH (KAFKA_TOPIC='topic2',
+            VALUE_FORMAT='JSON',
+            PARTITIONS=2) AS
+      SELECT *
+      FROM s1
+      EMIT CHANGES;
   ```
 
-  Query the new topic and observe the same events as in the source topic:
+  Observe the expected number of partitions when you run the `kafka-topics` command in the broker container:
 
-  ```sql
-  SELECT *
-  FROM movies_proto;
+  ```shell
+  docker exec -it broker kafka-topics --bootstrap-server localhost:29092 --describe --topic topic1
+  ```
+
+  ```shell
+  docker exec -it broker kafka-topics --bootstrap-server localhost:29092 --describe --topic topic2
   ```
 
   When you are finished, exit the ksqlDB CLI by entering `CTRL-D` and clean up the containers used for this tutorial by running:
@@ -154,34 +165,36 @@ You can run the example backing this tutorial in one of two ways: locally with t
   In the query properties section at the bottom, change the value for `auto.offset.reset` to `Earliest` so that ksqlDB 
   will consume from the beginning of the stream we create.
 
-  Enter the following statements in the editor and click `Run query`. This creates the `movies_avro` stream and
+  Enter the following statements in the editor and click `Run query`. This creates the `s1` stream and
   populates it with test data.
 
+
   ```sql
-  CREATE STREAM movies_avro (movie_id BIGINT KEY, title VARCHAR, release_year INT)
-      WITH (KAFKA_TOPIC='movies_avro',
+  CREATE STREAM s1 (k VARCHAR KEY, v VARCHAR)
+      WITH (KAFKA_TOPIC='topic',
             PARTITIONS=1,
-            VALUE_FORMAT='AVRO');
+            VALUE_FORMAT='JSON');
 
-  INSERT INTO movies_avro (movie_id, title, release_year) VALUES (1, 'Lethal Weapon', 1992);
-  INSERT INTO movies_avro (movie_id, title, release_year) VALUES (2, 'The Batman', 2022);
-  INSERT INTO movies_avro (movie_id, title, release_year) VALUES (3, 'Beetlejuice Beetlejuice', 2024);
+  INSERT INTO s1 (k, v) VALUES ('hello', 'world');
+  INSERT INTO s1 (k, v) VALUES ('foo', 'bar');
+  INSERT INTO s1 (k, v) VALUES ('bar', 'baz');
   ```
 
-  Now paste the `CREATE STREAM AS SELECT` query in the editor and click `Run query`:
+  Now paste the `CREATE STREAM AS SELECT` query to populate a new topic, `topic2` with the same
+  events in `topic` but having 2 partitions.
 
   ```sql
-  CREATE STREAM movies_proto
-      WITH (KAFKA_TOPIC='movies_proto', VALUE_FORMAT='PROTOBUF') AS
-      SELECT * FROM movies_avro;
+  CREATE STREAM s2
+      WITH (KAFKA_TOPIC='topic2',
+            VALUE_FORMAT='JSON',
+            PARTITIONS=2) AS
+      SELECT *
+      FROM s1
+      EMIT CHANGES;
   ```
 
-  Query the new topic and observe the same events as in the source topic:
-
-  ```sql
-  SELECT *
-  FROM movies_proto;
-  ```
+  Observe the expected number of partitions for the `topic` and `topic2` topics when you navigate
+  to `Topics` in the lefthand navigation of the Confluent Cloud Console.
 
   ### Clean up
 

@@ -48,22 +48,22 @@ class FindDistinctEventsTest {
       final List<Click> clicks = asList(
           new Click("10.0.0.1",
                     "https://docs.confluent.io/current/tutorials/examples/kubernetes/gke-base/docs/index.html",
-                    "2019-09-16T14:53:43+00:00"),
+                    "2024-09-16T14:53:43+00:00"),
           new Click("10.0.0.2",
                     "https://www.confluent.io/hub/confluentinc/kafka-connect-datagen",
-                    "2019-09-16T14:53:43+00:01"),
+                    "2024-09-16T14:53:43+00:01"),
           new Click("10.0.0.3",
                     "https://www.confluent.io/hub/confluentinc/kafka-connect-datagen",
-                    "2019-09-16T14:53:43+00:03"),
+                    "2024-09-16T14:53:43+00:03"),
           new Click("10.0.0.1",
                     "https://docs.confluent.io/current/tutorials/examples/kubernetes/gke-base/docs/index.html",
-                    "2019-09-16T14:53:43+00:00"),
+                    "2024-09-16T14:53:43+00:00"),
           new Click("10.0.0.2",
                     "https://www.confluent.io/hub/confluentinc/kafka-connect-datagen",
-                    "2019-09-16T14:53:43+00:01"),
+                    "2024-09-16T14:53:43+00:01"),
           new Click("10.0.0.3",
                     "https://www.confluent.io/hub/confluentinc/kafka-connect-datagen",
-                    "2019-09-16T14:53:43+00:03"));
+                    "2024-09-16T14:53:43+00:03"));
 
       final TestInputTopic<String, Click>
           testDriverInputTopic =
