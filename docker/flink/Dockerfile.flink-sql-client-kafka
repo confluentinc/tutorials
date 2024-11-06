@@ -1,7 +1,8 @@
 FROM flink:1.19.1-scala_2.12-java11
 
+LABEL io.confluent.docker=true
+
 # Create CLI lib folder
-#COPY ./bin/* /opt/sql-client/
 RUN mkdir -p /opt/sql-client/lib
 
 # Download connector libraries
