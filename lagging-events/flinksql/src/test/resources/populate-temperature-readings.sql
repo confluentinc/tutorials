@@ -1,0 +1,4 @@
+INSERT INTO temperature_readings VALUES
+    (0, 55, TO_TIMESTAMP('2024-11-15 02:15:30')),
+    (0, 50, TO_TIMESTAMP('2024-11-15 02:20:30')),
+    (0, 45, TO_TIMESTAMP('2024-11-15 02:25:30'));
