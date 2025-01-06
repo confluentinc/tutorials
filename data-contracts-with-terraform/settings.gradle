@@ -1,0 +1,3 @@
+rootProject.name="data-contracts-terraform"
+include ':common'
+project(':common').projectDir = file('../../common')
