@@ -1,0 +1,20 @@
+{
+  "name": "Membership",
+  "namespace": "io.confluent.devrel",
+  "type": "record",
+  "fields": [
+    {"name": "user_id", "type": "string"},
+    {
+      "name": "validity_period",
+      "type": {
+        "type": "record",
+        "name": "ValidityPeriod",
+        "fields": [
+          {"name": "from", "type": {"type": "int", "logicalType": "date"}},
+          {"name": "to", "type": {"type": "int", "logicalType": "date"}
+          }
+        ]
+      }
+    }
+  ]
+}
