@@ -46,7 +46,6 @@ Create the following file named message.json in your folder:
   ],
   "key": 1237,
   "value": {
-    "type": "JSON",
     "ordertime": 1499986565014,
     "orderid": 1237,
     "itemid": "Customer Produce",
