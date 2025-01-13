@@ -1,4 +1,4 @@
-# VSCode Quickstart Steps (CC Version)
+# VSCode Produce And Consume (CC Version)
 
 [Install Confluent for VS Code](https://docs.confluent.io/cloud/current/client-apps/vs-code-extension.html#cc-vscode-extension) for Confluent Cloud.
 
