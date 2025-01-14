@@ -1,7 +1,7 @@
 ### Gradle template
 .gradle
 **/build/
-!src/**/build/
+!producer-app-schema-v1/src/**/build/
 
 # Ignore Gradle GUI config
 gradle-app.setting
