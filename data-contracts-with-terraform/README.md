@@ -32,35 +32,27 @@ Here are the tools needed to run this tutorial:
 
 To create Confluent Cloud assets, change to the `cc` subdirectory. We'll step through the commands and what they do.
 
+#### Create Confluent Cloud Assets
+
 Export the Confluent Cloud organization ID to a terraform environment variable:
 
 ```shell
 export TF_VAR_org_id=$(confluent organization list -o json | jq -c -r '.[] | select(.is_current)' | jq '.id')
 ```
 
-#### Create Confluent Cloud Assets
-Initialize the terraform environment:
+Now, we are ready to initialize the terraform environment, create a `plan` and `apply` said plan to create CC assets:
 
 ```shell
 terraform init
-```
-
-Create a terraform "plan" - this may open a browser window, asking you to authenticate to Confluent Cloud:
-
-```shell
 terraform plan -out "tfplan"
-```
-
-Apply the terraform plan, thus creating the needed Confluent Cloud infrastructure:
-
-```shell
 terraform apply "tfplan"
 ```
 
 #### Prepare Client Properties
 
-The output of `terraform apply` includes the properties needed to connect to Confluent Cloud. The command below will export
-those outputs to a properties file in our project for later use by our client code:
+This demo has tailored the output of `terraform apply` to return the properties needed to connect to Confluent Cloud. The command below will 
+reformat the names of those properties into the names used in Kafka Client configurations, then export those outputs to a properties file 
+in our project:
 
 ```shell
 terraform output -json | \
@@ -68,9 +60,10 @@ terraform output -json | \
   done > ../shared/src/main/resources/confluent.properties
 ```
 
-For an example of this properties file, see [confluent.properties.orig](shared/src/main/resources/confluent.properties.orig).
+All Kafka Client code in this project loads connection properties form `shared/src/main/resources/confluent.properties`. For an example of this 
+properties file, see [confluent.properties.orig](shared/src/main/resources/confluent.properties.orig).
 
-### Using Schemas
+### Schema Evolution
 
 
 ## Teardown
