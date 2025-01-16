@@ -260,8 +260,7 @@ against Flink and Kafka running in Docker, or with Confluent Cloud.
 
   Select the default catalog (Confluent Cloud environment) and database (Kafka cluster) to use with the dropdowns at the top right.
 
-  Finally, run following SQL statements to create the `orders` and `shipments` tables backed by Kafka running in Docker, populate them with
-  test data, and run the join query.
+  Finally, run following SQL statements to create the `orders` and `shipments` tables, populate them with test data, and run the join query.
 
   ```sql
   CREATE TABLE orders (

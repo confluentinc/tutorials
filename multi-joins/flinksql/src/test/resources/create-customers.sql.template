@@ -1,0 +1,15 @@
+CREATE TABLE customers (
+    ts TIMESTAMP_LTZ(3) METADATA FROM 'timestamp' VIRTUAL,
+    customer_id INT,
+    name STRING,
+    PRIMARY KEY(customer_id) NOT ENFORCED,
+    WATERMARK FOR ts AS ts
+) WITH (
+    'connector' = 'upsert-kafka',
+    'topic' = 'customers',
+    'properties.bootstrap.servers' = 'localhost:KAFKA_PORT',
+    'key.format' = 'raw',
+    'value.format' = 'avro-confluent',
+    'value.avro-confluent.url' = 'http://localhost:SCHEMA_REGISTRY_PORT',
+    'value.fields-include' = 'EXCEPT_KEY'
+);
