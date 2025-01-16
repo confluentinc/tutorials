@@ -27,12 +27,13 @@ repositories {
 
 schemaRegistry {
     val srProperties = Properties()
+    // At the moment, this is a file with which we are LOCALLY aware.
+    // In an ACTUAL CI/CD workflow, this would be externalized, perhaps provided from a base build image or other parameter.
     srProperties.load(FileInputStream(File(project.projectDir.absolutePath + "/../shared/src/main/resources/confluent.properties")))
 
     url = srProperties.getProperty("schema.registry.url")
 
     val srCredTokens = srProperties.get("basic.auth.user.info").toString().split(":")
-    println("***** $srCredTokens *****")
     credentials {
         username = srCredTokens[0]
         password = srCredTokens[1]
@@ -49,6 +50,7 @@ schemaRegistry {
         subject(inputSubject =  "membership-avro-value", type = "AVRO", file = "$avroSchemaDir/membership_v1.avsc")
             .setMetadata("$metadataDir/membership_major_version_1.json")
         subject(inputSubject =  "membership-avro-value", type = "AVRO", file = "$avroSchemaDir/membership_v2.avsc")
+            .addLocalReference("validity-period", "$avroSchemaDir/validity_period.avsc")
             .setMetadata("$metadataDir/membership_major_version_2.json")
             .setRuleSet("$rulesetDir/membership_migration_rules.json")
     }

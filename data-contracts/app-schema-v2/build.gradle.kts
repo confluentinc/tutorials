@@ -33,7 +33,7 @@ sourceSets {
 
 dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.1")
-    implementation(project(":data-contracts-with-terraform:shared"))
+    implementation(project(":data-contracts:shared"))
 
     implementation("org.apache.kafka:kafka-clients:${project.property("kafkaVersion")}")
     implementation("io.confluent:kafka-avro-serializer:${project.property("confluentVersion")}")
@@ -52,6 +52,8 @@ kotlin {
 
 schemaRegistry {
     val srProperties = Properties()
+    // At the moment, this is a file with which we are LOCALLY aware.
+    // In an ACTUAL CI/CD workflow, this would be externalized, perhaps provided from a base build image or other parameter.
     srProperties.load(FileInputStream(File(project.projectDir.absolutePath + "/../shared/src/main/resources/confluent.properties")))
 
     url = srProperties.getProperty("schema.registry.url")
