@@ -1,8 +1,7 @@
 # Managing Data Contracts
 
-Data contracts consists not only of the schemas to define the data, but also rulesets allowing for more fine-grained validations,
-controls, and discovery.In this tutorial, we'll evolve a couple of schemas and add data quality and migration rules. We'll also
-explore tagging those schemas, fields, and rules for data discovery.
+Data contracts consist not only of the schemas to define the structure of events, but also rulesets allowing for more fine-grained validations,
+controls, and discovery. In this tutorial, we'll evolve a schemas and add data quality and migration rules.
 
 <img src="./images/overview.png" width="1000" height="600">
 
@@ -16,11 +15,11 @@ We will cover these steps in detail.
 ## Running the Example
 
 In this tutorial we'll create Confluent Cloud infrastructure - including a Kafka cluster and Schema Registry. Then we'll create
-a Kafka topic named `membership-avro` to store `Membership` events. The Apache Avro schema is maintained an managed in this repo
-along with metadata and migration rules about those schemas. 
+a Kafka topic named `membership-avro` to store `Membership` events. The Apache Avro schema is maintained and managed in this repo
+along with metadata and migration rules. 
 
 We will evolve the `membership` schema, refactoring the events to encapsulate the date-related fields of version 1 into its
-own `record` type in version 2. Typically this would be a breaking change. However, data migration rules in the schema registry
+own `record` type in version 2. Typically this would be a breaking change. However, [data migration rules](https://docs.confluent.io/cloud/current/sr/fundamentals/data-contracts.html#migration-rules) in the schema registry
 allow us to perform this schema change without breaking producers or consumers.
 
 At the time this is written, this data contract functionality is available to Java, GO, and .NET Confluent client implementations. We'll update this example as other clients evolve.
@@ -34,6 +33,14 @@ Here are the tools needed to run this tutorial:
 * [jq](https://jqlang.github.io/jq/)
 * JDK 17
 * IDE of choice
+
+> [!Note] When installing and configuring the Confluent CLI, include the Confluent Cloud credentials as environment variables for future use. For instance with bash or zsh, include these export statements:
+> 
+> ```shell
+> export CONFLUENT_CLOUD_API_KEY=<API KEY>
+> export CONFLUENT_CLOUD_API_SECRET<API SECRET>
+> ```
+> 
 
 ### Executing Terraform
 
