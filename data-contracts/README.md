@@ -1,4 +1,4 @@
-# Managing Data Contracts
+# Managing Data Contracts in Confluent Cloud
 
 Data contracts consist not only of the schemas to define the structure of events, but also rulesets allowing for more fine-grained validations,
 controls, and discovery. In this tutorial, we'll evolve a schemas and add data quality and migration rules.
