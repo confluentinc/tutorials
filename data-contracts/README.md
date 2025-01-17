@@ -381,13 +381,7 @@ schemaRegistry{
 }
 ```
 
-Register the new schema using our gradle plugin:
-
-```shell
-./gradlew :data-contracts:schemas:registerSchemasTask
-```
-
-Download the schema to the version 2 application and generate the Java classes for this schema:
+Download the version 2 schema to the version 2 application and generate the Java classes for this schema:
 
 ```shell
 ./gradlew :data-contracts:app-schema-v2:generateCode
