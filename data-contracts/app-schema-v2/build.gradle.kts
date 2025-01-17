@@ -50,11 +50,19 @@ kotlin {
     jvmToolchain(17)
 }
 
+val schemaRegOutputDir = "${project.projectDir.absolutePath}/build/schema-registry-plugin"
+
+tasks.downloadSchemasTask {
+    doFirst {
+        mkdir(schemaRegOutputDir)
+    }
+}
+
 schemaRegistry {
     val srProperties = Properties()
     // At the moment, this is a file with which we are LOCALLY aware.
     // In an ACTUAL CI/CD workflow, this would be externalized, perhaps provided from a base build image or other parameter.
-    srProperties.load(FileInputStream(File(project.projectDir.absolutePath + "/../shared/src/main/resources/confluent.properties")))
+    srProperties.load(FileInputStream(File("${project.projectDir.absolutePath}/../shared/src/main/resources/confluent.properties")))
 
     url = srProperties.getProperty("schema.registry.url")
 
