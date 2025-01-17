@@ -274,66 +274,11 @@ class MembershipConsumer: BaseConsumer<String, Membership>(mapOf(
 
 The `consumeRecord` function is where we would typically start the business logic of actually "consuming" Kafka events. This implementation simply logs the consumed records to the provided `Logger` instance in the superclass.
 
-To exercise these producer and consumer implementations, we created a `main` function in the `ApplicationMain` class to start a consumer instance and a producer instance periodically send random events to the `membership-avro` topic.
-
-<details>
-    <summary>Main function</summary>
-
-```kotlin
-@JvmStatic
-fun main(args: Array<String>) {
-    runBlocking {
-        println("Starting application main...")
-        println(args.joinToString(" "))
-        
-        val messageInterval = 1.toDuration(DurationUnit.SECONDS)
-        val sendDuration = 100.toDuration(DurationUnit.SECONDS)
-
-        val producer = MembershipProducer()
-        val consumer = MembershipConsumer()
-
-        // start a thread with a consumer instance
-        thread {
-            consumer.start(listOf("membership-avro"))
-        }
-
-        // every 1 second for the next  100 seconds, send a randomly-generated event to the kafka topic
-        coroutineScope {
-            launch {
-                val until = Clock.System.now().plus(sendDuration)
-                while(Clock.System.now().compareTo(until) < 0) {
-                    val userId = UUID.randomUUID().toString()
-                    val membership = Membership.newBuilder()
-                        .setUserId(userId)
-                        .setStartDate(LocalDate.now().minusDays(Random.nextLong(100, 1000)))
-                        .setEndDate(LocalDate.now().plusWeeks(Random.nextLong(1, 52)))
-                        .build()
-                    producer.send("membership-avro", userId, membership)
-                    delay(messageInterval.inWholeSeconds)
-                }
-            }
-        }
-        producer.close()
-    }
-}
-```
-
-</details>
-
-Running this application will print the events being consumed from Kafka:
-
-<details>
-    <summary>Console Output</summary>
+To exercise these producer and consumer implementations, we created a `main` function in the `ApplicationMain` class to start a consumer instance and a producer instance periodically send random events to the `membership-avro` topic. Running [this application](./app-schema-v1/src/main/kotlin/io/confluent/devrel/dc/v1/ApplicationMain.kt) will print the events being consumed from Kafka:
 
 ```shell
 [Thread-0] INFO io.confluent.devrel.datacontracts.shared.BaseConsumer - Received Membership 8e65d8e2-4ad8-475f-8f74-d724865ddbd8, {"user_id": "8e65d8e2-4ad8-475f-8f74-d724865ddbd8", "start_date": "2022-06-13", "end_date": "2025-03-25"}
-[Thread-0] INFO io.confluent.devrel.datacontracts.shared.BaseConsumer - Received Membership 22781e70-8d2c-4d02-b325-9cdc8663ed19, {"user_id": "22781e70-8d2c-4d02-b325-9cdc8663ed19", "start_date": "2022-06-10", "end_date": "2025-11-11"}
-[Thread-0] INFO io.confluent.devrel.datacontracts.shared.BaseConsumer - Received Membership 06ec5d95-d38c-4bac-9693-a01596eeedd7, {"user_id": "06ec5d95-d38c-4bac-9693-a01596eeedd7", "start_date": "2024-03-25", "end_date": "2025-02-25"}
-[Thread-0] INFO io.confluent.devrel.datacontracts.shared.BaseConsumer - Received Membership 881bf838-1fe1-423e-9afc-0742e3080b5b, {"user_id": "881bf838-1fe1-423e-9afc-0742e3080b5b", "start_date": "2022-07-25", "end_date": "2025-07-08"}
-[Thread-0] INFO io.confluent.devrel.datacontracts.shared.BaseConsumer - Received Membership 73254321-72f9-4783-949f-652f5ca9542e, {"user_id": "73254321-72f9-4783-949f-652f5ca9542e", "start_date": "2022-05-11", "end_date": "2025-03-11"}
 ```
-
-</details>
 
 #### Evolving to Version 2
 
@@ -410,18 +355,9 @@ in the `use.latest.with.metadata` configuration for the deserializer.
 
 Running the `main` function in `ApplicationV2Main` will consume the events from the `membership-avro` topic, but with a noticeable difference from the `app-schama-v1` application:
 
-<details>
-    <summary>Console output version 2</summary>
-
 ```shell
 [Thread-0] INFO io.confluent.devrel.datacontracts.shared.BaseConsumer - v2 - Received Membership af39d3a4-53b3-4d27-9bf0-3528965b6149, {"user_id": "af39d3a4-53b3-4d27-9bf0-3528965b6149", "validity_period": {"from": "2022-10-29", "to": "2025-08-28"}}
-[Thread-0] INFO io.confluent.devrel.datacontracts.shared.BaseConsumer - v2 - Received Membership 4baddf48-6dda-40c0-8c4d-57222932c0b8, {"user_id": "4baddf48-6dda-40c0-8c4d-57222932c0b8", "validity_period": {"from": "2024-07-13", "to": "2025-08-14"}}
-[Thread-0] INFO io.confluent.devrel.datacontracts.shared.BaseConsumer - v2 - Received Membership 6c385e77-4e50-4784-bf35-2e0be4aca6a6, {"user_id": "6c385e77-4e50-4784-bf35-2e0be4aca6a6", "validity_period": {"from": "2023-10-17", "to": "2025-03-13"}}
-[Thread-0] INFO io.confluent.devrel.datacontracts.shared.BaseConsumer - v2 - Received Membership 79d36f24-4317-4f88-acb2-8f48ff88991b, {"user_id": "79d36f24-4317-4f88-acb2-8f48ff88991b", "validity_period": {"from": "2022-09-13", "to": "2025-09-25"}}
-[Thread-0] INFO io.confluent.devrel.datacontracts.shared.BaseConsumer - v2 - Received Membership 2167c361-2202-41ce-b48e-35967b3fb8c7, {"user_id": "2167c361-2202-41ce-b48e-35967b3fb8c7", "validity_period": {"from": "2023-05-01", "to": "2025-05-01"}}
 ```
-
-</details>
 
 We're consuming the same events, but the deserialized with version 2 of the schema.
 
