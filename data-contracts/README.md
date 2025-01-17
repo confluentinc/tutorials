@@ -116,9 +116,9 @@ reformat the names of those properties into the names used in Kafka Client confi
 in our project:
 
 ```shell
-terraform output -json | \
-  jq -r 'to_entries | map( {key: .key|tostring|split("_")|join("."), value: .value} ) | map("\(.key)=\(.value.value)")' | while read -r line ; do echo "$line"; \
-  done > ../shared/src/main/resources/confluent.properties
+terraform output -json \
+ | jq -r 'to_entries | map( {key: .key|tostring|split("_")|join("."), value: .value} ) | map("\(.key)=\(.value.value)") | .[]' \
+ | while read -r line ; do echo "$line"; done > ../shared/src/main/resources/confluent.properties
 ```
 
 All Kafka Client code in this project loads connection properties form `shared/src/main/resources/confluent.properties`. For an example of this 
