@@ -26,6 +26,13 @@ At the time this is written, this data contract functionality is available to Ja
 
 ### Prerequisites
 
+Clone the `confluentinc/tutorials` GitHub repository (if you haven't already) and navigate to the `tutorials` directory:
+
+```shell
+git clone git@github.com:confluentinc/tutorials.git
+cd tutorials
+```
+
 Here are the tools needed to run this tutorial:
 * [Confluent Cloud](http://confluent.cloud)
 * [Confluent CLI](https://docs.confluent.io/confluent-cli/current/install.html)
