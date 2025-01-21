@@ -1,0 +1,18 @@
+CREATE TABLE orders (
+    ts TIMESTAMP_LTZ(3) METADATA FROM 'timestamp' VIRTUAL,
+    order_id INT,
+    customer_id INT,
+    item_id INT,
+    quantity INT,
+    WATERMARK FOR ts AS ts
+) WITH (
+    'connector' = 'kafka',
+    'topic' = 'orders',
+    'properties.bootstrap.servers' = 'localhost:KAFKA_PORT',
+    'scan.startup.mode' = 'earliest-offset',
+    'key.format' = 'raw',
+    'key.fields' = 'order_id',
+    'value.format' = 'avro-confluent',
+    'value.avro-confluent.url' = 'http://localhost:SCHEMA_REGISTRY_PORT',
+    'value.fields-include' = 'EXCEPT_KEY'
+);
