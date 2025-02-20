@@ -1,0 +1,29 @@
+buildscript {
+  repositories {
+    mavenCentral()
+  }
+}
+
+plugins {
+  id 'java'
+  id 'application'
+}
+
+java {
+  sourceCompatibility = JavaVersion.VERSION_21
+  targetCompatibility = JavaVersion.VERSION_21
+}
+
+application {
+  mainClass = "io.confluent.developer.FlinkTableApiFiltering"
+}
+
+repositories {
+  mavenCentral()
+  maven { url 'https://packages.confluent.io/maven/' }
+}
+
+dependencies {
+  implementation 'org.apache.flink:flink-table-api-java:1.20.0'
+  implementation 'io.confluent.flink:confluent-flink-table-api-java-plugin:1.20-48'
+}
