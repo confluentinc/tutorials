@@ -24,7 +24,7 @@ If you need to create the Confluent Cloud infrastructure needed to run this tuto
 confluent plugin install confluent-flink-quickstart
 ```
 
-Run the Flink quick start plugin as follows to create the Confluent Cloud resources needed for this tutorial and generate a Table API client configuration file. Note that you may specify a different cloud provider (`gcp` or `azure`) or region. You can find supported regions in a given cloud provider by running `confluent flink region list --cloud <CLOUD>`.
+Run the plugin as follows to create the Confluent Cloud resources needed for this tutorial and generate a Table API client configuration file. Note that you may specify a different cloud provider (`gcp` or `azure`) or region. You can find supported regions in a given cloud provider by running `confluent flink region list --cloud <CLOUD>`.
 
 ```shell
 confluent flink quickstart \
@@ -55,7 +55,7 @@ EnvironmentSettings envSettings = ConfluentSettings.fromResource("/cloud.propert
 TableEnvironment tableEnv = TableEnvironment.create(envSettings);
 ```
 
-Let's filter one of Confluent Cloud's built-in example tables. These reside in the read-only `marketplace` database of the `examples` catalog. The source code in this example uses The Table API's [`Table.filter`](https://docs.confluent.io/cloud/current/flink/reference/functions/table-api-functions.html#table-interface-sql-equivalents) method to find orders greater than or equal to 50 (we also could have used the equivalent [`Table.where`](https://docs.confluent.io/cloud/current/flink/reference/functions/table-api-functions.html#table-interface-sql-equivalents) method):
+Let's filter one of Confluent Cloud's example tables. You can find these tables in the read-only `marketplace` database of the `examples` catalog. The source code in this example uses the Table API's [`Table.filter`](https://docs.confluent.io/cloud/current/flink/reference/functions/table-api-functions.html#table-interface-sql-equivalents) method to find orders greater than or equal to 50 (we also could have used the equivalent [`Table.where`](https://docs.confluent.io/cloud/current/flink/reference/functions/table-api-functions.html#table-interface-sql-equivalents) method):
 
 ```java
 TableResult tableResult = tableEnv.from("examples.marketplace.orders")
@@ -64,7 +64,7 @@ TableResult tableResult = tableEnv.from("examples.marketplace.orders")
     .execute();
 ```
 
-Given the table result, we can then materialize (in memory) the rows in the resulting stream by calling [`ConfluentTools.collectMaterialized`](https://docs.confluent.io/cloud/current/flink/reference/table-api.html#confluenttools-collect-materialized-and-confluenttools-print-materialized) or [`ConfluentTools.printMaterialized`](https://docs.confluent.io/cloud/current/flink/reference/table-api.html#confluenttools-collect-materialized-and-confluenttools-print-materialized). This line materializes 5 rows from the table:
+Given the table result, we can then materialize (in memory) the rows in the resulting stream by calling [`ConfluentTools.collectMaterialized`](https://docs.confluent.io/cloud/current/flink/reference/table-api.html#confluenttools-collect-materialized-and-confluenttools-print-materialized) or [`ConfluentTools.printMaterialized`](https://docs.confluent.io/cloud/current/flink/reference/table-api.html#confluenttools-collect-materialized-and-confluenttools-print-materialized). This line materializes and prints 5 rows from the table:
 
 ```java
 ConfluentTools.printMaterialized(tableResult, 5);
