@@ -11,6 +11,8 @@ In the VS Code Activity Bar, click the Confluent icon.
 
 If you have many extensions installed, you may need to click … to access 'Additional Views' and select 'Confluent' from the context menu.
 
+### Instructions For Use With Confluent Cloud
+
 ![Activity Bar Selection via Additional Views](https://raw.githubusercontent.com/confluentinc/tutorials/master/vscode-produce-and-consume/img/via-views.png)
 
 In the Side Bar, click 'Connect to Confluent Cloud', and in the permission dialog, click 'Allow'.
@@ -35,7 +37,13 @@ Next, create a Basic Kafka cluster by following [these steps](https://docs.confl
 
 Select 'Topics' from the navigation menu in Confluent Cloud, then select 'Create topic' with name `test-topic`.
 
-Return to VS Code and confirm that your Confluent Cloud resources are displayed in the Side Bar.
+Return to VS Code and confirm that your Confluent Cloud resources are displayed in the Side Bar. Next up, skip the instructions under 'Instructions For Use With A Local Cluster' below and navigate to 'Produce Your Message'. 
+
+### Instructions For Use With A Local Cluster
+
+In the Sidebar, next to 'local', click the play button. Select 'Kafka', then select 1 broker. Once the container is ready you can create a topic. Under the Sidebar > Topics section, click the "Create Topic" button and give it the name `test-topic`. You can now produce a message using the following steps. 
+
+### Produce Your Message
 
 Create the following file named `message.json` in your folder:
 
