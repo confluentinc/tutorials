@@ -41,7 +41,7 @@ Return to VS Code and confirm that your Confluent Cloud resources are displayed 
 
 ### Instructions For Use With A Local Cluster
 
-In the Sidebar, next to 'local', click the play button. Select 'Kafka', then select 1 broker. Once the container is ready you can create a topic. Under the Sidebar > Topics section, click the "Create Topic" button and give it the name `test-topic`. You can now produce a message using the following steps. 
+In the Side Bar, next to 'local', click the play button. Select 'Kafka', then select 1 broker. Once the container is ready you can create a topic. Under the Side Bar > Topics section, click the "Create Topic" button and give it the name `test-topic`. You can now produce a message using the following steps. 
 
 ### Produce Your Message
 
