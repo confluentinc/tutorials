@@ -1,9 +1,21 @@
-<!-- title: How to create UDFs with Confluent for VS Code -->
+<!-- title: How to use Confluent for VS Code to create a sample Java UDF in Confluent Cloud for Apache Flink -->
 <!-- description: In this tutorial, learn how to develop, upload, register and execute Flink UDFs with Confluent for VS Code, with step-by-step instructions. -->
 
-# VSCode Flink UDFs
+# How to use Confluent for VS Code to create a sample Java UDF in Confluent Cloud for Apache Flink
 
-[Install Confluent for VS Code](https://docs.confluent.io/cloud/current/client-apps/vs-code-extension.html).
+In this tutorial, you'll follow along step-by-step to build a Java UDF, then deploy it in Confluent Cloud for Apache Flink. 
+
+## Pre-requisites
+
+1. You will need a Confluent Cloud [account](https://www.confluent.io/confluent-cloud/tryfree/) if you haven't got one already. 
+
+2. [Install Confluent for VS Code](https://docs.confluent.io/cloud/current/client-apps/vs-code-extension.html).
+
+3. Get [Java version 11 or 17](https://www.oracle.com/java/technologies/).
+
+4. You will also need to [install Maven](https://maven.apache.org/).
+
+## Build and Deploy UDFs
 
 In the VS Code Activity Bar, click the Confluent icon.
 
@@ -17,7 +29,7 @@ In the Side Bar, click 'Connect to Confluent Cloud', and in the permission dialo
 
 ![Connect to Confluent Cloud](https://raw.githubusercontent.com/confluentinc/tutorials/master/vscode-produce-and-consume/img/connect-to-cc.png)
 
-![Allow opening in new window](https://raw.githubusercontent.com/confluentinc/tutorials/master/vscode-ccloud-quickstart/img/new-window.png)
+![Allow opening in new window](https://raw.githubusercontent.com/confluentinc/tutorials/master/vscode-produce-and-consume/img/new-window.png)
 
 The web browser opens to the Confluent Cloud login page.
 
@@ -38,8 +50,6 @@ While that pool is provisioning, return to your editor and confirm that your Con
 Next, click on "Support" in the sidebar and then "Generate Project From Template". Search "UDFs" and select the Flink UDF template and select your desired directory. 
 
 Navigate to the directory you generate the template in. Time to build the examples!
-
-## Building the examples
 
 First, generate the maven wrapper jar:
 
@@ -70,7 +80,6 @@ For example:
 ```shell
 > find . -wholename '*/target/*jar' | grep -v original
 ./udfs-simple/target/udfs-simple-1.0.0.jar
-./udfs-with-dependencies/target/udfs-with-dependencies-1.0.0.jar
 ```
 
 You should then upload the jars to Confluent Cloud, and create a UDF in your catalog.
@@ -80,7 +89,7 @@ More details on how to do that can be found
 Here's an example of the command you'd run to register the function in your Flink workspace once you've uploaded the artifact following the instructions above:
 
 ```sql
-CREATE FUNCTION my_udf
+CREATE FUNCTION sum_integers
 AS 'io.confluent.udf.examples.log.LogSumScalarFunction'
 USING JAR 'confluent-artifact://cfa-v7r61n';
 ```
@@ -89,5 +98,5 @@ Remember to replace `cfa-v7r61n` with your own artifact id.
 Then you can test the function by running this statement:
 
 ```sql
-SELECT my_udf(CAST(5 AS INT), CAST(3 AS INT));
+SELECT sum_integers(CAST(5 AS INT), CAST(3 AS INT));
 ```
