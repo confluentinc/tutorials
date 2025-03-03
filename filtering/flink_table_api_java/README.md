@@ -86,7 +86,7 @@ try (CloseableIterator<Row> it = tableResult.collect()) {
 You can run the example program directly in your IDE by opening the Gradle project located at `filtering/flink_table_api_java/`, or via the command line from the top-level `tutorials` directory:
 
 ```shell
-./gradlew filtering:flink_table_api:java:run
+./gradlew filtering:flink_table_api_java:run
 ```
 
 The program will output 5 rows materialized via `printMaterialized`, and then 5 prices from iterating over the table result. Note that the same `TableResult` (and its underlying iterator) is used, so the first five prices won't match the last five prices. The output will look like this:
