@@ -1,9 +1,11 @@
-<!-- title: How to aggregate Kafka messages over tumbling windows in Java using Flink's Table API for Confluent Cloud -->
-<!-- description: In this tutorial, learn how to aggregate Kafka messages over tumbling windows in Java using Flink's Table API for Confluent Cloud, with step-by-step instructions and supporting code. -->
+<!-- title: How to aggregate Kafka messages over sliding or hopping windows in Java using Flink's Table API for Confluent Cloud -->
+<!-- description: In this tutorial, learn how to aggregate Kafka messages over sliding or hopping windows in Java using Flink's Table API for Confluent Cloud, with step-by-step instructions and supporting code. -->
 
-# How to aggregate Kafka messages over tumbling windows in Java using Flink's Table API for Confluent Cloud
+# How to aggregate Kafka messages over sliding or hopping windows in Java using Flink's Table API for Confluent Cloud
 
-In this tutorial, you will learn how to aggregate messages over tumbling windows using Flink's Table API. Tumbling windows are fixed-size, non-overlapping, and contiguous time intervals.
+In this tutorial, you will learn how to aggregate messages over sliding or hopping windows. This kind of window is fixed-size with an advance that may be smaller than the window size (unlike tumbling windows, where the advance equals the window size). Due to that fact that the advance is smaller than the window size, hopping windows contains overlapping results (i.e., the same event can be included in multiple consecutive hopping windows).
+
+Note that Flink refers to these windows as either sliding or hopping windows depending on the API: in Flink SQL the relevant windowing table-valued function is [`HOP`](https://nightlies.apache.org/flink/flink-docs-stable/docs/dev/table/sql/queries/window-tvf/#hop), while in the Table API you construct a sliding window object fluently with the [`Slide`](https://nightlies.apache.org/flink/flink-docs-stable/api/java/org/apache/flink/table/api/Slide.html) class.
 
 ## Prerequisites
 
@@ -18,7 +20,7 @@ In this tutorial, you will learn how to aggregate messages over tumbling windows
 
 ## Provision Confluent Cloud infrastructure
 
-If you already have the Confluent Cloud resources required to populate a Table API client configuration file, e.g., from running a different tutorial, you may skip to the [next step](#inspect-the-code) after creating or copying the properties file as documented [here](https://docs.confluent.io/cloud/current/flink/reference/table-api.html#properties-file) to `tumbling-windows/flink_table_api_java/src/main/resources/cloud.properties` within the top-level `tutorials` directory.
+If you already have the Confluent Cloud resources required to populate a Table API client configuration file, e.g., from running a different tutorial, you may skip to the [next step](#inspect-the-code) after creating or copying the properties file as documented [here](https://docs.confluent.io/cloud/current/flink/reference/table-api.html#properties-file) to `hopping-windows/flink_table_api_java/src/main/resources/cloud.properties` within the top-level `tutorials` directory.
 
 If you need to create the Confluent Cloud infrastructure needed to run this tutorial, the `confluent-flink-quickstart` CLI plugin creates the resources that you need to get started with Confluent Cloud for Apache Flink. Install it by running:
 
@@ -34,7 +36,7 @@ confluent flink quickstart \
     --max-cfu 10 \
     --region us-east-1 \
     --cloud aws \
-    --table-api-client-config-file ./tumbling-windows/flink_table_api_java/src/main/resources/cloud.properties
+    --table-api-client-config-file ./hopping-windows/flink_table_api_java/src/main/resources/cloud.properties
 ```
 
 The plugin should complete in under a minute and will generate a properties file as documented [here](https://docs.confluent.io/cloud/current/flink/reference/table-api.html#properties-file).
@@ -43,26 +45,27 @@ The plugin should complete in under a minute and will generate a properties file
 
 ### Dependencies
 
-Before digging into Java source code, first check out the two dependencies required to use the Flink Table API for Confluent Cloud. These are defined in the `dependencies` section of the `tumbling-windows/flink_table_api_java/build.gradle` file. (For Maven, see the analogous `pom.xml` snippet [here](https://docs.confluent.io/cloud/current/flink/reference/table-api.html#add-the-table-api-to-an-existing-java-project).)
+Before digging into Java source code, first check out the two dependencies required to use the Flink Table API for Confluent Cloud. These are defined in the `dependencies` section of the `hopping-windows/flink_table_api_java/build.gradle` file. (For Maven, see the analogous `pom.xml` snippet [here](https://docs.confluent.io/cloud/current/flink/reference/table-api.html#add-the-table-api-to-an-existing-java-project).)
 
 * `org.apache.flink:flink-table-api-java`: This is the Apache Flink Table API implementation dependency. It contains, for example, the classes implementing the Table API DSL (domain-specific language).
 * `io.confluent.flink:confluent-flink-table-api-java-plugin`: This dependency contains the "glue" for instantiating an Apache Flink Table API table environment against Confluent Cloud (i.e., an implementation of the [`org.apache.flink.table.api.TableEnvironment`](https://nightlies.apache.org/flink/flink-docs-stable/api/java/org/apache/flink/table/api/TableEnvironment.html) interface), as well as other helper utilities that we will use in this tutorial.
 
 ### Java source
 
-Take a look at the source code in `tumbling-windows/flink_table_api_java/FlinkTableApiTumblingWindows.java`. These two lines instantiate a table environment for executing Table API programs against Confluent Cloud:
+Take a look at the source code in `hopping-windows/flink_table_api_java/FlinkTableApiHoppingWindows.java`. These two lines instantiate a table environment for executing Table API programs against Confluent Cloud:
 
 ```java
 EnvironmentSettings envSettings = ConfluentSettings.fromResource("/cloud.properties");
 TableEnvironment tableEnv = TableEnvironment.create(envSettings);
 ```
 
-Let's aggregate one of Confluent Cloud's example tables. You can find these tables in the read-only `marketplace` database of the `examples` catalog. The source code in this example uses the Table API's [`Table.window`](https://nightlies.apache.org/flink/flink-docs-stable/api/java/org/apache/flink/table/api/Table.html#window-org.apache.flink.table.api.GroupWindow-) and [`GroupWindowedTable.groupBy`](https://nightlies.apache.org/flink/flink-docs-stable/api/java/org/apache/flink/table/api/GroupWindowedTable.html) methods to aggregate over 2 second windows. The aggregation is a simple `count()`.
+Let's aggregate one of Confluent Cloud's example tables. You can find these tables in the read-only `marketplace` database of the `examples` catalog. The source code in this example uses the Table API's [`Table.window`](https://nightlies.apache.org/flink/flink-docs-stable/api/java/org/apache/flink/table/api/Table.html#window-org.apache.flink.table.api.GroupWindow-) and [`GroupWindowedTable.groupBy`](https://nightlies.apache.org/flink/flink-docs-stable/api/java/org/apache/flink/table/api/GroupWindowedTable.html) methods to aggregate over 2 second windows that advance every second. The aggregation is a simple `count()`.
 
 ```java
 TableResult tableResult = tableEnv.from("examples.marketplace.orders")
     .window(
-            Tumble.over(lit(2).seconds())
+            Slide.over(lit(2).seconds())
+                    .every(lit(1).seconds())
                     .on($("$rowtime"))
                     .as("window")
     ).groupBy(
@@ -96,25 +99,25 @@ try (CloseableIterator<Row> it = tableResult.collect()) {
 
 ## Run the program
 
-You can run the example program directly in your IDE by opening the Gradle project located at `tumbling-windows/flink_table_api_java/`, or via the command line from the top-level `tutorials` directory:
+You can run the example program directly in your IDE by opening the Gradle project located at `hopping-windows/flink_table_api_java/`, or via the command line from the top-level `tutorials` directory:
 
 ```shell
-./gradlew tumbling-windows:flink_table_api_java:run
+./gradlew hopping-windows:flink_table_api_java:run
 ```
 
-The program will output 2 rows materialized via `printMaterialized`, and then an additional count and window start and end. Note that the same `TableResult` (and its underlying iterator) is used, so the last window that is printed comes right after the first two windows printed.
+The program will output 2 rows materialized via `printMaterialized`, and then an additional count and window start and end. Note that the same `TableResult` (and its underlying iterator) is used, so the last two windows that are printed come right after the first two windows printed. The output will look like this:
 
 ```noformat
 +-------+-------------------------+-------------------------+
 | count |            window_start |              window_end |
 +-------+-------------------------+-------------------------+
-|    51 | 2025-03-03 10:28:18.000 | 2025-03-03 10:28:20.000 |
-|   102 | 2025-03-03 10:28:20.000 | 2025-03-03 10:28:22.000 |
+|    90 | 2025-03-18 09:42:58.000 | 2025-03-18 09:43:00.000 |
+|   141 | 2025-03-18 09:42:59.000 | 2025-03-18 09:43:01.000 |
 +-------+-------------------------+-------------------------+
 2 rows in set
-100
-2025-03-03T10:28:22
-2025-03-03T10:28:24
+102
+2025-03-18T09:43
+2025-03-18T09:43:02
 ```
 
 ## Tear down Confluent Cloud infrastructure
@@ -145,5 +148,5 @@ confluent api-key delete <KEY>
 Finally, for the sake of housekeeping, delete the Table API client configuration file:
 
 ```shell
-rm tumbling-windows/flink_table_api_java/src/main/resources/cloud.properties
+rm hopping-windows/flink_table_api_java/src/main/resources/cloud.properties
 ```

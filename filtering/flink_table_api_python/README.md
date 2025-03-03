@@ -56,7 +56,7 @@ table_result = env.from_path("examples.marketplace.orders") \
     .execute()
 ```
 
-Given the table result, we can then materialize (in memory) the rows in the resulting stream by calling [`ConfluentTools.collect_materialized_limit`](https://docs.confluent.io/cloud/current/flink/reference/table-api.html#confluenttools-collect-materialized-and-confluenttools-print-materialized) or [`ConfluentTools.print_materialized_limit`](https://docs.confluent.io/cloud/current/flink/reference/table-api.html#confluenttools-collect-materialized-and-confluenttools-print-materialized). This line materializes and prints 5 rows from the table:
+Given the table result, we can then materialize (in memory) the rows in the resulting stream by calling [`ConfluentTools.collect_materialized_limit`](https://docs.confluent.io/cloud/current/flink/reference/table-api.html#confluenttools-collect-materialized-and-confluenttools-print-materialized) or [`ConfluentTools.print_materialized_limit`](https://docs.confluent.io/cloud/current/flink/reference/table-api.html#confluenttools-collect-materialized-and-confluenttools-print-materialized). This line materializes and prints 5 rows from the table result:
 
 ```python
 ConfluentTools.print_materialized_limit(table_result, 5)

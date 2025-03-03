@@ -1,7 +1,7 @@
-<!-- title: How to aggregate Kafka messages over tumbling windows in Python using Flink's Table API for Confluent Cloud -->
-<!-- description: In this tutorial, learn how to aggregate Kafka messages over tumbling windows in Python using Flink's Table API for Confluent Cloud, with step-by-step instructions and supporting code. -->
+<!-- title: How to aggregate Kafka messages over sliding or hopping windows in Python using Flink's Table API for Confluent Cloud -->
+<!-- description: In this tutorial, learn how to aggregate Kafka messages over sliding or hopping windows in Python using Flink's Table API for Confluent Cloud, with step-by-step instructions and supporting code. -->
 
-# How to aggregate Kafka messages over tumbling windows in Python using Flink's Table API for Confluent Cloud
+# How to aggregate Kafka messages over sliding or hopping windows in Python using Flink's Table API for Confluent Cloud
 
 ## Prerequisites
 
@@ -17,7 +17,7 @@
 
 ## Provision Confluent Cloud infrastructure
 
-If you already have the Confluent Cloud resources required to populate a Table API client configuration file, e.g., from running a different tutorial, you may skip to the [next step](#inspect-the-code) after creating or copying the properties file as documented [here](https://docs.confluent.io/cloud/current/flink/reference/table-api.html#properties-file) to `tumbling-windows/flink_table_api_python/cloud.properties` within the top-level `tutorials` directory.
+If you already have the Confluent Cloud resources required to populate a Table API client configuration file, e.g., from running a different tutorial, you may skip to the [next step](#inspect-the-code) after creating or copying the properties file as documented [here](https://docs.confluent.io/cloud/current/flink/reference/table-api.html#properties-file) to `hopping-windows/flink_table_api_python/cloud.properties` within the top-level `tutorials` directory.
 
 If you need to create the Confluent Cloud infrastructure needed to run this tutorial, the `confluent-flink-quickstart` CLI plugin creates the resources that you need to get started with Confluent Cloud for Apache Flink. Install it by running:
 
@@ -33,26 +33,27 @@ confluent flink quickstart \
     --max-cfu 10 \
     --region us-east-1 \
     --cloud aws \
-    --table-api-client-config-file ./tumbling-windows/flink_table_api_python/cloud.properties
+    --table-api-client-config-file ./hopping-windows/flink_table_api_python/cloud.properties
 ```
 
 The plugin should complete in under a minute and will generate a properties file as documented [here](https://docs.confluent.io/cloud/current/flink/reference/table-api.html#properties-file).
 
 ## Inspect the code
 
-Take a look at the source code in `tumbling-windows/flink_table_api_python/tumbling-windows.py`. These two lines instantiate a table environment for executing Table API programs against Confluent Cloud:
+Take a look at the source code in `hopping-windows/flink_table_api_python/hopping-windows.py`. These two lines instantiate a table environment for executing Table API programs against Confluent Cloud:
 
 ```python
 settings = ConfluentSettings.from_file("./cloud.properties")
 env = TableEnvironment.create(settings)
 ```
 
-Let's aggregate one of Confluent Cloud's example tables. You can find these tables in the read-only `marketplace` database of the `examples` catalog. The source code in this example uses the Table API's [`Table.window`](https://nightlies.apache.org/flink/flink-docs-stable/api/python/reference/pyflink.table/api/pyflink.table.Table.window.html#pyflink.table.Table.window) (over a [`Tumble`](https://nightlies.apache.org/flink/flink-docs-stable/api/python/reference/pyflink.table/window.html#tumble-window) window) and [`GroupWindowedTable.group_by`](https://nightlies.apache.org/flink/flink-docs-stable/api/python/reference/pyflink.table/api/pyflink.table.GroupWindowedTable.group_by.html#pyflink.table.GroupWindowedTable.group_by) methods to aggregate over 2 second windows. The aggregation is a simple `count`.
+Let's aggregate one of Confluent Cloud's example tables. You can find these tables in the read-only `marketplace` database of the `examples` catalog. The source code in this example uses the Table API's [`Table.window`](https://nightlies.apache.org/flink/flink-docs-stable/api/python/reference/pyflink.table/api/pyflink.table.Table.window.html#pyflink.table.Table.window) (over a [`Slide`](https://nightlies.apache.org/flink/flink-docs-stable/api/python/reference/pyflink.table/window.html#sliding-window) window) and [`GroupWindowedTable.group_by`](https://nightlies.apache.org/flink/flink-docs-stable/api/python/reference/pyflink.table/api/pyflink.table.GroupWindowedTable.group_by.html#pyflink.table.GroupWindowedTable.group_by) methods to aggregate over 2 second windows that advance every second. The aggregation is a simple `count`.
 
 ```python
 table_result = env.from_path("examples.marketplace.orders") \
     .window(
-        Tumble.over(lit(2).seconds)
+        Slide.over(lit(2).seconds)
+            .every(lit(1).seconds)
             .on(col('$rowtime'))
             .alias('window')
     ) \
@@ -87,7 +88,7 @@ with table_result.collect() as rows:
 In order to run the program, first create a Python virtual environment in which to install the required dependencies. E.g., run the following commands to use the `venv` module. _Note: use `python3` and `pip3` in the following commands if `python` and `pip` refer to Python 2 on your system._
 
 ```shell
-cd tumbling-windows/flink_table_api_python/
+cd hopping-windows/flink_table_api_python/
 python -m venv venv; source ./venv/bin/activate;
 ```
 
@@ -97,23 +98,24 @@ Install the `confluent-flink-table-api-python-plugin` package:
 pip install confluent-flink-table-api-python-plugin
 ```
 
-You can run the example program directly in your IDE by opening the project located at `tumbling-windows/flink_table_api_python/`, or via the command line:
+You can run the example program directly in your IDE by opening the project located at `hopping-windows/flink_table_api_python/`, or via the command line:
 
 ```shell
-python tumbling-windows.py
+python hopping-windows.py
 ```
 
-The program will output 2 rows materialized via [`print_materialized_limit`](https://docs.confluent.io/cloud/current/flink/reference/table-api.html#confluenttools-collect-materialized-and-confluenttools-print-materialized), and then the next window's count directly via the table result. Note that the same [`TableResult`](https://nightlies.apache.org/flink/flink-docs-stable/api/python/reference/pyflink.table/statement_set.html#tableresult) (and its underlying iterator) is used, so the last window that is printed comes right after the first two windows printed. The output will look like this:
+The program will output 2 rows materialized via [`print_materialized_limit`](https://docs.confluent.io/cloud/current/flink/reference/table-api.html#confluenttools-collect-materialized-and-confluenttools-print-materialized), and then the next window's count directly via the table result. Note that the same [`TableResult`](https://nightlies.apache.org/flink/flink-docs-stable/api/python/reference/pyflink.table/statement_set.html#tableresult) (and its underlying iterator) is used, so the last two windows that are printed come right after the first two windows printed. The output will look like this:
 
 ```noformat
 +-------+-------------------------+-------------------------+
 | count |            window_start |              window_end |
 +-------+-------------------------+-------------------------+
-|    31 | 2025-03-03 11:23:14.000 | 2025-03-03 11:23:16.000 |
-|   103 | 2025-03-03 11:23:16.000 | 2025-03-03 11:23:18.000 |
+|    44 | 2025-03-18 09:45:35.000 | 2025-03-18 09:45:37.000 |
+|    95 | 2025-03-18 09:45:36.000 | 2025-03-18 09:45:38.000 |
 +-------+-------------------------+-------------------------+
 2 rows in set
-count: 100, window start: 2025-03-03 11:23:18, window end: 2025-03-03 11:23:20
+count: 101, window start: 2025-03-18 09:45:37, window end: 2025-03-18 09:45:39
+count: 100, window start: 2025-03-18 09:45:38, window end: 2025-03-18 09:45:40
 ```
 
 ## Tear down Confluent Cloud infrastructure
@@ -144,5 +146,5 @@ confluent api-key delete <KEY>
 Finally, for the sake of housekeeping, delete the Table API client configuration file:
 
 ```shell
-rm tumbling-windows/flink_table_api_python/cloud.properties
+rm hopping-windows/flink_table_api_python/cloud.properties
 ```
