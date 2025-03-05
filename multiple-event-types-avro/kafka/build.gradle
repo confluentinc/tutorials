@@ -3,44 +3,44 @@ buildscript {
         mavenCentral()
         gradlePluginPortal()
         maven {
-            url = "https://packages.confluent.io/maven/"
+            url = 'https://packages.confluent.io/maven/'
         }
         maven {
-            url = "https://jitpack.io"
+            url = 'https://jitpack.io'
         }
     }
     dependencies {
-        classpath "gradle.plugin.com.github.jengelman.gradle.plugins:shadow:7.0.0"
+        classpath 'gradle.plugin.com.github.jengelman.gradle.plugins:shadow:7.0.0'
     }
 }
 
 plugins {
-    id "java"
-    id "com.google.cloud.tools.jib" version "3.3.1"
-    id "idea"
-    id "eclipse"
-    id "com.github.imflog.kafka-schema-registry-gradle-plugin" version "1.13.0"
-    id "com.github.davidmc24.gradle.plugin.avro" version "1.9.1"
+    id 'java'
+    id 'com.google.cloud.tools.jib' version '3.3.1'
+    id 'idea'
+    id 'eclipse'
+    id 'com.github.imflog.kafka-schema-registry-gradle-plugin' version '1.13.0'
+    id 'com.github.davidmc24.gradle.plugin.avro' version '1.9.1'
 }
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
 }
-version = "0.0.1"
+version = '0.0.1'
 
 repositories {
     mavenCentral()
 
     maven {
-        url "https://packages.confluent.io/maven"
+        url 'https://packages.confluent.io/maven'
     }
 }
 
-apply plugin: "com.github.johnrengelman.shadow"
+apply plugin: 'com.github.johnrengelman.shadow'
 
 dependencies {
-    implementation "org.slf4j:slf4j-simple:2.0.7"
+    implementation 'org.slf4j:slf4j-simple:2.0.7'
     implementation('org.apache.kafka:kafka-clients') {
         version {
             strictly '4.0.0'
@@ -48,7 +48,7 @@ dependencies {
     }
     implementation 'org.apache.kafka:kafka-streams:4.0.0'
     implementation 'org.apache.avro:avro:1.11.1'
-    implementation "io.confluent:kafka-avro-serializer:7.5.1"
+    implementation 'io.confluent:kafka-avro-serializer:7.5.1'
     testImplementation 'com.google.guava:guava:31.1-jre'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
@@ -62,32 +62,32 @@ test {
     testLogging {
         outputs.upToDateWhen { false }
         showStandardStreams = true
-        exceptionFormat = "full"
+        exceptionFormat = 'full'
     }
 }
 
 jar {
   manifest {
     attributes(
-      "Class-Path": configurations.compileClasspath.collect { it.getName() }.join(" "),
-      "Main-Class": "io.confluent.developer.MultiEventAvroProduceConsumeApp"
+      'Class-Path': configurations.compileClasspath.collect { it.getName() }.join(' '),
+      'Main-Class': 'io.confluent.developer.MultiEventAvroProduceConsumeApp'
     )
   }
 }
 
 shadowJar {
-    archiveBaseName = "multiple-event-types-avro-standalone"
+    archiveBaseName = 'multiple-event-types-avro-standalone'
     archiveClassifier = ''
 }
 
 schemaRegistry {
     def props = new Properties()
-    def configs = file("cloud.properties")
+    def configs = file('cloud.properties')
     if (configs.exists()) {
         configs.withInputStream { props.load(it) }
-        def srUrl = props.getProperty("schema.registry.url")
-        def auth = props.getProperty("basic.auth.user.info").split(":")
-        println "Using Confluent properties Schema Registry endpoint:${srUrl}, username:${auth[0]},password:${auth[1]}"
+        def srUrl = props.getProperty('schema.registry.url')
+        def auth = props.getProperty('basic.auth.user.info').split(':')
+        println 'Using Confluent properties Schema Registry endpoint:${srUrl}, username:${auth[0]},password:${auth[1]}'
 
         url = srUrl
 
@@ -97,23 +97,23 @@ schemaRegistry {
             // password is everything after ':' in the basic.auth.user.info property
             password = auth[1]
         }
-    } else if (file("local.properties").exists()) {
-        configs = file("local.properties")
+    } else if (file('local.properties').exists()) {
+        configs = file('local.properties')
         configs.withInputStream { props.load(it) }
-        def srUrl = props.getProperty("schema.registry.url")
-        println "Using local dev properties Schema Registry endpoint:${srUrl}"
+        def srUrl = props.getProperty('schema.registry.url')
+        println 'Using local dev properties Schema Registry endpoint:${srUrl}'
     } else {
-        println "No configs to parse yet"
+        println 'No configs to parse yet'
     }
 
-    // Possible types are ["JSON", "PROTOBUF", "AVRO"]
+    // Possible types are ['JSON', 'PROTOBUF', 'AVRO']
     register {
         // paths relative to top level
         subject('pageview', 'multiple-event-types-avro/kafka/src/main/avro/pageview.avsc', 'AVRO')
         subject('purchase', 'multiple-event-types-avro/kafka/src/main/avro/purchase.avsc', 'AVRO')
         subject('avro-events-value', 'multiple-event-types-avro/kafka/src/main/avro/all-events.avsc', 'AVRO')
-                .addReference("io.confluent.developer.avro.Pageview", "pageview", 1)
-                .addReference("io.confluent.developer.avro.Purchase", "purchase", 1)
+                .addReference('io.confluent.developer.avro.Pageview', 'pageview', 1)
+                .addReference('io.confluent.developer.avro.Purchase', 'purchase', 1)
     }
 
 }

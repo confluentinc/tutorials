@@ -12,7 +12,7 @@ allprojects {
     repositories {
         mavenCentral()
         maven {
-            url = uri("https://repository.apache.org/content/groups/staging/")
+            url = uri('https://repository.apache.org/content/groups/staging/')
         }
         maven { url 'https://packages.confluent.io/maven/' }
     }
@@ -33,8 +33,8 @@ subprojects {
     tasks.withType(Test) {
         testLogging {
             outputs.upToDateWhen { false }
-            events "PASSED", "SKIPPED", "FAILED", "STANDARD_OUT", "STANDARD_ERROR"
-            exceptionFormat = "full"
+            events 'PASSED', 'SKIPPED', 'FAILED', 'STANDARD_OUT', 'STANDARD_ERROR'
+            exceptionFormat = 'full'
         }
     }
 }
