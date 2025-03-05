@@ -31,7 +31,7 @@ public class KafkaPrimalityRouterTest {
     @Test
     public void testPrimalityRouter() {
 
-        try (KafkaContainer kafka = new KafkaContainer(DockerImageName.parse("apache/kafka-native:3.8.0"))) {
+        try (KafkaContainer kafka = new KafkaContainer(DockerImageName.parse("apache/kafka-native:4.0.0-rc1"))) {
             kafka.start();
 
             // kick off application main method in a thread
