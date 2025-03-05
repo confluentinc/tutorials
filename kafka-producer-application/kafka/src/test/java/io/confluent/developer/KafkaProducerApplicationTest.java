@@ -34,7 +34,7 @@ public class KafkaProducerApplicationTest {
     @BeforeEach
     public void setupEach() {
         final StringSerializer stringSerializer = new StringSerializer();
-        mockProducer = new MockProducer<>(true, stringSerializer, stringSerializer);
+        mockProducer = new MockProducer<>(true, null, stringSerializer, stringSerializer);
     }
 
     @Test

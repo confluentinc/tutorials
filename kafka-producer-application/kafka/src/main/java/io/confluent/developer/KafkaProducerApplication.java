@@ -1,7 +1,12 @@
 package io.confluent.developer;
 
 
-import org.apache.kafka.clients.producer.*;
+import org.apache.kafka.clients.producer.Callback;
+import org.apache.kafka.clients.producer.KafkaProducer;
+import org.apache.kafka.clients.producer.Producer;
+import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.clients.producer.RecordMetadata;
 import org.apache.kafka.common.serialization.StringSerializer;
 
 import java.io.IOException;
@@ -44,7 +49,7 @@ public class KafkaProducerApplication {
         });
     }
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         if (args.length < 2) {
             throw new IllegalArgumentException(
                     "Usage: this program takes 2 arguments: \n" +

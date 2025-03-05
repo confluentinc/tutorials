@@ -61,22 +61,22 @@ public class ParallelConsumerApplicationTest {
     expectedRecords.add("baz");
     final Set<String> actualRecords = new HashSet<>();
     Awaitility.await()
-        .atMost(5, SECONDS)
-        .pollInterval(Duration.ofSeconds(1))
-        .until(() -> {
-          actualRecords.clear();
-          actualRecords.addAll(Files.readAllLines(tempFilePath));
-          return actualRecords.size() == 3;
-        });
+            .atMost(5, SECONDS)
+            .pollInterval(Duration.ofSeconds(1))
+            .until(() -> {
+              actualRecords.clear();
+              actualRecords.addAll(Files.readAllLines(tempFilePath));
+              return actualRecords.size() == 3;
+            });
     assertEquals(actualRecords, expectedRecords);
   }
 
   private ParallelStreamProcessor<String, String> setupParallelConsumer(MockConsumer<String, String> mockConsumer, final String topic) {
     ParallelConsumerOptions options = ParallelConsumerOptions.<String, String>builder()
-        .ordering(KEY) // <2>
-        .maxConcurrency(1000) // <3>
-        .consumer(mockConsumer)
-        .build();
+            .ordering(KEY) // <2>
+            .maxConcurrency(1000) // <3>
+            .consumer(mockConsumer)
+            .build();
 
     ParallelStreamProcessor<String, String> parallelConsumer = ParallelStreamProcessor.createEosStreamProcessor(options);
     parallelConsumer.subscribe(Collections.singletonList(topic));
