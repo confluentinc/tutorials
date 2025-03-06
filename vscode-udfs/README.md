@@ -100,3 +100,70 @@ Then you can test the function by running this statement:
 ```sql
 SELECT sum_integers(CAST(5 AS INT), CAST(3 AS INT));
 ```
+
+## Inspect the Code
+
+In the `pom.xml` you'll see the following:
+
+```xml
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-table-api-java</artifactId>
+            <scope>provided</scope>
+        </dependency>
+```
+
+This is vital to the execution of user-defined functions with Flink. This is where you'll get the base classes 
+you need to implement a UDF. If you look at `LogSumScalarFunction`, you'll see an import of the `ScalarFunction` class:
+
+```java
+import org.apache.flink.table.functions.ScalarFunction;
+```
+
+Then this class is extended to write the custom logging function below:
+
+```java
+/* This class is a SumScalar function that logs messages at different levels */
+public class LogSumScalarFunction extends ScalarFunction {
+
+    private static final Logger LOGGER = LogManager.getLogger();
+
+    public int eval(int a, int b) {
+        String value = String.format("SumScalar of %d and %d", a, b);
+        Date now = new Date();
+
+        // You can choose the logging level for log messages.
+        LOGGER.info(value + " info log messages by log4j logger --- " + now);
+        LOGGER.error(value + " error log messages by log4j logger --- " + now);
+        LOGGER.warn(value + " warn log messages by log4j logger --- " + now);
+        LOGGER.debug(value + " debug log messages by log4j logger --- " + now);
+        return a + b;
+    }
+}
+```
+
+In `Repeater`, you'll see the following:
+
+```java
+import org.apache.flink.table.annotation.DataTypeHint;
+import org.apache.flink.table.annotation.FunctionHint;
+import org.apache.flink.table.functions.TableFunction;
+```
+
+`Repeater` imports both annotations and functions in order to implement the table functions. In a similar pattern to scalar functions, the `TableFunction`
+class is extended in order to write the custom function below.
+
+```java
+@FunctionHint(output = @DataTypeHint("ROW<val INT>"))
+public class Repeater extends TableFunction<Row> {
+
+    public void eval(Integer number, Integer times) {
+        for (int i = 0; i < times; i++) {
+            // use collect(...) to emit a row
+            collect(Row.of(number));
+        }
+    }
+}
+```
+
