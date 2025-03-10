@@ -76,4 +76,4 @@ Click the produce button and select `message.json` from your files.
 
 Then you navigate to the message to see your message coming into the VSCode message viewer!
 
-![Producing A Message](https://raw.githubusercontent.com/confluentinc/tutorials/master/vscode-produce-and-consume/img/view-new-msg.png)
+![Viewing A Message](https://raw.githubusercontent.com/confluentinc/tutorials/master/vscode-produce-and-consume/img/view-new-msg.png)
