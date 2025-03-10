@@ -9,7 +9,7 @@ In this tutorial, you'll follow along step-by-step to build a Java UDF, then dep
 
 1. You will need a Confluent Cloud [account](https://www.confluent.io/confluent-cloud/tryfree/) if you haven't got one already. 
 
-2. [Install Confluent for VS Code](https://docs.confluent.io/cloud/current/client-apps/vs-code-extension.html).
+2. [Install Confluent for VS Code](https://marketplace.visualstudio.com/items?itemName=confluentinc.vscode-confluent).
 
 3. Get [Java version 11 or 17](https://openjdk.org/install/).
 
@@ -86,7 +86,7 @@ You should then upload the jars to Confluent Cloud, and create a UDF in your cat
 More details on how to do that can be found
 [here](https://docs.confluent.io/cloud/current/flink/how-to-guides/create-udf.html).
 
-Here's an example of the command you'd run to register the function in your Flink workspace once you've uploaded the artifact following the instructions above:
+Here's an example of the command you'd run to register the function in your Flink workspace once you've uploaded the artifact following the instructions above. This deploys your function:
 
 ```sql
 CREATE FUNCTION sum_integers
