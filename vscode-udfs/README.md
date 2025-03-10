@@ -5,13 +5,13 @@
 
 In this tutorial, you'll follow along step-by-step to build a Java UDF, then deploy it in Confluent Cloud for Apache Flink. 
 
-## Pre-requisites
+## Prerequisites
 
 1. You will need a Confluent Cloud [account](https://www.confluent.io/confluent-cloud/tryfree/) if you haven't got one already. 
 
 2. [Install Confluent for VS Code](https://docs.confluent.io/cloud/current/client-apps/vs-code-extension.html).
 
-3. Get [Java version 11 or 17](https://www.oracle.com/java/technologies/).
+3. Get [Java version 11 or 17](https://openjdk.org/install/).
 
 4. You will also need to [install Maven](https://maven.apache.org/).
 
@@ -106,7 +106,6 @@ SELECT sum_integers(CAST(5 AS INT), CAST(3 AS INT));
 In the `pom.xml` you'll see the following:
 
 ```xml
-    <dependencies>
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-table-api-java</artifactId>
@@ -121,7 +120,7 @@ you need to implement a UDF. If you look at `LogSumScalarFunction`, you'll see a
 import org.apache.flink.table.functions.ScalarFunction;
 ```
 
-Then this class is extended to write the custom logging function below:
+Then this class is extended to sum two numbers and log messages:
 
 ```java
 /* This class is a SumScalar function that logs messages at different levels */
@@ -142,28 +141,3 @@ public class LogSumScalarFunction extends ScalarFunction {
     }
 }
 ```
-
-In `Repeater`, you'll see the following:
-
-```java
-import org.apache.flink.table.annotation.DataTypeHint;
-import org.apache.flink.table.annotation.FunctionHint;
-import org.apache.flink.table.functions.TableFunction;
-```
-
-`Repeater` imports both annotations and functions in order to implement the table functions. In a similar pattern to scalar functions, the `TableFunction`
-class is extended in order to write the custom function below.
-
-```java
-@FunctionHint(output = @DataTypeHint("ROW<val INT>"))
-public class Repeater extends TableFunction<Row> {
-
-    public void eval(Integer number, Integer times) {
-        for (int i = 0; i < times; i++) {
-            // use collect(...) to emit a row
-            collect(Row.of(number));
-        }
-    }
-}
-```
-
