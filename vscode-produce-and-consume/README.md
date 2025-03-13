@@ -3,7 +3,7 @@
 
 # VSCode Produce And Consume
 
-[Install Confluent for VS Code](https://docs.confluent.io/cloud/current/client-apps/vs-code-extension.html).
+[Install Confluent for VS Code](https://marketplace.visualstudio.com/items?itemName=confluentinc.vscode-confluent).
 
 In the VS Code Activity Bar, click the Confluent icon.
 
@@ -74,6 +74,6 @@ Click the produce button and select `message.json` from your files.
 
 ![Producing A Message](https://raw.githubusercontent.com/confluentinc/tutorials/master/vscode-produce-and-consume/img/produce-a-msg.png)
 
-Navigate to the topics resource tab, click 'play', and see your message coming into the VSCode message viewer!
+Then you navigate to the message to see your message coming into the VSCode message viewer!
 
-![Viewing A Message](https://raw.githubusercontent.com/confluentinc/tutorials/master/vscode-produce-and-consume/img/see-messages.png)
+![Viewing A Message](https://raw.githubusercontent.com/confluentinc/tutorials/master/vscode-produce-and-consume/img/view-new-msg.png)
