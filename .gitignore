@@ -140,3 +140,5 @@ fabric.properties
 
 **/.DS_Store
 
+# Python virtual env
+**/venv/

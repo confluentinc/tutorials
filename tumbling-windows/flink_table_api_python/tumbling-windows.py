@@ -5,13 +5,13 @@ from pyflink.table.window import Tumble
 
 
 def tumbling_windows_example():
-    settings = ConfluentSettings.from_file("./cloud.properties")
+    settings = ConfluentSettings.from_file('./cloud.properties')
     env = TableEnvironment.create(settings)
 
     env.use_catalog('examples')
     env.use_database('marketplace')
 
-    table_result = env.from_path("examples.marketplace.orders") \
+    table_result = env.from_path('examples.marketplace.orders') \
         .window(
             Tumble.over(lit(2).seconds)
                 .on(col('$rowtime'))

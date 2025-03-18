@@ -26,4 +26,6 @@ repositories {
 dependencies {
   implementation 'org.apache.flink:flink-table-api-java:1.20.0'
   implementation 'io.confluent.flink:confluent-flink-table-api-java-plugin:1.20-50'
+  implementation 'org.slf4j:slf4j-api:2.0.17'
+  implementation 'org.slf4j:slf4j-simple:2.0.17'
 }

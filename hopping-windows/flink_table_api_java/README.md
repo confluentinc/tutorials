@@ -105,7 +105,7 @@ You can run the example program directly in your IDE by opening the Gradle proje
 ./gradlew hopping-windows:flink_table_api_java:run
 ```
 
-The program will output 2 rows materialized via `printMaterialized`, and then an additional count and window start and end. Note that the same `TableResult` (and its underlying iterator) is used, so the last two windows that are printed come right after the first two windows printed. The output will look like this:
+The program will output 2 rows materialized via `printMaterialized`, and then an additional count and window start and end. Note that the same `TableResult` (and its underlying iterator) is used, so the last windows that is printed comes right after the first two windows printed. The output will look like this:
 
 ```noformat
 +-------+-------------------------+-------------------------+
