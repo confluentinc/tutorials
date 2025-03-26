@@ -15,7 +15,7 @@ java {
 }
 
 application {
-  mainClass = "io.confluent.developer.FlinkTableApiFiltering"
+  mainClass = "io.confluent.developer.FlinkTableApiHoppingWindows"
 }
 
 repositories {

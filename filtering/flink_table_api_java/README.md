@@ -64,7 +64,7 @@ TableResult tableResult = tableEnv.from("examples.marketplace.orders")
     .execute();
 ```
 
-Given the table result, we can then materialize (in memory) the rows in the resulting stream by calling [`ConfluentTools.collectMaterialized`](https://docs.confluent.io/cloud/current/flink/reference/table-api.html#confluenttools-collect-materialized-and-confluenttools-print-materialized) or [`ConfluentTools.printMaterialized`](https://docs.confluent.io/cloud/current/flink/reference/table-api.html#confluenttools-collect-materialized-and-confluenttools-print-materialized). This line materializes and prints 5 rows from the table:
+Given the table result, we can then materialize (in memory) the rows in the resulting stream by calling [`ConfluentTools.collectMaterialized`](https://docs.confluent.io/cloud/current/flink/reference/table-api.html#confluenttools-collect-materialized-and-confluenttools-print-materialized) or [`ConfluentTools.printMaterialized`](https://docs.confluent.io/cloud/current/flink/reference/table-api.html#confluenttools-collect-materialized-and-confluenttools-print-materialized). This line materializes and prints 5 rows from the table result:
 
 ```java
 ConfluentTools.printMaterialized(tableResult, 5);
@@ -86,7 +86,7 @@ try (CloseableIterator<Row> it = tableResult.collect()) {
 You can run the example program directly in your IDE by opening the Gradle project located at `filtering/flink_table_api_java/`, or via the command line from the top-level `tutorials` directory:
 
 ```shell
-./gradlew filtering:flink_table_api:java:run
+./gradlew filtering:flink_table_api_java:run
 ```
 
 The program will output 5 rows materialized via `printMaterialized`, and then 5 prices from iterating over the table result. Note that the same `TableResult` (and its underlying iterator) is used, so the first five prices won't match the last five prices. The output will look like this:

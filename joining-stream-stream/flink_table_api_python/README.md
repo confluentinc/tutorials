@@ -1,7 +1,7 @@
-<!-- title: How to filter Kafka messages in Python using Flink's Table API for Confluent Cloud -->
-<!-- description: In this tutorial, learn how to filter Kafka messages in Python using Flink's Table API for Confluent Cloud, with step-by-step instructions and supporting code. -->
+<!-- title: How to join two streams of data in Python using Flink's Table API for Confluent Cloud -->
+<!-- description: In this tutorial, learn how to join two streams of data in Java using Flink's Table API for Confluent Cloud, with step-by-step instructions and supporting code. -->
 
-# How to filter Kafka messages in Python using Flink's Table API for Confluent Cloud
+# How to join two streams of data in Java using Flink's Table API for Confluent Cloud
 
 ## Prerequisites
 
@@ -17,7 +17,7 @@
 
 ## Provision Confluent Cloud infrastructure
 
-If you already have the Confluent Cloud resources required to populate a Table API client configuration file, e.g., from running a different tutorial, you may skip to the [next step](#inspect-the-code) after creating or copying the properties file as documented [here](https://docs.confluent.io/cloud/current/flink/reference/table-api.html#properties-file) to `filtering/flink_table_api_python/cloud.properties` within the top-level `tutorials` directory.
+If you already have the Confluent Cloud resources required to populate a Table API client configuration file, e.g., from running a different tutorial, you may skip to the [next step](#inspect-the-code) after creating or copying the properties file as documented [here](https://docs.confluent.io/cloud/current/flink/reference/table-api.html#properties-file) to `joining-stream-stream/flink_table_api_python/cloud.properties` within the top-level `tutorials` directory.
 
 If you need to create the Confluent Cloud infrastructure needed to run this tutorial, the `confluent-flink-quickstart` CLI plugin creates the resources that you need to get started with Confluent Cloud for Apache Flink. Install it by running:
 
@@ -33,26 +33,33 @@ confluent flink quickstart \
     --max-cfu 10 \
     --region us-east-1 \
     --cloud aws \
-    --table-api-client-config-file ./filtering/flink_table_api_python/cloud.properties
+    --table-api-client-config-file ./joining-stream-stream/flink_table_api_python/cloud.properties
 ```
 
 The plugin should complete in under a minute and will generate a properties file as documented [here](https://docs.confluent.io/cloud/current/flink/reference/table-api.html#properties-file).
 
 ## Inspect the code
 
-Take a look at the source code in `filtering/flink_table_api_python/filtering.py`. These two lines instantiate a table environment for executing Table API programs against Confluent Cloud:
+Take a look at the source code in `joining-stream-stream/flink_table_api_python/joining-stream-stream.py`. These two lines instantiate a table environment for executing Table API programs against Confluent Cloud:
 
 ```python
 settings = ConfluentSettings.from_file("./cloud.properties")
 env = TableEnvironment.create(settings)
 ```
 
-Let's filter one of Confluent Cloud's example tables. You can find these tables in the read-only `marketplace` database of the `examples` catalog. The source code in this example uses the Table API's [`Table.filter`](https://nightlies.apache.org/flink/flink-docs-stable/api/python/reference/pyflink.table/api/pyflink.table.Table.filter.html#pyflink.table.Table.filter) method to find orders greater than or equal to 50 (we also could have used the equivalent [`Table.where`](https://nightlies.apache.org/flink/flink-docs-stable/api/python/reference/pyflink.table/api/pyflink.table.Table.where.html#pyflink.table.Table.where) method):
+Let's join two of Confluent Cloud's example tables: `orders` and `customers`. You can find these tables in the read-only `marketplace` database of the `examples` catalog. The source code in this example uses the Table API's [`Table.join`](hhttps://nightlies.apache.org/flink/flink-docs-stable/api/python/reference/pyflink.table/api/pyflink.table.Table.join.html#pyflink.table.Table.join) method to join these tables on the common `customer_id` key. Note that we must rename one table's `customer_id` field since the field names of the two joined tables can't overlap. We also add a condition that the row time of the order must be greater than or equal to the row time of the customer row.
 
 ```python
-table_result = env.from_path("examples.marketplace.orders") \
-    .select(col("customer_id"), col("product_id"), col("price")) \
-    .filter(col("price") >= 50) \
+table_result = orders_table \
+    .join(customers_table, col('order_time') >= col('customer_time')
+                           and col('order_customer_id') == col('customer_id')) \
+    .select(
+        col('order_id'),
+        col('product_id'),
+        col('name'),
+        col('order_time'),
+        col('customer_time')
+    ) \
     .execute()
 ```
 
@@ -62,23 +69,12 @@ Given the table result, we can then materialize (in memory) the rows in the resu
 ConfluentTools.print_materialized_limit(table_result, 5)
 ```
 
-Alternatively, we can use the Table API's [`TableResult`](https://nightlies.apache.org/flink/flink-docs-stable/api/python/reference/pyflink.table/statement_set.html#tableresult) interface directly to collect rows. For example, to print the price of 5 orders:
-
-```python
-with table_result.collect() as rows:
-    i = 0
-    for row in rows:
-        print(row[2])
-        i += 1
-        if i >= 5: break
-```
-
 ## Run the program
 
 In order to run the program, first create a Python virtual environment in which to install the required dependencies. E.g., run the following commands to use the `venv` module. _Note: use `python3` and `pip3` in the following commands if `python` and `pip` refer to Python 2 on your system._
 
 ```shell
-cd filtering/flink_table_api_python/
+cd joining-stream-stream/flink_table_api_python/
 python -m venv venv; source ./venv/bin/activate;
 ```
 
@@ -88,30 +84,25 @@ Install the `confluent-flink-table-api-python-plugin` package:
 pip install confluent-flink-table-api-python-plugin
 ```
 
-You can run the example program directly in your IDE by opening the project located at `filtering/flink_table_api_python/`, or via the command line:
+You can run the example program directly in your IDE by opening the project located at `joining-stream-stream/flink_table_api_python/`, or via the command line:
 
 ```shell
-python filtering.py
+python joining-stream-stream.py
 ```
 
-The program will output 5 rows materialized via [`print_materialized_limit`](https://docs.confluent.io/cloud/current/flink/reference/table-api.html#confluenttools-collect-materialized-and-confluenttools-print-materialized), and then 5 prices from iterating over the table result. Note that the same [`TableResult`](https://nightlies.apache.org/flink/flink-docs-stable/api/python/reference/pyflink.table/statement_set.html#tableresult) (and its underlying iterator) is used, so the first five prices won't match the last five prices. The output will look like this:
+The program will output 5 rows materialized via [`print_materialized_limit`](https://docs.confluent.io/cloud/current/flink/reference/table-api.html#confluenttools-collect-materialized-and-confluenttools-print-materialized). The output will look like this:
 
 ```noformat
-+-------------+------------+-------+
-| customer_id | product_id | price |
-+-------------+------------+-------+
-|        3217 |       1262 | 50.87 |
-|        3151 |       1048 | 52.68 |
-|        3208 |       1256 | 89.98 |
-|        3085 |       1336 |  57.0 |
-|        3124 |       1489 | 96.04 |
-+-------------+------------+-------+
++--------------------------------+------------+----------------------+-------------------------+-------------------------+
+|                       order_id | product_id |                 name |              order_time |           customer_time |
++--------------------------------+------------+----------------------+-------------------------+-------------------------+
+| ba98cd10-e1fc-45cd-99d1-e06... |       1220 |        Alonso Stokes | 2025-03-18 11:37:14.194 | 2025-03-18 11:37:13.698 |
+| abdcc320-7d8c-47f7-970d-bba... |       1381 |         Emilia Huels | 2025-03-18 11:37:13.935 | 2025-03-18 11:37:13.698 |
+| cfb0147c-5ce1-4bf9-8bd9-7ca... |       1196 | Miss Stephan Ruecker | 2025-03-18 11:37:13.895 | 2025-03-18 11:37:13.796 |
+| 36f1e707-fed4-4c8e-92a5-b55... |       1365 | Miss Stephan Ruecker | 2025-03-18 11:37:13.995 | 2025-03-18 11:37:13.796 |
+| 109dd8f8-293b-4a98-a972-fea... |       1393 |        Alease Russel | 2025-03-18 11:37:13.697 | 2025-03-18 11:37:13.994 |
++--------------------------------+------------+----------------------+-------------------------+-------------------------+
 5 rows in set
-57.32
-83.16
-56.64
-82.71
-79.66
 ```
 
 ## Tear down Confluent Cloud infrastructure
@@ -142,5 +133,5 @@ confluent api-key delete <KEY>
 Finally, for the sake of housekeeping, delete the Table API client configuration file:
 
 ```shell
-rm filtering/flink_table_api_python/cloud.properties
+rm joining-stream-stream/flink_table_api_python/cloud.properties
 ```
