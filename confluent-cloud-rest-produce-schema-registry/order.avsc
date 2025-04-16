@@ -1,0 +1,19 @@
+{
+  "type": "record",
+  "namespace": "io.confluent.developer",
+  "name": "Order",
+  "fields": [
+    {
+      "name": "product_id",
+      "type": "int"
+    },
+    {
+      "name": "customer_id",
+      "type": "int"
+    },
+    {
+      "name": "product_name",
+      "type": "string"
+    }
+  ]
+}
