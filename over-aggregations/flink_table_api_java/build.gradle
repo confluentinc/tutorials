@@ -1,0 +1,31 @@
+buildscript {
+  repositories {
+    mavenCentral()
+  }
+}
+
+plugins {
+  id 'java'
+  id 'application'
+}
+
+java {
+  sourceCompatibility = JavaVersion.VERSION_21
+  targetCompatibility = JavaVersion.VERSION_21
+}
+
+application {
+  mainClass = "io.confluent.developer.FlinkTableApiOverAggregations"
+}
+
+repositories {
+  mavenCentral()
+  maven { url 'https://packages.confluent.io/maven/' }
+}
+
+dependencies {
+  implementation 'org.apache.flink:flink-table-api-java:1.20.1'
+  implementation 'io.confluent.flink:confluent-flink-table-api-java-plugin:1.20-50'
+  implementation 'org.slf4j:slf4j-api:2.0.17'
+  implementation 'org.slf4j:slf4j-simple:2.0.17'
+}
