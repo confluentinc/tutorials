@@ -58,7 +58,7 @@ against Flink and Kafka running in Docker, or with Confluent Cloud.
   cd tutorials
   ```
 
-  Run the following command to execute [FlinkSqlOrderByTest#testOrderBy](src/test/java/io/confluent/developer/FlinkSqlOrderByTest.java):
+  Run the following command to execute [FlinkSqlOrderByTest#testOrderBy](https://github.com/confluentinc/tutorials/blob/master/sorting/flinksql/src/test/java/io/confluent/developer/FlinkSqlOrderByTest.java):
 
   ```plaintext
   ./gradlew clean :sorting:flinksql:test

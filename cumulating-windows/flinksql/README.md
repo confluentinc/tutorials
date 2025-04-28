@@ -68,7 +68,7 @@ against Flink and Kafka running in Docker, or with Confluent Cloud.
   cd tutorials
   ```
 
-  Run the following command to execute [FlinkSqlCumulatingWindowTest#testCumulatingWindows](src/test/java/io/confluent/developer/FlinkSqlCumulatingWindowTest.java):
+  Run the following command to execute [FlinkSqlCumulatingWindowTest#testCumulatingWindows](https://github.com/confluentinc/tutorials/blob/master/cumulating-windows/flinksql/src/test/java/io/confluent/developer/FlinkSqlCumulatingWindowTest.java):
 
   ```plaintext
   ./gradlew clean :cunulating-windows:flinksql:test

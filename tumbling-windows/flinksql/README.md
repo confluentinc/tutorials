@@ -66,7 +66,7 @@ against Flink and Kafka running in Docker, or with Confluent Cloud.
   cd tutorials
   ```
 
-  Run the following command to execute [FlinkSqlTumblingWindowTest#testTumblingWindows](src/test/java/io/confluent/developer/FlinkSqlTumblingWindowTest.java):
+  Run the following command to execute [FlinkSqlTumblingWindowTest#testTumblingWindows](https://github.com/confluentinc/tutorials/blob/master/tumbling-windows/flinksql/src/test/java/io/confluent/developer/FlinkSqlTumblingWindowTest.java):
 
   ```plaintext
   ./gradlew clean :tumbling-windows:flinksql:test

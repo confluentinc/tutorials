@@ -73,7 +73,7 @@ against Flink and Kafka running in Docker, or with Confluent Cloud.
   cd tutorials
   ```
 
-  Run the following command to execute [FlinkSqlSplitStreamTest#testSplit](src/test/java/io/confluent/developer/FlinkSqlSplitStreamTest.java):
+  Run the following command to execute [FlinkSqlSplitStreamTest#testSplit](https://github.com/confluentinc/tutorials/blob/master/splitting/flinksql/src/test/java/io/confluent/developer/FlinkSqlSplitStreamTest.java):
 
   ```plaintext
   ./gradlew clean :splitting:flinksql:test

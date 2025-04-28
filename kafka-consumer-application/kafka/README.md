@@ -73,7 +73,7 @@ To run the unit tests, use the provided Gradle Wrapper:
 
 The results of the tests can be found in the `build/reports/index.html` report:
 
-![Test Report](./images/test-report.png)
+![Test Report](https://raw.githubusercontent.com/confluentinc/tutorials/master/kafka-consumer-application/kafka/images/test-report.png)
 
 </details>
 

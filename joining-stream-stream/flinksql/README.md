@@ -94,7 +94,7 @@ against Flink and Kafka running in Docker, or with Confluent Cloud.
   cd tutorials
   ```
 
-  Run the following command to execute [FlinkSqlIntervalJoinTest#testJoin](src/test/java/io/confluent/developer/FlinkSqlIntervalJoinTest.java):
+  Run the following command to execute [FlinkSqlIntervalJoinTest#testJoin](https://github.com/confluentinc/tutorials/blob/master/joining-stream-stream/flinksql/src/test/java/io/confluent/developer/FlinkSqlIntervalJoinTest.java):
 
   ```plaintext
   ./gradlew clean :joining-stream-stream:flinksql:test

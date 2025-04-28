@@ -90,7 +90,7 @@ against Flink and Kafka running in Docker, or with Confluent Cloud.
   cd tutorials
   ```
 
-  Run the following command to execute [FlinkSqlTopNTest#testTopN](src/test/java/io/confluent/developer/FlinkSqlTopNTest.java):
+  Run the following command to execute [FlinkSqlWindowedTopNTest#testWindowedTopN](https://github.com/confluentinc/tutorials/blob/master/windowed-top-N/flinksql/src/test/java/io/confluent/developer/FlinkSqlWindowedTopNTest.java):
 
   ```plaintext
   ./gradlew clean :windowed-top-N:flinksql:test

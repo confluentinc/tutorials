@@ -69,7 +69,7 @@ against Flink and Kafka running in Docker, or with Confluent Cloud.
   cd tutorials
   ```
 
-  Run the following command to execute [FlinkSqlOverAggregationTest#testTopN](src/test/java/io/confluent/developer/FlinkSqlOverAggregationTest.java):
+  Run the following command to execute [FlinkSqlOverAggregationTest#testTopN](https://github.com/confluentinc/tutorials/blob/master/over-aggregations/flinksql/src/test/java/io/confluent/developer/FlinkSqlOverAggregationTest.java):
 
   ```plaintext
   ./gradlew clean :over-aggregations:flinksql:test

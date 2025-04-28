@@ -53,7 +53,7 @@ against Flink and Kafka running in Docker, or with Confluent Cloud.
   cd tutorials
   ```
 
-  Run the following command to execute [FlinkSqlLaggingEventsTest#testLaggingEvents](src/test/java/io/confluent/developer/FlinkSqlLaggingEventsTest.java):
+  Run the following command to execute [FlinkSqlLaggingEventsTest#testLaggingEvents](https://github.com/confluentinc/tutorials/blob/master/lagging-events/flinksql/src/test/java/io/confluent/developer/FlinkSqlLaggingEventsTest.java):
 
   ```plaintext
   ./gradlew clean :lagging-events:flinksql:test

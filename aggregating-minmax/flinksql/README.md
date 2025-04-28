@@ -55,7 +55,7 @@ against Flink and Kafka running in Docker, or with Confluent Cloud.
   cd tutorials
   ```
 
-  Run the following command to execute [FlinkSqlAggregatingMinMaxTest#testMinMax](src/test/java/io/confluent/developer/FlinkSqlAggregatingMinMaxTest.java):
+  Run the following command to execute [FlinkSqlAggregatingMinMaxTest#testMinMax](https://github.com/confluentinc/tutorials/blob/master/aggregating-minmax/flinksql/src/test/java/io/confluent/developer/FlinkSqlAggregatingMinMaxTest.java):
 
   ```plaintext
   ./gradlew clean :aggregating-minmax:flinksql:test

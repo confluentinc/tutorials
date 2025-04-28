@@ -90,7 +90,7 @@ To run the unit tests, use the provided Gradle Wrapper:
 The results of the tests can be found in the `build/reports/index.html` report. Drill down using the links in the report,
 you should see the results of `KafkaProducerApplicationTest`:
 
-![Test Result](images/test-results.png)
+![Test Result](https://raw.githubusercontent.com/confluentinc/tutorials/master/kafka-producer-application/kafka/images/test-results.png)
 
 </details>
 
