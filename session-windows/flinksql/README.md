@@ -62,7 +62,7 @@ against Flink and Kafka running in Docker, or with Confluent Cloud.
   cd tutorials
   ```
 
-  Run the following command to execute [FlinkSqlMergeTablesTest#testMerge](src/test/java/io/confluent/developer/FlinkSqlMergeTablesTest.java):
+  Run the following command to execute [FlinkSqlSessionWindowsTest#testSessionWindows](https://github.com/confluentinc/tutorials/blob/master/session-windows/flinksql/src/test/java/io/confluent/developer/FlinkSqlSessionWindowsTest.java):
 
   ```plaintext
   ./gradlew clean :session-windows:flinksql:test

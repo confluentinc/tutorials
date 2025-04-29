@@ -60,7 +60,7 @@ against Flink and Kafka running in Docker, or with Confluent Cloud.
   cd tutorials
   ```
 
-  Run the following command to execute [FlinkSqlFindingDistinctTest#testFindDistinct](src/test/java/io/confluent/developer/FlinkSqlFindingDistinctTest.java):
+  Run the following command to execute [FlinkSqlFindingDistinctTest#testFindDistinct](https://github.com/confluentinc/tutorials/blob/master/deduplication-windowed/flinksql/src/test/java/io/confluent/developer/FlinkSqlFindingDistinctWindowedTest.java):
 
   ```plaintext
   ./gradlew clean :deduplication:flinksql:test

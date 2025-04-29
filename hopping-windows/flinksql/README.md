@@ -63,7 +63,7 @@ against Flink and Kafka running in Docker, or with Confluent Cloud.
   cd tutorials
   ```
 
-  Run the following command to execute [FlinkSqlHoppingWindowTest#testHoppingWindows](src/test/java/io/confluent/developer/FlinkSqlHoppingWindowTest.java):
+  Run the following command to execute [FlinkSqlHoppingWindowTest#testHoppingWindows](https://github.com/confluentinc/tutorials/blob/master/hopping-windows/flinksql/src/test/java/io/confluent/developer/FlinkSqlHoppingWindowTest.java):
 
   ```plaintext
   ./gradlew clean :hopping-windows:flinksql:test

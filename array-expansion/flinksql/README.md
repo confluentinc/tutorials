@@ -50,7 +50,7 @@ You can run the example backing this tutorial in one of three ways: a Flink Tabl
   cd tutorials
   ```
 
-  Run the following command to execute [FlinkSqlArrayExpansionTest#testArrayExpansion](src/test/java/io/confluent/developer/FlinkSqlArrayExpansionTest.java):
+  Run the following command to execute [FlinkSqlArrayExpansionTest#testArrayExpansion](https://github.com/confluentinc/tutorials/blob/master/array-expansion/flinksql/src/test/java/io/confluent/developer/FlinkSqlArrayExpansionTest.java):
 
   ```plaintext
   ./gradlew clean :array-expansion:flinksql:test

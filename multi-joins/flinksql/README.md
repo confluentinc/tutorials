@@ -71,7 +71,7 @@ You can run the example backing this tutorial in one of three ways: a Flink Tabl
   cd tutorials
   ```
 
-  Run the following command to execute [FlinkSqlMultiJoinTest#testJoin](src/test/java/io/confluent/developer/FlinkSqlIntervalJoinTest.java):
+  Run the following command to execute [FlinkSqlMultiJoinTest#testJoin](https://github.com/confluentinc/tutorials/blob/master/multi-joins/flinksql/src/test/java/io/confluent/developer/FlinkSqlMultiJoinTest.java):
 
   ```plaintext
   ./gradlew clean :multi-joins:flinksql:test
