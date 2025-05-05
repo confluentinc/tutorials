@@ -1,0 +1,152 @@
+{
+  "namespace": "product-updates",
+  "name": "products",
+  "type": "record",
+  "fields": [
+    {"name": "store_id", "type": {
+      "type": "int",
+      "arg.properties": {
+        "range": {
+          "min": 1,
+          "max": 50
+        }
+      }
+    }},
+    {"name": "product_id", "type": {
+      "type": "int",
+      "arg.properties": {
+        "range": {
+          "min": 140764,
+          "max": 750233
+        }
+      }
+    }},
+    {"name": "count", "type": {
+      "type": "int",
+      "arg.properties": {
+        "range": {
+          "min": 1,
+          "max": 25
+        }
+      }
+    }},
+    {"name": "articleType", "type": {
+      "type": "string",
+      "arg.properties": {
+        "options": [
+          "shorts",
+          "pants",
+          "shirt",
+          "socks",
+          "shoes",
+          "belt",
+          "jacket",
+          "sweater",
+          "gloves",
+          "sandals",
+          "boots",
+          "hat"
+        ]
+      }
+    }},
+    {"name": "size", "type": {
+      "type": "string",
+      "arg.properties": {
+        "options": [
+          "petite",
+          "small",
+          "medium",
+          "large",
+          "extra large"
+        ]
+      }
+    }},
+    {"name": "fashionType", "type": {
+      "type": "string",
+      "arg.properties": {
+        "options": [
+          "core",
+          "casual",
+          "business casual",
+          "fashion",
+          "formal"
+        ]
+      }
+    }},
+    {"name": "brandName", "type": {
+      "type": "string",
+      "arg.properties": {
+        "options": [
+          "Calvin Klein",
+          "Tommy Hilfiger",
+          "Hagar",
+          "Polo Ralph Lauren",
+          "Tomini",
+          "Jushcke",
+          "De Banke",
+          "Dockers",
+          "Rockhill",
+          "Romagosa",
+          "Adicot",
+          "Lalonde"
+        ]
+      }
+    }},
+    {"name": "baseColor", "type": {
+      "type": "string",
+      "arg.properties": {
+        "options": [
+          "black",
+          "white",
+          "pink",
+          "red",
+          "green",
+          "blue",
+          "purple"
+        ]
+      }
+    }},
+    {"name": "gender", "type": {
+      "type": "string",
+      "arg.properties": {
+        "options": [
+          "male",
+          "female"
+        ]
+      }
+    }},
+    {"name": "ageGroup", "type": {
+      "type": "string",
+      "arg.properties": {
+        "options": [
+          "adult",
+          "child",
+          "infant"
+        ]
+      }
+    }},
+    {"name": "price", "type": {
+      "type": "bytes",
+      "logicalType": "decimal",
+      "precision": 4,
+      "scale": 2,
+      "arg.properties": {
+        "range": {
+          "min": 10.00,
+          "max": 95.00
+        }
+      }
+    }},
+    {"name": "season", "type": {
+      "type": "string",
+      "arg.properties": {
+        "options": [
+          "spring",
+          "summer",
+          "fall",
+          "winter"
+        ]
+      }
+    }}
+  ]
+}
