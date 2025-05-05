@@ -215,9 +215,9 @@ against Flink and Kafka running in Docker, or with Confluent Cloud.
 
   ```sql
   SELECT ROUND(SUM(quantity * unit_price), 2) AS revenue,
-         window_end
+         window_start, window_end
   FROM TABLE(CUMULATE(TABLE orders, DESCRIPTOR(ts), INTERVAL '5' MINUTES, INTERVAL '10' MINUTES))
-  GROUP BY window_end;
+  GROUP BY window_start, window_end;
   ```
 
   The query output should look like this:
