@@ -11,7 +11,7 @@ In this tutorial, we will use the `apache/kafka-native` Docker Image released in
 
 Given these benefits, this image is well-suited for non-production development and testing scenarios that require an actual Kafka broker. [Testcontainers](https://java.testcontainers.org/modules/kafka/) supports this image as of version `1.20.1` of `org.testcontainers`'s `kafka` module.
 
-Testing in this way is as easy as declaring the [Testcontainers Kafka dependency](https://mvnrepository.com/artifact/org.testcontainers/kafka/1.20.1) in your dependency manager and then writing a test like this:
+Testing in this way is as easy as declaring the [Testcontainers Kafka dependency](https://mvnrepository.com/artifact/org.testcontainers/kafka/1.20.5) in your dependency manager and then writing a test like this:
 
 ```java
     try (KafkaContainer kafka = new KafkaContainer(DockerImageName.parse("apache/kafka-native:<VERSION>"))) {
@@ -101,20 +101,20 @@ To run the test, use the provided Gradle Wrapper:
 You can compare test runtimes between the `apache/kafka-native` and `apache/kafka` images by replacing this line in the test:
 
 ```java
-    try (KafkaContainer kafka = new KafkaContainer(DockerImageName.parse("apache/kafka-native:3.8.0"))) {
+    try (KafkaContainer kafka = new KafkaContainer(DockerImageName.parse("apache/kafka-native:4.0.0"))) {
 ```
 
 with this:
 
 ```java
-    try (KafkaContainer kafka = new KafkaContainer(DockerImageName.parse("apache/kafka:3.8.0"))) {
+    try (KafkaContainer kafka = new KafkaContainer(DockerImageName.parse("apache/kafka:4.0.0"))) {
 ```
 
 Now you can compare test performance both with the images downloaded and without. First, make sure that the images aren't available locally:
 
 ```noformat
-docker rmi apache/kafka-native:3.8.0
-docker rmi apache/kafka:3.8.0
+docker rmi apache/kafka-native:4.0.0
+docker rmi apache/kafka:4.0.0
 ```
 
 Next, run the test twice, once using the `apache/kafka` image, and again using the `apache/kafka-native` image. Test
