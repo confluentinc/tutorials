@@ -1,0 +1,27 @@
+{
+  "config": {
+    "connector.class": "DatagenSource",
+    "name": "DatagenSourceProductUpdates",
+    "kafka.auth.mode": "KAFKA_API_KEY",
+    "kafka.api.key": "YOUR_API_KEY",
+    "kafka.api.secret": "YOUR_API_SECRET",
+    "kafka.topic": "product-updates",
+    "schema.context.name": "default",
+    "output.data.format": "JSON_SR",
+    "schema.string": "{\"namespace\": \"product-updates\",\"name\": \"products\",\"type\":\"record\",\"fields\":[{\"name\":\"store_id\",\"type\":{\"type\":\"int\",\"arg.properties\":{\"range\":{\"min\":1,\"max\":50}}}},{\"name\":\"product_id\",\"type\":{\"type\":\"int\",\"arg.properties\":{\"range\":{\"min\":140764,\"max\":750233}}}},{\"name\":\"count\",\"type\":{\"type\":\"int\",\"arg.properties\":{\"range\":{\"min\":1,\"max\":25}}}},{\"name\":\"articleType\",\"type\":{\"type\":\"string\",\"arg.properties\":{\"options\":[\"shorts\",\"pants\",\"shirt\",\"socks\",\"shoes\",\"belt\",\"jacket\",\"sweater\",\"gloves\",\"sandals\",\"boots\",\"hat\"]}}},{\"name\":\"size\",\"type\":{\"type\":\"string\",\"arg.properties\":{\"options\":[\"petite\",\"small\",\"medium\",\"large\",\"extralarge\"]}}},{\"name\":\"fashionType\",\"type\":{\"type\":\"string\",\"arg.properties\":{\"options\":[\"core\",\"casual\",\"businesscasual\",\"fashion\",\"formal\"]}}},{\"name\":\"brandName\",\"type\":{\"type\":\"string\",\"arg.properties\":{\"options\":[\"CalvinKlein\",\"TommyHilfiger\",\"Hagar\",\"PoloRalphLauren\",\"Tomini\",\"Jushcke\",\"DeBanke\",\"Dockers\",\"Rockhill\",\"Romagosa\",\"Adicot\",\"Lalonde\"]}}},{\"name\":\"baseColor\",\"type\":{\"type\":\"string\",\"arg.properties\":{\"options\":[\"black\",\"white\",\"pink\",\"red\",\"green\",\"blue\",\"purple\"]}}},{\"name\":\"gender\",\"type\":{\"type\":\"string\",\"arg.properties\":{\"options\":[\"male\",\"female\"]}}},{\"name\":\"ageGroup\",\"type\":{\"type\":\"string\",\"arg.properties\":{\"options\":[\"adult\",\"child\",\"infant\"]}}},{\"name\":\"price\",\"type\":{\"type\":\"bytes\",\"logicalType\":\"decimal\",\"precision\":4,\"scale\":2,\"arg.properties\":{\"range\":{\"min\":10,\"max\":95}}}},{\"name\":\"season\",\"type\":{\"type\":\"string\",\"arg.properties\":{\"options\":[\"spring\",\"summer\",\"fall\",\"winter\"]}}}]}",
+    "max.interval": "25000",
+    "tasks.max": "1",
+    "value.converter.decimal.format": "BASE64",
+    "value.converter.replace.null.with.default": "true",
+    "value.converter.reference.subject.name.strategy": "DefaultReferenceSubjectNameStrategy",
+    "value.converter.schemas.enable": "false",
+    "errors.tolerance": "none",
+    "value.converter.value.subject.name.strategy": "TopicNameStrategy",
+    "key.converter.key.subject.name.strategy": "TopicNameStrategy",
+    "value.converter.ignore.default.for.nullables": "false",
+    "auto.restart.on.user.error": "true",
+    "transforms": "cast-float",
+    "transforms.cast-float.type": "org.apache.kafka.connect.transforms.Cast$Value",
+    "transforms.cast-float.spec": "price:float64"
+  }
+}
