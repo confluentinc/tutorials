@@ -15,7 +15,7 @@ java {
 }
 
 application {
-  mainClass = "io.confluent.developer.FlinkTableApiTumblingWindows"
+  mainClass = "io.confluent.developer.FlinkTableApiOverAggregations"
 }
 
 repositories {
