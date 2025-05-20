@@ -57,7 +57,7 @@ confluent api-key create --resource <CLUSTER_ID>
 ```noformat
 confluent connect cluster create --config-file /tmp/datagen-connector.json
 ```
-* After a minute or so, validate in the Confluent Cloud Console that the connector is running. In the lefhand navigation, select `Environments`, click into the environment, then click the PrivateLink cluster. In the lefthand navigation, select `Connectors` and verify that the connector state is `Running` and generating messages:
+* After a minute or so, validate in the Confluent Cloud Console that the connector is running. In the lefhand navigation, select `Environments`, click into the environment, then click the PrivateLink cluster. In the left-hand navigation, select `Connectors` and verify that the connector state is `Running` and generating messages:
 
 ![Datagen](https://raw.githubusercontent.com/confluentinc/tutorials/master/confluent-cloud-connector-aws-privatelink/kafka/img/cc-datagen.png)
 
