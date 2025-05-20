@@ -145,9 +145,9 @@ You can run the example backing this tutorial in one of two ways: locally with t
 
   ### Run the commands
 
-  Login to the [Confluent Cloud Console](https://confluent.cloud/). Select `Environments` in the lefthand navigation,
+  Login to the [Confluent Cloud Console](https://confluent.cloud/). Select `Environments` in the left-hand navigation,
   and then click the `ksqldb-tutorial` environment tile. Click the `ksqldb-tutorial` Kafka cluster tile, and then
-  select `ksqlDB` in the lefthand navigation.
+  select `ksqlDB` in the left-hand navigation.
 
   The cluster may take a few minutes to be provisioned. Once its status is `Up`, click the cluster name and scroll down to the editor.
 
