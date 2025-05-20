@@ -69,9 +69,9 @@ confluent ksql cluster create ksqldb-tutorial \
 
 ### Run the commands
 
-Login to the [Confluent Cloud Console](https://confluent.cloud/). Select `Environments` in the lefthand navigation,
+Login to the [Confluent Cloud Console](https://confluent.cloud/). Select `Environments` in the left-hand navigation,
 and then click the `ksqldb-tutorial` environment tile. Click the `ksqldb-tutorial` Kafka cluster tile, and then select
-`Topics` in the lefthand navigation. Create a topic called `sensors-raw` with 1 partition, and in the `Messages` tab,
+`Topics` in the left-hand navigation. Create a topic called `sensors-raw` with 1 partition, and in the `Messages` tab,
 produce the following two events, one at a time.
 
 ```noformat
@@ -82,7 +82,7 @@ produce the following two events, one at a time.
 {"id": "1a076a64-4a84-40cb-a2e8-2190f3b37465", "timestamp": "2020-01-15 02:30:30", "enabled": "true"}
 ```
 
-Next, select `ksqlDB` in the lefthand navigation.
+Next, select `ksqlDB` in the left-hand navigation.
 
 The cluster may take a few minutes to be provisioned. Once its status is `Up`, click the cluster name and scroll down to the editor.
 

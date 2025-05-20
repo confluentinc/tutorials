@@ -96,9 +96,9 @@ Now run the same test but with producer configuration tuned for higher throughpu
 
 First, create a cluster if you haven't already. You can do this in the Confluent Cloud Console by navigating to your environment and then clicking `Add cluster`.
 
-Once you have a cluster running, navigate to `Topics` in the lefthand navigation and create a topic `topic-perf` with the default topic configuration.
+Once you have a cluster running, navigate to `Topics` in the left-hand navigation and create a topic `topic-perf` with the default topic configuration.
 
-Next, go to the Cluster Overview page and click `Clients` in the lefthand navigation. Click `Java` and generate a configuration file that includes API keys.
+Next, go to the Cluster Overview page and click `Clients` in the left-hand navigation. Click `Java` and generate a configuration file that includes API keys.
 pool that you have created. Copy the configuration file locally to `optimize-producer-throughput/kafka/cloud.properties`.
 
 Now, run a baseline performance test with Docker:
