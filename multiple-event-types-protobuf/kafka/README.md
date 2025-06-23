@@ -131,7 +131,7 @@ Using the Confluent Cloud Console, create a topic with default settings called `
 
 ### Generate client configuration
 
-In the Confluent Cloud Console, navigate to the Cluster Overview page. Select `Clients` in the lefthand navigation and create a new `Java` client. Generate API keys during this step, and download the generated client configuration. Place it at `multiple-event-types-protobuf/kafka/cloud.properties`.
+In the Confluent Cloud Console, navigate to the Cluster Overview page. Select `Clients` in the left-hand navigation and create a new `Java` client. Generate API keys during this step, and download the generated client configuration. Place it at `multiple-event-types-protobuf/kafka/cloud.properties`.
 
 ### Register schemas
 
@@ -141,7 +141,7 @@ Run the following task to register the schemas in Schema Registry:
 ./gradlew :multiple-event-types-protobuf:kafka:registerSchemasTask
 ```
 
-In the Confluent Cloud Console, navigate to `Topics` in the lefthand navigation, select the `proto-events` topic, and click `Schema`. Validate that a `Value` schema has been set.
+In the Confluent Cloud Console, navigate to `Topics` in the left-hand navigation, select the `proto-events` topic, and click `Schema`. Validate that a `Value` schema has been set.
 
 ### Build the application
 
