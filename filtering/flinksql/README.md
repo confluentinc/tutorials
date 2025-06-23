@@ -3,12 +3,6 @@
 
 # How to filter messages in a Kafka topic with Flink SQL
 
-<div class="alert-primary">
-<p>
-<b>Short answer</b>: Given a Flink table backed by Kafka, filter messages using Flink SQL's [`WHERE` clause](https://docs.confluent.io/cloud/current/flink/reference/queries/select.html#where-clause).
-</p>
-</div>
-
 ### Prerequisites
 
 * A [Confluent Cloud](https://confluent.cloud/signup) account
