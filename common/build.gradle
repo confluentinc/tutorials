@@ -25,8 +25,8 @@ artifacts {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
 
 repositories {
@@ -39,15 +39,15 @@ dependencies {
     implementation 'org.slf4j:slf4j-simple:2.0.7'
     implementation('org.apache.kafka:kafka-clients') {
         version {
-            strictly '3.7.0'
+            strictly '3.8.0'
         }
     }
-    implementation 'io.confluent:kafka-streams-avro-serde:7.5.1'
+    implementation 'io.confluent:kafka-streams-avro-serde:7.7.0'
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
     testImplementation 'org.hamcrest:hamcrest:2.2'
-    testImplementation 'org.testcontainers:testcontainers:1.19.3'
-    testImplementation 'org.testcontainers:kafka:1.19.3'
+    testImplementation 'org.testcontainers:testcontainers:1.20.1'
+    testImplementation 'org.testcontainers:kafka:1.20.1'
     testImplementation 'commons-codec:commons-codec:1.17.0'
     testImplementation 'org.apache.flink:flink-sql-connector-kafka:3.2.0-1.19'
     testImplementation 'org.apache.flink:flink-connector-base:1.19.1'
