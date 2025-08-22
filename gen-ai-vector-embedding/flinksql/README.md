@@ -1,18 +1,18 @@
-<!-- title: How to generate vector embeddings for RAG (GenAI) with Flink SQL in Confluent Cloud -->
-<!-- description: In this tutorial, learn how to generate vector embeddings for RAG (GenAI) with Flink SQL in Confluent Cloud, with step-by-step instructions and supporting code. -->
+<!-- title: How to generate vector embeddings for RAG with Flink SQL in Confluent Cloud -->
+<!-- description: In this tutorial, learn how to generate vector embeddings for RAG with Flink SQL in Confluent Cloud, with step-by-step instructions and supporting code. -->
 
-# How to generate vector embeddings for RAG (GenAI) with Flink SQL in Confluent Cloud
+# GenAI Part 1 of 2: How to generate vector embeddings for RAG with Flink SQL in Confluent Cloud
 
-In this tutorial, you will generate vector embeddings on retail product catalog data. A source connector ingests and writes unstructured source data to a topic. Flink SQL then converts this data into vector embeddings and inserts into a new topic.
+In Part 1 of this tutorial series, you will generate vector embeddings on retail product catalog data. A source connector ingests and writes unstructured source data to a topic. Flink SQL then converts this data into vector embeddings and inserts into a new topic.
 
 This tutorial is a building block for real-time GenAI applications including [RAG](https://www.confluent.io/learn/retrieval-augmented-generation-rag/) and is based on the webinar [How to Build RAG Using Confluent with Flink AI Model Inference and MongoDB](https://www.confluent.io/resources/online-talk/rag-tutorial-with-flink-ai-model-inference-mongodb/).
 
-Once vector encoding is complete, you can leverage vector embeddings and vector search to build use cases including:
+Once vector encoding is complete, [Part 2](https://developer.confluent.io/confluent-tutorials/gen-ai-vector-search/flinksql/) of this tutorial series leverages vector search over the embeddings to build a RAG-enabled query engine that is robust with respect to uncommon or slang terminology. Other use cases that build on vector embeddings and vector search include:
 
 * RAG-enabled GenAI chatbots, content discovery, and recommendation engines. E.g., retrieving user profile data and questions to match the size of clothing and the fashion type requested by the user's query. The results are sent to an LLM as context to augment the prompt and mitigate hallucinations, ensuring that the LLM generates specific and accurate product recommendations.
 * ML-driven search for real-time fraud detection, anomaly detection, or forecasting
 
-### Prerequisites
+## Prerequisites
 
 * A [Confluent Cloud](https://confluent.cloud/signup) account
 * The [Confluent CLI](https://docs.confluent.io/confluent-cli/current/install.html)
@@ -196,11 +196,13 @@ vector                   content
 ...
 ```
 
-## Next step: Add a sink connector for your vector store
+## Next step: Add a sink connector for your vector store and run vector search
 
 In this tutorial, you learned how to generate vector embeddings from string data in Kafka messages using Flink SQL.
 
-As a next step, you can further build out this streaming data pipeline by adding a sink connector in Confluent Cloud to store these embeddings in a vector database. To deploy a sink connector on Confluent Cloud, navigate to the `Connectors` page in the Confluent Cloud Console or use the Confluent CLI. This setup enables you to continuously stream real-time vector embeddings from Flink SQL into your vector database.
+As a next step, continue to Part 2 of this tutorial series: [How to implement vector search-based RAG with Flink SQL in Confluent Cloud](https://developer.confluent.io/confluent-tutorials/gen-ai-vector-search/flinksql/)
+
+The next tutorial in this series stores these embeddings in MongoDB Atlas. If you would like to write the embeddings to a different vector store, you can deploy a sink connector on Confluent Cloud. Navigate to the `Connectors` page in the Confluent Cloud Console or use the Confluent CLI. This setup enables you to continuously stream real-time vector embeddings from Flink SQL into your vector database.
 
 For guidance on setting up a vector database sink connector, refer to the following resources:
 
@@ -215,7 +217,7 @@ For guidance on setting up a vector database sink connector, refer to the follow
 
 ## Clean up
 
-When you finish experimenting, delete the `confluent-rag_environment` environment in order to clean up the Confluent Cloud infrastructure created for this tutorial. Run the following command in your terminal to get the environment ID of the form `env-123456` corresponding to the environment named `confluent-rag_environment`:
+If you are not continuing to [Part 2](https://developer.confluent.io/confluent-tutorials/gen-ai-vector-search/flinksql/) of this tutorial series, delete the `confluent-rag_environment` environment in order to clean up the Confluent Cloud infrastructure created for this tutorial. Run the following command in your terminal to get the environment ID of the form `env-123456` corresponding to the environment named `confluent-rag_environment`:
 
 ```shell
 confluent environment list
