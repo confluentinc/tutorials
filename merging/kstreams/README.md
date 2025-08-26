@@ -231,7 +231,7 @@ confluent environment delete <ENVIRONMENT ID>
   ./gradlew merging:kstreams:shadowJar
   ```
 
- Navigate into the application's home directory:
+  Navigate into the application's home directory:
 
   ```shell
   cd merging/kstreams
@@ -245,13 +245,13 @@ confluent environment delete <ENVIRONMENT ID>
       ./src/main/resources/local.properties
   ```
 
- Validate that you see all songs in the `all-music-output` topic. In the broker container shell:
+  Validate that you see all songs in the `all-music-output` topic. In the broker container shell:
 
   ```shell
   kafka-console-consumer --bootstrap-server localhost:9092 --topic all-music-output --from-beginning
   ```
 
- You should see all songs:
+  You should see all songs:
 
   ```shell
   {"artist":"Metallica","title":"Fade To Black"}
