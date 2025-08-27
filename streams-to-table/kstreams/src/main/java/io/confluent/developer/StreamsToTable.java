@@ -31,12 +31,8 @@ public class StreamsToTable {
         final KStream<String, String> stream = builder.stream(INPUT_TOPIC, Consumed.with(stringSerde, stringSerde));
 
         final KTable<String, String> convertedTable = builder.stream(INPUT_TOPIC, Consumed.with(stringSerde, stringSerde))
-                .toTable(Materialized.as("stream-converted-to-table"));
+                .toTable(Materialized.with(stringSerde, stringSerde));
 
-        /*final KStream<String, String> stream = builder.stream(INPUT_TOPIC, Consumed.with(stringSerde, stringSerde));
-
-        final KTable<String, String> convertedTable = stream.toTable(Materialized.as("stream-converted-to-table"));
-*/
         stream.to(STREAMS_OUTPUT_TOPIC, Produced.with(stringSerde, stringSerde));
         convertedTable.toStream().to(TABLE_OUTPUT_TOPIC, Produced.with(stringSerde, stringSerde));
 
