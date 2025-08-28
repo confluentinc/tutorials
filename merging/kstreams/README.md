@@ -126,7 +126,7 @@ java -cp ./build/libs/kstreams-merge-standalone.jar \
     ./src/main/resources/cloud.properties
 ```
 
-Validate that you see the drama acting events in the `all-music-output` topic.
+Validate that you see all songs in the `all-music-output` topic.
 
 
 ```shell

@@ -1,6 +1,0 @@
-"one"#{"appId":"one", "userId":"Ted", "time":"123456"}
-"one"#{"appId":"one", "userId":"Ted", "time":"123457"}
-"one"#{"appId":"one", "userId":"Carol", "time":"123458"}
-"one"#{"appId":"one", "userId":"Carol", "time":"123459"}
-"one"#{"appId":"one", "userId":"Alice", "time":"123467"}
-"one"#{"appId":"one", "userId":"Carol", "time":"123468"}
