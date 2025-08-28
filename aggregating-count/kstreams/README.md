@@ -78,10 +78,10 @@ Run the plugin from the top-level directory of the `tutorials` repository to cre
 
 ```shell
 confluent quickstart \
-  --environment-name kafka-streams-aggregating-count-env \
-  --kafka-cluster-name kafka-streams-aggregating-count-cluster \
+  --environment-name kafka-streams-aggregating-sum-env \
+  --kafka-cluster-name kafka-streams-aggregating-sum-cluster \
   --create-kafka-key \
-  --kafka-java-properties-file ./aggregating-count/kstreams/src/main/resources/cloud.properties
+  --kafka-java-properties-file ./aggregating-sum/kstreams/src/main/resources/cloud.properties
 ```
 
 The plugin should complete in under a minute.
@@ -91,14 +91,14 @@ The plugin should complete in under a minute.
 Create the input and output topics for the application:
 
 ```shell
-confluent kafka topic create aggregation-count-input
-confluent kafka topic create aggregation-count-output
+confluent kafka topic create aggregation-sum-input
+confluent kafka topic create aggregation-sum-output
 ```
 
 Start a console producer:
 
 ```shell
-confluent kafka topic produce aggregation-count-input
+confluent kafka topic produce aggregation-sum-input
 ```
 
 Enter a few JSON-formatted ticket sales:
@@ -116,27 +116,27 @@ Enter `Ctrl+C` to exit the console producer.
 Compile the application from the top-level `tutorials` repository directory:
 
 ```shell
-./gradlew aggregating-count:kstreams:shadowJar
+./gradlew aggregating-sum:kstreams:shadowJar
 ```
 
 Navigate into the application's home directory:
 
 ```shell
-cd aggregating-count/kstreams
+cd aggregating-sum/kstreams
 ```
 
 Run the application, passing the Kafka client configuration file generated when you created Confluent Cloud resources:
 
 ```shell
-java -cp ./build/libs/aggregating-count-standalone.jar \
+java -cp ./build/libs/aggregating-sum-standalone.jar \
     io.confluent.developer.KafkaStreamsAggregatingCount \
     ./src/main/resources/cloud.properties
 ```
 
-Validate that you see only the books by George R. R. Martin in the `aggregation-count-output` topic.
+Validate that you see the correct ticket sale counts per title in the `aggregation-sum-output` topic.
 
 ```shell
-confluent kafka topic consume aggregation-count-output -b --print-key --delimiter :
+confluent kafka topic consume aggregation-sum-output -b --print-key --delimiter :
 ```
 
 You should see:
@@ -148,7 +148,7 @@ Doctor Strange:1 tickets sold
 
 ## Clean up
 
-When you are finished, delete the `kafka-streams-aggregating-count-env` environment by first getting the environment ID of the form `env-123456` corresponding to it:
+When you are finished, delete the `kafka-streams-aggregating-sum-env` environment by first getting the environment ID of the form `env-123456` corresponding to it:
 
 ```shell
 confluent environment list
@@ -192,14 +192,14 @@ confluent environment delete <ENVIRONMENT ID>
   Create the input and output topics for the application:
 
   ```shell
-  kafka-topics --bootstrap-server localhost:9092 --create --topic aggregation-count-input
-  kafka-topics --bootstrap-server localhost:9092 --create --topic aggregation-count-output
+  kafka-topics --bootstrap-server localhost:9092 --create --topic aggregation-sum-input
+  kafka-topics --bootstrap-server localhost:9092 --create --topic aggregation-sum-output
   ```
 
   Start a console producer:
 
   ```shell
-  kafka-console-producer --bootstrap-server localhost:9092 --topic aggregation-count-input
+  kafka-console-producer --bootstrap-server localhost:9092 --topic aggregation-sum-input
   ```
 
   Enter a few JSON-formatted ticket sales:
@@ -217,27 +217,27 @@ confluent environment delete <ENVIRONMENT ID>
   On your local machine, compile the app:
 
   ```shell
-  ./gradlew aggregating-count:kstreams:shadowJar
+  ./gradlew aggregating-sum:kstreams:shadowJar
   ```
 
   Navigate into the application's home directory:
 
   ```shell
-  cd aggregating-count/kstreams
+  cd aggregating-sum/kstreams
   ```
 
   Run the application, passing the `local.properties` Kafka client configuration file that points to the broker's bootstrap servers endpoint at `localhost:9092`:
 
   ```shell
-  java -cp ./build/libs/aggregating-count-standalone.jar \
+  java -cp ./build/libs/aggregating-sum-standalone.jar \
       io.confluent.developer.KafkaStreamsAggregatingCount \
       ./src/main/resources/local.properties
   ```
 
-  Validate that you see only the books by George R. R. Martin in the `aggregation-count-output` topic. In the broker container shell:
+  Validate that you see the correct ticket sale counts per title in the `aggregation-sum-output` topic. In the broker container shell:
 
   ```shell
-  kafka-console-consumer --bootstrap-server localhost:9092 --topic aggregation-count-output --from-beginning --property "print.key=true" --property "key.separator=:"
+  kafka-console-consumer --bootstrap-server localhost:9092 --topic aggregation-sum-output --from-beginning --property "print.key=true" --property "key.separator=:"
   ```
 
   You should see:
