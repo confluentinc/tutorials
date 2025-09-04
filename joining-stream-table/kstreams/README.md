@@ -6,12 +6,14 @@
 Suppose you have a set of movies that have been released and a stream of ratings from moviegoers about how entertaining they are. In this tutorial, we'll write a program that joins each rating with content about the movie.
 
 First you'll create a `KTable` for the reference movie data
+
 ```java
 KTable<Long, Movie> movieTable = builder.stream(MOVIE_INPUT_TOPIC,
-                Consumed.with(Serdes.Long(), movieSerde))
+                Consumed.with(Serdes.String(), movieSerde))
         .peek((key, value) -> LOG.info("Incoming movies key[{}] value[{}]", key, value))
-        .toTable(Materialized.with(Serdes.Long(), movieSerde));
+        .toTable(Materialized.with(Serdes.String(), movieSerde));
 ```
+
 Here you've started with a `KStream` so you can add a `peek` statement to view the incoming records, then convert it to a table with the `toTable` operator.  Otherwise, you could create the table directly with `StreamBuilder.table`.  Here we are assuming the underlying topic is keyed with the movie id.
 
 Then you'll create your `KStream` of ratings:
@@ -39,7 +41,6 @@ Now, you'll put all this together using a `KStream.join` operation:
                 .to(RATED_MOVIES_OUTPUT, Produced.with(Serdes.Long(), ratedMovieSerde));
 ```
 Notice that you're supplying the `Serde` for the key, the stream value and the value of the table via the `Joined` configuration object.
-
 
 The following steps use Confluent Cloud. To run the tutorial locally with Docker, skip to the `Docker instructions` section at the bottom.
 
