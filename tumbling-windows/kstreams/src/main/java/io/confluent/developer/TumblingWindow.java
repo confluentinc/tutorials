@@ -43,10 +43,10 @@ public class TumblingWindow {
             .windowedBy(TimeWindows.ofSizeAndGrace(Duration.ofMinutes(10), Duration.ofMinutes(1440)))
             .count()
             .toStream()
-            .map((Windowed<String> key, Long count) -> new KeyValue<>(key.key(), count))
+            .map((Windowed<String> key, Long count) -> new KeyValue<>(key.key(), count.intValue()))
             // peek statement added for visibility to Kafka Streams record processing NOT required!
             .peek((key, value) -> LOG.info(String.format("Outgoing average key:[%s] value:[%s]", key, value)))
-            .to(OUTPUT_TOPIC, Produced.with(Serdes.String(), Serdes.Long()));
+            .to(OUTPUT_TOPIC, Produced.with(Serdes.String(), Serdes.Integer()));
 
         return builder.build(properties);
     }
