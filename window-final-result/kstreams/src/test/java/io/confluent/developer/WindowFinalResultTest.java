@@ -33,7 +33,7 @@ public class WindowFinalResultTest {
 
   private TopologyTestDriver testDriver;
   private WindowFinalResult windowFinalResult = new WindowFinalResult();
-  private TestOutputTopic<Windowed<String>, Long> testOutputTopic;
+  private TestOutputTopic<Windowed<String>, Integer> testOutputTopic;
   private Serde<PressureAlert> pressureSerde;
 
   private final String inputTopic = INPUT_TOPIC;
@@ -47,8 +47,8 @@ public class WindowFinalResultTest {
     return TimeWindows.ofSizeAndGrace(testWindowSize,testGracePeriodSize).advanceBy(testWindowSize);
   }
 
-  private List<TestRecord<Windowed<String>, Long>> readAtLeastNOutputs(int size) {
-    final List<TestRecord<Windowed<String>, Long>> testRecords = testOutputTopic.readRecordsToList();
+  private List<TestRecord<Windowed<String>, Integer>> readAtLeastNOutputs(int size) {
+    final List<TestRecord<Windowed<String>, Integer>> testRecords = testOutputTopic.readRecordsToList();
     assertThat(testRecords.size(), equalTo(size));
 
     return testRecords;
@@ -60,7 +60,7 @@ public class WindowFinalResultTest {
     Topology topology = windowFinalResult.buildTopology(new Properties());
     this.testDriver = new TopologyTestDriver(topology, new Properties());
     this.testOutputTopic =
-        testDriver.createOutputTopic(outputTopic, this.keyResultSerde.deserializer(), Serdes.Long().deserializer());
+        testDriver.createOutputTopic(outputTopic, this.keyResultSerde.deserializer(), Serdes.Integer().deserializer());
   }
 
   @AfterEach
@@ -71,46 +71,46 @@ public class WindowFinalResultTest {
   @Test
   public void topologyShouldGroupOverDatetimeWindows() {
     final TestInputTopic<Bytes, PressureAlert>
-        testDriverInputTopic =
-        testDriver.createInputTopic(this.inputTopic, Serdes.Bytes().serializer(), this.pressureSerde.serializer());
+            testDriverInputTopic =
+            testDriver.createInputTopic(this.inputTopic, Serdes.Bytes().serializer(), this.pressureSerde.serializer());
 
     List<PressureAlert> inputs = Arrays.asList(
-        new PressureAlert("101", "2019-09-21T05:30:01.+0200", Integer.MAX_VALUE),
-        new PressureAlert("101", "2019-09-21T05:30:02.+0200", Integer.MAX_VALUE),
-        new PressureAlert("101", "2019-09-21T05:30:03.+0200", Integer.MAX_VALUE),
-        new PressureAlert("101", "2019-09-21T05:45:01.+0200", Integer.MAX_VALUE),
-        new PressureAlert("101", "2019-09-21T05:45:03.+0200", Integer.MAX_VALUE),
-        new PressureAlert("101", "2019-09-21T05:55:10.+0200", Integer.MAX_VALUE),
-        // ONE LAST EVENT TO TRIGGER TO MOVE THE STREAMING TIME
-        new PressureAlert("XXX", "2019-09-21T05:55:40.+0200", Integer.MAX_VALUE)
+            new PressureAlert("101", "2025-09-15T05:30:01.+0200", Integer.MAX_VALUE),
+            new PressureAlert("101", "2025-09-15T05:30:02.+0200", Integer.MAX_VALUE),
+            new PressureAlert("101", "2025-09-15T05:30:03.+0200", Integer.MAX_VALUE),
+            new PressureAlert("101", "2025-09-15T05:45:01.+0200", Integer.MAX_VALUE),
+            new PressureAlert("101", "2025-09-15T05:45:03.+0200", Integer.MAX_VALUE),
+            new PressureAlert("101", "2025-09-15T05:55:10.+0200", Integer.MAX_VALUE),
+            // ONE LAST EVENT TO TRIGGER TO MOVE THE STREAMING TIME
+            new PressureAlert("XXX", "2025-09-15T05:55:40.+0200", Integer.MAX_VALUE)
     );
 
     inputs.forEach(pressureAlert ->
-        testDriverInputTopic.pipeInput(null, pressureAlert)
+            testDriverInputTopic.pipeInput(null, pressureAlert)
     );
 
-    List<TestRecord<Windowed<String>, Long>> result = readAtLeastNOutputs(3);
+    List<TestRecord<Windowed<String>, Integer>> result = readAtLeastNOutputs(3);
 
-    Optional<TestRecord<Windowed<String>, Long>> resultOne = result
-        .stream().filter(Objects::nonNull).filter(r -> r.key().window().start() == 1569036600000L).findAny();
-    Optional<TestRecord<Windowed<String>, Long>> resultTwo = result
-        .stream().filter(Objects::nonNull).filter(r -> r.key().window().start() == 1569037500000L).findAny();
-    Optional<TestRecord<Windowed<String>, Long>> resultThree = result
-        .stream().filter(Objects::nonNull).filter(r -> r.key().window().start() == 1569038110000L).findAny();
+    Optional<TestRecord<Windowed<String>, Integer>> resultOne = result
+            .stream().filter(Objects::nonNull).filter(r -> r.key().window().start() == 1757907000000L).findAny();
+    Optional<TestRecord<Windowed<String>, Integer>> resultTwo = result
+            .stream().filter(Objects::nonNull).filter(r -> r.key().window().start() == 1757907900000L).findAny();
+    Optional<TestRecord<Windowed<String>, Integer>> resultThree = result
+            .stream().filter(Objects::nonNull).filter(r -> r.key().window().start() == 1757908510000L).findAny();
 
     assertTrue(resultOne.isPresent());
     assertTrue(resultTwo.isPresent());
     assertTrue(resultThree.isPresent());
 
-    assertEquals(3L, resultOne.get().value().longValue());
-    assertEquals(2L, resultTwo.get().value().longValue());
-    assertEquals(1L, resultThree.get().value().longValue());
+    assertEquals(3, resultOne.get().value().intValue());
+    assertEquals(2, resultTwo.get().value().intValue());
+    assertEquals(1, resultThree.get().value().intValue());
 
     result.forEach((element) ->
-        assertEquals(
-            makeFixedTimeWindow().size(),
-            element.key().window().end() - element.key().window().start()
-        )
+            assertEquals(
+                    makeFixedTimeWindow().size(),
+                    element.key().window().end() - element.key().window().start()
+            )
     );
   }
 
@@ -118,42 +118,42 @@ public class WindowFinalResultTest {
   public void topologyShouldGroupById() {
 
     final TestInputTopic<Bytes, PressureAlert>
-        testDriverInputTopic =
-        testDriver.createInputTopic(this.inputTopic, Serdes.Bytes().serializer(), this.pressureSerde.serializer());
+            testDriverInputTopic =
+            testDriver.createInputTopic(this.inputTopic, Serdes.Bytes().serializer(), this.pressureSerde.serializer());
 
     List<PressureAlert> inputs = Arrays.asList(
-        new PressureAlert("101", "2019-09-21T05:30:01.+0200", Integer.MAX_VALUE),
-        new PressureAlert("101", "2019-09-21T05:30:02.+0200", Integer.MAX_VALUE),
-        new PressureAlert("101", "2019-09-21T05:30:03.+0200", Integer.MAX_VALUE),
-        new PressureAlert("102", "2019-09-21T05:30:01.+0200", Integer.MAX_VALUE),
-        new PressureAlert("102", "2019-09-21T05:30:02.+0200", Integer.MAX_VALUE),
-        new PressureAlert("102", "2019-09-21T05:30:03.+0200", Integer.MAX_VALUE),
-        new PressureAlert("103", "2019-09-21T05:30:01.+0200", Integer.MAX_VALUE),
-        new PressureAlert("103", "2019-09-21T05:30:02.+0200", Integer.MAX_VALUE),
-        new PressureAlert("103", "2019-09-21T05:30:03.+0200", Integer.MAX_VALUE),
-        // One final event to move the streaming time
-        new PressureAlert("XXX", "2019-09-21T05:55:41.+0200", Integer.MAX_VALUE)
+            new PressureAlert("101", "2025-09-15T05:30:01.+0200", Integer.MAX_VALUE),
+            new PressureAlert("101", "2025-09-15T05:30:02.+0200", Integer.MAX_VALUE),
+            new PressureAlert("101", "2025-09-15T05:30:03.+0200", Integer.MAX_VALUE),
+            new PressureAlert("102", "2025-09-15T05:30:01.+0200", Integer.MAX_VALUE),
+            new PressureAlert("102", "2025-09-15T05:30:02.+0200", Integer.MAX_VALUE),
+            new PressureAlert("102", "2025-09-15T05:30:03.+0200", Integer.MAX_VALUE),
+            new PressureAlert("103", "2025-09-15T05:30:01.+0200", Integer.MAX_VALUE),
+            new PressureAlert("103", "2025-09-15T05:30:02.+0200", Integer.MAX_VALUE),
+            new PressureAlert("103", "2025-09-15T05:30:03.+0200", Integer.MAX_VALUE),
+            // One final event to move the streaming time
+            new PressureAlert("XXX", "2025-09-15T05:55:41.+0200", Integer.MAX_VALUE)
     );
 
     inputs.forEach(pressureAlert ->
-        testDriverInputTopic.pipeInput(null, pressureAlert)
+            testDriverInputTopic.pipeInput(null, pressureAlert)
     );
 
-    List<TestRecord<Windowed<String>, Long>> result = readAtLeastNOutputs(3);
+    List<TestRecord<Windowed<String>, Integer>> result = readAtLeastNOutputs(3);
 
-    Optional<TestRecord<Windowed<String>, Long>> resultOne =
-        result.stream().filter(Objects::nonNull).filter(r -> r.key().key().equals("101")).findAny();
-    Optional<TestRecord<Windowed<String>, Long>> resultTwo =
-        result.stream().filter(Objects::nonNull).filter(r -> r.key().key().equals("102")).findAny();
-    Optional<TestRecord<Windowed<String>, Long>> resultThree =
-        result.stream().filter(Objects::nonNull).filter(r -> r.key().key().equals("103")).findAny();
+    Optional<TestRecord<Windowed<String>, Integer>> resultOne =
+            result.stream().filter(Objects::nonNull).filter(r -> r.key().key().equals("101")).findAny();
+    Optional<TestRecord<Windowed<String>, Integer>> resultTwo =
+            result.stream().filter(Objects::nonNull).filter(r -> r.key().key().equals("102")).findAny();
+    Optional<TestRecord<Windowed<String>, Integer>> resultThree =
+            result.stream().filter(Objects::nonNull).filter(r -> r.key().key().equals("103")).findAny();
 
     assertTrue(resultOne.isPresent());
     assertTrue(resultTwo.isPresent());
     assertTrue(resultThree.isPresent());
 
-    assertEquals(3L, resultOne.get().value().longValue());
-    assertEquals(3L, resultTwo.get().value().longValue());
-    assertEquals(3L, resultThree.get().value().longValue());
+    assertEquals(3, resultOne.get().value().intValue());
+    assertEquals(3, resultTwo.get().value().intValue());
+    assertEquals(3, resultThree.get().value().intValue());
   }
 }
