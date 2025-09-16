@@ -50,7 +50,7 @@ public class KTableTTL {
         // TTL part of the topology
         // This could be in a separate application
         // Setting tombstones for records seen past a TTL of MAX_AGE
-        final Duration MAX_AGE = Duration.ofMinutes(1);
+        final Duration MAX_AGE = Duration.ofSeconds(10);
         final Duration SCAN_FREQUENCY = Duration.ofSeconds(5);
         final String STATE_STORE_NAME = "test-table-purge-store";
 
