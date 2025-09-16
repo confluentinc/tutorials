@@ -39,35 +39,35 @@ class KafkaStreamsPunctuationTest {
 
             final Serializer<String> keySerializer = Serdes.String().serializer();
             final Serializer<LoginTime> exampleSerializer = loginTimeSerde.serializer();
-            final Deserializer<Long> valueDeserializer = Serdes.Long().deserializer();
+            final Deserializer<Integer> valueDeserializer = Serdes.Integer().deserializer();
             final Deserializer<String> keyDeserializer = Serdes.String().deserializer();
 
             final TestInputTopic<String, LoginTime>  inputTopic = testDriver.createInputTopic(pageViewsInputTopic,
                                                                                               keySerializer,
                                                                                               exampleSerializer);
 
-            final TestOutputTopic<String, Long> outputTopic = testDriver.createOutputTopic(outputTopicName, keyDeserializer, valueDeserializer);
+            final TestOutputTopic<String, Integer> outputTopic = testDriver.createOutputTopic(outputTopicName, keyDeserializer, valueDeserializer);
 
             final List<LoginTime> loggedOnTimes = new ArrayList<>();
-            loggedOnTimes.add(new LoginTime(5L, "user-1", "test-page"));
-            loggedOnTimes.add(new LoginTime(5L, "user-2", "test-page"));
-            loggedOnTimes.add(new LoginTime(10L, "user-1", "test-page"));
-            loggedOnTimes.add(new LoginTime(25L, "user-3", "test-page"));
-            loggedOnTimes.add(new LoginTime(10L, "user-2", "test-page"));
+            loggedOnTimes.add(new LoginTime(5, "user-1", "test-page"));
+            loggedOnTimes.add(new LoginTime(5, "user-2", "test-page"));
+            loggedOnTimes.add(new LoginTime(5, "user-1", "test-page"));
+            loggedOnTimes.add(new LoginTime(5, "user-3", "test-page"));
+            loggedOnTimes.add(new LoginTime(5, "user-2", "test-page"));
 
             List<KeyValue<String, LoginTime>> keyValues = loggedOnTimes.stream().map(o -> KeyValue.pair(o.userId(),o)).collect(Collectors.toList());
             inputTopic.pipeKeyValueList(keyValues, Instant.now(), Duration.ofSeconds(2));
 
-            final List<KeyValue<String, Long>> actualResults = outputTopic.readKeyValuesToList();
+            final List<KeyValue<String, Integer>> actualResults = outputTopic.readKeyValuesToList();
             assertThat(actualResults.size(), is(greaterThanOrEqualTo(1)));
 
-            KeyValueStore<String, Long> store = testDriver.getKeyValueStore("logintime-store");
+            KeyValueStore<String, Integer> store = testDriver.getKeyValueStore("logintime-store");
 
             testDriver.advanceWallClockTime(Duration.ofSeconds(20));
             
-            assertSame(store.get("user-1"), 0L);
-            assertSame(store.get("user-2"), 0L);
-            assertSame(store.get("user-3"), 0L);
+            assertSame(store.get("user-1"), 0);
+            assertSame(store.get("user-2"), 0);
+            assertSame(store.get("user-3"), 0);
         }
     }
 }

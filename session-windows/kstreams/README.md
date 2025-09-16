@@ -250,7 +250,8 @@ confluent environment delete <ENVIRONMENT ID>
 
   ```shell
   kafka-console-consumer --bootstrap-server localhost:9092 --topic sessions --from-beginning \
-    --property "print.key=true" --property "key.separator=:"
+    --property "print.key=true" --property "key.separator=:" \
+    --property "value.deserializer=org.apache.kafka.common.serialization.IntegerDeserializer"
   ```
 
   You should see:

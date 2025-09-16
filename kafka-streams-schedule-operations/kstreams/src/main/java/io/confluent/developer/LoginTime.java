@@ -1,4 +1,4 @@
 package io.confluent.developer;
 
-public record LoginTime(long logInTime, String userId, String appId) {
+public record LoginTime(int logInTime, String userId, String appId) {
 }
