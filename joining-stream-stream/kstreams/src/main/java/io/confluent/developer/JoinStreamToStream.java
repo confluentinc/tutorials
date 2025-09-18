@@ -28,19 +28,19 @@ public class JoinStreamToStream {
         final Serde<RatedMovie> ratedMovieSerde = new StreamsSerde<>(RatedMovie.class);
         final JoinWindows joinWindows = JoinWindows.ofTimeDifferenceWithNoGrace(Duration.ofMinutes(10));
 
-        KStream<Long, Movie> movieStream = builder.stream(MOVIE_INPUT_TOPIC,
-                        Consumed.with(Serdes.Long(), movieSerde))
+        KStream<String, Movie> movieStream = builder.stream(MOVIE_INPUT_TOPIC,
+                        Consumed.with(Serdes.String(), movieSerde))
                 .peek((key, value) -> LOG.info("Incoming movies key[{}] value[{}]", key, value));
 
-        KStream<Long, Rating> ratings = builder.stream(RATING_INPUT_TOPIC,
-                        Consumed.with(Serdes.Long(), ratingSerde))
+        KStream<String, Rating> ratings = builder.stream(RATING_INPUT_TOPIC,
+                        Consumed.with(Serdes.String(), ratingSerde))
                 .peek((key, value) -> LOG.info("Incoming ratings key[{}] value[{}]", key, value))
                 .map((key, rating) -> new KeyValue<>(rating.id(), rating));
 
-        ratings.join(movieStream, joiner, joinWindows, StreamJoined.with(Serdes.Long(),ratingSerde, movieSerde))
+        ratings.join(movieStream, joiner, joinWindows, StreamJoined.with(Serdes.String(),ratingSerde, movieSerde))
                 .peek((key, value) -> LOG.info("Joined results key[{}] value[{}]", key, value))
                 .to(RATED_MOVIES_OUTPUT,
-                        Produced.with(Serdes.Long(), ratedMovieSerde));
+                        Produced.with(Serdes.String(), ratedMovieSerde));
 
         return builder.build(allProps);
     }

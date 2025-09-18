@@ -1,7 +1,7 @@
 package io.confluent.developer;
 
 import org.apache.kafka.common.serialization.Deserializer;
-import org.apache.kafka.common.serialization.LongDeserializer;
+import org.apache.kafka.common.serialization.IntegerDeserializer;
 import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
@@ -26,7 +26,7 @@ public class TumblingWindowTest {
     private List<RatingCount> readOutputTopic(TopologyTestDriver testDriver,
                                               String outputTopic,
                                               Deserializer<String> keyDeserializer,
-                                              Deserializer<Long> valueDeserializer) {
+                                              Deserializer<Integer> valueDeserializer) {
         return testDriver
             .createOutputTopic(outputTopic, keyDeserializer, valueDeserializer)
             .readKeyValuesToList()
@@ -56,16 +56,16 @@ public class TumblingWindowTest {
             ratings.add(new MovieRating("Tree of Life", 2011, 9.9, "2024-09-25T21:11:00-0000"));
 
             List<RatingCount> ratingCounts = new ArrayList<>();
-            ratingCounts.add(new RatingCount("Super Mario Bros.", 1L));
-            ratingCounts.add(new RatingCount("Super Mario Bros.", 2L));
-            ratingCounts.add(new RatingCount("A Walk in the Clouds", 1L));
-            ratingCounts.add(new RatingCount("A Walk in the Clouds", 2L));
-            ratingCounts.add(new RatingCount("Die Hard", 1L));
-            ratingCounts.add(new RatingCount("Die Hard", 2L));
-            ratingCounts.add(new RatingCount("The Big Lebowski", 1L));
-            ratingCounts.add(new RatingCount("The Big Lebowski", 2L));
-            ratingCounts.add(new RatingCount("Tree of Life", 1L));
-            ratingCounts.add(new RatingCount("Tree of Life", 2L));
+            ratingCounts.add(new RatingCount("Super Mario Bros.", 1));
+            ratingCounts.add(new RatingCount("Super Mario Bros.", 2));
+            ratingCounts.add(new RatingCount("A Walk in the Clouds", 1));
+            ratingCounts.add(new RatingCount("A Walk in the Clouds", 2));
+            ratingCounts.add(new RatingCount("Die Hard", 1));
+            ratingCounts.add(new RatingCount("Die Hard", 2));
+            ratingCounts.add(new RatingCount("The Big Lebowski", 1));
+            ratingCounts.add(new RatingCount("The Big Lebowski", 2));
+            ratingCounts.add(new RatingCount("Tree of Life", 1));
+            ratingCounts.add(new RatingCount("Tree of Life", 2));
 
             final TestInputTopic<String, MovieRating>
                 testDriverInputTopic =
@@ -78,7 +78,7 @@ public class TumblingWindowTest {
             List<RatingCount> actualOutput = readOutputTopic(testDriver,
                 OUTPUT_TOPIC,
                 new StringDeserializer(),
-                new LongDeserializer());
+                new IntegerDeserializer());
 
             assertEquals(ratingCounts.size(), actualOutput.size());
             for (int n = 0; n < ratingCounts.size(); n++) {
@@ -90,9 +90,9 @@ public class TumblingWindowTest {
     class RatingCount {
 
         private final String key;
-        private final Long value;
+        private final Integer value;
 
-        public RatingCount(String key, Long value) {
+        public RatingCount(String key, Integer value) {
             this.key = key;
             this.value = value;
         }

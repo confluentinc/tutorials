@@ -29,18 +29,18 @@ class FkJoinTableToTableTest {
         final Topology topology = fkJoin.buildTopology(envProps);
         try (final TopologyTestDriver testDriver = new TopologyTestDriver(topology, envProps)) {
 
-            final Serde<Long> longSerde = Serdes.Long();
+            final Serde<String> stringSerde = Serdes.String();
             final Serde<MusicInterest> musicInterestSerde = StreamsSerde.serdeFor(MusicInterest.class);
             final Serde<Album> albumSerde = StreamsSerde.serdeFor(Album.class);
             final Serde<TrackPurchase> trackPurchaseSerde = StreamsSerde.serdeFor(TrackPurchase.class);
 
-            final Serializer<Long> keySerializer = longSerde.serializer();
+            final Serializer<String> keySerializer = stringSerde.serializer();
             final Serializer<Album> albumSerializer = albumSerde.serializer();
             final Serializer<TrackPurchase> trackPurchaseSerializer = trackPurchaseSerde.serializer();
             final Deserializer<MusicInterest> musicInterestDeserializer =  musicInterestSerde.deserializer();
 
-            final TestInputTopic<Long, Album>  albumTestInputTopic = testDriver.createInputTopic(albumInputTopic, keySerializer, albumSerializer);
-            final TestInputTopic<Long, TrackPurchase> trackPurchaseInputTopic = testDriver.createInputTopic(userPurchaseTopic, keySerializer, trackPurchaseSerializer);
+            final TestInputTopic<String, Album>  albumTestInputTopic = testDriver.createInputTopic(albumInputTopic, keySerializer, albumSerializer);
+            final TestInputTopic<String, TrackPurchase> trackPurchaseInputTopic = testDriver.createInputTopic(userPurchaseTopic, keySerializer, trackPurchaseSerializer);
             final TestOutputTopic<String, MusicInterest> outputTopic = testDriver.createOutputTopic(joinedResultOutputTopic, new StringDeserializer(), musicInterestDeserializer);
 
 
@@ -64,10 +64,10 @@ class FkJoinTableToTableTest {
 
     private static List<Album> getAlbums() {
         final List<Album> albums = new ArrayList<>();
-        albums.add(new Album(5L, "Physical Graffiti", "Rock", "Led Zeppelin"));
-        albums.add(new Album(6L, "Highway to Hell", "Rock", "AC/DC"));
-        albums.add(new Album(7L, "Radio", "Hip hop", "LL Cool J"));
-        albums.add(new Album(8L, "King of Rock", "Rap rock", "Run-D.M.C"));
+        albums.add(new Album("5", "Physical Graffiti", "Rock", "Led Zeppelin"));
+        albums.add(new Album("6", "Highway to Hell", "Rock", "AC/DC"));
+        albums.add(new Album("7", "Radio", "Hip hop", "LL Cool J"));
+        albums.add(new Album("8", "King of Rock", "Rap rock", "Run-D.M.C"));
         return albums;
     }
 
@@ -85,13 +85,13 @@ class FkJoinTableToTableTest {
 
     private static List<TrackPurchase> getTrackPurchases() {
         final List<TrackPurchase> trackPurchases = new ArrayList<>();
-        trackPurchases.add(new TrackPurchase(100, "Houses Of The Holy", 5L, 0.99));
-        trackPurchases.add(new TrackPurchase(101, "King Of Rock", 8L, 0.99));
-        trackPurchases.add(new TrackPurchase(102, "Shot Down In Flames", 6L, 0.99));
-        trackPurchases.add(new TrackPurchase(103, "Rock The Bells", 7L, 0.99));
-        trackPurchases.add(new TrackPurchase(104, "Can You Rock It Like This", 8L, 0.99));
-        trackPurchases.add(new TrackPurchase(105, "Highway To Hell", 6L, 0.99));
-        trackPurchases.add(new TrackPurchase(106, "Kashmir", 5L, 0.99));
+        trackPurchases.add(new TrackPurchase("100", "Houses Of The Holy", "5", 0.99));
+        trackPurchases.add(new TrackPurchase("101", "King Of Rock", "8", 0.99));
+        trackPurchases.add(new TrackPurchase("102", "Shot Down In Flames", "6", 0.99));
+        trackPurchases.add(new TrackPurchase("103", "Rock The Bells", "7", 0.99));
+        trackPurchases.add(new TrackPurchase("104", "Can You Rock It Like This", "8", 0.99));
+        trackPurchases.add(new TrackPurchase("105", "Highway To Hell", "6", 0.99));
+        trackPurchases.add(new TrackPurchase("106", "Kashmir", "5", 0.99));
         return trackPurchases;
     }
 }

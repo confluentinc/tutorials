@@ -33,8 +33,8 @@ public class WindowFinalResult {
 
         Serde<PressureAlert> pressureSerde = StreamsSerde.serdeFor(PressureAlert.class);
 
-        Produced<Windowed<String>, Long> producedCount = Produced
-            .with(new WindowedSerdes.TimeWindowedSerde<>(Serdes.String(), Long.MAX_VALUE), Serdes.Long());
+        Produced<Windowed<String>, Integer> producedCount = Produced
+            .with(new WindowedSerdes.TimeWindowedSerde<>(Serdes.String(), Integer.MAX_VALUE), Serdes.Integer());
 
         Consumed<String, PressureAlert> consumedPressure = Consumed
             .with(Serdes.String(), pressureSerde)
@@ -53,6 +53,7 @@ public class WindowFinalResult {
             .count()
             .suppress(Suppressed.untilWindowCloses(unbounded()))
             .toStream()
+            .mapValues(v -> v.intValue())
             // peek statement added for visibility to Kafka Streams record processing NOT required!
             .peek((key, value) -> LOG.info(String.format("Outgoing count key:[%s] value:[%s]", key, value)))
             .to(OUTPUT_TOPIC, producedCount);

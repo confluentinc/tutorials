@@ -1,4 +1,4 @@
 package io.confluent.developer;
 
-public record RatedMovie(long id, String title, int releaseYear, double rating) {
+public record RatedMovie(String id, String title, int releaseYear, double rating) {
 }

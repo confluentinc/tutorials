@@ -26,24 +26,24 @@ public class FkJoinTableToTable {
     public Topology buildTopology(Properties envProps) {
         final StreamsBuilder builder = new StreamsBuilder();
 
-        final Serde<Long> longSerde = Serdes.Long();
+        final Serde<String> stringSerde = Serdes.String();
         final Serde<MusicInterest> musicInterestSerde = StreamsSerde.serdeFor(MusicInterest.class);
         final Serde<Album> albumSerde = StreamsSerde.serdeFor(Album.class);
         final Serde<TrackPurchase> trackPurchaseSerde = StreamsSerde.serdeFor(TrackPurchase.class);
 
-            final KTable<Long, Album> albums = builder.table(ALBUM_TOPIC, Consumed.with(longSerde, albumSerde));
+            final KTable<String, Album> albums = builder.table(ALBUM_TOPIC, Consumed.with(stringSerde, albumSerde));
 
-            final KTable<Long, TrackPurchase> trackPurchases = builder.table(USER_TRACK_PURCHASE_TOPIC, Consumed.with(longSerde, trackPurchaseSerde));
+            final KTable<String, TrackPurchase> trackPurchases = builder.table(USER_TRACK_PURCHASE_TOPIC, Consumed.with(stringSerde, trackPurchaseSerde));
             final MusicInterestJoiner trackJoiner = new MusicInterestJoiner();
 
-            final KTable<Long, MusicInterest> musicInterestTable = trackPurchases.join(albums,
+            final KTable<String, MusicInterest> musicInterestTable = trackPurchases.join(albums,
                                                                                  TrackPurchase::albumId,
                                                                                  trackJoiner);
 
         musicInterestTable
                 .toStream()
                 .peek((key, value) -> LOG.info("Joined records key[{}] value[{}]", key, value))
-                .to(MUSIC_INTEREST_TOPIC, Produced.with(longSerde, musicInterestSerde));
+                .to(MUSIC_INTEREST_TOPIC, Produced.with(stringSerde, musicInterestSerde));
 
         return builder.build(envProps);
     }

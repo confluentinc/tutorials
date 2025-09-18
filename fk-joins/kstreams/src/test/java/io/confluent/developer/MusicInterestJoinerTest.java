@@ -11,8 +11,8 @@ class MusicInterestJoinerTest {
 
         MusicInterest returnedMusicInterest;
 
-        Album theAlbum = new Album(100, "Album Title", "testing", "the artist");
-        TrackPurchase theTrackPurchase = new TrackPurchase(5000, "song-title",5000, 1.25);
+        Album theAlbum = new Album("100", "Album Title", "testing", "the artist");
+        TrackPurchase theTrackPurchase = new TrackPurchase("5000", "song-title","100", 1.25);
         MusicInterest expectedMusicInterest = new MusicInterest("100-5000", "testing", "the artist");
 
         MusicInterestJoiner joiner = new MusicInterestJoiner();

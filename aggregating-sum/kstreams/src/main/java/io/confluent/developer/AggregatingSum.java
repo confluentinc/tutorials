@@ -15,7 +15,7 @@ import java.util.concurrent.CountDownLatch;
 
 public class AggregatingSum {
 
-     private static final Logger LOG = LoggerFactory.getLogger(AggregatingSum.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AggregatingSum.class);
 
     public static final String INPUT_TOPIC = "aggregation-sum-input";
     public static final String OUTPUT_TOPIC = "aggregation-sum-output";

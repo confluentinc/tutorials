@@ -27,20 +27,20 @@ public class JoinStreamToTable {
         final Serde<Rating> ratingSerde = new StreamsSerde<>(Rating.class);
         final Serde<RatedMovie> ratedMovieSerde = new StreamsSerde<>(RatedMovie.class);
 
-        KTable<Long, Movie> movieTable = builder.stream(MOVIE_INPUT_TOPIC,
-                        Consumed.with(Serdes.Long(), movieSerde))
+        KTable<String, Movie> movieTable = builder.stream(MOVIE_INPUT_TOPIC,
+                        Consumed.with(Serdes.String(), movieSerde))
                 .peek((key, value) -> LOG.info("Incoming movies key[{}] value[{}]", key, value))
-                .toTable(Materialized.with(Serdes.Long(), movieSerde));
+                .toTable(Materialized.with(Serdes.String(), movieSerde));
 
-        KStream<Long, Rating> ratings = builder.stream(RATING_INPUT_TOPIC,
-                        Consumed.with(Serdes.Long(), ratingSerde))
+        KStream<String, Rating> ratings = builder.stream(RATING_INPUT_TOPIC,
+                        Consumed.with(Serdes.String(), ratingSerde))
                 .peek((key, value) -> LOG.info("Incoming ratings key[{}] value[{}]", key, value))
                 .map((key, rating) -> new KeyValue<>(rating.id(), rating));
 
-        ratings.join(movieTable, joiner, Joined.with(Serdes.Long(),ratingSerde, movieSerde))
+        ratings.join(movieTable, joiner, Joined.with(Serdes.String(),ratingSerde, movieSerde))
                 .peek((key, value) -> LOG.info("Joined results key[{}] value[{}]", key, value))
                 .to(RATED_MOVIES_OUTPUT,
-                        Produced.with(Serdes.Long(), ratedMovieSerde));
+                        Produced.with(Serdes.String(), ratedMovieSerde));
 
         return builder.build(allProps);
     }

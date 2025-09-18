@@ -1,4 +1,4 @@
 package io.confluent.developer;
 
-public record TrackPurchase(long id, String songTitle, long albumId, double price) {
+public record TrackPurchase(String id, String songTitle, String albumId, double price) {
 }

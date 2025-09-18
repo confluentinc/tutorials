@@ -43,29 +43,29 @@ public class KafkaStreamsPunctuation {
                 .peek((key, value) -> LOG.info("Incoming records key[{}] value[{}]", key, value))
                 .process(new PunctationProcessorSupplier(), Named.as("max-login-time-transformer"), LOGIN_TIME_STORE)
                 .peek((key, value) -> LOG.info("Punctuation records key[{}] value[{}]", key, value))
-                      .to(OUTPUT_TOPIC, Produced.with(Serdes.String(), Serdes.Long()));
+                      .to(OUTPUT_TOPIC, Produced.with(Serdes.String(), Serdes.Integer()));
 
         return builder.build(envProps);
     }
 
 
-    private static class PunctationProcessorSupplier implements ProcessorSupplier<String,LoginTime, String, Long> {
+    private static class PunctationProcessorSupplier implements ProcessorSupplier<String, LoginTime, String, Integer> {
 
         @Override
         public Set<StoreBuilder<?>> stores() {
-            StoreBuilder<KeyValueStore<String, Long>> storeBuilder =
-                    Stores.keyValueStoreBuilder(Stores.inMemoryKeyValueStore(LOGIN_TIME_STORE),Serdes.String(), Serdes.Long());
+            StoreBuilder<KeyValueStore<String, Integer>> storeBuilder =
+                    Stores.keyValueStoreBuilder(Stores.inMemoryKeyValueStore(LOGIN_TIME_STORE),Serdes.String(), Serdes.Integer());
             return Collections.singleton(storeBuilder);
         }
 
         @Override
-        public Processor<String, LoginTime, String, Long> get() {
-            return new Processor<String, LoginTime, String, Long>() {
-                private KeyValueStore<String, Long> store;
-                private ProcessorContext<String, Long> context;
+        public Processor<String, LoginTime, String, Integer> get() {
+            return new Processor<String, LoginTime, String, Integer>() {
+                private KeyValueStore<String, Integer> store;
+                private ProcessorContext<String, Integer> context;
 
                 @Override
-                public void init(ProcessorContext<String, Long> context) {
+                public void init(ProcessorContext<String, Integer> context) {
                     this.context = context;
                     store = this.context.getStateStore(LOGIN_TIME_STORE);
                     this.context.schedule(Duration.ofSeconds(5), PunctuationType.STREAM_TIME, this::streamTimePunctuator);
@@ -76,28 +76,28 @@ public class KafkaStreamsPunctuation {
                 public void process(Record<String, LoginTime> loginRecord) {
                     String key = loginRecord.key();
                     LoginTime value = loginRecord.value();
-                    Long currentVT = store.putIfAbsent(key, value.logInTime());
+                    Integer currentVT = store.putIfAbsent(key, value.logInTime());
                     if (currentVT != null) {
                         store.put(key, currentVT + value.logInTime());
                     }
                 }
 
                 void wallClockTimePunctuator(Long timestamp) {
-                    try (KeyValueIterator<String, Long> iterator = store.all()) {
+                    try (KeyValueIterator<String, Integer> iterator = store.all()) {
                         while (iterator.hasNext()) {
-                            KeyValue<String, Long> keyValue = iterator.next();
-                            store.put(keyValue.key, 0L);
+                            KeyValue<String, Integer> keyValue = iterator.next();
+                            store.put(keyValue.key, 0);
                         }
                     }
                     System.out.println("@" + new Date(timestamp) + " Reset all view-times to zero");
                 }
 
                 void streamTimePunctuator(Long timestamp) {
-                    Long maxValue = Long.MIN_VALUE;
+                    Integer maxValue = Integer.MIN_VALUE;
                     String maxValueKey = "";
-                    try (KeyValueIterator<String, Long> iterator = store.all()) {
+                    try (KeyValueIterator<String, Integer> iterator = store.all()) {
                         while (iterator.hasNext()) {
-                            KeyValue<String, Long> keyValue = iterator.next();
+                            KeyValue<String, Integer> keyValue = iterator.next();
                             if (keyValue.value > maxValue) {
                                 maxValue = keyValue.value;
                                 maxValueKey = keyValue.key;
