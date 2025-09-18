@@ -214,7 +214,7 @@ confluent environment delete <ENVIRONMENT ID>
   On your local machine, compile the app:
 
   ```shell
-  ./gradlew creating-first-apache-kafka-streams-application:kstreams/shadowJar
+  ./gradlew creating-first-apache-kafka-streams-application:kstreams:shadowJar
   ```
 
   Navigate into the application's home directory:
