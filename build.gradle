@@ -27,6 +27,7 @@ subprojects {
     }
 
     tasks.withType(Test) {
+        maxParallelForks = 1
         testLogging {
             outputs.upToDateWhen { false }
             events "PASSED", "SKIPPED", "FAILED", "STANDARD_OUT", "STANDARD_ERROR"

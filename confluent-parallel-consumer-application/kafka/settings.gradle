@@ -7,5 +7,3 @@
  */
 
 rootProject.name = 'parallel-consumer'
-include ':common'
-project(':common').projectDir = file('../../common')
