@@ -1,0 +1,53 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "gradle.plugin.com.github.jengelman.gradle.plugins:shadow:7.0.0"
+    }
+}
+
+plugins {
+    id "java"
+    id "idea"
+    id "eclipse"
+}
+
+sourceCompatibility = "17"
+targetCompatibility = "17"
+version = "0.0.1"
+
+repositories {
+    mavenCentral()
+
+    maven {
+        url "https://packages.confluent.io/maven"
+    }
+}
+
+apply plugin: "com.github.johnrengelman.shadow"
+
+dependencies {
+    implementation group: 'org.slf4j', name: 'slf4j-simple', version: '2.0.17'
+    implementation group: 'org.slf4j', name: 'slf4j-api', version: '2.0.17'
+    implementation group: 'commons-cli', name: 'commons-cli', version: '1.10.0'
+    implementation group: 'org.apache.kafka', name: 'kafka-clients', version: '4.1.0'
+    implementation group: 'org.apache.kafka', name: 'kafka-group-coordinator', version: '4.1.0'
+
+    implementation group: 'org.projectlombok', name: 'lombok', version: '1.18.42'
+    annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.42'
+}
+
+jar {
+    manifest {
+        attributes(
+                "Class-Path": configurations.compileClasspath.collect { it.getName() }.join(" "),
+                "Main-Class": "io.confluent.developer.ConsumerApp"
+        )
+    }
+}
+
+shadowJar {
+    archiveBaseName = "kafka-consumer-comparison-app"
+    archiveClassifier = ''
+}

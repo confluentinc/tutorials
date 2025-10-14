@@ -1,0 +1,3 @@
+rootProject.name = 'kafka-consumer-comparison-app'
+include ':common'
+project(':common').projectDir = file('../../common')
