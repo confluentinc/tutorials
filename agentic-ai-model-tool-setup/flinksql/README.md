@@ -14,6 +14,7 @@ After you finish this tutorial, in [Part 2](https://developer.confluent.io/confl
 - An [OpenAI](https://auth.openai.com/create-account) account
 - A [Linear](https://linear.app/) account. Sign up for the free plan.
 - [Node.js and npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) to inspect Linear's MCP server
+- [`jq`](https://jqlang.org/download/) for parsing JSON on the command line
 
 ## Create Confluent Cloud resources
 
@@ -29,7 +30,7 @@ Install a CLI plugin that streamlines resource creation in Confluent Cloud:
 confluent plugin install confluent-quickstart
 ```
 
-Run the plugin from the top-level directory of the `tutorials` repository to create the Confluent Cloud resources needed for this tutorial. Note that you may specify a different cloud provider (`gcp` or `azure`) or region. You can find supported regions in a given cloud provider by running `confluent kafka region list --cloud <CLOUD>`. The plugin should complete in under a minute.
+Run the plugin to create the Confluent Cloud resources needed for this tutorial. Note that you may specify a different cloud provider (`gcp` or `azure`) or region. You can find supported regions in a given cloud provider by running `confluent kafka region list --cloud <CLOUD>`. The plugin should complete in under a minute.
 
 ```shell
 confluent quickstart \
@@ -46,7 +47,7 @@ Next, [log in to Linear](https://linear.app/login).
 
 When prompted, give your workspace a unique name and click through the quick start prompts until you get to your workspace home page.
 
-To create a Linear API key, click the workspace dropdown at the top left, then `Settings`. Select `Security & access` in the left-hand navigation, followed by `New API key` under `Personal API keys`. Give the key a name and click `Create`. Save this API key.
+To create a Linear API key, click the workspace dropdown at the top left, then `Settings`. Select `Security & access` in the left-hand navigation, followed by `New API key` under `Personal API keys`. Give the key a name. Under `Permissions`, select `Only select permissions...` and then only check the boxes for `Read` and `Write`. Click `Create`. Save this API key.
 
 ## Create Linear and OpenAI connections
 
@@ -64,6 +65,7 @@ CREATE CONNECTION `linear-mcp-connection`
   WITH (
     'type' = 'MCP_SERVER',
     'endpoint' = 'https://mcp.linear.app/mcp',
+    'transport-type' = 'streamable_http',
     'token' = '<LINEAR_API_KEY>'
   );
 ```
@@ -151,7 +153,7 @@ SELECT
   response
 FROM
   (SELECT 'What is a good family friendly dog breed? Answer concisely with only the most recommended breed.' AS prompt) t,
-LATERAL TABLE(ML_PREDICT('chat_listener', prompt)) as r(response);
+LATERAL TABLE(AI_COMPLETE('chat_listener', prompt)) as r(response);
 ```
 
 You should see output like the following. Your output may be different because the underlying model is nondeterministic.
@@ -167,7 +169,7 @@ Next, test MCP tool invocation with the following command. Substitute your Linea
 SELECT
       AI_TOOL_INVOKE(
           'linear_mcp_model',
-          'Create an issue from the following text using <LINEAR_TEAM_ID> as the team ID. I cannot log in to the online store. It says that my account has been locked out. When I try the forgot password route, I don\'t get an email to reset it. Please help!',
+          'Create an issue from the following text using <LINEAR_TEAM_ID> as the team ID. I can''t log in to the online store. It says that my account has been locked out. When I try the forgot password route, I don''t get an email to reset it. Please help!',
           MAP[],
           MAP['create_issue', 'Create a new issue'],
           MAP[]

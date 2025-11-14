@@ -1,7 +1,7 @@
-<!-- title: How to set up models and MCP tools to be used in agentic AI workflows with Flink SQL in Confluent Cloud -->
-<!-- description: In this tutorial, learn how to set up models and MCP tools to be used in agentic AI workflows with Flink SQL in Confluent Cloud, with step-by-step instructions and supporting code. -->
+<!-- title: How to build a streaming AI agent that uses MCP tools with Flink SQL in Confluent Cloud -->
+<!-- description: In this tutorial, learn how to build a streaming AI agent that uses MCP tools with Flink SQL in Confluent Cloud, with step-by-step instructions and supporting code. -->
 
-# Agentic AI Part 2 of 2: Building a streaming agent with MCP
+# Agentic AI Part 2 of 2: Building a streaming AI agent that uses MCP tools
 
 In [Part 1](https://developer.confluent.io/confluent-tutorials/agentic-ai-model-tool-setup/flinksql/) of this tutorial series, you created and tested the models and tools required for a customer support operations use case: generating summarized, structured issues in a project management platform (Linear) based on unstructured customer feedback. In this tutorial, we will build on this foundation and create a [streaming agent](https://docs.confluent.io/cloud/current/ai/streaming-agents/overview.html) in Confluent Cloud.
 
