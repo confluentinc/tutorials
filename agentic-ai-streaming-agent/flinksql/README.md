@@ -1,9 +1,9 @@
-<!-- title: How to build a streaming AI agent that uses MCP tools with Flink SQL in Confluent Cloud -->
-<!-- description: In this tutorial, learn how to build a streaming AI agent that uses MCP tools with Flink SQL in Confluent Cloud, with step-by-step instructions and supporting code. -->
+<!-- title: How to build and evolve a Streaming Agent that uses MCP tools with Flink SQL in Confluent Cloud -->
+<!-- description: In this tutorial, learn how to build and evolve a Streaming Agent that uses MCP tools with Flink SQL in Confluent Cloud, with step-by-step instructions and supporting code. -->
 
-# Agentic AI Part 2 of 2: Building a streaming AI agent that uses MCP tools
+# Agentic AI Part 2 of 2: Building and evolving a Streaming Agent that uses MCP tools
 
-In [Part 1](https://developer.confluent.io/confluent-tutorials/agentic-ai-model-tool-setup/flinksql/) of this tutorial series, you created and tested the models and tools required for a customer support operations use case: generating summarized, structured issues in a project management platform (Linear) based on unstructured customer feedback. In this tutorial, we will build on this foundation and create a [streaming agent](https://docs.confluent.io/cloud/current/ai/streaming-agents/overview.html) in Confluent Cloud.
+In [Part 1](https://developer.confluent.io/confluent-tutorials/agentic-ai-model-tool-setup/flinksql/) of this tutorial series, you created and tested the models and tools required for a customer support operations use case: generating summarized, structured issues in a project management platform (Linear) based on unstructured customer feedback. In this tutorial, we will build on this foundation and create a [Streaming Agent](https://docs.confluent.io/cloud/current/ai/streaming-agents/overview.html) in Confluent Cloud.
 
 ## Prerequisites
 
@@ -30,7 +30,7 @@ confluent flink shell --compute-pool \
   $(confluent flink compute-pool list -o json | jq -r ".[0].id")
 ```
 
-## Create a tool resource for the AI agent
+## Create a tool resource for the Streaming Agent
 
 In the Flink SQL shell, create a tool to access Linear's MCP server:
 
@@ -44,9 +44,9 @@ WITH (
 );
 ```
 
-## Create the streaming agent
+## Create the Streaming Agent
 
-Next, create a streaming agent using the tool you just created as well as the model you created earlier. Since the agent won't know your Linear team ID, provide it as a prompt hint:
+Next, create a Streaming Agent using the tool you just created as well as the model you created earlier. Since the agent won't know your Linear team ID, provide it as a prompt hint:
 
 ```sql
 CREATE AGENT chat_listener_agent
@@ -58,7 +58,7 @@ WITH (
   );
 ```
 
-## Test the streaming agent
+## Test the Streaming Agent
 
 Let's test your agent against sample customer communications. In a production deployment, communications would be produced into Kafka via a connector (e.g., the [HTTP Source V2 Connector](https://docs.confluent.io/cloud/current/connectors/cc-http-source-v2.html) against a communication platform's REST API) or other Kafka client. Here, we create a table and insert sample communications into it.
 
@@ -84,9 +84,9 @@ FROM customer_communications,
   LATERAL TABLE(AI_RUN_AGENT('chat_listener_agent', `prompt`, `id`, MAP['debug', true]));
 ```
 
-## Evolve the streaming agent
+## Evolve the Streaming Agent
 
-You are off to a good start with your streaming agent, but you may already see room for improvement. For example, if you insert another complaint about the site undergoing maintenance:
+You are off to a good start with your Streaming Agent, but you may already see room for improvement. For example, if you insert another complaint about the site undergoing maintenance:
 
 ```sql
 INSERT INTO customer_communications
@@ -134,7 +134,7 @@ FROM customer_communications,
 
 If you add more complaints about the site undergoing maintenance, you will see that the agent doesn't take action. You will see reasons explaining why; for example, `An issue similar to your problem already exists in the team's Linear workspace`.
 
-## Run the streaming agent continuously
+## Run the Streaming Agent continuously
 
 Once you are satisfied with an agent's quality, you can run it continuously by wrapping it as a [`CREATE TABLE AS SELECT`](https://docs.confluent.io/cloud/current/flink/reference/statements/create-table.html#create-table-as-select-ctas) statement:
 
@@ -155,7 +155,7 @@ INSERT INTO customer_communications
     (UUID(), 'Hi, I would like a partial refund on order 9189 because one of the items (the bike tire) was not included. you can just credit my account balance please.');
 ```
 
-Since the streaming agent is running as a CTAS statement, you can see how the agent handles the input by querying the `chat_listener_agent_output` table, or head over to your [Linear workspace](https://linear.app/), where you will see a new issue created:
+Since the Streaming Agent is running as a CTAS statement, you can see how the agent handles the input by querying the `chat_listener_agent_output` table, or head over to your [Linear workspace](https://linear.app/), where you will see a new issue created:
 
 ![Linear refund issue](https://raw.githubusercontent.com/confluentinc/tutorials/master/agentic-ai-streaming-agent/flinksql/img/linear_refund_issue.png)
 

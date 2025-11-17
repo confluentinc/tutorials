@@ -5,7 +5,7 @@
 
 In Part 1 of this tutorial series, you will set up and test the infrastructure and third-party dependencies required for an agentic AI use case: a chat listener that creates concise tasks in a project management platform. This is a prime example of MCP tool integration: LLMs are strong at summarizing a customer's natural language, but they lack awareness of your organization's project management platform and the context and connectivity needed to integrate with such an external system.
 
-After you finish this tutorial, in [Part 2](https://developer.confluent.io/confluent-tutorials/agentic-ai-streaming-agent/flinksql/) of the series you will continue to build and evolve a streaming agent for this use case.
+After you finish this tutorial, in [Part 2](https://developer.confluent.io/confluent-tutorials/agentic-ai-streaming-agent/flinksql/) of the series you will continue to build and evolve a Streaming Agent for this use case.
 
 ## Prerequisites
 
