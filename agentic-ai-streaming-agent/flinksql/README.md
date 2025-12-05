@@ -1,4 +1,4 @@
-<!-- title: How to build and evolve a Streaming Agent that uses MCP tools with Flink SQL in Confluent Cloud -->
+<!-- title: Agentic AI Part 2 of 2: Building and evolving a Streaming Agent that uses MCP tools -->
 <!-- description: In this tutorial, learn how to build and evolve a Streaming Agent that uses MCP tools with Flink SQL in Confluent Cloud, with step-by-step instructions and supporting code. -->
 
 # Agentic AI Part 2 of 2: Building and evolving a Streaming Agent that uses MCP tools
