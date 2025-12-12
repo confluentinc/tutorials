@@ -1,0 +1,3 @@
+rootProject.name = 'kafka-streams-schema-registry'
+include ':common'
+project(':common').projectDir = file('../../common')

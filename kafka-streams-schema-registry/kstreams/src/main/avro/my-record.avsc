@@ -1,0 +1,8 @@
+{
+  "namespace": "io.confluent.developer.avro",
+  "type": "record",
+  "name": "MyRecord",
+  "fields": [
+    {"name": "my_string", "type": "string"}
+  ]
+}
