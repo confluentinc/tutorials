@@ -76,7 +76,7 @@ public class AbstractFlinkKafkaTest {
             .withEnv("SCHEMA_REGISTRY_LISTENERS", "http://0.0.0.0:8081")
             .withEnv("SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS", "PLAINTEXT://" + kafka.getNetworkAliases().get(0) + ":9093")
             .withEnv("SCHEMA_REGISTRY_KAFKASTORE_SECURITY_PROTOCOL", "PLAINTEXT")
-            .waitingFor(Wait.forHttp("/subjects").forStatusCode(200).withStartupTimeout(Duration.ofSeconds(10)));;
+            .waitingFor(Wait.forHttp("/subjects").forStatusCode(200).withStartupTimeout(Duration.ofSeconds(10)));
     schemaRegistry.start();
     schemaRegistryPort = schemaRegistry.getMappedPort(8081);
   }
