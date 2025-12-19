@@ -5,11 +5,11 @@ buildscript {
 }
 
 plugins {
-    id "java"
-    id "application"
+    id 'java'
+    id 'application'
     id 'com.github.johnrengelman.shadow' version '8.1.1'
-    id "com.google.protobuf" version "0.9.2"
-    id "com.github.davidmc24.gradle.plugin.avro" version "1.7.0"
+    id 'com.google.protobuf' version '0.9.2'
+    id 'com.github.davidmc24.gradle.plugin.avro' version '1.7.0'
 }
 
 java {
@@ -18,7 +18,7 @@ java {
 }
 
 application {
-    mainClass = "io.confluent.developer.AvroToProtobuf"
+    mainClass = 'io.confluent.developer.AvroToProtobuf'
 }
 
 repositories {
@@ -27,22 +27,21 @@ repositories {
 }
 
 dependencies {
-    implementation project(':common')
-    implementation "org.slf4j:slf4j-simple:2.0.7"
-    implementation "org.apache.avro:avro:1.11.1"
-    implementation "com.google.protobuf:protobuf-java:3.22.2"
+    implementation 'org.slf4j:slf4j-simple:2.0.7'
+    implementation 'org.apache.avro:avro:1.11.1'
+    implementation 'com.google.protobuf:protobuf-java:3.22.2'
     implementation 'org.apache.kafka:kafka-streams:3.6.0'
-    implementation "io.confluent:kafka-streams-avro-serde:7.5.3"
-    implementation "io.confluent:kafka-streams-protobuf-serde:7.5.3"
+    implementation 'io.confluent:kafka-streams-avro-serde:7.5.3'
+    implementation 'io.confluent:kafka-streams-protobuf-serde:7.5.3'
     implementation('org.apache.kafka:kafka-clients') {
         version {
             strictly '3.6.0'
         }
     }
-    implementation "io.confluent:kafka-streams-avro-serde:7.5.1"
-    implementation "com.typesafe:config:1.4.2"
+    implementation 'io.confluent:kafka-streams-avro-serde:7.5.1'
+    implementation 'com.typesafe:config:1.4.2'
 
-    testImplementation "org.apache.kafka:kafka-streams-test-utils:3.6.0"
+    testImplementation 'org.apache.kafka:kafka-streams-test-utils:3.6.0'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
     testImplementation 'org.hamcrest:hamcrest:2.2'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
@@ -54,29 +53,29 @@ test {
     testLogging {
         outputs.upToDateWhen { false }
         showStandardStreams = true
-        events "PASSED", "SKIPPED", "FAILED", "STANDARD_OUT", "STANDARD_ERROR"
-        exceptionFormat = "full"
+        events 'PASSED', 'SKIPPED', 'FAILED', 'STANDARD_OUT', 'STANDARD_ERROR'
+        exceptionFormat = 'full'
     }
 }
 
 jar {
     manifest {
         attributes(
-                "Class-Path": configurations.compileClasspath.collect { it.getName() }.join(" "),
+                'Class-Path': configurations.compileClasspath.collect { it.getName() }.join(' '),
         )
     }
 }
 
 shadowJar {
-    archiveBaseName = "serialization-standalone"
+    archiveBaseName = 'serialization-standalone'
     archiveClassifier = ''
 }
 
 protobuf {
-    generatedFilesBaseDir = "$buildDir/generated-main-proto-java/"
+    generatedFilesBaseDir = '$buildDir/generated-main-proto-java/'
 
     protoc {
-        artifact = "com.google.protobuf:protoc:3.22.2"
+        artifact = 'com.google.protobuf:protoc:3.22.2'
     }
 
 }

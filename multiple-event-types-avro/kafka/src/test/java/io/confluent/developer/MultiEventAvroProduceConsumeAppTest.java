@@ -3,7 +3,6 @@ package io.confluent.developer;
 import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.MockConsumer;
-import org.apache.kafka.clients.consumer.OffsetResetStrategy;
 import org.apache.kafka.clients.producer.MockProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.TopicPartition;
@@ -19,7 +18,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -48,7 +46,7 @@ public class MultiEventAvroProduceConsumeAppTest {
         commonConfigs.put("schema.registry.url", "mock://multi-event-produce-consume-test");
         avroSerializer.configure(commonConfigs, false);
         MockProducer<String, SpecificRecordBase> mockAvroProducer
-                = new MockProducer<String, SpecificRecordBase>(true, stringSerializer, (Serializer) avroSerializer);
+                = new MockProducer<String, SpecificRecordBase>(true, null, stringSerializer, (Serializer) avroSerializer);
         produceConsumeApp.produceAvroEvents(() -> mockAvroProducer, TOPIC, produceConsumeApp.avroEvents());
         List<KeyValue<String, SpecificRecordBase>> expectedKeyValues =
                 produceConsumeApp.avroEvents().stream().map((e -> KeyValue.pair((String) e.get("customer_id"), e))).collect(Collectors.toList());
@@ -60,7 +58,7 @@ public class MultiEventAvroProduceConsumeAppTest {
 
     @Test
     public void testConsumeAvroEvents() {
-        MockConsumer<String, SpecificRecordBase> mockConsumer = new MockConsumer<>(OffsetResetStrategy.EARLIEST);
+        MockConsumer<String, SpecificRecordBase> mockConsumer = new MockConsumer<>("earliest");
         List<String> expectedAvroResults = Arrays.asList("Avro Pageview event -> http://acme/traps", "Avro Pageview event -> http://acme/bombs", "Avro Pageview event -> http://acme/bait", "Avro Purchase event -> road-runner-bait");
         List<String> actualAvroResults = new ArrayList<>();
         mockConsumer.schedulePollTask(() -> {
