@@ -29,7 +29,7 @@ dependencies {
     implementation 'io.grpc:grpc-stub:1.66.0'
     implementation('org.apache.kafka:kafka-clients') {
         version {
-            strictly '3.8.0'
+            strictly '4.1.1'
         }
     }
 }

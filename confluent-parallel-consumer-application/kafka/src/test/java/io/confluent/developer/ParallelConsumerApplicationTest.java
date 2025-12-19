@@ -43,6 +43,7 @@ public class ParallelConsumerApplicationTest {
     final Properties appProperties = PropertiesUtil.loadProperties(TEST_CONFIG_FILE);
     final String topic = appProperties.getProperty("input.topic.name");
 
+    @SuppressWarnings("deprecation")
     final LongPollingMockConsumer<String, String> mockConsumer = new LongPollingMockConsumer<>(OffsetResetStrategy.EARLIEST);
     final ParallelStreamProcessor<String, String> eosStreamProcessor = setupParallelConsumer(mockConsumer, topic);
     final ParallelConsumerApplication consumerApplication = new ParallelConsumerApplication(eosStreamProcessor, recordHandler);
