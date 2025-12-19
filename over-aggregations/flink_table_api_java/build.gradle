@@ -15,7 +15,7 @@ java {
 }
 
 application {
-  mainClass = "io.confluent.developer.FlinkTableApiOverAggregations"
+  mainClass = 'io.confluent.developer.FlinkTableApiOverAggregations'
 }
 
 repositories {

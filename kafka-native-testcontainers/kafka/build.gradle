@@ -5,9 +5,9 @@ buildscript {
 }
 
 plugins {
-    id "java"
-    id "idea"
-    id "eclipse"
+    id 'java'
+    id 'idea'
+    id 'eclipse'
     id 'com.github.johnrengelman.shadow' version '8.1.1'
     id 'application'
 }
@@ -18,7 +18,7 @@ java {
 }
 
 application {
-    mainClass = "io.confluent.developer.KafkaPrimalityRouter"
+    mainClass = 'io.confluent.developer.KafkaPrimalityRouter'
 }
 
 
@@ -26,7 +26,7 @@ repositories {
     mavenCentral()
 
     maven {
-        url "https://packages.confluent.io/maven"
+        url 'https://packages.confluent.io/maven'
     }
 }
 
@@ -46,19 +46,19 @@ test {
     testLogging {
         outputs.upToDateWhen { false }
         showStandardStreams = true
-        exceptionFormat = "full"
+        exceptionFormat = 'full'
     }
 }
 
 jar {
   manifest {
     attributes(
-      "Class-Path": configurations.compileClasspath.collect { it.getName() }.join(" ")
+      'Class-Path': configurations.compileClasspath.collect { it.getName() }.join(' ')
     )
   }
 }
 
 shadowJar {
-    archiveBaseName = "kafka-native-testcontainers-standalone"
+    archiveBaseName = 'kafka-native-testcontainers-standalone'
     archiveClassifier = ''
 }

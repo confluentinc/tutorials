@@ -15,7 +15,7 @@ java {
 }
 
 application {
-  mainClass = "io.confluent.developer.FlinkTableApiJoin"
+  mainClass = 'io.confluent.developer.FlinkTableApiJoin'
 }
 
 repositories {
