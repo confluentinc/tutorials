@@ -2,7 +2,6 @@ package io.confluent.developer;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.MockConsumer;
-import org.apache.kafka.clients.consumer.OffsetResetStrategy;
 import org.apache.kafka.clients.producer.MockProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.TopicPartition;
@@ -46,7 +45,7 @@ public class MultiEventProtobufProduceConsumeAppTest {
         commonConfigs.put("schema.registry.url", "mock://multi-event-produce-consume-test");
         protobufSerializer.configure(commonConfigs, false);
         MockProducer<String, CustomerEvent> mockProtoProducer
-                = new MockProducer<>(true, stringSerializer, protobufSerializer);
+                = new MockProducer<>(true, null, stringSerializer, protobufSerializer);
         List<CustomerEvent> events = produceConsumeApp.protobufEvents();
         produceConsumeApp.produceProtobufEvents(() -> mockProtoProducer, TOPIC, events);
         List<KeyValue<String, CustomerEvent>> expectedKeyValues =
@@ -59,7 +58,7 @@ public class MultiEventProtobufProduceConsumeAppTest {
 
     @Test
     public void testConsumeProtobufEvents() {
-        MockConsumer<String, CustomerEvent> mockConsumer = new MockConsumer<>(OffsetResetStrategy.EARLIEST);
+        MockConsumer<String, CustomerEvent> mockConsumer = new MockConsumer<>("earliest");
         List<String> expectedProtoResults = Arrays.asList("Protobuf Pageview event -> http://acme/traps", "Protobuf Pageview event -> http://acme/bombs", "Protobuf Pageview event -> http://acme/bait", "Protobuf Purchase event -> road-runner-bait");
         List<String> actualProtoResults = new ArrayList<>();
         mockConsumer.schedulePollTask(()-> {

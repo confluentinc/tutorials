@@ -14,8 +14,9 @@ import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 import org.assertj.core.util.Sets;
 import org.junit.BeforeClass;
 import org.testcontainers.containers.GenericContainer;
-import org.testcontainers.containers.KafkaContainer;
 import org.testcontainers.containers.Network;
+import org.testcontainers.containers.wait.strategy.Wait;
+import org.testcontainers.kafka.ConfluentKafkaContainer;
 import org.testcontainers.utility.DockerImageName;
 
 import java.io.ByteArrayOutputStream;
@@ -23,12 +24,12 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
-import static org.testcontainers.containers.KafkaContainer.KAFKA_PORT;
 
 /**
  * Base class for Flink SQL integration tests that use Flink's Kafka connectors. Encapsulates
@@ -56,24 +57,26 @@ public class AbstractFlinkKafkaTest {
     // be configured with 'value.format' = 'avro-confluent'
     Network network = Network.newNetwork();
 
-    KafkaContainer kafka = new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:7.6.0"))
-        .withKraft()
-        .withEnv("KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR", "1")
-        .withEnv("KAFKA_TRANSACTION_STATE_LOG_MIN_ISR", "1")
-        .withEnv("KAFKA_TRANSACTION_STATE_LOG_NUM_PARTITIONS", "1")
-        .withEnv("KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS", "500")
-        .withEnv("KAFKA_AUTO_CREATE_TOPICS_ENABLE", "true")
-        .withReuse(false)
-        .withNetwork(network);
+    ConfluentKafkaContainer kafka = new ConfluentKafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:8.1.1"))
+            .withEnv("KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR", "1")
+            .withEnv("KAFKA_TRANSACTION_STATE_LOG_MIN_ISR", "1")
+            .withEnv("KAFKA_TRANSACTION_STATE_LOG_NUM_PARTITIONS", "1")
+            .withEnv("KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS", "500")
+            .withEnv("KAFKA_AUTO_CREATE_TOPICS_ENABLE", "true")
+            .withReuse(false)
+            .withNetwork(network);
     kafka.start();
-    kafkaPort = kafka.getMappedPort(KAFKA_PORT);
+    kafkaPort = kafka.getMappedPort(9092);
 
-    GenericContainer schemaRegistry = new GenericContainer(DockerImageName.parse("confluentinc/cp-schema-registry:7.6.0"))
-        .withExposedPorts(8081)
-        .withNetwork(kafka.getNetwork())
-        .withEnv("SCHEMA_REGISTRY_HOST_NAME", "localhost")
-        .withEnv("SCHEMA_REGISTRY_LISTENERS", "http://0.0.0.0:8081")
-        .withEnv("SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS", "PLAINTEXT://" + kafka.getNetworkAliases().get(0) + ":9092");
+    GenericContainer schemaRegistry = new GenericContainer(DockerImageName.parse("confluentinc/cp-schema-registry:8.1.1"))
+            .dependsOn(kafka)
+            .withExposedPorts(8081)
+            .withNetwork(kafka.getNetwork())
+            .withEnv("SCHEMA_REGISTRY_HOST_NAME", "localhost")
+            .withEnv("SCHEMA_REGISTRY_LISTENERS", "http://0.0.0.0:8081")
+            .withEnv("SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS", "PLAINTEXT://" + kafka.getNetworkAliases().get(0) + ":9093")
+            .withEnv("SCHEMA_REGISTRY_KAFKASTORE_SECURITY_PROTOCOL", "PLAINTEXT")
+            .waitingFor(Wait.forHttp("/subjects").forStatusCode(200).withStartupTimeout(Duration.ofSeconds(10)));
     schemaRegistry.start();
     schemaRegistryPort = schemaRegistry.getMappedPort(8081);
   }
@@ -90,9 +93,9 @@ public class AbstractFlinkKafkaTest {
    * @throws IOException if resource file can't be read
    */
   protected static String getResourceFileContents(
-      String resourceFileName,
-      Optional<Integer> kafkaPort,
-      Optional<Integer> schemaRegistryPort
+          String resourceFileName,
+          Optional<Integer> kafkaPort,
+          Optional<Integer> schemaRegistryPort
   ) throws IOException {
     URL url = Resources.getResource(resourceFileName);
     String contents = Resources.toString(url, StandardCharsets.UTF_8);
@@ -113,7 +116,7 @@ public class AbstractFlinkKafkaTest {
    * @throws IOException if resource file can't be read
    */
   protected static String getResourceFileContents(
-      String resourceFileName
+          String resourceFileName
   ) throws IOException {
     // no Kafka / Schema Registry ports
     return getResourceFileContents(resourceFileName, Optional.empty(), Optional.empty());

@@ -5,8 +5,8 @@ buildscript {
 }
 
 plugins {
-    id "java"
-    id "application"
+    id 'java'
+    id 'application'
     id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
 
@@ -16,7 +16,7 @@ java {
 }
 
 application {
-    mainClass = "io.confluent.developer.KafkaStreamsAggregatingCount"
+    mainClass = 'io.confluent.developer.KafkaStreamsAggregatingCount'
 }
 
 repositories {
@@ -26,17 +26,17 @@ repositories {
 
 dependencies {
     implementation project(':common')
-    implementation "org.slf4j:slf4j-simple:2.0.7"
-    implementation 'org.apache.kafka:kafka-streams:3.6.0'
+    implementation 'org.slf4j:slf4j-simple:2.0.7'
+    implementation 'org.apache.kafka:kafka-streams:4.1.1'
     implementation('org.apache.kafka:kafka-clients') {
         version {
-            strictly '3.6.0'
+            strictly '4.1.1'
         }
     }
-    implementation "io.confluent:kafka-streams-avro-serde:7.5.1"
-    implementation "com.typesafe:config:1.4.2"
+    implementation 'io.confluent:kafka-streams-avro-serde:8.1.1'
+    implementation 'com.typesafe:config:1.4.2'
 
-    testImplementation "org.apache.kafka:kafka-streams-test-utils:3.6.0"
+    testImplementation 'org.apache.kafka:kafka-streams-test-utils:4.1.1'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
     testImplementation 'org.hamcrest:hamcrest:2.2'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
@@ -48,20 +48,20 @@ test {
     testLogging {
         outputs.upToDateWhen { false }
         showStandardStreams = true
-        events "PASSED", "SKIPPED", "FAILED", "STANDARD_OUT", "STANDARD_ERROR"
-        exceptionFormat = "full"
+        events 'PASSED', 'SKIPPED', 'FAILED', 'STANDARD_OUT', 'STANDARD_ERROR'
+        exceptionFormat = 'full'
     }
 }
 
 jar {
     manifest {
         attributes(
-                "Class-Path": configurations.runtimeClasspath.collect { it.getName() }.join(" ")
+                'Class-Path': configurations.runtimeClasspath.collect { it.getName() }.join(' ')
         )
     }
 }
 
 shadowJar {
-    archiveBaseName = "aggregating-count-standalone"
+    archiveBaseName = 'aggregating-count-standalone'
     archiveClassifier = ''
 }

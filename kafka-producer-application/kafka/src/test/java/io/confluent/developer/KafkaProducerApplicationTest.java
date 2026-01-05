@@ -3,6 +3,8 @@ package io.confluent.developer;
 import org.apache.kafka.clients.producer.Callback;
 import org.apache.kafka.clients.producer.MockProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.common.Cluster;
+import org.apache.kafka.common.serialization.Serializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,8 +35,8 @@ public class KafkaProducerApplicationTest {
 
     @BeforeEach
     public void setupEach() {
-        final StringSerializer stringSerializer = new StringSerializer();
-        mockProducer = new MockProducer<>(true, stringSerializer, stringSerializer);
+        final Serializer<String> stringSerializer = new StringSerializer();
+        mockProducer = new MockProducer<>(true, null, stringSerializer, stringSerializer);
     }
 
     @Test

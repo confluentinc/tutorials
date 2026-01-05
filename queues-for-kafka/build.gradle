@@ -3,29 +3,29 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath "gradle.plugin.com.github.jengelman.gradle.plugins:shadow:7.0.0"
+        classpath 'gradle.plugin.com.github.jengelman.gradle.plugins:shadow:7.0.0'
     }
 }
 
 plugins {
-    id "java"
-    id "idea"
-    id "eclipse"
+    id 'java'
+    id 'idea'
+    id 'eclipse'
 }
 
-sourceCompatibility = "17"
-targetCompatibility = "17"
-version = "0.0.1"
+sourceCompatibility = '17'
+targetCompatibility = '17'
+version = '0.0.1'
 
 repositories {
     mavenCentral()
 
     maven {
-        url "https://packages.confluent.io/maven"
+        url 'https://packages.confluent.io/maven'
     }
 }
 
-apply plugin: "com.github.johnrengelman.shadow"
+apply plugin: 'com.github.johnrengelman.shadow'
 
 dependencies {
     implementation group: 'org.slf4j', name: 'slf4j-simple', version: '2.0.17'
@@ -41,13 +41,13 @@ dependencies {
 jar {
     manifest {
         attributes(
-                "Class-Path": configurations.compileClasspath.collect { it.getName() }.join(" "),
-                "Main-Class": "io.confluent.developer.ConsumerApp"
+                'Class-Path': configurations.compileClasspath.collect { it.getName() }.join(' '),
+                'Main-Class': 'io.confluent.developer.ConsumerApp'
         )
     }
 }
 
 shadowJar {
-    archiveBaseName = "kafka-consumer-comparison-app"
+    archiveBaseName = 'kafka-consumer-comparison-app'
     archiveClassifier = ''
 }

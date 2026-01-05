@@ -13,7 +13,7 @@ buildscript {
 }
 
 plugins {
-    id "java"
+    id 'java'
     id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
 
@@ -29,19 +29,19 @@ repositories {
 
 
 dependencies {
-    implementation "org.slf4j:slf4j-simple:2.0.7"
-    implementation "io.confluent.parallelconsumer:parallel-consumer-core:0.5.3.3"
-    implementation "org.apache.kafka:kafka-clients:3.9.1"
-    implementation "org.apache.commons:commons-lang3:3.12.0"
-    implementation "me.tongfei:progressbar:0.9.3"
+    implementation 'org.slf4j:slf4j-simple:2.0.7'
+    implementation 'io.confluent.parallelconsumer:parallel-consumer-core:0.5.3.3'
+    implementation 'org.apache.kafka:kafka-clients:4.1.1'
+    implementation 'org.apache.commons:commons-lang3:3.12.0'
+    implementation 'me.tongfei:progressbar:0.9.3'
     implementation 'org.awaitility:awaitility:4.2.0'
 
-    implementation "com.typesafe:config:1.4.2"
+    implementation 'com.typesafe:config:1.4.2'
 
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
     testImplementation 'org.hamcrest:hamcrest:2.2'
     testImplementation 'org.awaitility:awaitility:4.2.0'
-    testImplementation "io.confluent.parallelconsumer:parallel-consumer-core:0.5.3.3:tests" // for LongPollingMockConsumer
+    testImplementation 'io.confluent.parallelconsumer:parallel-consumer-core:0.5.3.3:tests' // for LongPollingMockConsumer
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
 }
@@ -51,20 +51,20 @@ test {
     testLogging {
         outputs.upToDateWhen { false }
         showStandardStreams = true
-        events "PASSED", "SKIPPED", "FAILED", "STANDARD_OUT", "STANDARD_ERROR"
-        exceptionFormat = "full"
+        events 'PASSED', 'SKIPPED', 'FAILED', 'STANDARD_OUT', 'STANDARD_ERROR'
+        exceptionFormat = 'full'
     }
 }
 
 jar {
     manifest {
         attributes(
-                "Class-Path": configurations.runtimeClasspath.collect { it.getName() }.join(" ")
+                'Class-Path': configurations.runtimeClasspath.collect { it.getName() }.join(' ')
         )
     }
 }
 
 shadowJar {
-    archiveBaseName = "parallel-consumer-standalone"
+    archiveBaseName = 'parallel-consumer-standalone'
     archiveClassifier = ''
 }

@@ -8,6 +8,9 @@ import org.apache.kafka.streams.Topology;
 import org.apache.kafka.streams.kstream.Consumed;
 import org.apache.kafka.streams.kstream.Produced;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,6 +29,22 @@ public class AvroToProtobuf {
 
     public static final String INPUT_TOPIC = "avro-movies";
     public static final String OUTPUT_TOPIC = "proto-movies";
+    public static final String DEFAULT_PROPERTIES_LOCATION = "src/main/resources/confluent.properties";
+
+
+    public static Properties loadProperties(final String path) {
+        Properties properties = new Properties();
+        try (InputStreamReader inputStreamReader = new InputStreamReader(new FileInputStream(path))) {
+            properties.load(inputStreamReader);
+            return properties;
+        } catch (IOException e) {
+            throw new RuntimeException("Problem loading properties file for example", e);
+        }
+    }
+
+    public static Properties loadProperties() {
+        return loadProperties(DEFAULT_PROPERTIES_LOCATION);
+    }
 
     protected SpecificAvroSerde<Movie> movieAvroSerde(Properties envProps) {
         SpecificAvroSerde<Movie> movieAvroSerde = new SpecificAvroSerde<>();
@@ -70,9 +89,9 @@ public class AvroToProtobuf {
     public static void main(String[] args) {
         Properties properties;
         if (args.length > 0) {
-            properties = Utils.loadProperties(args[0]);
+            properties = loadProperties(args[0]);
         } else {
-            properties = Utils.loadProperties();
+            properties = loadProperties();
         }
         properties.put(StreamsConfig.APPLICATION_ID_CONFIG, "kafka-streams-serialization");
 

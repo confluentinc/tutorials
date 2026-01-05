@@ -5,8 +5,8 @@ buildscript {
 }
 
 plugins {
-    id "java"
-    id "com.github.johnrengelman.shadow" version "8.1.1"
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
 
 java {
@@ -32,20 +32,20 @@ test {
     testLogging {
         outputs.upToDateWhen { false }
         showStandardStreams = true
-        events "PASSED", "SKIPPED", "FAILED", "STANDARD_OUT", "STANDARD_ERROR"
-        exceptionFormat = "full"
+        events 'PASSED', 'SKIPPED', 'FAILED', 'STANDARD_OUT', 'STANDARD_ERROR'
+        exceptionFormat = 'full'
     }
 }
 
 jar {
     manifest {
         attributes(
-                "Class-Path": configurations.runtimeClasspath.collect { it.getName() }.join(" ")
+                'Class-Path': configurations.runtimeClasspath.collect { it.getName() }.join(' ')
         )
     }
 }
 
 shadowJar {
-    archiveBaseName = "ksql-udf"
+    archiveBaseName = 'ksql-udf'
     archiveClassifier = ''
 }

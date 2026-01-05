@@ -5,7 +5,7 @@ buildscript {
 }
 
 plugins {
-    id "java"
+    id 'java'
     id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
 
@@ -21,15 +21,15 @@ repositories {
 
 dependencies {
     implementation project(':common')
-    implementation "org.slf4j:slf4j-simple:2.0.7"
-    implementation "io.opentelemetry.proto:opentelemetry-proto:1.0.0-alpha"
-    implementation "io.grpc:grpc-api:1.66.0"
-    implementation "io.grpc:grpc-netty-shaded:1.66.0"
-    implementation "io.grpc:grpc-protobuf:1.66.0"
-    implementation "io.grpc:grpc-stub:1.66.0"
+    implementation 'org.slf4j:slf4j-simple:2.0.7'
+    implementation 'io.opentelemetry.proto:opentelemetry-proto:1.0.0-alpha'
+    implementation 'io.grpc:grpc-api:1.66.0'
+    implementation 'io.grpc:grpc-netty-shaded:1.66.0'
+    implementation 'io.grpc:grpc-protobuf:1.66.0'
+    implementation 'io.grpc:grpc-stub:1.66.0'
     implementation('org.apache.kafka:kafka-clients') {
         version {
-            strictly '3.8.0'
+            strictly '4.1.1'
         }
     }
 }
@@ -39,8 +39,8 @@ test {
     testLogging {
         outputs.upToDateWhen { false }
         showStandardStreams = true
-        events "PASSED", "SKIPPED", "FAILED", "STANDARD_OUT", "STANDARD_ERROR"
-        exceptionFormat = "full"
+        events 'PASSED', 'SKIPPED', 'FAILED', 'STANDARD_OUT', 'STANDARD_ERROR'
+        exceptionFormat = 'full'
     }
 }
 
@@ -50,7 +50,7 @@ jar {
 }
 
 shadowJar {
-    archiveBaseName = "client-telemetry-reporter-plugin"
+    archiveBaseName = 'client-telemetry-reporter-plugin'
     archiveClassifier = ''
     mergeServiceFiles()
 
@@ -63,6 +63,6 @@ shadowJar {
     dependencies {
         exclude(dependency('org.apache.kafka:kafka-clients'))
         // exclude proto files from the jar
-        exclude "**/opentelemetry/proto/**/*.proto"
+        exclude '**/opentelemetry/proto/**/*.proto'
     }
 }
