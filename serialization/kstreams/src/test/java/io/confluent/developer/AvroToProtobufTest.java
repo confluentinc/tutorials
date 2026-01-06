@@ -1,9 +1,5 @@
 package io.confluent.developer;
 
-import org.apache.kafka.common.serialization.Deserializer;
-import org.apache.kafka.common.serialization.Serdes;
-import org.apache.kafka.common.serialization.Serializer;
-import org.apache.kafka.streams.Topology;
 import org.apache.kafka.streams.TopologyTestDriver;
 import org.junit.jupiter.api.Test;
 
@@ -31,9 +27,12 @@ public class AvroToProtobufTest {
     public void shouldChangeSerializationFormat() throws IOException {
         Properties properties = new Properties();
 
-        properties.put("schema.registry.url", "mock://SR_DUMMY_URL:8081");
-
+        // set a different mock SR URL for each Serde because otherwise it will only get instantiated
+        // with the first (Avro) provider
+        properties.put("schema.registry.url", "mock://SR_DUMMY_URL_AVRO:8081");
         final SpecificAvroSerde<Movie> avroSerde = avroToProtobuf.movieAvroSerde(properties);
+
+        properties.put("schema.registry.url", "mock://SR_DUMMY_URL_PROTOBUF:8081");
         final KafkaProtobufSerde<MovieProtos.Movie> protobufSerde = avroToProtobuf.movieProtobufSerde(properties);
 
         try (TopologyTestDriver testDriver = new TopologyTestDriver(avroToProtobuf.buildTopology(properties, avroSerde, protobufSerde))) {
