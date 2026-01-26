@@ -1,0 +1,3 @@
+rootProject.name = 'schema-registry-java'
+include ':common'
+project(':common').projectDir = file('../../common')
