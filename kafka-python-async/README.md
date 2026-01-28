@@ -326,7 +326,7 @@ confluent environment delete <ENVIRONMENT ID>
 
   ## Run the application
 
-  Run the application, passing the Kafka and Schema Registry client configuration files generated when you created Confluent Cloud resources:
+  Run the application, passing the Kafka and Schema Registry client configuration files for connecting to Kafka and Schema Registry running in Docker:
 
   ```shell
   quart serve ./local-kafka.properties ./local-sr.properties
