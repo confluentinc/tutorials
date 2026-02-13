@@ -1,0 +1,9 @@
+{
+  "name": "kafka-sr-example",
+  "version": "1.0.0",
+  "description": "Example Kafka producer / consumer apps that use Schema Registry",
+  "dependencies": {
+    "@confluentinc/kafka-javascript": "^1.8.0",
+    "@confluentinc/schemaregistry": "^1.8.0"
+  }
+}
