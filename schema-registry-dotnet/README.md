@@ -212,7 +212,7 @@ confluent environment delete <ENVIRONMENT ID>
 
   ### `AvroProducer`
 
-  **Dependencies** (`AvroConsumer.csproj`):
+  **Dependencies** (`AvroProducer.csproj`):
   - `Confluent.Kafka`: Kafka client library
   - `Confluent.SchemaRegistry`: Schema Registry client
   - `Confluent.SchemaRegistry.Serdes.Avro`: Avro serialization support
