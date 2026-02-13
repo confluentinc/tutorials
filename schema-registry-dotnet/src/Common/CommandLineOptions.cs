@@ -1,5 +1,4 @@
 using System.CommandLine;
-using System.IO;
 
 public class CommandLineOptions
 {

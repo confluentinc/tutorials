@@ -1,8 +1,5 @@
 using Confluent.Kafka;
 using Confluent.SchemaRegistry;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.IO;
 
 public class Properties
 {
