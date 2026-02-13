@@ -1,0 +1,4 @@
+bin/
+obj/
+cloud-kafka.properties
+cloud-sr.properties
