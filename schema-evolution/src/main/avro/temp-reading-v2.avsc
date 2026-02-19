@@ -1,0 +1,14 @@
+{
+  "namespace": "io.confluent.developer.avro",
+  "type": "record",
+  "name": "TempReading",
+  "fields": [
+    {"name": "deviceId", "type": "string"},
+    {"name": "temperature", "type": "double"},
+    {
+      "name": "factoryId",
+      "type": ["null", "string"],
+      "default": null
+    }
+  ]
+}

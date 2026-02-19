@@ -1,0 +1,3 @@
+rootProject.name = 'schema-evolution'
+include ':common'
+project(':common').projectDir = file('../../common')
