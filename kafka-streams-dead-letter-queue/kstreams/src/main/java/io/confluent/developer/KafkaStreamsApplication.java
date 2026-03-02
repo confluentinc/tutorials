@@ -14,7 +14,6 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.Duration;
-import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.CountDownLatch;
 
@@ -34,16 +33,15 @@ public class KafkaStreamsApplication {
         builder.stream(INPUT_TOPIC, Consumed.with(stringSerde, stringSerde))
                 .mapValues(value -> {
                     try {
-                        Map<String, Object> valueMap = objectMapper.readValue(
-                                value,
-                                objectMapper.getTypeFactory().constructMapType(Map.class, String.class, Object.class));
+                        SportEvent event = objectMapper.readValue(value, SportEvent.class);
 
-                        Object causeError = valueMap.get("causeError");
-                        if (causeError != null && Boolean.TRUE.equals(causeError)) {
-                            LOG.error("causeError field detected with value true - throwing exception for DLQ demo");
-                            throw new RuntimeException("Simulated processing error for DLQ routing");
+                        if (event.getBall().isEmpty()) {
+                            LOG.error("Sport '{}' is missing ball field - routing to DLQ", event.getSport());
+                            throw new RuntimeException("Sport event missing required 'ball' field");
                         }
-                        LOG.info("Successfully processed event: {}", value);
+
+                        LOG.info("Successfully processed event - sport: {}, ball: {}",
+                                event.getSport(), event.getBall().get());
                         return value;
                     } catch (IOException e) {
                         LOG.error("Failed to parse JSON value: {}", value, e);
@@ -75,7 +73,7 @@ public class KafkaStreamsApplication {
 
             LOG.info("Starting Kafka Streams application with DLQ enabled");
             LOG.info("DLQ Topic: {}", DLQ_TOPIC);
-            LOG.info("To trigger DLQ routing, send a JSON record with 'causeError: true'");
+            LOG.info("Events without a 'ball' field will be routed to DLQ");
 
             KafkaStreamsApplication kafkaStreamsApplication = new KafkaStreamsApplication();
             Topology topology = kafkaStreamsApplication.buildTopology(properties);

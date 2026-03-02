@@ -57,9 +57,9 @@ public class KafkaStreamsApplicationTest {
 
     @Test
     public void testNormalProcessing() {
-        // Given a record without causeError field
-        String key = "key1";
-        String value = "{\"data\": \"test message\"}";
+        // Given a valid sport event with ball field
+        final String key = "baseball";
+        final String value = "{\"sport\": \"baseball\", \"ball\": {\"shape\": \"round\", \"dimensions\": {\"diameter\": \"2.9in\", \"weight\": \"5oz\"}}}";
 
         // When processing the record
         inputTopic.pipeInput(key, value);
@@ -73,11 +73,11 @@ public class KafkaStreamsApplicationTest {
     }
 
     @Test
-    public void testProcessingWithCauseErrorFalse() {
-        // Given a record with causeError: false
-        String key = "key2";
-        String value = "{\"causeError\": false, \"data\": \"test message\"}";
-
+    public void testProcessingWithDifferentSport() {
+        // Given a valid sport event with ball field (soccer)
+        final String key = "soccer";
+        final String value = "{\"sport\": \"soccer\", \"ball\": {\"shape\": \"spherical\", \"dimensions\": {\"diameter\": \"22cm\", \"weight\": \"450g\"}}}";
+        
         // When processing the record
         inputTopic.pipeInput(key, value);
 
@@ -90,16 +90,16 @@ public class KafkaStreamsApplicationTest {
     }
 
     @Test
-    public void testDLQRoutingWithCauseErrorTrue() {
-        // Given a record with causeError: true
-        String key = "key3";
-        String value = "{\"causeError\": true, \"data\": \"this should fail\"}";
+    public void testDLQRoutingWithMissingBallField() {
+        // Given a sport event without ball field
+        final String key = "swimming";
+        final String value = "{\"sport\": \"swimming\"}";
 
-        // When processing the record (which will throw an exception)
+        // When processing the record (which will throw an exception due to missing ball field)
         try {
             inputTopic.pipeInput(key, value);
         } catch (RuntimeException e) {
-            // Expected - the processor throws an exception
+            // Expected - the processor throws an exception for missing ball field
         }
 
         // Then it should NOT appear in the output topic
@@ -115,8 +115,8 @@ public class KafkaStreamsApplicationTest {
     @Test
     public void testInvalidJsonHandling() {
         // Given a record with invalid JSON
-        String key = "key4";
-        String value = "not valid json";
+        final String key = "junk";
+        final String value = "not valid json";
 
         // When processing the record
         try {
@@ -132,19 +132,36 @@ public class KafkaStreamsApplicationTest {
     }
 
     @Test
+    public void testDLQRoutingWithNullBallField() {
+        // Given a sport event with explicit null ball field
+        final String key = "running";
+        final String value = "{\"sport\": \"running\", \"ball\": null}";
+
+        // When processing the record (which will throw an exception due to null ball field)
+        try {
+            inputTopic.pipeInput(key, value);
+        } catch (RuntimeException e) {
+            // Expected - the processor throws an exception for null ball field
+        }
+
+        // Then it should NOT appear in the output topic
+        assertTrue(outputTopic.isEmpty());
+    }
+
+    @Test
     public void testMultipleRecordsBatch() {
-        // Given multiple records, some with causeError and some without
-        inputTopic.pipeInput("key1", "{\"data\": \"message1\"}");
-        inputTopic.pipeInput("key2", "{\"data\": \"message2\", \"causeError\": false}");
+        // Given multiple valid records with ball fields
+        inputTopic.pipeInput("baseball", "{\"sport\": \"baseball\", \"ball\": {\"shape\": \"round\", \"dimensions\": {\"diameter\": \"2.9in\", \"weight\": \"5oz\"}}}");
+        inputTopic.pipeInput("tennis", "{\"sport\": \"tennis\", \"ball\": {\"shape\": \"round\", \"dimensions\": {\"diameter\": \"6.7cm\", \"weight\": \"58g\"}}}");
 
         // Then both should appear in output topic
         assertThat(outputTopic.getQueueSize(), equalTo(2L));
 
         var record1 = outputTopic.readKeyValue();
-        assertThat(record1.key, equalTo("key1"));
+        assertThat(record1.key, equalTo("baseball"));
 
         var record2 = outputTopic.readKeyValue();
-        assertThat(record2.key, equalTo("key2"));
+        assertThat(record2.key, equalTo("tennis"));
 
         assertTrue(outputTopic.isEmpty());
     }

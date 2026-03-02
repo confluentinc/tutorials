@@ -66,10 +66,10 @@ public class KafkaStreamsApplicationDLQIntegrationTest {
             // Wait for streams app to be ready
             Thread.sleep(2000);
 
-            // Produce a record that will cause an error (causeError: true)
+            // Produce a record that will cause an error (missing ball field)
             produceRecordToInput(kafka.getBootstrapServers(),
                     "error-key",
-                    "{\"causeError\": true, \"data\": \"should go to DLQ\"}");
+                    "{\"sport\": \"swimming\"}");
 
             // Verify record appears in DLQ topic
             List<ConsumerRecord<String, String>> dlqRecords = consumeFromTopic(
@@ -78,8 +78,8 @@ public class KafkaStreamsApplicationDLQIntegrationTest {
                     1);
 
             assertEquals(1, dlqRecords.size(), "Expected exactly one record in DLQ");
-            assertThat(dlqRecords.get(0).value(), containsString("causeError"));
-            assertThat(dlqRecords.get(0).value(), containsString("should go to DLQ"));
+            assertThat(dlqRecords.get(0).value(), containsString("swimming"));
+            assertEquals("error-key", dlqRecords.get(0).key());
 
             // Verify record did NOT appear in output topic
             List<ConsumerRecord<String, String>> outputRecords = consumeFromTopic(
@@ -116,10 +116,10 @@ public class KafkaStreamsApplicationDLQIntegrationTest {
             // Wait for streams app to be ready
             Thread.sleep(2000);
 
-            // Produce a normal record (no causeError field)
+            // Produce a normal record with valid ball field
             produceRecordToInput(kafka.getBootstrapServers(),
                     "normal-key",
-                    "{\"data\": \"normal message\"}");
+                    "{\"sport\": \"baseball\", \"ball\": {\"shape\": \"round\", \"dimensions\": {\"diameter\": \"2.9in\", \"weight\": \"5oz\"}}}");
 
             // Verify record appears in output topic
             List<ConsumerRecord<String, String>> outputRecords = consumeFromTopic(
@@ -129,7 +129,8 @@ public class KafkaStreamsApplicationDLQIntegrationTest {
 
             assertEquals(1, outputRecords.size(), "Expected exactly one record in output topic");
             assertEquals("normal-key", outputRecords.get(0).key());
-            assertThat(outputRecords.get(0).value(), containsString("normal message"));
+            assertThat(outputRecords.get(0).value(), containsString("baseball"));
+            assertThat(outputRecords.get(0).value(), containsString("ball"));
 
             // Verify record did NOT appear in DLQ topic
             List<ConsumerRecord<String, String>> dlqRecords = consumeFromTopic(
