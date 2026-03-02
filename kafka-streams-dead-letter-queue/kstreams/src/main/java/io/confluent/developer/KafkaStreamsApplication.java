@@ -35,7 +35,7 @@ public class KafkaStreamsApplication {
                     try {
                         SportEvent event = objectMapper.readValue(value, SportEvent.class);
 
-                        if (event.getBall().isEmpty()) {
+                        if (null == event.getBall() || event.getBall().isEmpty()) {
                             LOG.error("Sport '{}' is missing ball field - routing to DLQ", event.getSport());
                             throw new RuntimeException("Sport event missing required 'ball' field");
                         }
@@ -70,6 +70,7 @@ public class KafkaStreamsApplication {
 
             // KIP-1034: Configure Dead Letter Queue
             properties.put(StreamsConfig.ERRORS_DEAD_LETTER_QUEUE_TOPIC_NAME_CONFIG, DLQ_TOPIC);
+            properties.put(StreamsConfig.PROCESSING_EXCEPTION_HANDLER_CLASS_CONFIG, "org.apache.kafka.streams.errors.LogAndContinueProcessingExceptionHandler");
 
             LOG.info("Starting Kafka Streams application with DLQ enabled");
             LOG.info("DLQ Topic: {}", DLQ_TOPIC);

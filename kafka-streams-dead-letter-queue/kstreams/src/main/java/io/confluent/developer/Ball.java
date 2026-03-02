@@ -10,6 +10,7 @@ public class Ball {
     @JsonProperty("dimensions")
     private Dimensions dimensions;
 
+
     public Ball() {
     }
 
@@ -34,6 +35,7 @@ public class Ball {
         this.dimensions = dimensions;
     }
 
+    
     @Override
     public String toString() {
         return "Ball{" +
