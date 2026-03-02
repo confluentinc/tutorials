@@ -9,9 +9,6 @@ import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.Topology;
 import org.apache.kafka.streams.kstream.Consumed;
 import org.apache.kafka.streams.kstream.Produced;
-import org.apache.kafka.streams.processor.api.FixedKeyProcessor;
-import org.apache.kafka.streams.processor.api.FixedKeyProcessorContext;
-import org.apache.kafka.streams.processor.api.FixedKeyRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.io.IOException;
@@ -35,33 +32,25 @@ public class KafkaStreamsApplication {
         ObjectMapper objectMapper = new ObjectMapper();
 
         builder.stream(INPUT_TOPIC, Consumed.with(stringSerde, stringSerde))
-                .processValues(() -> new FixedKeyProcessor<String, String, String>() {
-                    private FixedKeyProcessorContext<String, String> context;
+                .mapValues(value -> {
+                    try {
+                        Map<String, Object> valueMap = objectMapper.readValue(
+                                value,
+                                objectMapper.getTypeFactory().constructMapType(Map.class, String.class, Object.class));
 
-                    public void init(FixedKeyProcessorContext<String, String> context) {
-                        this.context = context;
-                    }
-
-                    public void process(FixedKeyRecord<String, String> record) {
-                        try {
-                            Map<String, Object> valueMap = objectMapper.readValue(
-                                    record.value(),
-                                    objectMapper.getTypeFactory().constructMapType(Map.class, String.class, Object.class));
-
-                            Object causeError = valueMap.get("causeError");
-                            if (causeError != null && Boolean.TRUE.equals(causeError)) {
-                                LOG.error("causeError field detected with value true - throwing exception for DLQ demo");
-                                throw new RuntimeException(
-                                        "Simulated processing error for DLQ routing");
-                            }
-                            LOG.info("Successfully processed event: {}", record.value());
-                            context.forward(record);
-                        } catch (IOException e) {
-                            LOG.error("Failed to parse JSON value: {}", record.value(), e);
-                            throw new RuntimeException("Failed to parse JSON", e);
+                        Object causeError = valueMap.get("causeError");
+                        if (causeError != null && Boolean.TRUE.equals(causeError)) {
+                            LOG.error("causeError field detected with value true - throwing exception for DLQ demo");
+                            throw new RuntimeException("Simulated processing error for DLQ routing");
                         }
+                        LOG.info("Successfully processed event: {}", value);
+                        return value;
+                    } catch (IOException e) {
+                        LOG.error("Failed to parse JSON value: {}", value, e);
+                        throw new RuntimeException("Failed to parse JSON", e);
                     }
-                }).to(OUTPUT_TOPIC, Produced.with(stringSerde, stringSerde));
+                })
+                .to(OUTPUT_TOPIC, Produced.with(stringSerde, stringSerde));
 
         return builder.build(allProps);
     }
@@ -104,9 +93,8 @@ public class KafkaStreamsApplication {
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
-        } catch (IOException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
         }
     }
 }
