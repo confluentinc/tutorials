@@ -1,2 +1,0 @@
-trigger-error:false\msg0\goodmsg
-trigger-error:true\msg1\foobar
