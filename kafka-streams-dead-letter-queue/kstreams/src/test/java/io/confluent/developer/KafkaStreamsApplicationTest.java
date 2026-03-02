@@ -22,14 +22,15 @@ public class KafkaStreamsApplicationTest {
     private TopologyTestDriver testDriver;
     private TestInputTopic<String, String> inputTopic;
     private TestOutputTopic<String, String> outputTopic;
-    private TestOutputTopic<String, String> dlqTopic;
 
     @BeforeEach
     public void setUp() {
         Properties props = new Properties();
         props.put(StreamsConfig.APPLICATION_ID_CONFIG, "test-app");
         props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "dummy:1234");
-        props.put("processing.exception.handler.dead.letter.queue.topic.name", "dlq-topic");
+        // Configure DLQ using the correct config key
+        // Note: TopologyTestDriver doesn't simulate DLQ routing - this is for topology building only
+        props.put(StreamsConfig.ERRORS_DEAD_LETTER_QUEUE_TOPIC_NAME_CONFIG, "dlq-topic");
 
         KafkaStreamsApplication app = new KafkaStreamsApplication();
         Topology topology = app.buildTopology(props);
@@ -43,11 +44,6 @@ public class KafkaStreamsApplicationTest {
 
         outputTopic = testDriver.createOutputTopic(
                 KafkaStreamsApplication.OUTPUT_TOPIC,
-                new StringDeserializer(),
-                new StringDeserializer());
-
-        dlqTopic = testDriver.createOutputTopic(
-                "dlq-topic",
                 new StringDeserializer(),
                 new StringDeserializer());
     }
@@ -74,8 +70,6 @@ public class KafkaStreamsApplicationTest {
         assertThat(outputRecord.key, equalTo(key));
         assertThat(outputRecord.value, equalTo(value));
 
-        // And not in the DLQ
-        assertTrue(dlqTopic.isEmpty());
     }
 
     @Test
@@ -93,8 +87,6 @@ public class KafkaStreamsApplicationTest {
         assertThat(outputRecord.key, equalTo(key));
         assertThat(outputRecord.value, equalTo(value));
 
-        // And not in the DLQ
-        assertTrue(dlqTopic.isEmpty());
     }
 
     @Test
@@ -113,10 +105,11 @@ public class KafkaStreamsApplicationTest {
         // Then it should NOT appear in the output topic
         assertTrue(outputTopic.isEmpty());
 
-        // Note: In a real DLQ implementation with KIP-1034, the record would be
-        // automatically routed to the DLQ topic. However, TopologyTestDriver doesn't
-        // fully simulate the exception handler behavior, so we're testing that
-        // the exception is thrown, which would trigger DLQ routing in production.
+        // Note: TopologyTestDriver cannot validate DLQ routing as it's a runtime
+        // infrastructure feature, not part of the topology itself. This unit test
+        // verifies that the exception is thrown, which triggers DLQ routing in
+        // production. See KafkaStreamsApplicationDLQIntegrationTest for end-to-end
+        // DLQ routing validation using Testcontainers with real Kafka.
     }
 
     @Test
@@ -154,6 +147,5 @@ public class KafkaStreamsApplicationTest {
         assertThat(record2.key, equalTo("key2"));
 
         assertTrue(outputTopic.isEmpty());
-        assertTrue(dlqTopic.isEmpty());
     }
 }

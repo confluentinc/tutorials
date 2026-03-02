@@ -82,9 +82,7 @@ public class KafkaStreamsApplication {
             properties.put(StreamsConfig.APPLICATION_ID_CONFIG, "kafka-streams-dlq-demo");
 
             // KIP-1034: Configure Dead Letter Queue
-            // properties.put(StreamsConfig.PROCESSING_EXCEPTION_HANDLER_CLASS_CONFIG,
-            //         "org.apache.kafka.streams.errors.DeadLetterQueueExceptionHandler");
-            properties.put("processing.exception.handler.dead.letter.queue.topic.name", DLQ_TOPIC);
+            properties.put(StreamsConfig.ERRORS_DEAD_LETTER_QUEUE_TOPIC_NAME_CONFIG, DLQ_TOPIC);
 
             LOG.info("Starting Kafka Streams application with DLQ enabled");
             LOG.info("DLQ Topic: {}", DLQ_TOPIC);
