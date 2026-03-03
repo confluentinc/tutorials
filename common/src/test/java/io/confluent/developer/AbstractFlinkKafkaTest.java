@@ -28,6 +28,7 @@ public class AbstractFlinkKafkaTest {
 
     protected static StreamTableEnvironment streamTableEnv;
     protected static Integer schemaRegistryPort, kafkaPort;
+    protected static String topicNamespace;
 
     @BeforeClass
     public static void setup() {
@@ -44,6 +45,33 @@ public class AbstractFlinkKafkaTest {
         SharedFlinkKafkaContainers containers = SharedFlinkKafkaContainers.getInstance();
         kafkaPort = containers.getKafkaPort();
         schemaRegistryPort = containers.getSchemaRegistryPort();
+
+        // Generate a unique topic namespace for this test class to prevent topic name collisions
+        // when running tests in parallel with shared containers
+        topicNamespace = getTestClassName();
+    }
+
+    /**
+     * Get the simple name of the test class for use as a topic namespace.
+     * Uses the stack trace to find the first class that extends AbstractFlinkKafkaTest.
+     *
+     * @return the simple class name of the test
+     */
+    private static String getTestClassName() {
+        StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+        for (StackTraceElement element : stackTrace) {
+            try {
+                Class<?> clazz = Class.forName(element.getClassName());
+                if (AbstractFlinkKafkaTest.class.isAssignableFrom(clazz) &&
+                    !clazz.equals(AbstractFlinkKafkaTest.class)) {
+                    return clazz.getSimpleName();
+                }
+            } catch (ClassNotFoundException e) {
+                // Continue searching
+            }
+        }
+        // Fallback to a random ID if we can't determine the test class
+        return "test-" + System.currentTimeMillis();
     }
 
     /**
@@ -69,6 +97,12 @@ public class AbstractFlinkKafkaTest {
         }
         if (schemaRegistryPort.isPresent()) {
             contents = contents.replaceAll("SCHEMA_REGISTRY_PORT", schemaRegistryPort.get().toString());
+        }
+        // Namespace all topic names to prevent collisions when running tests in parallel
+        // This replaces 'topic' = 'foo' with 'topic' = 'TestClassName-foo'
+        if (topicNamespace != null) {
+            contents = contents.replaceAll("'topic'\\s*=\\s*'([^']+)'",
+                "'topic' = '" + topicNamespace + "-$1'");
         }
         return contents;
     }
