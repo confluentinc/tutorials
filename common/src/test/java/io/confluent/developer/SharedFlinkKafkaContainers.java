@@ -24,37 +24,43 @@ public final class SharedFlinkKafkaContainers {
   private final Integer kafkaPort;
   private final Integer schemaRegistryPort;
 
+  private static final String KAFKA_NETWORK_ALIAS = "kafka";
+
   private SharedFlinkKafkaContainers() {
     System.out.println("SharedFlinkKafkaContainers: Starting container initialization");
 
+    // Create an explicit network for both containers to share
+    // Docker will generate a unique name to avoid conflicts between parallel test runs
+    System.out.println("SharedFlinkKafkaContainers: Creating shared network");
+    Network network = Network.newNetwork();
+
     System.out.println("SharedFlinkKafkaContainers: Creating Kafka container");
-    // Note: We don't use a custom Network to avoid conflicts when multiple JVM processes
-    // try to create networks with the same name. Kafka container creates its own network.
-    kafka = new ConfluentKafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:8.1.1"))
+    kafka = new ConfluentKafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:latest"))
+            .withNetwork(network)  // Set network before setting alias
+            .withNetworkAliases(KAFKA_NETWORK_ALIAS)  // Explicit network alias for DNS resolution
             .withEnv("KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR", "1")
             .withEnv("KAFKA_TRANSACTION_STATE_LOG_MIN_ISR", "1")
             .withEnv("KAFKA_TRANSACTION_STATE_LOG_NUM_PARTITIONS", "1")
             .withEnv("KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS", "500")
             .withEnv("KAFKA_AUTO_CREATE_TOPICS_ENABLE", "true")
-            .withLabel("flink-test-containers", "true")  // Add label for cleanup
-            .withReuse(true);
+            .withLabel("flink-test-containers", "true");  // Add label for cleanup
 
     System.out.println("SharedFlinkKafkaContainers: Starting Kafka container");
     kafka.start();
     kafkaPort = kafka.getMappedPort(9092);
-    System.out.println("SharedFlinkKafkaContainers: Kafka started on port " + kafkaPort);
+    System.out.println("SharedFlinkKafkaContainers: Kafka started on port " + kafkaPort +
+                       ", network alias: " + KAFKA_NETWORK_ALIAS);
 
     System.out.println("SharedFlinkKafkaContainers: Creating Schema Registry container");
-    schemaRegistry = new GenericContainer<>(DockerImageName.parse("confluentinc/cp-schema-registry:8.1.1"))
+    schemaRegistry = new GenericContainer<>(DockerImageName.parse("confluentinc/cp-schema-registry:latest"))
             .dependsOn(kafka)
             .withExposedPorts(8081)
-            .withNetwork(kafka.getNetwork())
+            .withNetwork(network)  // Use the same network as Kafka
             .withEnv("SCHEMA_REGISTRY_HOST_NAME", "localhost")
             .withEnv("SCHEMA_REGISTRY_LISTENERS", "http://0.0.0.0:8081")
-            .withEnv("SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS", "PLAINTEXT://" + kafka.getNetworkAliases().get(0) + ":9093")
+            .withEnv("SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS", "PLAINTEXT://" + KAFKA_NETWORK_ALIAS + ":9093")
             .withEnv("SCHEMA_REGISTRY_KAFKASTORE_SECURITY_PROTOCOL", "PLAINTEXT")
             .withLabel("flink-test-containers", "true")  // Add label for cleanup
-            .withReuse(true)
             .waitingFor(Wait.forHttp("/subjects")
                     .forStatusCode(200)
                     .withStartupTimeout(Duration.ofSeconds(60)));  // Increased from 30s
@@ -66,10 +72,21 @@ public final class SharedFlinkKafkaContainers {
 
     System.out.println("SharedFlinkKafkaContainers: All containers initialized successfully");
 
-    // Note: With .withReuse(true), we intentionally do NOT add a shutdown hook to stop
-    // containers. Testcontainers will manage the lifecycle - containers remain running
-    // after tests complete and are available for reuse by subsequent test runs.
-    // Ryuk (Testcontainers' resource reaper) will clean them up when appropriate.
+    // Add shutdown hook to ensure containers are stopped when the JVM exits
+    Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+      System.out.println("SharedFlinkKafkaContainers: Shutting down containers");
+      try {
+        if (schemaRegistry != null && schemaRegistry.isRunning()) {
+          schemaRegistry.stop();
+        }
+        if (kafka != null && kafka.isRunning()) {
+          kafka.stop();
+        }
+        System.out.println("SharedFlinkKafkaContainers: Containers stopped successfully");
+      } catch (Exception e) {
+        System.err.println("SharedFlinkKafkaContainers: Error stopping containers: " + e.getMessage());
+      }
+    }));
   }
 
   /**
