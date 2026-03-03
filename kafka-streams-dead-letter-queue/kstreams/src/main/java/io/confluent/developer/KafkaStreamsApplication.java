@@ -35,7 +35,7 @@ public class KafkaStreamsApplication {
                     try {
                         SportEvent event = objectMapper.readValue(value, SportEvent.class);
 
-                        if (null == event.getBall() || event.getBall().isEmpty()) {
+                        if (event.getBall().isEmpty()) {
                             LOG.error("Sport '{}' is missing ball field - routing to DLQ", event.getSport());
                             throw new RuntimeException("Sport event missing required 'ball' field");
                         }
