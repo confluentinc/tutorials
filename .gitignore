@@ -146,3 +146,5 @@ fabric.properties
 
 # bin/ directories in all gradle modules
 **/bin/
+
+**/.claude/
