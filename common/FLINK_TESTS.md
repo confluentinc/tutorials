@@ -1,6 +1,6 @@
 # Flink Integration Tests
 
-This document describes the Flink test infrastructure and setup requirements.
+This document describes the Flink test infrastructure, setup requirements, and best practices.
 
 ## Architecture
 
@@ -9,19 +9,18 @@ The Flink integration tests use a **shared container singleton pattern** to prev
 - **SharedFlinkKafkaContainers**: Singleton that manages Kafka and Schema Registry containers
 - **AbstractFlinkKafkaTest**: Base class for all Flink SQL tests
 - **Topic Namespacing**: Automatic topic prefixing with test class name to prevent collisions
+- **Retry Logic**: Exponential backoff when container creation fails
 
 ## Prerequisites
 
 ### Required: Enable Testcontainers Reuse
 
-For tests to run reliably with `./gradlew clean test`, you **must** enable Testcontainers reuse globally.
+You **must** enable Testcontainers reuse globally for reliable test execution.
 
 Add this to `~/.testcontainers.properties`:
 ```properties
 testcontainers.reuse.enable=true
 ```
-
-**Why?** Gradle runs test tasks in separate JVM processes (workers). The singleton pattern only works within a single JVM. Testcontainers reuse allows containers to be shared across multiple JVM processes via Docker container labels.
 
 **Verify your configuration:**
 ```bash
@@ -32,106 +31,111 @@ Should output: `testcontainers.reuse.enable=true`
 
 ## Running Tests
 
-### Run all Flink tests
+### ⚠️ Important: Avoid High Parallelism with `clean`
+
+When running `./gradlew clean test --parallel` with many workers, you may encounter occasional container timeout failures due to race conditions during container creation across multiple JVM processes.
+
+### Recommended Approaches
+
+**Option 1: Run without `--parallel` flag (most reliable)**
 ```bash
-./gradlew :aggregating-count:flinksql:test :aggregating-minmax:flinksql:test \
-  :deduplication:flinksql:test :deduplication-windowed:flinksql:test \
-  :joining-stream-stream:flinksql:test :multi-joins:flinksql:test \
-  :session-windows:flinksql:test :tumbling-windows:flinksql:test \
-  :hopping-windows:flinksql:test :cumulating-windows:flinksql:test \
-  :windowed-top-N:flinksql:test :top-N:flinksql:test \
-  :splitting:flinksql:test :merging:flinksql:test :sorting:flinksql:test \
-  :array-expansion:flinksql:test :pattern-matching:flinksql:test \
-  :over-aggregations:flinksql:test :lagging-events:flinksql:test \
-  --parallel
+./gradlew clean :aggregating-count:flinksql:test :aggregating-minmax:flinksql:test \
+  :deduplication:flinksql:test [... other tests ...]
 ```
 
-### Run with clean
+**Option 2: Run in smaller batches (good balance)**
 ```bash
-./gradlew clean [test tasks...] --parallel
+# Batch 1 - Window tests (5 tests)
+./gradlew :tumbling-windows:flinksql:test :hopping-windows:flinksql:test \
+  :session-windows:flinksql:test :cumulating-windows:flinksql:test \
+  :windowed-top-N:flinksql:test --parallel --max-workers=2
+
+# Batch 2 - Join tests (2 tests)
+./gradlew :joining-stream-stream:flinksql:test :multi-joins:flinksql:test \
+  --parallel --max-workers=2
+
+# Batch 3 - Aggregation tests (4 tests)
+./gradlew :aggregating-count:flinksql:test :aggregating-minmax:flinksql:test \
+  :over-aggregations:flinksql:test :top-N:flinksql:test \
+  --parallel --max-workers=2
 ```
+
+**Option 3: Lower parallelism (if you must use --parallel)**
+```bash
+./gradlew clean [all test tasks] --parallel --max-workers=2
+```
+
+**Option 4: Accept occasional retries**
+- The code includes retry logic with exponential backoff (5s, 10s)
+- Most failures will automatically retry and succeed
+- If a test fails, re-run that specific test
 
 ## How It Works
 
-### 1. Shared Containers
-When the first test runs:
-- `SharedFlinkKafkaContainers.getInstance()` starts Kafka + Schema Registry
-- Containers are marked with `.withReuse(true)`
-- Container labels are registered with Docker
+### 1. Shared Containers Within JVM
+Within a single JVM (Gradle worker):
+- `SharedFlinkKafkaContainers.getInstance()` creates containers once
+- All test classes in that worker share the same containers
 
-Subsequent tests (even in different JVM processes):
-- `getInstance()` finds existing containers via Docker labels
-- Reuses the same Kafka + Schema Registry instances
-- No additional container startup overhead
+### 2. Retry Logic Across JVMs
+When multiple workers start simultaneously:
+- Each tries to create containers with `.withReuse(true)`
+- If creation fails (race condition), retry after 5s, then 10s
+- Usually one worker succeeds, others eventually reuse
 
-### 2. Topic Namespacing
-To prevent data pollution when tests share containers:
-- All topic names are automatically prefixed with the test class name
-- Example: `'topic' = 'movie_views'` → `'topic' = 'FlinkSqlTopNTest-movie_views'`
-- This happens transparently in `getResourceFileContents()`
+### 3. Topic Namespacing
+To prevent data pollution:
+- All topic names automatically prefixed: `TestClassName-topicname`
+- Example: `'topic' = 'clicks'` → `'topic' = 'FlinkSqlDeduplicationTest-clicks'`
+- Happens transparently in `getResourceFileContents()`
 
-### 3. Test Isolation
-Each test class gets:
-- Isolated topics (via namespacing)
-- Shared Kafka/Schema Registry (via container reuse)
-- Independent Flink table environment
+### 4. Configuration
+- **Container startup timeout**: 60 seconds (Schema Registry)
+- **Retry attempts**: 3 with exponential backoff (5s, 10s)
+- **No shutdown hooks**: Containers stay running for reuse
 
 ## Troubleshooting
 
-### "Container startup failed" errors with clean test
-**Cause:** Testcontainers reuse is disabled
-**Fix:** Enable `testcontainers.reuse.enable=true` in `~/.testcontainers.properties`
+### Occasional "Container startup failed" with --parallel
+**Cause:** Race condition when multiple workers create containers simultaneously
+**Solutions:**
+1. Re-run the failed test (retry logic should help)
+2. Run without `--parallel` flag
+3. Use `--max-workers=2` to reduce contention
 
-### Intermittent test failures
-**Cause:** Topic name collisions (should not happen with namespacing)
-**Check:** Verify topic namespacing is working by looking at Kafka topics during test execution
+### Consistent failures on single test
+**Cause:** Test-specific issue, not infrastructure
+**Debug:**
+1. Run the test alone: `./gradlew :module:flinksql:test`
+2. Check container logs: `docker logs $(docker ps -q --filter "label=flink-test-containers")`
+3. Verify ports aren't blocked: `lsof -i :9092` and `lsof -i :8081`
 
 ### Tests hanging
 **Cause:** Resource exhaustion or port conflicts
 **Fix:**
-1. Stop all Docker containers: `docker stop $(docker ps -q)`
-2. Verify no containers are reusing ports 9092 or 8081
-3. Re-run tests
-
-### Clean up reused containers
 ```bash
-docker ps --filter "label=org.testcontainers.sessionId" -q | xargs docker stop
+# Stop all test containers
+docker ps --filter "label=flink-test-containers" -q | xargs docker stop
+
+# Or stop all containers
+docker stop $(docker ps -q)
 ```
 
-## Test Structure
-
-All Flink SQL tests follow this pattern:
-```java
-public class MyFlinkSqlTest extends AbstractFlinkKafkaTest {
-
-  @Test
-  public void testSomething() throws Exception {
-    // Create tables using getResourceFileContents()
-    streamTableEnv.executeSql(getResourceFileContents(
-      "create-table.sql.template",
-      Optional.of(kafkaPort),
-      Optional.of(schemaRegistryPort)
-    )).await();
-
-    // Populate test data
-    streamTableEnv.executeSql(getResourceFileContents(
-      "populate-data.sql"
-    )).await();
-
-    // Execute query and verify results
-    TableResult result = streamTableEnv.executeSql(
-      getResourceFileContents("query.sql")
-    );
-
-    // Assert results...
-  }
-}
+### Clean up reused containers manually
+```bash
+docker ps -a --filter "label=org.testcontainers.reuse" -q | xargs docker rm -f
 ```
 
-## Benefits of This Architecture
+## Benefits
 
-✅ **Faster tests** - Containers start once, not 19 times
-✅ **Reliable parallel execution** - No resource exhaustion
-✅ **Complete isolation** - Topic namespacing prevents data pollution
-✅ **No template changes** - Automatic namespacing in base class
-✅ **Works with clean** - Testcontainers reuse across JVM workers
+✅ **Faster than serial execution** - Containers start once per worker
+✅ **Complete test isolation** - Topic namespacing prevents data pollution
+✅ **Automatic retry** - Handles race conditions gracefully
+✅ **No template changes** - Works with existing SQL files
+✅ **Works with reuse** - Containers persist across test runs
+
+## Known Limitations
+
+- **High parallelism may cause occasional timeouts** when running with `clean` and `--parallel --max-workers=4+`
+- **Testcontainers reuse across JVMs** is not 100% reliable with dynamic networks
+- **Recommended**: Run tests in batches or without `--parallel` for most reliable execution
