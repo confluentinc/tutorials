@@ -7,13 +7,69 @@ In this tutorial, you'll learn how to route events that result in exceptions to 
 
 ## Prerequisites
 
-* Java 17 or higher, e.g., follow the OpenJDK installation instructions [here](https://openjdk.org/install/) if you don't have Java.
-* Clone the `confluentinc/tutorials` repository and navigate to its top-level directory:
-
+* A [Confluent Cloud](https://confluent.cloud/signup) account
+* The [Confluent CLI](https://docs.confluent.io/confluent-cli/current/install.html) installed on your machine
+* [Apache Kafka](https://kafka.apache.org/downloads) or [Confluent Platform](https://docs.confluent.io/platform/current/installation/installing_cp/zip-tar.html) (both include the Kafka Streams application reset tool)
+* Clone the `confluentinc/tutorials` repository and navigate into its top-level directory:
   ```shell
   git clone git@github.com:confluentinc/tutorials.git
   cd tutorials
   ```
+
+## Create Confluent Cloud resources
+
+Login to your Confluent Cloud account:
+
+```shell
+confluent login --prompt --save
+```
+
+Install a CLI plugin that will streamline the creation of resources in Confluent Cloud:
+
+```shell
+confluent plugin install confluent-quickstart
+```
+
+Run the plugin from the top-level directory of the `tutorials` repository to create the Confluent Cloud resources needed for this tutorial. Note that you may specify a different cloud provider (`gcp` or `azure`) or region. You can find supported regions in a given cloud provider by running `confluent kafka region list --cloud <CLOUD>`.
+
+```shell
+confluent quickstart \
+  --environment-name kafka-streams-dlq-env \
+  --kafka-cluster-name kafka-streams-dlq-cluster \
+  --create-kafka-key \
+  --kafka-java-properties-file ./kafka-streams-dead-letter-queue/kstreams/src/main/resources/cloud.properties
+```
+
+The plugin should complete in under a minute.
+
+## Create topics
+
+Create the input and output topics for the application:
+
+```shell
+confluent kafka topic create input
+confluent kafka topic create output
+confluent kafka topic create dlq-topic
+```
+
+Start a console producer:
+
+```shell
+confluent kafka topic produce input
+```
+
+Produce events with a `ball` attribute:
+
+```shell
+{"sport": "baseball", "ball": {"shape": "round", "dimensions": {"diameter": "2.9in", "weight": "5oz"}}}
+{"sport": "tennis", "ball": {"shape": "round", "dimensions": {"diameter": "6.7cm", "weight": "58g"}}}
+```
+
+And a few without a `ball` attribute:
+```shell
+{"sport": "swimming", "details": {"style": "backstroke", "distance": "400m"}}
+{"sport": "gynmastics", "details": {"style": "floor routine"}}
+```
 
 ## Configure the topology
 
@@ -28,25 +84,6 @@ In this tutorial, you'll learn how to route events that result in exceptions to 
   properties.put(StreamsConfig.PROCESSING_EXCEPTION_HANDLER_CLASS_CONFIG, "org.apache.kafka.streams.errors.LogAndContinueProcessingExceptionHandler");
 
 ```
-
-## Input events
-
-In this example, events contain different sports. Some sports involve a `ball` and others do not.
-
-For example, an event for the sports of `baseball` and `tennis` might look like this:
-
-```json
-{"sport": "baseball", "ball": {"shape": "round", "dimensions": {"diameter": "2.9in", "weight": "5oz"}}}
-{"sport": "tennis", "ball": {"shape": "round", "dimensions": {"diameter": "6.7cm", "weight": "58g"}}}
-```
-
-While `swimming` would look like this:
-
-```json
-{"sport": "swimming", "details": {"style": "backstroke", "distance": "400m"}}
-```
-
-## The topology
 
 The example topology throws a `RuntimeException` for any events where the `ball` attribute is null or missing:
 
@@ -72,14 +109,10 @@ The example topology throws a `RuntimeException` for any events where the `ball`
           .to(OUTPUT_TOPIC, Produced.with(stringSerde, stringSerde));
 ```
 
-## Run the unit and integration tests
-
-The unit test `KafkaStreamsApplicationTest` contains scenarios for `sport` events where the `ball` is both provided and missing. However that unit test does not assert for events in the dead-letter queue because the `TopologyTestDriver` does not simulate this routing. This test does assert that the events without a `ball` are not sent to the `output` topic.
+## Run with Confluent Cloud
 
 
-The integration test `KafkaStreamsApplicationDLQIntegrationTest` does assert on the dead-letter queue using a simple `KafkaConsumer` to subscribe to the `dlq-topic`.
 
-## In the dead-leter queue topic
 
 Events in the `dlq-topic` include headers for the exception that triggered the routing, along with the partition, offset, timestamp, key, and value of the original event. For example:
 
@@ -99,7 +132,7 @@ Events in the `dlq-topic` include headers for the exception that triggered the r
     },
     {
       "key": "__streams.errors.stacktrace",
-      "value": "java.lang.RuntimeException: Sport event missing required 'ball' field\n\tat io.confluent.developer.KafkaStreamsApplication.lambda$buildTopology$0(KafkaStreamsApplication.java:40)\n\tat org.apache.kafka.streams.kstream.internals.AbstractStream.lambda$withKey$0(AbstractStream.java:104)\n\tat org.apache.kafka.streams.kstream.internals.KStreamMapValues$KStreamMapProcessor.process(KStreamMapValues.java:41)\n\tat org.apache.kafka.streams.processor.internals.ProcessorNode.process(ProcessorNode.java:181)\n\tat org.apache.kafka.streams.processor.internals.ProcessorContextImpl.forwardInternal(ProcessorContextImpl.java:294)\n\tat org.apache.kafka.streams.processor.internals.ProcessorContextImpl.forward(ProcessorContextImpl.java:273)\n\tat org.apache.kafka.streams.processor.internals.ProcessorContextImpl.forward(ProcessorContextImpl.java:229)\n\tat org.apache.kafka.streams.processor.internals.SourceNode.process(SourceNode.java:95)\n\tat org.apache.kafka.streams.processor.internals.StreamTask.lambda$doProcess$0(StreamTask.java:907)\n\tat org.apache.kafka.streams.processor.internals.metrics.StreamsMetricsImpl.maybeMeasureLatency(StreamsMetricsImpl.java:954)\n\tat org.apache.kafka.streams.processor.internals.StreamTask.doProcess(StreamTask.java:907)\n\tat org.apache.kafka.streams.processor.internals.StreamTask.process(StreamTask.java:811)\n\tat org.apache.kafka.streams.processor.internals.TaskExecutor.processTask(TaskExecutor.java:95)\n\tat org.apache.kafka.streams.processor.internals.TaskExecutor.process(TaskExecutor.java:76)\n\tat org.apache.kafka.streams.processor.internals.TaskManager.process(TaskManager.java:2084)\n\tat org.apache.kafka.streams.processor.internals.StreamThread.runOnceWithoutProcessingThreads(StreamThread.java:1265)\n\tat org.apache.kafka.streams.processor.internals.StreamThread.runLoop(StreamThread.java:952)\n\tat org.apache.kafka.streams.processor.internals.StreamThread.run(StreamThread.java:912)\n"
+      "value": "java.lang.RuntimeException: Sport event missing required 'ball' field\n\tat io.confluent.developer.KafkaStreamsDLQApplication.lambda$buildTopology$0(KafkaStreamsApplication.java:40)\n\tat org.apache.kafka.streams.kstream.internals.AbstractStream.lambda$withKey$0(AbstractStream.java:104)\n\tat org.apache.kafka.streams.kstream.internals.KStreamMapValues$KStreamMapProcessor.process(KStreamMapValues.java:41)\n\tat org.apache.kafka.streams.processor.internals.ProcessorNode.process(ProcessorNode.java:181)\n\tat org.apache.kafka.streams.processor.internals.ProcessorContextImpl.forwardInternal(ProcessorContextImpl.java:294)\n\tat org.apache.kafka.streams.processor.internals.ProcessorContextImpl.forward(ProcessorContextImpl.java:273)\n\tat org.apache.kafka.streams.processor.internals.ProcessorContextImpl.forward(ProcessorContextImpl.java:229)\n\tat org.apache.kafka.streams.processor.internals.SourceNode.process(SourceNode.java:95)\n\tat org.apache.kafka.streams.processor.internals.StreamTask.lambda$doProcess$0(StreamTask.java:907)\n\tat org.apache.kafka.streams.processor.internals.metrics.StreamsMetricsImpl.maybeMeasureLatency(StreamsMetricsImpl.java:954)\n\tat org.apache.kafka.streams.processor.internals.StreamTask.doProcess(StreamTask.java:907)\n\tat org.apache.kafka.streams.processor.internals.StreamTask.process(StreamTask.java:811)\n\tat org.apache.kafka.streams.processor.internals.TaskExecutor.processTask(TaskExecutor.java:95)\n\tat org.apache.kafka.streams.processor.internals.TaskExecutor.process(TaskExecutor.java:76)\n\tat org.apache.kafka.streams.processor.internals.TaskManager.process(TaskManager.java:2084)\n\tat org.apache.kafka.streams.processor.internals.StreamThread.runOnceWithoutProcessingThreads(StreamThread.java:1265)\n\tat org.apache.kafka.streams.processor.internals.StreamThread.runLoop(StreamThread.java:952)\n\tat org.apache.kafka.streams.processor.internals.StreamThread.run(StreamThread.java:912)\n"
     },
     {
       "key": "__streams.errors.topic",
@@ -129,3 +162,17 @@ Events in the `dlq-topic` include headers for the exception that triggered the r
   }
 }
 ```
+
+## Clean up
+
+When you are finished, delete the `kafka-streams-dlq-env` environment by first getting the environment ID of the form `env-123456` corresponding to it:
+
+```shell
+confluent environment list
+```
+
+Delete the environment, including all resources created for this tutorial:
+
+```shell
+confluent environment delete <ENVIRONMENT ID>
+

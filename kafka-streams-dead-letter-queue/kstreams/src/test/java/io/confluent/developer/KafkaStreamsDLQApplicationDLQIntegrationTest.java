@@ -38,7 +38,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  *
  * Each test creates its own KafkaContainer for complete isolation.
  */
-public class KafkaStreamsApplicationDLQIntegrationTest {
+public class KafkaStreamsDLQApplicationDLQIntegrationTest {
 
     private static final String DLQ_TOPIC = "dlq-topic";
     private static final int POLL_TIMEOUT_SECONDS = 10;
@@ -50,15 +50,15 @@ public class KafkaStreamsApplicationDLQIntegrationTest {
 
             // Create topics
             createTopics(kafka.getBootstrapServers(),
-                    KafkaStreamsApplication.INPUT_TOPIC,
-                    KafkaStreamsApplication.OUTPUT_TOPIC,
+                    KafkaStreamsDLQApplication.INPUT_TOPIC,
+                    KafkaStreamsDLQApplication.OUTPUT_TOPIC,
                     DLQ_TOPIC);
 
             // Configure and start Kafka Streams application
             Properties streamProps = buildStreamProperties(kafka.getBootstrapServers());
             streamProps.put(StreamsConfig.ERRORS_DEAD_LETTER_QUEUE_TOPIC_NAME_CONFIG, DLQ_TOPIC);
 
-            KafkaStreamsApplication app = new KafkaStreamsApplication();
+            KafkaStreamsDLQApplication app = new KafkaStreamsDLQApplication();
             Topology topology = app.buildTopology(streamProps);
             KafkaStreams streams = new KafkaStreams(topology, streamProps);
             streams.start();
@@ -84,7 +84,7 @@ public class KafkaStreamsApplicationDLQIntegrationTest {
             // Verify record did NOT appear in output topic
             List<ConsumerRecord<String, String>> outputRecords = consumeFromTopic(
                     kafka.getBootstrapServers(),
-                    KafkaStreamsApplication.OUTPUT_TOPIC,
+                    KafkaStreamsDLQApplication.OUTPUT_TOPIC,
                     0);
 
             assertEquals(0, outputRecords.size(), "Expected no records in output topic");
@@ -100,15 +100,15 @@ public class KafkaStreamsApplicationDLQIntegrationTest {
 
             // Create topics
             createTopics(kafka.getBootstrapServers(),
-                    KafkaStreamsApplication.INPUT_TOPIC,
-                    KafkaStreamsApplication.OUTPUT_TOPIC,
+                    KafkaStreamsDLQApplication.INPUT_TOPIC,
+                    KafkaStreamsDLQApplication.OUTPUT_TOPIC,
                     DLQ_TOPIC);
 
             // Configure and start Kafka Streams application
             Properties streamProps = buildStreamProperties(kafka.getBootstrapServers());
             streamProps.put(StreamsConfig.ERRORS_DEAD_LETTER_QUEUE_TOPIC_NAME_CONFIG, DLQ_TOPIC);
 
-            KafkaStreamsApplication app = new KafkaStreamsApplication();
+            KafkaStreamsDLQApplication app = new KafkaStreamsDLQApplication();
             Topology topology = app.buildTopology(streamProps);
             KafkaStreams streams = new KafkaStreams(topology, streamProps);
             streams.start();
@@ -124,7 +124,7 @@ public class KafkaStreamsApplicationDLQIntegrationTest {
             // Verify record appears in output topic
             List<ConsumerRecord<String, String>> outputRecords = consumeFromTopic(
                     kafka.getBootstrapServers(),
-                    KafkaStreamsApplication.OUTPUT_TOPIC,
+                    KafkaStreamsDLQApplication.OUTPUT_TOPIC,
                     1);
 
             assertEquals(1, outputRecords.size(), "Expected exactly one record in output topic");
@@ -151,15 +151,15 @@ public class KafkaStreamsApplicationDLQIntegrationTest {
 
             // Create topics
             createTopics(kafka.getBootstrapServers(),
-                    KafkaStreamsApplication.INPUT_TOPIC,
-                    KafkaStreamsApplication.OUTPUT_TOPIC,
+                    KafkaStreamsDLQApplication.INPUT_TOPIC,
+                    KafkaStreamsDLQApplication.OUTPUT_TOPIC,
                     DLQ_TOPIC);
 
             // Configure and start Kafka Streams application
             Properties streamProps = buildStreamProperties(kafka.getBootstrapServers());
             streamProps.put(StreamsConfig.ERRORS_DEAD_LETTER_QUEUE_TOPIC_NAME_CONFIG, DLQ_TOPIC);
 
-            KafkaStreamsApplication app = new KafkaStreamsApplication();
+            KafkaStreamsDLQApplication app = new KafkaStreamsDLQApplication();
             Topology topology = app.buildTopology(streamProps);
             KafkaStreams streams = new KafkaStreams(topology, streamProps);
             streams.start();
@@ -184,7 +184,7 @@ public class KafkaStreamsApplicationDLQIntegrationTest {
             // Verify record did NOT appear in output topic
             List<ConsumerRecord<String, String>> outputRecords = consumeFromTopic(
                     kafka.getBootstrapServers(),
-                    KafkaStreamsApplication.OUTPUT_TOPIC,
+                    KafkaStreamsDLQApplication.OUTPUT_TOPIC,
                     0);
 
             assertEquals(0, outputRecords.size(), "Expected no records in output topic");
@@ -234,7 +234,7 @@ public class KafkaStreamsApplicationDLQIntegrationTest {
 
         try (Producer<String, String> producer = new KafkaProducer<>(producerProps)) {
             ProducerRecord<String, String> record = new ProducerRecord<>(
-                    KafkaStreamsApplication.INPUT_TOPIC,
+                    KafkaStreamsDLQApplication.INPUT_TOPIC,
                     key,
                     value);
             producer.send(record).get();

@@ -11,15 +11,17 @@ import org.apache.kafka.streams.kstream.Consumed;
 import org.apache.kafka.streams.kstream.Produced;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.Duration;
+import java.util.Optional;
 import java.util.Properties;
 import java.util.concurrent.CountDownLatch;
 
-public class KafkaStreamsApplication {
+public class KafkaStreamsDLQApplication {
 
-    private static final Logger LOG = LoggerFactory.getLogger(KafkaStreamsApplication.class);
+    private static final Logger LOG = LoggerFactory.getLogger(KafkaStreamsDLQApplication.class);
     private static final String DLQ_TOPIC = "dlq-topic";
 
     private final Serde<String> stringSerde = Serdes.String();
@@ -55,10 +57,15 @@ public class KafkaStreamsApplication {
 
     public static void main(String[] args) {
 
-        try (InputStream input = KafkaStreamsApplication.class.getClassLoader().getResourceAsStream("confluent.properties")) {
+        try {
             
             Properties properties = new Properties();
-            try {
+            final String propertiesFileName = Optional.ofNullable(args.length > 0 ? args[0] : null)
+                    .orElse("confluent.properties");
+
+            LOG.debug("loading properties from {}", propertiesFileName);
+
+            try (InputStream input = KafkaStreamsDLQApplication.class.getClassLoader().getResourceAsStream(propertiesFileName)) {
                 properties.load(input);
             } catch (Exception e) {
                 LOG.error("Failed to load properties", e);
@@ -76,7 +83,7 @@ public class KafkaStreamsApplication {
             LOG.info("DLQ Topic: {}", DLQ_TOPIC);
             LOG.info("Events without a 'ball' field will be routed to DLQ");
 
-            KafkaStreamsApplication kafkaStreamsApplication = new KafkaStreamsApplication();
+            KafkaStreamsDLQApplication kafkaStreamsApplication = new KafkaStreamsDLQApplication();
             Topology topology = kafkaStreamsApplication.buildTopology(properties);
 
             try (KafkaStreams kafkaStreams = new KafkaStreams(topology, properties)) {
@@ -92,7 +99,7 @@ public class KafkaStreamsApplication {
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
-        } catch (IOException ioe) {
+        } catch (Exception ioe) {
             ioe.printStackTrace();
         }
     }

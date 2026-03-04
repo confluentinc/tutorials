@@ -17,7 +17,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class KafkaStreamsApplicationTest {
+public class KafkaStreamsDLQApplicationTest {
 
     private TopologyTestDriver testDriver;
     private TestInputTopic<String, String> inputTopic;
@@ -32,18 +32,18 @@ public class KafkaStreamsApplicationTest {
         // Note: TopologyTestDriver doesn't simulate DLQ routing - this is for topology building only
         props.put(StreamsConfig.ERRORS_DEAD_LETTER_QUEUE_TOPIC_NAME_CONFIG, "dlq-topic");
 
-        KafkaStreamsApplication app = new KafkaStreamsApplication();
+        KafkaStreamsDLQApplication app = new KafkaStreamsDLQApplication();
         Topology topology = app.buildTopology(props);
 
         testDriver = new TopologyTestDriver(topology, props);
 
         inputTopic = testDriver.createInputTopic(
-                KafkaStreamsApplication.INPUT_TOPIC,
+                KafkaStreamsDLQApplication.INPUT_TOPIC,
                 new StringSerializer(),
                 new StringSerializer());
 
         outputTopic = testDriver.createOutputTopic(
-                KafkaStreamsApplication.OUTPUT_TOPIC,
+                KafkaStreamsDLQApplication.OUTPUT_TOPIC,
                 new StringDeserializer(),
                 new StringDeserializer());
     }
