@@ -15,6 +15,7 @@ buildscript {
 plugins {
     id 'java'
     id 'application'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
 
 java {
@@ -23,7 +24,7 @@ java {
 }
 
 application {
-    mainClass = 'io.confluent.developer.KafkaStreamsApplication'
+    mainClass = 'io.confluent.developer.KafkaStreamsDLQApplication'
 }
 
 repositories {
@@ -59,4 +60,9 @@ test {
         events 'PASSED', 'SKIPPED', 'FAILED', 'STANDARD_OUT', 'STANDARD_ERROR'
         exceptionFormat = 'full'
     }
+}
+
+shadowJar {
+    archiveBaseName = 'kstreams-dlq-standalone'
+    archiveClassifier = ''
 }

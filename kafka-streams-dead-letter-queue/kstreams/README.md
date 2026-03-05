@@ -68,12 +68,12 @@ Produce events with a `ball` attribute:
 And a few without a `ball` attribute:
 ```shell
 {"sport": "swimming", "details": {"style": "backstroke", "distance": "400m"}}
-{"sport": "gynmastics", "details": {"style": "floor routine"}}
+{"sport": "gymnastics", "details": {"style": "floor routine"}}
 ```
 
 ## Configure the topology
 
-[KIP-1034](https://cwiki.apache.org/confluence/display/KAFKA/KIP-1034%3A+Dead+letter+queue+in+Kafka+Streams) introduced a new configuration for dead-letter queues in Kafka Streams applications. This feature provides a new configuration parameter that - when provided - instructs the default exception handler to send the erroneous event to this dead-letter queue topic. Here, the topology will just log the exception while sending an event to the dead-letter queue topic.
+[KIP-1034](https://cwiki.apache.org/confluence/display/KAFKA/KIP-1034%3A+Dead+letter+queue+in+Kafka+Streams) introduced a new configuration for dead-letter queues in Kafka Streams applications. This feature provides a new configuration parameter that — when provided — instructs the default exception handler to send the erroneous event to this dead-letter queue topic. Here, the topology will just log the exception while sending an event to the dead-letter queue topic.
 
 ```java
   
@@ -111,10 +111,33 @@ The example topology throws a `RuntimeException` for any events where the `ball`
 
 ## Run with Confluent Cloud
 
+Compile the application:
 
+```shell
+./gradlew kafka-streams-dead-letter-queue:kstreams:shadowJar
+```
 
+Navigate into the application directory:
 
-Events in the `dlq-topic` include headers for the exception that triggered the routing, along with the partition, offset, timestamp, key, and value of the original event. For example:
+```shell
+cd kafka-streams-dead-letter-queue/kstreams/
+```
+
+Run the application, passing the Kafka client configuration file generated when you created Confluent Cloud resources:
+
+```shell
+java -cp ./build/libs/kstreams-dlq-standalone.jar \
+  io.confluent.developer.KafkaStreamsDLQApplication \
+  cloud.properties
+```
+
+Observe that the two events with a `ball` attribute show up in the `output` topic:
+
+```shell
+confluent kafka topic consume output -b
+```
+
+Similarly, consume events from the `dlq-topic` and you will see that they include headers for the exception that triggered the routing, along with the partition, offset, timestamp, key, and value of the original event. For example:
 
 ```json
 {
@@ -175,4 +198,4 @@ Delete the environment, including all resources created for this tutorial:
 
 ```shell
 confluent environment delete <ENVIRONMENT ID>
-
+```
