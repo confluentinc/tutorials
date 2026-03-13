@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "UserRecord",
+  "description": "Record for a user.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "user_id": {
+      "type": "string",
+      "description": "The internal user identifier GUID"
+    },
+    "name": {
+      "type": "string",
+      "description": "The user's first and last name"
+    },
+    "email": {
+      "type": "string",
+      "description": "The user's email address"
+    }
+  },
+  "required": ["user_id", "name", "email"]
+}
