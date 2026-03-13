@@ -1,0 +1,3 @@
+confluent-kafka[json,schemaregistry]>=2.13.2
+faker>=40.8.0
+jproperties>=2.1.2
