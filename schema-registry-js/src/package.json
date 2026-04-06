@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Example Kafka producer / consumer apps that use Schema Registry",
   "dependencies": {
-    "@confluentinc/kafka-javascript": "^1.8.2",
-    "@confluentinc/schemaregistry": "^1.8.2"
+    "@confluentinc/kafka-javascript": "^1.9.0",
+    "@confluentinc/schemaregistry": "^1.9.0"
   }
 }
