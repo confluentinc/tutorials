@@ -1,0 +1,17 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "TxnRecord",
+  "description": "Record for an account transaction",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "account_id": {
+      "type": "string",
+      "description": "8-digit account identifier"
+    },
+    "amount": {
+      "type": "number",
+      "description": "Transaction amount"
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "schemaType": "JSON",
+  "schema": "{\"type\":\"object\", \"title\": \"TxnRecord\", \"properties\":{\"account_id\":{\"type\":\"string\"}, \"amount\":{\"type\":\"number\"} }, \"additionalProperties\": false}",
+  "ruleSet": {
+    "domainRules": [
+      {
+        "name": "checkIdLen",
+        "kind": "CONDITION",
+        "type": "CEL",
+        "mode": "WRITE",
+        "expr": "size(message.account_id) == 8",
+        "onFailure": "ERROR"
+      }
+    ]
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "domainRules": [
+    {
+      "name": "checkIdLen",
+      "kind": "CONDITION",
+      "type": "CEL",
+      "mode": "WRITE",
+      "expr": "size(message.account_id) == 8",
+      "onFailure": "ERROR"
+    }
+  ]
+}
