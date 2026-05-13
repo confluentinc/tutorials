@@ -53,7 +53,7 @@ You can run through this tutorial locally with the Flink SQL Client against Flin
       'key.format' = 'raw',
       'key.fields' = 'sensor_id',
       'value.format' = 'avro-confluent',
-      'value.avro-confluent.url' = 'http://schema-registry:8081',
+      'value.avro-confluent.url' = 'http://schema-registry:8082',
       'value.fields-include' = 'EXCEPT_KEY'
   );
   ```

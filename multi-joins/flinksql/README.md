@@ -127,7 +127,7 @@ You can run the example backing this tutorial in one of three ways: a Flink Tabl
       'key.format' = 'raw',
       'key.fields' = 'order_id',
       'value.format' = 'avro-confluent',
-      'value.avro-confluent.url' = 'http://schema-registry:8081',
+      'value.avro-confluent.url' = 'http://schema-registry:8082',
       'value.fields-include' = 'EXCEPT_KEY'
   );
   ```
@@ -145,7 +145,7 @@ You can run the example backing this tutorial in one of three ways: a Flink Tabl
       'properties.bootstrap.servers' = 'broker:9092',
       'key.format' = 'raw',
       'value.format' = 'avro-confluent',
-      'value.avro-confluent.url' = 'http://schema-registry:8081',
+      'value.avro-confluent.url' = 'http://schema-registry:8082',
       'value.fields-include' = 'EXCEPT_KEY'
   );
   ```
@@ -163,7 +163,7 @@ You can run the example backing this tutorial in one of three ways: a Flink Tabl
       'properties.bootstrap.servers' = 'broker:9092',
       'key.format' = 'raw',
       'value.format' = 'avro-confluent',
-      'value.avro-confluent.url' = 'http://schema-registry:8081',
+      'value.avro-confluent.url' = 'http://schema-registry:8082',
       'value.fields-include' = 'EXCEPT_KEY'
   );
   ```

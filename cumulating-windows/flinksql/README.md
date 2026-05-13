@@ -127,7 +127,7 @@ against Flink and Kafka running in Docker, or with Confluent Cloud.
       'key.format' = 'raw',
       'key.fields' = 'order_id',
       'value.format' = 'avro-confluent',
-      'value.avro-confluent.url' = 'http://schema-registry:8081',
+      'value.avro-confluent.url' = 'http://schema-registry:8082',
       'value.fields-include' = 'ALL'
   );
 
