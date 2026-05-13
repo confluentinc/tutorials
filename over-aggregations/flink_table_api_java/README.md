@@ -142,7 +142,7 @@ Delete the environment:
 confluent environment delete <ENVIRONMENT_ID>
 ```
 
-Next, delete the Flink API key. This API key isn't associated with the deleted environment so it needs to be deleted separately. Find the key:
+Next, delete the Flink API key. This API key isn't associated with the deleted environment, so it needs to be deleted separately. Find the key:
 
 ```shell
 confluent api-key list --resource flink --current-user
