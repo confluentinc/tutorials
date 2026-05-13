@@ -20,21 +20,24 @@ In this tutorial, you will learn how to aggregate messages over tumbling windows
 
 If you already have the Confluent Cloud resources required to populate a Table API client configuration file, e.g., from running a different tutorial, you may skip to the [next step](#inspect-the-code) after creating or copying the properties file as documented [here](https://docs.confluent.io/cloud/current/flink/reference/table-api.html#properties-file) to `tumbling-windows/flink_table_api_java/src/main/resources/cloud.properties` within the top-level `tutorials` directory.
 
-If you need to create the Confluent Cloud infrastructure needed to run this tutorial, the `confluent-flink-quickstart` CLI plugin creates the resources that you need to get started with Confluent Cloud for Apache Flink. Install it by running:
+If you need to create the Confluent Cloud infrastructure needed to run this tutorial, the `confluent-quickstart` CLI plugin creates the resources that you need to get started with Confluent Cloud for Apache Flink. Install it by running:
 
 ```shell
-confluent plugin install confluent-flink-quickstart
+confluent plugin install confluent-quickstart
 ```
 
 Run the plugin as follows to create the Confluent Cloud resources needed for this tutorial and generate a Table API client configuration file. Note that you may specify a different cloud provider (`gcp` or `azure`) or region. You can find supported regions in a given cloud provider by running `confluent flink region list --cloud <CLOUD>`.
 
 ```shell
-confluent flink quickstart \
-    --name flink_table_api_tutorials \
-    --max-cfu 10 \
+confluent quickstart \
     --region us-east-1 \
     --cloud aws \
-    --table-api-client-config-file ./tumbling-windows/flink_table_api_java/src/main/resources/cloud.properties
+    --environment-name flink_table_api_tutorials_environment \
+    --kafka-cluster-name flink_table_api_tutorials_cluster \
+    --compute-pool-name flink_table_api_tutorials_pool \
+    --max-cfu 10 \
+    --create-flink-key \
+    --flink-properties-file ./tumbling-windows/flink_table_api_java/src/main/resources/cloud.properties
 ```
 
 The plugin should complete in under a minute and will generate a properties file as documented [here](https://docs.confluent.io/cloud/current/flink/reference/table-api.html#properties-file).

@@ -149,7 +149,7 @@ lid     [(hat, [0.007294555, 0.022405202, ...
 
 ## Clean up
 
-When you finish experimenting, delete the `confluent-rag_environment` environment in order to clean up the Confluent Cloud infrastructure created for this tutorial. Run the following command in your terminal to get the environment ID of the form `env-123456` corresponding to the environment named `confluent-rag_environment`:
+When you finish experimenting, delete the `confluent_rag_environment` environment in order to clean up the Confluent Cloud infrastructure created for this tutorial. Run the following command in your terminal to get the environment ID of the form `env-123456` corresponding to the environment named `confluent_rag_environment`:
 
 ```shell
 confluent environment list

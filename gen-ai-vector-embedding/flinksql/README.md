@@ -27,23 +27,38 @@ cd tutorials/gen-ai-vector-embedding/flinksql
 
 ## Provision Kafka and Flink infrastructure in Confluent Cloud
 
-The `confluent-flink-quickstart` CLI plugin creates all the resources that you need to get started with Confluent Cloud for Apache Flink. Install it by running:
+The `confluent-quickstart` CLI plugin creates all the resources that you need to get started with Confluent Cloud for Apache Flink. Install it by running:
 
 ```shell
-confluent plugin install confluent-flink-quickstart
+confluent plugin install confluent-quickstart
 ```
 
 Run the plugin as follows to create the Confluent Cloud resources needed for this tutorial and generate a Table API client configuration file. Note that you may specify a different cloud provider (`gcp` or `azure`) or region. You can find supported regions for a given cloud provider by running `confluent flink region list --cloud <CLOUD>`.
 
 ```shell
-confluent flink quickstart \
-    --name confluent-rag \
-    --max-cfu 10 \
+confluent quickstart \
     --region us-east-1 \
-    --cloud aws
+    --cloud aws \
+    --environment-name confluent_rag_environment \
+    --kafka-cluster-name confluent_rag_cluster \
+    --compute-pool-name confluent_rag_pool \
+    --max-cfu 10
 ```
 
-Once the infrastructure is provisioned, you will drop into a Flink SQL shell. Leave this terminal window open as we will return to it in later steps to execute SQL statements.
+After the infrastructure is provisioned, open a Flink SQL shell:
+
+```shell
+confluent flink shell --cloud aws --region us-east-1
+```
+
+Set the current catalog and database:
+
+```shell
+USE CATALOG confluent_rag_environment;
+USE confluent_rag_cluster;
+```
+
+Leave this terminal window open as we will return to it in later steps to execute SQL statements.
 
 ## Generate synthetic product update records
 
@@ -99,7 +114,7 @@ confluent flink connection create openai-embedding-connection \
 
 ## Create model for vector embeddings
 
-Return to the Flink SQL shell that the `confluent flink quickstart ...` command opened. If you closed out of it you can open a new shell session by running `confluent flink shell`.
+Return to the Flink SQL shell that the `confluent quickstart ...` command opened. If you closed out of it you can open a new shell session by running `confluent flink shell`.
 
 Before we can generate vector embeddings, we need to define a [remote model](https://docs.confluent.io/cloud/current/flink/reference/functions/model-inference-functions.html) in Confluent Cloud for Apache Flink:
 
@@ -217,7 +232,7 @@ For guidance on setting up a vector database sink connector, refer to the follow
 
 ## Clean up
 
-If you are not continuing to [Part 2](https://developer.confluent.io/confluent-tutorials/gen-ai-vector-search/flinksql/) of this tutorial series, delete the `confluent-rag_environment` environment in order to clean up the Confluent Cloud infrastructure created for this tutorial. Run the following command in your terminal to get the environment ID of the form `env-123456` corresponding to the environment named `confluent-rag_environment`:
+If you are not continuing to [Part 2](https://developer.confluent.io/confluent-tutorials/gen-ai-vector-search/flinksql/) of this tutorial series, delete the `confluent_rag_environment` environment in order to clean up the Confluent Cloud infrastructure created for this tutorial. Run the following command in your terminal to get the environment ID of the form `env-123456` corresponding to the environment named `confluent_rag_environment`:
 
 ```shell
 confluent environment list
