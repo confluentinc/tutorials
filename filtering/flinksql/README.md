@@ -99,7 +99,7 @@ The query output should look like this:
       'key.format' = 'raw',
       'key.fields' = 'book_id',
       'value.format' = 'avro-confluent',
-      'value.avro-confluent.url' = 'http://schema-registry:8082',
+      'value.avro-confluent.url' = 'http://schema-registry:8081',
       'value.fields-include' = 'EXCEPT_KEY'
   );
   ```

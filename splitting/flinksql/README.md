@@ -126,10 +126,10 @@ against Flink and Kafka running in Docker, or with Confluent Cloud.
       'properties.bootstrap.servers' = 'broker:9092',
       'scan.startup.mode' = 'earliest-offset',
       'key.format' = 'avro-confluent',
-      'key.avro-confluent.url' = 'http://schema-registry:8082',
+      'key.avro-confluent.url' = 'http://schema-registry:8081',
       'key.fields' = 'name;title',
       'value.format' = 'avro-confluent',
-      'value.avro-confluent.url' = 'http://schema-registry:8082',
+      'value.avro-confluent.url' = 'http://schema-registry:8081',
       'value.fields-include' = 'ALL'
   );
   ```
@@ -160,10 +160,10 @@ against Flink and Kafka running in Docker, or with Confluent Cloud.
       'properties.bootstrap.servers' = 'broker:9092',
       'scan.startup.mode' = 'earliest-offset',
       'key.format' = 'avro-confluent',
-      'key.avro-confluent.url' = 'http://schema-registry:8082',
+      'key.avro-confluent.url' = 'http://schema-registry:8081',
       'key.fields' = 'name;title',
       'value.format' = 'avro-confluent',
-      'value.avro-confluent.url' = 'http://schema-registry:8082',
+      'value.avro-confluent.url' = 'http://schema-registry:8081',
       'value.fields-include' = 'ALL'
   );
   ```

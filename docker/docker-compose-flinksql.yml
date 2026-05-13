@@ -31,20 +31,20 @@ services:
     hostname: schema-registry
     container_name: schema-registry
     ports:
-      - 8082:8082
+      - 8081:8081
     depends_on:
       - broker
     environment:
       SCHEMA_REGISTRY_HOST_NAME: schema-registry
       SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: 'broker:9092'
-      SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8082
+      SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8081
 
   flink-jobmanager:
     image: cnfldemos/flink-kafka:2.2.0-scala_2.12-java17
     hostname: flink-jobmanager
     container_name: flink-jobmanager
     ports:
-      - 8081:8081
+      - 8082:8082
     command: jobmanager
 
   flink-taskmanager:

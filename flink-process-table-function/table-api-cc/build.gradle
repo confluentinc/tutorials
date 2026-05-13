@@ -1,0 +1,30 @@
+buildscript {
+  repositories {
+    mavenCentral()
+  }
+}
+
+plugins {
+  id 'java'
+  id 'application'
+}
+
+java {
+  sourceCompatibility = JavaVersion.VERSION_17
+  targetCompatibility = JavaVersion.VERSION_17
+}
+
+application {
+  mainClass = 'io.confluent.developer.TableApiPtfConfluentCloud'
+}
+
+repositories {
+  mavenCentral()
+  maven { url 'https://packages.confluent.io/maven/' }
+}
+
+dependencies {
+  implementation project(path: ':flink-process-table-function:median-ptf')
+  implementation 'org.apache.flink:flink-table-api-java:2.2.0'
+  implementation 'io.confluent.flink:confluent-flink-table-api-java-plugin:2.2-24'
+}

@@ -1,0 +1,25 @@
+buildscript {
+  repositories {
+    mavenCentral()
+  }
+}
+
+plugins {
+  id 'java'
+  id('com.gradleup.shadow') version '8.3.10'
+}
+
+java {
+  sourceCompatibility = JavaVersion.VERSION_17
+  targetCompatibility = JavaVersion.VERSION_17
+}
+
+repositories {
+  mavenCentral()
+  maven { url 'https://packages.confluent.io/maven/' }
+}
+
+dependencies {
+  compileOnly 'org.apache.flink:flink-table-api-java:2.2.0'
+  implementation 'com.google.guava:guava:33.6.0-jre'
+}

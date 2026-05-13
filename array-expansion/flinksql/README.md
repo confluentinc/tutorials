@@ -104,7 +104,7 @@ You can run the example backing this tutorial in one of three ways: a Flink Tabl
       'key.format' = 'raw',
       'key.fields' = 'traveler_id',
       'value.format' = 'avro-confluent',
-      'value.avro-confluent.url' = 'http://schema-registry:8082',
+      'value.avro-confluent.url' = 'http://schema-registry:8081',
       'value.fields-include' = 'EXCEPT_KEY'
   );
   ```
