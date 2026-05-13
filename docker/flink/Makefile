@@ -1,4 +1,4 @@
-FLINK_VERSION ?= 1.19.1-scala_2.12-java17
+FLINK_VERSION ?= 2.2.0-scala_2.12-java17
 BUILD_PLATFORM ?= linux/amd64
 PUSH_PREFIX ?= cnfldemos
 
