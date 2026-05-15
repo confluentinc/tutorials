@@ -1,0 +1,38 @@
+buildscript {
+  repositories {
+    mavenCentral()
+  }
+}
+
+plugins {
+  id 'java'
+  id 'application'
+}
+
+java {
+  sourceCompatibility = JavaVersion.VERSION_17
+  targetCompatibility = JavaVersion.VERSION_17
+}
+
+application {
+  mainClass = 'io.confluent.developer.TableApiPtfLocal'
+}
+
+repositories {
+  mavenCentral()
+  maven { url 'https://packages.confluent.io/maven/' }
+}
+
+dependencies {
+  implementation project(path: ':flink-process-table-function:median-ptf')
+  implementation 'org.apache.flink:flink-table-api-java:2.2.0'
+  implementation 'org.apache.flink:flink-table-planner_2.12:2.2.0'
+  implementation 'org.apache.flink:flink-clients:2.2.0'
+  implementation 'org.apache.flink:flink-connector-base:2.2.0'
+  implementation 'org.apache.flink:flink-connector-kafka:4.0.1-2.0'
+  implementation 'org.apache.flink:flink-avro-confluent-registry:2.2.0'
+  implementation 'org.apache.flink:flink-avro:2.2.0'
+  implementation 'com.google.guava:guava:33.6.0-jre'
+  implementation 'org.slf4j:slf4j-api:2.0.17'
+  implementation 'org.slf4j:slf4j-simple:2.0.17'
+}
