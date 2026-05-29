@@ -1,0 +1,32 @@
+USE_AUTH=True
+
+KAFKA_BROKER_URL=<URL>
+CLUSTER_API_KEY=<KEY>
+CLUSTER_API_SECRET=<SECRET>
+
+#TOPIC_PARTITIONS
+#OFFSET
+TOPIC_REPLICATION_FACTOR=3
+
+SCHEMA_REGISTRY_URL=<URL>
+SR_API_KEY=<KEY>
+SR_API_SECRET=<SECRET>
+
+#IGNORE_FIELD_TAGS
+
+IN_TOPIC=<INPUT TOPIC NAME>
+OUT_TOPIC=<OUTPUT TOPIC NAME>
+ALERT_TOPIC=<ALERTS TOPIC NAME>
+
+CUSTOM_RECOGNIZER_YAML=./reco.yaml
+
+LANGUAGES=en, fr
+MODELS=en_core_web_lg, fr_core_news_lg
+
+# list of entity types: see https://microsoft.github.io/presidio/supported_entities/
+#ENTITY_TYPES
+# if providing entity types, set to true if they're extending the default
+# and false if they're replacing them (this option defaults to True, meaning that if omitted the entity types
+# provided will supplement the default set).
+#EXTEND_DEFAULT_ENTITIES
+
