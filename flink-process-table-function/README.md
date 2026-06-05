@@ -5,7 +5,7 @@
 
 In this tutorial, we take a look at Flink's most flexible form of user-defined function: [Process Table Functions (PTFs)](https://docs.confluent.io/cloud/current/flink/concepts/process-table-functions.html). Process table functions support flexible N-to-M semantics, meaning that any number of input rows can correspond to any number of output rows, and they also give developers the ability to schedule actions and access state across multiple events.
 
-The particular function that we will write and deploy in this tutorial is one that is well-known in statistics: one that calculates the median value over a user-specified number of events per partition key (in our case, the trailing median temperature per sensor). We will first call the function with Flink SQL, and then with the Table API.
+The particular function that we will write and deploy in this tutorial computes a well-known statistic: the median value over a user-specified number of events per partition key (in our case, the trailing median temperature per sensor). We will first call the function with Flink SQL, and then with the Table API.
 
 The following steps use Confluent Cloud. To run the tutorial locally with Docker, skip to the `Docker instructions` section at the bottom.
 
@@ -49,29 +49,41 @@ The plugin should complete in under a minute and will generate a properties file
 
 ## Inspect the PTF code
 
-The `Median` class (located under `flink-process-table-function/median-ptf`) demonstrates a custom [Process Table Function (PTF)](https://docs.confluent.io/cloud/current/flink/concepts/process-table-functions.html), Flink's most flexible user-defined function type that supports stateful transformations over table partitions. Because the PTF implementation relies on Java reflection, PTF developers must guide the Flink runtime by providing hint annotations:
+The `Median` class (located under `flink-process-table-function/median-ptf`) demonstrates a custom [Process Table Function (PTF)](https://docs.confluent.io/cloud/current/flink/concepts/process-table-functions.html), Flink's most flexible user-defined function type that supports stateful transformations over table partitions.
 
-* A class-level `@DataTypeHint` that specifies the PTF output schema. Since the median PTF is outputting a `<temperature, trailing median>` pair, the hint is `"ROW<temperature DOUBLE, median DOUBLE>"`
-* A `@StateHint` `eval` method argument that gives access to partitioned state that you manage. Since we are implementing a median over trailing N readings per temperature sensor, the state class contains a list of temperatures.
-* An `@ArgumentHint` on the input `Row` specifying whether we are implementing a stateless per-row PTF, or a per-partition stateful PTF that operates on a set of rows. A median over previous events requires set semantics.
-* A `@DataTypeHint` on any PTF arguments. We make the PTF flexible with respect to the maximum number of previous events over which to calculate the median.
+Due to the reflection-based implementation of PTFs in the Flink runtime, the PTF method to implement must be named `eval`. Developers must follow this naming convention; it's not enforced by an interface or abstract class method. The `eval` method uses a couple of annotations to guide the Flink runtime:
 
-Due to the reflection-based implementation of PTFs in the Flink runtime, the PTF method to implement must be named `eval`. Developers must follow this naming convention; it's not enforced by an interface or abstract class method. The `Median` `eval` method maintains the list of trailing temperatures by adding the current row's temperature onto the end of the list and removing the oldest reading from the beginning if the list size surpasses the input `numTrailing` argument. Then it outputs the current temperature and trailing median by calling [`ProcessTableFunction.collect`](https://nightlies.apache.org/flink/flink-docs-stable/api/java/org/apache/flink/table/functions/ProcessTableFunction.html#collect(T)):
+* A `@StateHint` on the `eval` method argument that gives access to partitioned state that you manage. Since we are implementing a median over trailing N readings per temperature sensor, the state class contains a list of temperatures.
+* An `@ArgumentHint` on each remaining `eval` argument. `@ArgumentHint` is required in order to refer to arguments by name when calling the PTF via Flink SQL. On the input table argument, it also carries the `SET_SEMANTIC_TABLE` trait, which specifies that the PTF operates on a set of rows per partition rather than as a stateless, per-row PTF. A median over previous events requires set semantics.
+
+In some cases you also need a `@DataTypeHint` at the class level to specify the PTF output schema (for example, when the `eval` method calls `collect` with a `Row`), or on the `eval` method's arguments when their data types can't be inferred via Java reflection. Since the `numTrailing` argument is just a primitive `int` and the PTF result is a simple POJO containing two `double`s, we don't need these annotations in this example.
+
+The `eval` method maintains the list of trailing temperatures by appending the current row's temperature onto the list and removing the oldest reading from the beginning if the list size surpasses the `numTrailing` argument. Then it outputs the current temperature and trailing median by calling [`ProcessTableFunction.collect`](https://nightlies.apache.org/flink/flink-docs-stable/api/java/org/apache/flink/table/functions/ProcessTableFunction.html#collect(T)):
 
 ```java
-Double temperature = row.getFieldAs("temperature");
+public void eval(
+        @StateHint TempsState trailingTemps,
+        @ArgumentHint(name = "input", value = SET_SEMANTIC_TABLE) Row input,
+        @ArgumentHint(name = "numTrailing") int numTrailing
+) {
+    Double temperature = input.getFieldAs("temperature");
 
-trailingTemps.temps.add(temperature);
-while (trailingTemps.temps.size() > numTrailing) {
-    trailingTemps.temps.remove(0);
+    trailingTemps.temps.add(temperature);
+    while (trailingTemps.temps.size() > numTrailing) {
+        trailingTemps.temps.remove(0);
+    }
+
+    collect(MedianResult.of(temperature, Quantiles.median().compute(trailingTemps.temps)));
 }
-
-collect(Row.of(temperature, Quantiles.median().compute(trailingTemps.temps)));
 ```
 
 ## Deploy the PTF
 
-Now that we've examined the code, let's deploy the PTF to Confluent Cloud. First, build an uberjar containing all dependencies:
+Now that we've examined the code, let's deploy the PTF to Confluent Cloud.
+
+> **Note:** Building an uberjar and uploading the artifact as described in this section is only required to call the PTF from Flink SQL. If you only plan to call the PTF from the Table API, you can skip ahead to the [Table API section](#call-the-ptf-via-the-table-api) and simply run the program; the artifact will be built and uploaded for you automatically.
+
+First, build an uberjar containing all dependencies:
 
 ```shell
 ./gradlew flink-process-table-function:median-ptf:shadowJar
@@ -139,7 +151,10 @@ Now call the `Median` PTF, computing the median over the last 3 temperature read
 
 ```shell
 SELECT *
-FROM Median(TABLE temperature_readings PARTITION BY sensor_id, 3);
+FROM Median(
+    input => TABLE temperature_readings PARTITION BY sensor_id,
+    numTrailing => 3
+);
 ```
 
 You should see output showing each temperature along with its trailing 3-event median:
@@ -206,15 +221,16 @@ Delete the environment:
 confluent environment delete <ENVIRONMENT_ID>
 ```
 
-Next, delete the Flink API key. This API key isn't associated with the deleted environment, so it needs to be deleted separately. Find the key:
+Next, delete the Flink and artifact API keys. These API keys aren't associated with the deleted environment, so they must be deleted separately. Find the keys:
 
 ```shell
 confluent api-key list --resource flink --current-user
 ```
 
-And then copy the 16-character alphanumeric key and delete it:
+Then copy each 16-character alphanumeric key and delete it:
 ```shell
-confluent api-key delete <KEY>
+confluent api-key delete <FLINK KEY>
+confluent api-key delete <CLOUD KEY>
 ```
 
 Finally, for the sake of housekeeping, delete the Table API client configuration file:
@@ -247,24 +263,32 @@ rm flink-process-table-function/table-api-cc/src/main/resources/cloud.properties
 
   ## Inspect the PTF code
 
-  The `Median` class (located under `flink-process-table-function/median-ptf`) demonstrates a custom [Process Table Function (PTF)](https://docs.confluent.io/cloud/current/flink/concepts/process-table-functions.html), Flink's most flexible user-defined function type that supports stateful transformations over table partitions. Because the PTF implementation relies on Java reflection, PTF developers must guide the Flink runtime by providing hint annotations:
+  The `Median` class (located under `flink-process-table-function/median-ptf`) demonstrates a custom [Process Table Function (PTF)](https://docs.confluent.io/cloud/current/flink/concepts/process-table-functions.html), Flink's most flexible user-defined function type that supports stateful transformations over table partitions.
 
-  * A class-level `@DataTypeHint` that specifies the PTF output schema. Since the median PTF is outputting a `<temperature, trailing median>` pair, the hint is `"ROW<temperature DOUBLE, median DOUBLE>"`
+  Due to the reflection-based implementation of PTFs in the Flink runtime, the PTF method to implement must be named `eval`. Developers must follow this naming convention; it's not enforced by an interface or abstract class method. The `eval` method uses a couple of annotations to guide the Flink runtime:
+
   * A `@StateHint` on the `eval` method argument that gives access to partitioned state that you manage. Since we are implementing a median over trailing N readings per temperature sensor, the state class contains a list of temperatures.
-  * An `@ArgumentHint` on the input `Row` specifying whether we are implementing a stateless per-row PTF, or a per-partition stateful PTF that operates on a set of rows. A median over previous events requires set semantics.
-  * A `@DataTypeHint` on any PTF arguments. We make the PTF flexible with respect to the maximum number of previous events over which to calculate the median.
+  * An `@ArgumentHint` on each remaining `eval` argument. `@ArgumentHint` is required in order to refer to arguments by name when calling the PTF via Flink SQL. On the input table argument, it also carries the `SET_SEMANTIC_TABLE` trait, which specifies that the PTF operates on a set of rows per partition rather than as a stateless, per-row PTF. A median over previous events requires set semantics.
 
-  Due to the reflection-based implementation of PTFs in the Flink runtime, the PTF method to implement must be named `eval`. Developers must follow this naming convention; it's not enforced by an interface or abstract class method. The `Median` `eval` method maintains the list of trailing temperatures by adding the current row's temperature onto the end of the list and removing the oldest reading from the beginning if the list size surpasses the input `numTrailing` argument. Then it outputs the current temperature and trailing median by calling [`ProcessTableFunction.collect`](https://nightlies.apache.org/flink/flink-docs-stable/api/java/org/apache/flink/table/functions/ProcessTableFunction.html#collect(T)):
+  In some cases you also need a `@DataTypeHint` at the class level to specify the PTF output schema (for example, when the `eval` method calls `collect` with a `Row`), or on the `eval` method's arguments when their data types can't be inferred via Java reflection. Since the `numTrailing` argument is just a primitive `int` and the PTF result is a simple POJO containing two `double`s, we don't need these annotations in this example.
+
+  The `eval` method maintains the list of trailing temperatures by appending the current row's temperature onto the list and removing the oldest reading from the beginning if the list size surpasses the `numTrailing` argument. Then it outputs the current temperature and trailing median by calling [`ProcessTableFunction.collect`](https://nightlies.apache.org/flink/flink-docs-stable/api/java/org/apache/flink/table/functions/ProcessTableFunction.html#collect(T)):
 
   ```java
-  Double temperature = row.getFieldAs("temperature");
+  public void eval(
+          @StateHint TempsState trailingTemps,
+          @ArgumentHint(name = "input", value = SET_SEMANTIC_TABLE) Row input,
+          @ArgumentHint(name = "numTrailing") int numTrailing
+  ) {
+      Double temperature = input.getFieldAs("temperature");
 
-  trailingTemps.temps.add(temperature);
-  while (trailingTemps.temps.size() > numTrailing) {
-      trailingTemps.temps.remove(0);
+      trailingTemps.temps.add(temperature);
+      while (trailingTemps.temps.size() > numTrailing) {
+          trailingTemps.temps.remove(0);
+      }
+
+      collect(MedianResult.of(temperature, Quantiles.median().compute(trailingTemps.temps)));
   }
-
-  collect(Row.of(temperature, Quantiles.median().compute(trailingTemps.temps)));
   ```
 
   ## Deploy the PTF
@@ -345,7 +369,10 @@ rm flink-process-table-function/table-api-cc/src/main/resources/cloud.properties
 
   ```shell
   SELECT *
-  FROM Median(TABLE temperature_readings PARTITION BY sensor_id, 3);
+  FROM Median(
+      input => TABLE temperature_readings PARTITION BY sensor_id,
+      numTrailing => 3
+  );
   ```
 
   You should see output showing each temperature along with its trailing 3-event median:
