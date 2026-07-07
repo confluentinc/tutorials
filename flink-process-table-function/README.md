@@ -9,10 +9,11 @@ The particular function that we will write and deploy in this tutorial computes 
 
 The following steps use Confluent Cloud. To run the tutorial locally with Docker, skip to the `Docker instructions` section at the bottom.
 
+> **Already have the prerequisites and Confluent Cloud set up from a previous PTF tutorial?** Skip ahead to [Inspect the PTF code](#inspect-the-ptf-code).
+
 ## Prerequisites
 
 * A [Confluent Cloud](https://confluent.cloud/signup) account
-* Since PTFs are an Early Access feature, submit a Confluent Cloud support request to enable PTF support in your organization. Include your Organization ID from [here](https://confluent.cloud/settings/organizations/) in the Confluent Cloud Console.
 * The [Confluent CLI](https://docs.confluent.io/confluent-cli/current/install.html) installed on your machine
 * Java 17, e.g., follow the OpenJDK installation instructions [here](https://openjdk.org/install/) if you don't have Java. Validate that `java -version` shows version 17.
 * Clone the `confluentinc/tutorials` GitHub repository (if you haven't already) and navigate to the `tutorials` directory:
@@ -238,6 +239,14 @@ Finally, for the sake of housekeeping, delete the Table API client configuration
 ```shell
 rm flink-process-table-function/table-api-cc/src/main/resources/cloud.properties
 ```
+
+## More PTF examples
+
+This tutorial is the starting point for a library of focused PTF examples. Each one reuses the setup, deploy, and teardown steps above and adds just its own sample data and PTF implementation:
+
+| Example | PTF capability |
+| --- | --- |
+| [Detect the absence of an event](https://developer.confluent.io/confluent-tutorials/flink-ptf-absence-detection/) | Event-time timers (deadline / inactivity timeout) |
 
 <details>
   <summary>Docker instructions</summary>
