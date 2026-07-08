@@ -9,11 +9,11 @@ import java.util.Map;
 
 public class ContinuingProcessingExceptionHandler implements ProcessingExceptionHandler {
     @Override
-    public ProcessingHandlerResponse handle(final ErrorHandlerContext context,
-                                            final Record<?, ?> record,
-                                            final Exception exception) {
+    public Response handleError(final ErrorHandlerContext context,
+                                 final Record<?, ?> record,
+                                 final Exception exception) {
         System.out.println("ProcessingExceptionHandler triggered");
-        return ProcessingHandlerResponse.CONTINUE;
+        return Response.resume();
     }
 
     @Override

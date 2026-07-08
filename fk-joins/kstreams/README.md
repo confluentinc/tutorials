@@ -198,7 +198,7 @@ confluent environment delete <ENVIRONMENT ID>
 
   ```shell
   kafka-console-producer --bootstrap-server localhost:9092 --topic album-input \
-      --property "parse.key=true" --property "key.separator=:"
+      --reader-property "parse.key=true" --reader-property "key.separator=:"
   ```
 
   Enter a few JSON-formatted albums:
@@ -216,7 +216,7 @@ confluent environment delete <ENVIRONMENT ID>
 
   ```shell
   kafka-console-producer --bootstrap-server localhost:9092 --topic track-purchase \
-      --property "parse.key=true" --property "key.separator=:"
+      --reader-property "parse.key=true" --reader-property "key.separator=:"
   ```
 
   Enter a few JSON-formatted purchases:

@@ -1,2 +1,3 @@
 INSERT INTO customers
-VALUES (1372, 'Jane Roberts');
+VALUES (1372, 'Jane Roberts')
+ON CONFLICT DO NOTHING;

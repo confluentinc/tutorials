@@ -59,7 +59,7 @@ How can we reuse state stores and interrnal topics in the face of topology chang
 
 The Kafka Streams example application included in this tutorial expects String input records. The `selectKey()` operation extracts the first character of each String and uses it as the record key. The application accepts flags that you can toggle for whether to add a `filter()` operation and whether to name state stores and internal topics. The following steps will demonstrate broken compatibility when you don't name state stores and internal topics vs. correct results when you do provide names.
 
-1. Start a consumer on the `output-topic` and let it run. Print the keys in the output by specifying `--property print.key=true` and `--property key.separator="-"`
+1. Start a consumer on the `output-topic` and let it run. Print the keys in the output by specifying `--formatter-property print.key=true` and `--formatter-property key.separator="-"`
 2. Run the application with `add.filter=false` and `add.names=false`.
 3. Produce records `1foo`, `1bar`, and `1baz` to the input topic `input-topic`.
 4. Observe the expected counts by key:

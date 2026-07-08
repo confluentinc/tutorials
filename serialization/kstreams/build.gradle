@@ -27,30 +27,30 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.slf4j:slf4j-simple:2.0.7'
+    implementation 'org.slf4j:slf4j-simple:2.0.18'
     implementation 'org.apache.avro:avro:1.11.1'
     implementation 'com.google.protobuf:protobuf-java:4.31.1'
     implementation('org.apache.kafka:kafka-streams') {
-        // explicitly set to 4.1.1 to avoid 8.1.1-ccs version which isn't compatible
-        // with 4.1.1's TopologyTestDriver
+        // explicitly set to 4.3.1 to avoid ccs version which isn't compatible
+        // with 4.3.1's TopologyTestDriver
         version {
-            strictly '4.1.1'
+            strictly '4.3.1'
         }
     }
-    implementation 'io.confluent:kafka-streams-avro-serde:8.1.1'
-    implementation 'io.confluent:kafka-streams-protobuf-serde:8.1.1'
+    implementation 'io.confluent:kafka-streams-avro-serde:8.3.0'
+    implementation 'io.confluent:kafka-streams-protobuf-serde:8.3.0'
     implementation('org.apache.kafka:kafka-clients') {
         version {
-            strictly '4.1.1'
+            strictly '4.3.1'
         }
     }
-    implementation 'com.typesafe:config:1.4.2'
+    implementation 'com.typesafe:config:1.4.3'
 
-    testImplementation 'org.apache.kafka:kafka-streams-test-utils:4.1.1'
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
-    testImplementation 'org.hamcrest:hamcrest:2.2'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
+    testImplementation 'org.apache.kafka:kafka-streams-test-utils:4.3.1'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:6.1.1'
+    testImplementation 'org.hamcrest:hamcrest:3.0'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:6.1.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:6.1.1'
 }
 
 test {

@@ -20,5 +20,5 @@ repositories {
 }
 
 dependencies {
-  compileOnly 'org.apache.flink:flink-table-api-java:2.2.0'
+  compileOnly 'org.apache.flink:flink-table-api-java:2.3.0'
 }

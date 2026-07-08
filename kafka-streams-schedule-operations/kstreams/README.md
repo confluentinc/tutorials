@@ -184,7 +184,7 @@ confluent environment delete <ENVIRONMENT ID>
 
   ```shell
   kafka-console-producer --bootstrap-server localhost:9092 --topic punctuation-input \
-      --property "parse.key=true" --property "key.separator=:"
+      --reader-property "parse.key=true" --reader-property "key.separator=:"
   ```
 
   Enter a few JSON-formatted login events:
@@ -225,7 +225,7 @@ confluent environment delete <ENVIRONMENT ID>
 
   ```shell
   kafka-console-consumer --bootstrap-server localhost:9092 --topic punctuation-output --from-beginning \
-    --property "print.key=true" --property "key.separator=:" \
+    --formatter-property "print.key=true" --formatter-property "key.separator=:" \
     --property "value.deserializer=org.apache.kafka.common.serialization.IntegerDeserializer"
   ```
 

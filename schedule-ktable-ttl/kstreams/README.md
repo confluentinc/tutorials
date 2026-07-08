@@ -233,7 +233,7 @@ confluent environment delete <ENVIRONMENT ID>
 
   ```shell
   kafka-console-producer --bootstrap-server localhost:9092 --topic input-topic-for-table \
-      --property "parse.key=true" --property "key.separator=:"
+      --reader-property "parse.key=true" --reader-property "key.separator=:"
   ```
 
   Enter a few strings for keys `alice` and `bobby`:
@@ -249,7 +249,7 @@ confluent environment delete <ENVIRONMENT ID>
 
   ```shell
   kafka-console-producer --bootstrap-server localhost:9092 --topic input-topic-for-stream \
-      --property "parse.key=true" --property "key.separator=:"
+      --reader-property "parse.key=true" --reader-property "key.separator=:"
   ```
 
   Enter a few strings for keys `alice` and `bobby`:
@@ -287,7 +287,7 @@ confluent environment delete <ENVIRONMENT ID>
 
   ```shell
   kafka-console-producer --bootstrap-server localhost:9092 --topic input-topic-for-stream \
-      --property "parse.key=true" --property "key.separator=:"
+      --reader-property "parse.key=true" --reader-property "key.separator=:"
   ```
 
   Enter these key-value pairs:
@@ -301,7 +301,7 @@ confluent environment delete <ENVIRONMENT ID>
 
   ```shell
   kafka-console-consumer --bootstrap-server localhost:9092 --topic output-topic --from-beginning \
-    --property "print.key=true" --property "key.separator=:"
+    --formatter-property "print.key=true" --formatter-property "key.separator=:"
   ```
 
   You should see:

@@ -9,11 +9,11 @@ import java.util.Map;
 
 public class ContinuingDeserializationExceptionHandler implements DeserializationExceptionHandler {
     @Override
-    public DeserializationHandlerResponse handle(final ErrorHandlerContext context,
-                                                 final ConsumerRecord<byte[], byte[]> record,
-                                                 final Exception exception) {
+    public Response handleError(final ErrorHandlerContext context,
+                                 final ConsumerRecord<byte[], byte[]> record,
+                                 final Exception exception) {
         System.out.println("DeserializationExceptionHandler triggered");
-        return DeserializationHandlerResponse.CONTINUE;
+        return Response.resume();
     }
 
     @Override

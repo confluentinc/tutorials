@@ -6,9 +6,9 @@ import org.apache.kafka.common.metrics.MetricsReporter;
 import org.apache.kafka.common.requests.RequestContext;
 import org.apache.kafka.common.utils.Utils;
 import org.apache.kafka.server.authorizer.AuthorizableRequestContext;
-import org.apache.kafka.server.telemetry.ClientTelemetry;
+import org.apache.kafka.server.telemetry.ClientTelemetryExporter;
+import org.apache.kafka.server.telemetry.ClientTelemetryExporterProvider;
 import org.apache.kafka.server.telemetry.ClientTelemetryPayload;
-import org.apache.kafka.server.telemetry.ClientTelemetryReceiver;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,7 +40,7 @@ import io.opentelemetry.proto.resource.v1.Resource;
  * enhances them with additional client labels and forwards them via gRPC Client to an external OTLP
  * receiver.
  */
-public class ClientOtlpMetricsReporter implements MetricsReporter, ClientTelemetry {
+public class ClientOtlpMetricsReporter implements MetricsReporter, ClientTelemetryExporterProvider {
 
   private static final Logger log = LoggerFactory.getLogger(ClientOtlpMetricsReporter.class);
 
@@ -100,7 +100,7 @@ public class ClientOtlpMetricsReporter implements MetricsReporter, ClientTelemet
   }
 
   @Override
-  public ClientTelemetryReceiver clientReceiver() {
+  public ClientTelemetryExporter clientTelemetryExporter() {
     return (context, payload) -> {
       try {
         log.debug("Exporting metrics. Context: {}, payload: {}", context, payload);
@@ -120,7 +120,7 @@ public class ClientOtlpMetricsReporter implements MetricsReporter, ClientTelemet
             metricsData, metricsData.getResourceMetricsCount(), metricsData.getSerializedSize());
         List<ResourceMetrics> metrics = metricsData.getResourceMetricsList();
         // Enhance metrics with labels from request context, payload and broker, if any.
-        Map<String, String> labels = fetchLabels(context, payload);
+        Map<String, String> labels = fetchLabels(context.authorizableRequestContext(), payload);
         // Update labels to metrics.
         metrics = appendLabelsToResource(metrics, labels);
 

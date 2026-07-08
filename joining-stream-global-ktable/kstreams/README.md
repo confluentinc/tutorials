@@ -198,7 +198,7 @@ First, let's add products. Start a console producer for products:
 
 ```shell
 kafka-console-producer --bootstrap-server localhost:9092 --topic product-input \
-  --property "parse.key=true" --property "key.separator=:"
+  --reader-property "parse.key=true" --reader-property "key.separator=:"
 ```
 
 Enter the following product data:
@@ -217,7 +217,7 @@ Now add orders. Start a console producer for orders:
 
 ```shell
 kafka-console-producer --bootstrap-server localhost:9092 --topic orders-input \
-  --property "parse.key=true" --property "key.separator=:"
+  --reader-property "parse.key=true" --reader-property "key.separator=:"
 ```
 
 Enter the following order data:

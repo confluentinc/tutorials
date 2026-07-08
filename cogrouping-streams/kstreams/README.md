@@ -279,7 +279,7 @@ confluent environment delete <ENVIRONMENT ID>
   Start a console producer:
 
   ```shell
-  kafka-console-producer --bootstrap-server localhost:9092 --topic app-one-input --property "parse.key=true" --property "key.separator=#"
+  kafka-console-producer --bootstrap-server localhost:9092 --topic app-one-input --reader-property "parse.key=true" --reader-property "key.separator=#"
   ```
 
   Enter a few JSON-formatted login events:
@@ -295,7 +295,7 @@ confluent environment delete <ENVIRONMENT ID>
   Similarly, start a console producer for the second app's login events:
 
   ```shell
-  kafka-console-producer --bootstrap-server localhost:9092 --topic app-two-input --property "parse.key=true" --property "key.separator=#"
+  kafka-console-producer --bootstrap-server localhost:9092 --topic app-two-input --reader-property "parse.key=true" --reader-property "key.separator=#"
   ```
 
   Enter a few JSON-formatted login events:
@@ -311,7 +311,7 @@ confluent environment delete <ENVIRONMENT ID>
   Finally, start a console producer for the third app's login events:
 
   ```shell
-  kafka-console-producer --bootstrap-server localhost:9092 --topic app-three-input --property "parse.key=true" --property "key.separator=#"
+  kafka-console-producer --bootstrap-server localhost:9092 --topic app-three-input --reader-property "parse.key=true" --reader-property "key.separator=#"
   ```
 
   Enter a few JSON-formatted login events:

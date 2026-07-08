@@ -1,6 +1,6 @@
 services:
   broker:
-    image: apache/kafka:4.1.0
+    image: apache/kafka:4.3.1
     hostname: broker
     container_name: broker
     ports:
