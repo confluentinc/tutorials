@@ -1,8 +1,6 @@
 module schema-registry-go
 
-go 1.24.3
-
-toolchain go1.24.12
+go 1.25.0
 
 require (
 	github.com/confluentinc/confluent-kafka-go/v2 v2.14.1
@@ -27,7 +25,7 @@ require (
 	golang.org/x/crypto v0.27.0 // indirect
 	golang.org/x/net v0.29.0 // indirect
 	golang.org/x/oauth2 v0.18.0 // indirect
-	golang.org/x/sys v0.25.0 // indirect
+	golang.org/x/sys v0.44.0 // indirect
 	golang.org/x/text v0.18.0 // indirect
 	google.golang.org/appengine v1.6.8 // indirect
 	google.golang.org/protobuf v1.33.0 // indirect
