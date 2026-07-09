@@ -6,7 +6,7 @@
 Suppose you have time series events in a Kafka topic and wish to calculate statistics on the events grouped into 
 fixed-size, possibly overlapping, contiguous time intervals called *hopping windows*. For example, let's say you have a topic
 with events that represent a stream of temperature readings over time. In this tutorial, we'll use Flink SQL hopping
-windows to detect when the temperature from a sensor drops below 45 degrees Fahrenheit for a period of 10 minutes.
+windows to calculate the average temperature per sensor over the trailing 10 minutes, updated every 5 minutes.
 
 ## Setup
 
