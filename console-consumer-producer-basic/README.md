@@ -14,8 +14,8 @@ To produce values from the command line, use this command:
  kafka-console-producer \
   --topic <TOPIC> \
   --bootstrap-server <BOOTSTRAP-SERVER>:9092 \
-  --property parse.key=true \
-  --property key.separator=":"
+  --reader-property parse.key=true \
+  --reader-property key.separator=":"
 ```
 
 By setting the `parse.key` and `key.separator` properties you can produce both a key and value in this format `my key: some text value`
@@ -27,8 +27,8 @@ kafka-console-consumer \
   --topic <TOPIC> \
   --bootstrap-server <BOOTSTRAP-SERVER>:9092 \
   --from-beginning \
-  --property print.key=true \
-  --property key.separator="-"
+  --formatter-property print.key=true \
+  --formatter-property key.separator="-"
 ```
 
 When the consumer starts, you'll see output in this format:  `key-value`.  If there are no keys it will look like `null-value`

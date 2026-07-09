@@ -12,8 +12,8 @@ By using the `--partition` and `--offset` flags available with the console consu
 ```commandline
 kafka-console-consumer --topic <TOPIC> \
  --bootstrap-server <BOOTSTRAP-SERVER>:9092 \
- --property print.key=true \
- --property key.separator="-" \
+ --formatter-property print.key=true \
+ --formatter-property key.separator="-" \
  --partition <PARTITION NUMBER> \
  --offset <OFFSET>
 ```

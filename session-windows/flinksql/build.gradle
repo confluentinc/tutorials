@@ -21,19 +21,30 @@ repositories {
 
 dependencies {
     testImplementation project(path: ':common', configuration: 'testArtifacts')
-    testImplementation 'com.google.guava:guava:31.1-jre'
-    testImplementation 'junit:junit:4.13.2'
-    testImplementation 'org.testcontainers:testcontainers:2.0.3'
+    testImplementation 'com.google.guava:guava:33.6.0-jre'
+    testImplementation 'org.testcontainers:testcontainers:2.0.5'
     testImplementation 'org.testcontainers:kafka:1.21.4'
-    testImplementation 'commons-codec:commons-codec:1.20.0'
-    testImplementation 'commons-io:commons-io:2.21.0'
-    testImplementation 'org.apache.flink:flink-sql-connector-kafka:3.2.0-1.19'
-    testImplementation 'org.apache.flink:flink-connector-base:1.19.1'
-    testImplementation 'org.apache.flink:flink-sql-avro-confluent-registry:1.19.1'
-    testImplementation 'org.apache.flink:flink-test-utils:1.19.1'
-    testImplementation 'org.apache.flink:flink-test-utils-junit:1.19.1'
-    testImplementation 'org.apache.flink:flink-table-api-java-bridge:1.19.1'
-    testImplementation 'org.apache.flink:flink-table-planner_2.12:1.19.1'
-    testImplementation 'org.apache.flink:flink-table-planner_2.12:1.19.1:tests'
-    testImplementation 'org.apache.flink:flink-json:1.19.1'
+    testImplementation 'commons-codec:commons-codec:1.22.0'
+    testImplementation 'commons-io:commons-io:2.22.0'
+    testImplementation 'org.apache.flink:flink-sql-connector-kafka:5.0.0-2.2'
+    testImplementation 'org.apache.flink:flink-connector-base:2.3.0'
+    testImplementation 'org.apache.flink:flink-sql-avro-confluent-registry:2.3.0'
+    testImplementation 'org.apache.flink:flink-test-utils:2.3.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:6.1.1'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:6.1.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:6.1.1'
+    testImplementation 'org.apache.flink:flink-table-api-java-bridge:2.3.0'
+    testImplementation 'org.apache.flink:flink-table-planner_2.12:2.3.0'
+    testImplementation 'org.apache.flink:flink-table-planner_2.12:2.3.0:tests'
+    testImplementation 'org.apache.flink:flink-json:2.3.0'
+}
+
+test {
+    useJUnitPlatform()
+    testLogging {
+        outputs.upToDateWhen { false }
+        showStandardStreams = true
+        events 'PASSED', 'SKIPPED', 'FAILED', 'STANDARD_OUT', 'STANDARD_ERROR'
+        exceptionFormat = 'full'
+    }
 }

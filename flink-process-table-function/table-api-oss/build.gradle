@@ -25,14 +25,20 @@ repositories {
 
 dependencies {
   implementation project(path: ':flink-process-table-function:median-ptf')
-  implementation 'org.apache.flink:flink-table-api-java:2.2.0'
-  implementation 'org.apache.flink:flink-table-planner_2.12:2.2.0'
-  implementation 'org.apache.flink:flink-clients:2.2.0'
-  implementation 'org.apache.flink:flink-connector-base:2.2.0'
-  implementation 'org.apache.flink:flink-connector-kafka:4.0.1-2.0'
-  implementation 'org.apache.flink:flink-avro-confluent-registry:2.2.0'
-  implementation 'org.apache.flink:flink-avro:2.2.0'
+  implementation 'org.apache.flink:flink-table-api-java:2.3.0'
+  implementation 'org.apache.flink:flink-table-planner_2.12:2.3.0'
+  implementation 'org.apache.flink:flink-clients:2.3.0'
+  implementation 'org.apache.flink:flink-connector-base:2.3.0'
+  implementation 'org.apache.flink:flink-connector-kafka:5.0.0-2.2'
+  implementation('org.apache.kafka:kafka-clients') {
+    // avoid a dependency conflict from ccs version being pulled in transitively
+    version {
+      strictly '4.3.1'
+    }
+  }
+  implementation 'org.apache.flink:flink-avro-confluent-registry:2.3.0'
+  implementation 'org.apache.flink:flink-avro:2.3.0'
   implementation 'com.google.guava:guava:33.6.0-jre'
-  implementation 'org.slf4j:slf4j-api:2.0.17'
-  implementation 'org.slf4j:slf4j-simple:2.0.17'
+  implementation 'org.slf4j:slf4j-api:2.0.18'
+  implementation 'org.slf4j:slf4j-simple:2.0.18'
 }

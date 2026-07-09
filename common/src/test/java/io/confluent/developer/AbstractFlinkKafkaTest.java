@@ -8,7 +8,7 @@ import org.apache.flink.configuration.StateBackendOptions;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.table.api.EnvironmentSettings;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
-import org.junit.BeforeClass;
+import org.junit.jupiter.api.BeforeAll;
 
 import java.io.IOException;
 import java.net.URL;
@@ -30,7 +30,7 @@ public class AbstractFlinkKafkaTest {
     protected static Integer schemaRegistryPort, kafkaPort;
     protected static String topicNamespace;
 
-    @BeforeClass
+    @BeforeAll
     public static void setup() {
         // create Flink table environment that test subclasses will use to execute SQL statements
         Configuration config = new Configuration();

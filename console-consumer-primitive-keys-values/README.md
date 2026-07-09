@@ -15,8 +15,8 @@ kafka-console-consumer --topic <TOPIC>\
  --bootstrap-server <BOOTSTRAP-SERVER>:9092 \
  --from-beginning \
  --max-messages 10 \ 
- --property print.key=true \
- --property key.separator=" : " \
+ --formatter-property print.key=true \
+ --formatter-property key.separator=" : " \
 ```
 
 You'll see results that look like the following because the default string deserializer is used:
@@ -40,8 +40,8 @@ Now update the command to include a deserializer for the key and value:
 kafka-console-consumer --topic <TOPIC>\
  --bootstrap-server <BOOTSTRAP-SERVER>:9092 \
  --from-beginning \
- --property print.key=true \
- --property key.separator=" : " \
+ --formatter-property print.key=true \
+ --formatter-property key.separator=" : " \
  --max-messages 10 \ 
  --key-deserializer "org.apache.kafka.common.serialization.LongDeserializer" \
  --value-deserializer "org.apache.kafka.common.serialization.DoubleDeserializer"

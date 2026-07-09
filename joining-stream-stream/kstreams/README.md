@@ -234,7 +234,7 @@ confluent environment delete <ENVIRONMENT ID>
 
   ```shell
   kafka-console-producer --bootstrap-server localhost:9092 --topic movie-input \
-      --property "parse.key=true" --property "key.separator=:"
+      --reader-property "parse.key=true" --reader-property "key.separator=:"
   ```
 
   Enter a few JSON-formatted movie objects:
@@ -253,7 +253,7 @@ confluent environment delete <ENVIRONMENT ID>
 
   ```shell
   kafka-console-producer --bootstrap-server localhost:9092 --topic ratings-input \
-      --property "parse.key=true" --property "key.separator=:"
+      --reader-property "parse.key=true" --reader-property "key.separator=:"
   ```
 
   Enter a few JSON-formatted ratings:

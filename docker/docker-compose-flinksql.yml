@@ -1,6 +1,6 @@
 services:
   broker:
-    image: confluentinc/cp-kafka:8.2.0
+    image: confluentinc/cp-kafka:8.2.2
     hostname: broker
     container_name: broker
     ports:
@@ -27,7 +27,7 @@ services:
       CLUSTER_ID: 'MkU3OEVBNTcwNTJENDM2Qk'
 
   schema-registry:
-    image: confluentinc/cp-schema-registry:8.2.0
+    image: confluentinc/cp-schema-registry:8.2.2
     hostname: schema-registry
     container_name: schema-registry
     ports:
@@ -40,7 +40,7 @@ services:
       SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8081
 
   flink-jobmanager:
-    image: cnfldemos/flink-kafka:2.2.0-scala_2.12-java17
+    image: cnfldemos/flink-kafka:2.3.0-scala_2.12-java17
     hostname: flink-jobmanager
     container_name: flink-jobmanager
     ports:
@@ -48,7 +48,7 @@ services:
     command: jobmanager
 
   flink-taskmanager:
-    image: cnfldemos/flink-kafka:2.2.0-scala_2.12-java17
+    image: cnfldemos/flink-kafka:2.3.0-scala_2.12-java17
     hostname: flink-taskmanager
     container_name: flink-taskmanager
     depends_on:
@@ -57,7 +57,7 @@ services:
     scale: 1
 
   flink-sql-client:
-    image: cnfldemos/flink-sql-client-kafka:2.2.0-scala_2.12-java17
+    image: cnfldemos/flink-sql-client-kafka:2.3.0-scala_2.12-java17
     hostname: flink-sql-client
     container_name: flink-sql-client
     depends_on:

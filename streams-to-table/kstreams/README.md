@@ -172,7 +172,7 @@ confluent environment delete <ENVIRONMENT ID>
 
   ```shell
   kafka-console-producer --bootstrap-server localhost:9092 --topic input-topic \
-      --property "parse.key=true" --property "key.separator=:"
+      --reader-property "parse.key=true" --reader-property "key.separator=:"
   ```
 
   Enter a few key/value pairs:
@@ -210,11 +210,11 @@ confluent environment delete <ENVIRONMENT ID>
   Validate that you see the same messages in the `streams-output-topic` and `table-output-topic` topics. This is because converting to a `KTable` is a logical operation and only changes the interpretation of the stream.
 
   ```shell
-  kafka-console-consumer --bootstrap-server localhost:9092 --topic streams-output-topic --from-beginning --property  "print.key=true"
+  kafka-console-consumer --bootstrap-server localhost:9092 --topic streams-output-topic --from-beginning --formatter-property "print.key=true"
   ```
 
   ```shell
-  kafka-console-consumer --bootstrap-server localhost:9092 --topic table-output-topic --from-beginning --property  "print.key=true"
+  kafka-console-consumer --bootstrap-server localhost:9092 --topic table-output-topic --from-beginning --formatter-property "print.key=true"
   ```
 
   You should see:

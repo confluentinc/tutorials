@@ -219,7 +219,7 @@ confluent environment delete <ENVIRONMENT ID>
 
   ```shell
   kafka-console-producer --bootstrap-server localhost:9092 --topic table-input-topic \
-      --property "parse.key=true" --property "key.separator=:"
+      --reader-property "parse.key=true" --reader-property "key.separator=:"
   ```
 
   Enter a few strings representing the second half of common phrases:
@@ -236,7 +236,7 @@ confluent environment delete <ENVIRONMENT ID>
 
   ```shell
   kafka-console-producer --bootstrap-server localhost:9092 --topic stream-input-topic \
-      --property "parse.key=true" --property "key.separator=:"
+      --reader-property "parse.key=true" --reader-property "key.separator=:"
   ```
 
   Enter a few strings representing the correct first half of the common phrases:
@@ -255,7 +255,7 @@ confluent environment delete <ENVIRONMENT ID>
 
   ```shell
   kafka-console-producer --bootstrap-server localhost:9092 --topic table-input-topic \
-      --property "parse.key=true" --property "key.separator=:"
+      --reader-property "parse.key=true" --reader-property "key.separator=:"
   ```
   Enter a few strings representing the _incorrect_ second half of common phrases:
 

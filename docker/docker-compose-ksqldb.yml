@@ -1,6 +1,6 @@
 services:
   broker:
-    image: confluentinc/cp-kafka:7.7.1
+    image: confluentinc/cp-kafka:8.2.2
     hostname: broker
     container_name: broker
     ports:
@@ -22,7 +22,7 @@ services:
       KAFKA_LOG_DIRS: /tmp/kraft-combined-logs
       CLUSTER_ID: MkU3OEVBNTcwNTJENDM2Qk
   schema-registry:
-    image: confluentinc/cp-schema-registry:7.7.1
+    image: confluentinc/cp-schema-registry:8.2.2
     hostname: schema-registry
     container_name: schema-registry
     depends_on:

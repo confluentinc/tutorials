@@ -21,7 +21,7 @@ repositories {
 
 dependencies {
     implementation project(':common')
-    implementation 'org.slf4j:slf4j-simple:2.0.7'
+    implementation 'org.slf4j:slf4j-simple:2.0.18'
     implementation 'io.opentelemetry.proto:opentelemetry-proto:1.0.0-alpha'
     implementation 'io.grpc:grpc-api:1.66.0'
     implementation 'io.grpc:grpc-netty-shaded:1.66.0'
@@ -29,7 +29,7 @@ dependencies {
     implementation 'io.grpc:grpc-stub:1.66.0'
     implementation('org.apache.kafka:kafka-clients') {
         version {
-            strictly '4.1.1'
+            strictly '4.3.1'
         }
     }
 }

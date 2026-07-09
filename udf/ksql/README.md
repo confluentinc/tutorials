@@ -3,9 +3,7 @@
 
 # How to build a ksqlDB scalar user-defined function (UDF) to transform events
 
-Suppose you want to transform the values of a Kafka topic using a stateless scalar function not already provided by ksqlDB. As a concrete example,
-consider a topic containing stock price events over which you want to calculate the [volume-weighted average price](https://en.wikipedia.org/wiki/Volume-weighted_average_price) (VWAP) for each event.
-There is no built-in function for VWAP, so we'll write a custom [ksqlDB user-defined function](https://docs.ksqldb.io/en/latest/concepts/functions/#udfs) (UDF) in Java that performs the calculation.
+Suppose you want to transform the values of a Kafka topic using a stateless scalar function not already provided by ksqlDB. As a concrete example, consider a topic containing stock price events over which you want to calculate the [volume-weighted average price](https://en.wikipedia.org/wiki/Volume-weighted_average_price) (VWAP) for each event. There is no built-in function for VWAP, so we'll write a custom [ksqlDB user-defined function](https://docs.ksqldb.io/en/latest/concepts/functions/#udfs) (UDF) in Java that performs the calculation.
 
 ## Setup
 
@@ -39,16 +37,12 @@ public class VwapUdf {
 
 # Installing a UDF
 
-Once you've implemented a ksqlDB UDF, you need only build an uberjar containing it and then place the uberjar in the extensions path that you've configured
-in ksqlDB server via the `ksql.extension.dir` property.
-
-*_Note that Confluent Cloud does not support UDFs. This example runs ksqlDB in Docker._*
-
+Once you've implemented a ksqlDB UDF, you need only build an uberjar containing it and then place the uberjar in the extensions path that you've configured in ksqlDB server via the `ksql.extension.dir` property.
 
 ### Prerequisites
 
 * Docker running via [Docker Desktop](https://docs.docker.com/desktop/) or [Docker Engine](https://docs.docker.com/engine/install/)
-* Java 11 or later
+* Java 17 or later
 
 ### Run the commands
 

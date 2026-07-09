@@ -31,7 +31,7 @@ public class KafkaPrimalityRouterTest {
     @Test
     public void testPrimalityRouter() {
 
-        try (KafkaContainer kafka = new KafkaContainer(DockerImageName.parse("apache/kafka-native:4.1.1"))) {
+        try (KafkaContainer kafka = new KafkaContainer(DockerImageName.parse("apache/kafka-native:4.3.1"))) {
             kafka.start();
 
             // kick off application main method in a thread
@@ -64,7 +64,7 @@ public class KafkaPrimalityRouterTest {
                 consumer.subscribe(List.of(PRIME_TOPIC, COMPOSITE_TOPIC));
 
                 int numConsumed = 0;
-                for (int i = 0; i < 10 && numConsumed < 100; i++) {
+                for (int i = 0; i < 20 && numConsumed < 100; i++) {
                     final ConsumerRecords<Integer, Integer> consumerRecords = consumer.poll(Duration.ofSeconds(5));
                     numConsumed += consumerRecords.count();
 

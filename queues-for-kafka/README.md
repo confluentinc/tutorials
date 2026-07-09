@@ -11,7 +11,7 @@ The following steps use Confluent Cloud. To run the tutorial locally with Docker
 
 - A [Confluent Cloud](https://confluent.cloud/signup) account
 - The [Confluent CLI](https://docs.confluent.io/confluent-cli/current/install.html) installed on your machine
-- [Apache Kafka 4.1](https://kafka.apache.org/downloads) for its command-line tools
+- [Apache Kafka 4.3](https://kafka.apache.org/downloads) for its command-line tools
 - Clone the `confluentinc/tutorials` repository and navigate into its top-level directory:
   ```shell
   git clone git@github.com:confluentinc/tutorials.git
@@ -21,8 +21,6 @@ The following steps use Confluent Cloud. To run the tutorial locally with Docker
 ## Create Confluent Cloud resources
 
 First, create a Dedicated 1-CKU cluster in Confluent Cloud by following the instructions [here](https://docs.confluent.io/cloud/current/clusters/create-cluster.html#create-ak-clusters).
-
-Since Queues for Kafka is currently a Closed Preview feature, you'll need to open a support request to enable the feature on your cluster. In the [Confluent Support Portal](https://support.confluent.io/), open a ticket requesting that Queues for Kafka be enabled for your cluster. Provide the cluster ID in your request, which you can find in the [Confluent Cloud Console](https://confluent.cloud/) by navigating to `Cluster Settings` from your Dedicated cluster overview page.
 
 ## Confluent CLI setup
 
@@ -165,7 +163,7 @@ confluent environment delete <ENVIRONMENT_ID>
 
   ## Start Kafka in Docker
 
-  Start Apache Kafka 4.1 with the following command:
+  Start Apache Kafka with the following command:
 
   ```shell
   docker compose -f ./queues-for-kafka/docker-compose.yml up -d

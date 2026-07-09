@@ -9,20 +9,20 @@ import java.util.Map;
 
 public class ContinuingProductionExceptionHandler implements ProductionExceptionHandler {
     @Override
-    public ProductionExceptionHandlerResponse handle(final ErrorHandlerContext context,
-                                                     final ProducerRecord<byte[], byte[]> record,
-                                                     final Exception exception) {
-        System.out.println("ProductionExceptionHandler.handle triggered");
-        return ProductionExceptionHandlerResponse.CONTINUE;
+    public Response handleError(final ErrorHandlerContext context,
+                                 final ProducerRecord<byte[], byte[]> record,
+                                 final Exception exception) {
+        System.out.println("ProductionExceptionHandler.handleError triggered");
+        return Response.resume();
     }
 
     @Override
-    public ProductionExceptionHandlerResponse handleSerializationException(final ErrorHandlerContext context,
-                                                                           final ProducerRecord record,
-                                                                           final Exception exception,
-                                                                           final SerializationExceptionOrigin origin) {
-        System.out.println("ProductionExceptionHandler.handleSerializationException triggered");
-        return ProductionExceptionHandlerResponse.CONTINUE;
+    public Response handleSerializationError(final ErrorHandlerContext context,
+                                              final ProducerRecord record,
+                                              final Exception exception,
+                                              final SerializationExceptionOrigin origin) {
+        System.out.println("ProductionExceptionHandler.handleSerializationError triggered");
+        return Response.resume();
     }
 
     @Override

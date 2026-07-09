@@ -238,7 +238,7 @@ confluent environment delete <ENVIRONMENT ID>
   Validate that you see the correct total ticket sales per title in the `aggregation-sum-output` topic. In the broker container shell:
 
   ```shell
-  kafka-console-consumer --bootstrap-server localhost:9092 --topic aggregation-sum-output --from-beginning --property "print.key=true" --property "key.separator=:"
+  kafka-console-consumer --bootstrap-server localhost:9092 --topic aggregation-sum-output --from-beginning --formatter-property "print.key=true" --formatter-property "key.separator=:"
   ```
 
   You should see:

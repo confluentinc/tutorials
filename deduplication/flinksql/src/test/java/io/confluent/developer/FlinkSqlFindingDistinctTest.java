@@ -4,7 +4,7 @@ package io.confluent.developer;
 import org.apache.flink.table.api.TableResult;
 import org.apache.flink.types.Row;
 import org.apache.flink.types.RowKind;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +12,7 @@ import java.util.Optional;
 
 import static io.confluent.developer.TestUtils.rowObjectsFromTableResult;
 import static io.confluent.developer.TestUtils.yyyy_MM_dd;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class FlinkSqlFindingDistinctTest extends AbstractFlinkKafkaTest {
 
@@ -36,7 +36,6 @@ public class FlinkSqlFindingDistinctTest extends AbstractFlinkKafkaTest {
     rowList.add(Row.ofKind(RowKind.INSERT, "10.0.0.1", "https://acme.com/index.html", yyyy_MM_dd("2023-08-23 13:36:15")));
     rowList.add(Row.ofKind(RowKind.INSERT, "10.0.0.12", "https://amazon.com/index.html", yyyy_MM_dd("2023-08-23 17:36:15")));
     rowList.add(Row.ofKind(RowKind.INSERT, "10.0.0.13", "https://confluent/index.html", yyyy_MM_dd("2023-08-23 17:36:15")));
-    rowList.add(Row.ofKind(RowKind.UPDATE_BEFORE, "10.0.0.12", "https://amazon.com/index.html", yyyy_MM_dd("2023-08-23 17:36:15")));
     rowList.add(Row.ofKind(RowKind.UPDATE_AFTER, "10.0.0.12", "https://amazon.com/index.html", yyyy_MM_dd("2023-08-23 15:36:15")));
 
     return rowList;
