@@ -1,4 +1,22 @@
 [
-  "io.confluent.developer.avro.Purchase",
-  "io.confluent.developer.avro.Pageview"
+  {
+    "type":"record",
+    "namespace": "io.confluent.developer.avro",
+    "name":"Purchase",
+    "fields": [
+      {"name": "item", "type":"string"},
+      {"name": "amount", "type": "double"},
+      {"name": "customer_id", "type": "string"}
+    ]
+  },
+  {
+    "type":"record",
+    "namespace": "io.confluent.developer.avro",
+    "name":"Pageview",
+    "fields": [
+      {"name": "url", "type":"string"},
+      {"name": "is_special", "type": "boolean"},
+      {"name": "customer_id", "type":  "string"}
+    ]
+  }
 ]

@@ -8,6 +8,8 @@ import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.common.serialization.StringDeserializer;
+import org.apache.kafka.common.serialization.StringSerializer;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -137,6 +139,7 @@ public class MultiEventProtobufProduceConsumeApp implements AutoCloseable {
     static Map<String, Object> protoConsumeConfigs(Map<String, Object> commonConfigs) {
         Map<String, Object> protoConsumeConfigs = new HashMap<>(commonConfigs);
         protoConsumeConfigs.put(ConsumerConfig.GROUP_ID_CONFIG, "protobuf-consumer-group");
+        protoConsumeConfigs.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         protoConsumeConfigs.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, KafkaProtobufDeserializer.class);
         protoConsumeConfigs.put(KafkaProtobufDeserializerConfig.SPECIFIC_PROTOBUF_VALUE_TYPE, CustomerEvent.class);
         return protoConsumeConfigs;
@@ -145,6 +148,7 @@ public class MultiEventProtobufProduceConsumeApp implements AutoCloseable {
     @NotNull
     static Map<String, Object> protoProduceConfigs(Map<String, Object> commonConfigs) {
         Map<String, Object> protoProduceConfigs = new HashMap<>(commonConfigs);
+        protoProduceConfigs.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         protoProduceConfigs.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, KafkaProtobufSerializer.class);
         return protoProduceConfigs;
     }
