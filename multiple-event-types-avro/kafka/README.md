@@ -7,49 +7,40 @@ It's sometimes advantageous to produce distinct but related event types to the s
 For example, consider pageview and purchase records associated with the same customer ID. In order to properly attribute purchases to preceding pageviews, these distinct events must be sent to the same topic so that the order is preserved in one Kafka topic partition.
 But, let's say we also need to maintain the topic-name subject constraints with Schema Registry.
 
-To accomplish this with Avro-formatted events, we can use schema references, where a schema contains a field whose type is a reference to another schema.
+To accomplish this with Avro-formatted events, we can use a top-level union schema whose branches are the distinct record types.
 
-## Example Avro schema with references
+## Example Avro schema with a union of event types
 
 The example in this tutorial uses a top-level Avro schema specifying that a record is either a purchase or a pageview:
 
 ```json
 [
-  "io.confluent.developer.avro.Purchase",
-  "io.confluent.developer.avro.PageView"
+  {
+    "type":"record",
+    "namespace": "io.confluent.developer.avro",
+    "name":"Purchase",
+    "fields": [
+      {"name": "item", "type":"string"},
+      {"name": "amount", "type": "double"},
+      {"name": "customer_id", "type": "string"}
+    ]
+  },
+  {
+    "type":"record",
+    "namespace": "io.confluent.developer.avro",
+    "name":"Pageview",
+    "fields": [
+      {"name": "url", "type":"string"},
+      {"name": "is_special", "type": "boolean"},
+      {"name": "customer_id", "type":  "string"}
+    ]
+  }
 ]
 ```
 
-Where these references are defined as follows:
-
-```json
-{
-  "type":"record",
-  "namespace": "io.confluent.developer.avro",
-  "name":"Pageview",
-  "fields": [
-    {"name": "url", "type":"string"},
-    {"name": "is_special", "type": "boolean"},
-    {"name": "customer_id", "type":  "string"}
-  ]
-}
-```
-
-```json
-{
-  "type":"record",
-  "namespace": "io.confluent.developer.avro",
-  "name":"Purchase",
-  "fields": [
-    {"name": "item", "type":"string"},
-    {"name": "amount", "type": "double"},
-    {"name": "customer_id", "type": "string"}
-  ]
-}
-```
-
 Now, if you use the top-level schema for a topic, then you can produce either `io.confluent.developer.avro.Purchase` or
-`io.confluent.developer.avro.Pageview` records to the topic.
+`io.confluent.developer.avro.Pageview` records to the topic. Only this top-level union schema is registered in Schema Registry
+(as the `avro-events-value` subject); the individual `Purchase` and `Pageview` types are not registered as separate subjects.
 
 ## Running the example
 
@@ -87,7 +78,7 @@ To run the unit tests, use the provided Gradle Wrapper:
 Start Kafka by running:
 
 ```shell
-docker compose -f ./docker/docker-compose-ksqldb.yml up -d
+docker compose -f ./docker/docker-compose-kafka-sr.yml up -d
 ```
 
 ### Create topic
@@ -98,7 +89,7 @@ Create the `avro-events` topic:
 docker exec -t broker kafka-topics --create --topic avro-events --bootstrap-server broker:9092
 ```
 
-### Register schemas
+### Register schema
 
 Run the following task to register the schemas in Schema Registry:
 
@@ -119,7 +110,8 @@ Build the application uberjar:
 Run the application, which produces and consumes pageview and purchase events, with the following command:
 
 ```shell
-java -jar multiple-event-types-avro/kafka/build/libs/multiple-event-types-avro-standalone-0.0.1.jar multiple-event-types-avro/kafka/local.properties
+java -jar multiple-event-types-avro/kafka/build/libs/multiple-event-types-avro-standalone-0.0.1.jar \
+    multiple-event-types-avro/kafka/local.properties
 ```
 
 ### Cleanup
@@ -127,7 +119,7 @@ java -jar multiple-event-types-avro/kafka/build/libs/multiple-event-types-avro-s
 Stop Kafka and Schema Registry:
 
 ```shell
-docker compose -f ./docker/docker-compose-ksqldb.yml down
+docker compose -f ./docker/docker-compose-kafka-sr.yml down
 ```
 
 </details>
@@ -138,25 +130,76 @@ docker compose -f ./docker/docker-compose-ksqldb.yml down
 
 ### Prerequisites
 
-* A [Confluent Cloud](https://confluent.cloud/signup) account and a Kafka cluster created within it ([quick start](https://docs.confluent.io/cloud/current/get-started/index.html)).
+- Java 17
+- A [Confluent Cloud](https://confluent.cloud/signup) account
+- The [Confluent CLI](https://docs.confluent.io/confluent-cli/current/install.html) installed on your machine
+- Clone the `confluentinc/tutorials` repository and navigate into its top-level directory:
+  ```shell
+  git clone git@github.com:confluentinc/tutorials.git
+  cd tutorials
+  ```
 
-### Create topic
+### Create Confluent Cloud resources
 
-Using the Confluent Cloud Console, create a topic with default settings called `avro-events`.
+Log in to your Confluent Cloud account:
 
-### Generate client configuration
+```shell
+confluent login --prompt --save
+```
 
-In the Confluent Cloud Console, navigate to the Cluster Overview page. Select `Clients` in the left-hand navigation and create a new `Java` client. Generate API keys during this step, and download the generated client configuration. Place it at `multiple-event-types-avro/kafka/cloud.properties`.
+Install a CLI plugin that will streamline the creation of resources in Confluent Cloud:
+
+```shell
+confluent plugin install confluent-quickstart
+```
+
+Run the plugin from the top-level directory of the `tutorials` repository to create the Confluent Cloud resources needed for this tutorial.
+
+Note: You may specify a different cloud provider (`gcp` or `azure`) or region. You can find supported regions in a given cloud provider by running `confluent kafka region list --cloud <CLOUD>`.
+
+```shell
+confluent quickstart \
+  --environment-name kafka-multiple-event-types-env \
+  --kafka-cluster-name kafka-multiple-event-types-cluster \
+  --create-kafka-key \
+  --create-sr-key \
+  --kafka-java-properties-file multiple-event-types-avro/kafka/cloud.properties
+```
+
+The plugin should complete in under a minute.
+
+## Create topic
+
+Create the topic for the application:
+
+```shell
+confluent kafka topic create avro-events
+```
 
 ### Register schemas
 
-Run the following task to register the schemas in Schema Registry:
+Before registering the schemas, update the `schemaRegistry` block in `multiple-event-types-avro/kafka/build.gradle` to point at your Confluent Cloud Schema Registry cluster and authenticate with a `clientConfig`. Populate the placeholders below with the corresponding `schema.registry.url` and `basic.auth.user.info` values from `multiple-event-types-avro/kafka/cloud.properties`:
+
+```groovy
+schemaRegistry {
+    url = '<SCHEMA_REGISTRY_URL>'
+    clientConfig = [
+            'basic.auth.credentials.source': 'USER_INFO',
+            'basic.auth.user.info'         : '<SCHEMA_REGISTRY_API_KEY>:<SCHEMA_REGISTRY_API_SECRET>'
+    ]
+    register {
+        subject('avro-events-value', 'multiple-event-types-avro/kafka/src/main/avro/all-events.avsc', "AVRO")
+    }
+}
+```
+
+Then, run the following task to register the schemas in Schema Registry:
 
 ```shell
 ./gradlew :multiple-event-types-avro:kafka:registerSchemasTask
 ```
 
-In the Confluent Cloud Console, navigate to `Topics` in the left-hand navigation, select the `avro-events` topic, and click `Schema`. Validate that a `Value` schema has been set.
+In the Confluent Cloud Console, navigate to `Topics` in the left-hand navigation, select the `avro-events` topic, and click `Data contract`. Validate that a `Value` schema has been set.
 
 ### Build the application
 
@@ -171,13 +214,24 @@ Build the application uberjar:
 Run the application, which produces and consumes pageview and purchase events, with the following command. Note that we are passing the client configuration as an argument:
 
 ```shell
-java -jar multiple-event-types-avro/kafka/build/libs/multiple-event-types-avro-standalone-0.0.1.jar multiple-event-types-avro/kafka/cloud.properties
+java -jar multiple-event-types-avro/kafka/build/libs/multiple-event-types-avro-standalone-0.0.1.jar \
+    multiple-event-types-avro/kafka/cloud.properties
 ```
 
 In the Confluent Cloud Console, select the `Messages` tab for the `avro-events` topic and view the messages that are produced.
 
-### Cleanup
+### Clean up
 
-Delete the cluster used for this tutorial if you no longer need it.
+When you are finished, delete the `kafka-multiple-event-types-env` environment by first getting the environment ID of the form `env-123456` corresponding to it:
+
+```shell
+confluent environment list
+```
+
+Delete the environment, including all resources created for this tutorial:
+
+```shell
+confluent environment delete <ENVIRONMENT ID>
+```
 
 </details>

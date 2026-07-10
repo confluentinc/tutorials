@@ -19,7 +19,7 @@ plugins {
     id 'com.google.cloud.tools.jib' version '3.3.1'
     id 'idea'
     id 'eclipse'
-    id 'com.github.imflog.kafka-schema-registry-gradle-plugin' version '1.13.0'
+    id 'com.github.imflog.kafka-schema-registry-gradle-plugin' version '2.5.0'
     id 'com.github.davidmc24.gradle.plugin.avro' version '1.9.1'
 }
 
@@ -74,4 +74,15 @@ jar {
 shadowJar {
     archiveBaseName = 'multiple-event-types-avro-standalone'
     archiveClassifier = ''
+}
+
+schemaRegistry {
+    url = 'http://localhost:8081'
+    register {
+        subject('avro-events-value', 'multiple-event-types-avro/kafka/src/main/avro/all-events.avsc', "AVRO")
+    }
+}
+
+tasks.named('registerSchemasTask') {
+    outputs.upToDateWhen { false }
 }
