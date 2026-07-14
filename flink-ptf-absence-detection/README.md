@@ -188,6 +188,32 @@ Had `bob` sent a `LOGOUT` instead of going idle, the PTF would have emitted a `C
 
 > **Calling the PTF more than once?** A stateful, set-semantic PTF needs a unique ID per invocation. With a single call the function name is used automatically. If you call `SessionWindow` multiple times in one statement, add a `uid => '...'` argument to each call.
 
+## Tear down Confluent Cloud infrastructure
+
+When you are done, be sure to clean up any Confluent Cloud resources created for this tutorial. Since you created all resources in a Confluent Cloud environment, you can simply delete the environment and most of the resources will be deleted (e.g., the Kafka cluster and Flink compute pool). Run the following command in your terminal to get the environment ID of the form `env-123456` corresponding to the environment named `flink_ptf_tutorial_environment`:
+
+```shell
+confluent environment list
+```
+
+Delete the environment:
+
+```shell
+confluent environment delete <ENVIRONMENT_ID>
+```
+
+Next, delete the Flink and artifact API keys. These API keys aren't associated with the deleted environment, so they must be deleted separately. Find the keys:
+
+```shell
+confluent api-key list --resource flink --current-user
+```
+
+Then copy each 16-character alphanumeric key and delete it:
+```shell
+confluent api-key delete <FLINK KEY>
+confluent api-key delete <CLOUD KEY>
+```
+
 <details>
   <summary>Docker instructions</summary>
 
