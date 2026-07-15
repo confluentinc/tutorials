@@ -21,14 +21,14 @@ CREATE TABLE clicks (
 );
 ```
 
-The timestamp is an important attribute since we’ll be modeling user behavior and how many pages they view in a given session.
+The timestamp is an important attribute since we’ll be modeling how many times a given URL is visited in a given session.
 Also, because we are going to aggregate over time windows, we must define a watermark strategy. In this case, we use
 strictly ascending timestamps, i.e., any row with a timestamp that is less than or equal to the latest observed event
 timestamp is considered late and ignored.
 
 ## Compute the windowed aggregation
 
-Given the `clicks` table definition above, let’s figure out how many pages a user visits in a session.  You'll define an inactivity gap of 2 minutes to mark the end of a session.  Otherwise, as users continue to click within 5 minutes, the existing session will continue to grow. 
+Given the `clicks` table definition above, let’s figure out how many times a given URL is visited in a session.  You'll define an inactivity gap of 2 minutes to mark the end of a session.  As long as clicks to that URL keep arriving within 2 minutes of each other, the existing session will continue to grow. 
 Let's observe user click behavior using a [session windowed table-valued function (TVF)](https://nightlies.apache.org/flink/flink-docs-release-1.19/docs/dev/table/sql/queries/window-tvf/#session).
 
 ```sql
