@@ -38,9 +38,9 @@ Run the plugin as follows to create the Confluent Cloud resources needed for thi
 confluent quickstart \
     --region us-east-1 \
     --cloud aws \
-    --environment-name flink_table_api_tutorials_environment \
-    --kafka-cluster-name flink_table_api_tutorials_cluster \
-    --compute-pool-name flink_table_api_tutorials_pool \
+    --environment-name flink_ptf_tutorial_environment \
+    --kafka-cluster-name flink_ptf_tutorial_cluster \
+    --compute-pool-name flink_ptf_tutorial_pool \
     --max-cfu 10 \
     --create-flink-key \
     --flink-properties-file ./flink-process-table-function/table-api-cc/src/main/resources/cloud.properties
@@ -108,8 +108,8 @@ confluent flink shell --cloud aws --region us-east-1
 Set the active catalog and database to match your environment and cluster:
 
 ```shell
-USE CATALOG flink_table_api_tutorials_environment;
-USE flink_table_api_tutorials_cluster;
+USE CATALOG flink_ptf_tutorial_environment;
+USE flink_ptf_tutorial_cluster;
 ```
 
 Finally, register the PTF as a function, replacing `cfa-123456` with your actual artifact ID:
@@ -210,7 +210,7 @@ Current temp: 45.0, median over last 3: 45.0
 
 ## Tear down Confluent Cloud infrastructure
 
-When you are done, be sure to clean up any Confluent Cloud resources created for this tutorial. Since you created all resources in a Confluent Cloud environment, you can simply delete the environment and most of the resources will be deleted (e.g., the Kafka cluster and Flink compute pool). Run the following command in your terminal to get the environment ID of the form `env-123456` corresponding to the environment named `flink_table_api_tutorials_environment`:
+When you are done, be sure to clean up any Confluent Cloud resources created for this tutorial. Since you created all resources in a Confluent Cloud environment, you can simply delete the environment and most of the resources will be deleted (e.g., the Kafka cluster and Flink compute pool). Run the following command in your terminal to get the environment ID of the form `env-123456` corresponding to the environment named `flink_ptf_tutorial_environment`:
 
 ```shell
 confluent environment list
@@ -247,6 +247,7 @@ This tutorial is the starting point for a library of focused PTF examples. Each 
 | Example | PTF capability |
 | --- | --- |
 | [Detect the absence of an event](https://developer.confluent.io/confluent-tutorials/flink-ptf-absence-detection/) | Event-time timers (deadline / inactivity timeout) |
+| [Emit windowed outputs incrementally](https://developer.confluent.io/confluent-tutorials/flink-ptf-incremental-windowing/) | Event-driven state transitions (early-firing tumbling window) |
 
 <details>
   <summary>Docker instructions</summary>
