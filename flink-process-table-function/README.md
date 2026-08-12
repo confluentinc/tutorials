@@ -248,6 +248,8 @@ This tutorial is the starting point for a library of focused PTF examples. Each 
 | --- | --- |
 | [Detect the absence of an event](https://developer.confluent.io/confluent-tutorials/flink-ptf-absence-detection/) | Event-time timers (deadline / inactivity timeout) |
 | [Emit windowed outputs incrementally](https://developer.confluent.io/confluent-tutorials/flink-ptf-incremental-windowing/) | Event-driven state transitions (early-firing tumbling window) |
+| [Implement a custom temporal join](https://developer.confluent.io/confluent-tutorials/flink-ptf-custom-temporal-join/) | Multiple table arguments (custom stream-stream join) |
+| [Emit an upserting changelog](https://developer.confluent.io/confluent-tutorials/flink-ptf-upsert-changelog-emitting/) | `ChangelogFunction` and `ORDER BY` (self-correcting, upserting output) |
 
 <details>
   <summary>Docker instructions</summary>

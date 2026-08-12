@@ -58,8 +58,8 @@ public class SensorFusionPtf extends ProcessTableFunction<SensorFusionPtf.Mainte
             @ArgumentHint(name = "temperatureThreshold") double temperatureThreshold,
             @ArgumentHint(name = "humidityThreshold") double humidityThreshold
     ) {
-        TimeContext<Long> timeCtx = ctx.timeContext(Long.class);
-        long currentEventTime = timeCtx.time();
+        TimeContext<Instant> timeCtx = ctx.timeContext(Instant.class);
+        long currentEventTime = timeCtx.time().toEpochMilli();
 
         long intervalMillis = windowInterval.toMillis();
         if (intervalMillis <= 0) {
