@@ -3,7 +3,7 @@ module schema-registry-go
 go 1.26.0
 
 require (
-	github.com/confluentinc/confluent-kafka-go/v2 v2.15.0
+	github.com/confluentinc/confluent-kafka-go/v2 v2.15.1
 	github.com/magiconair/properties v1.18.11
 )
 
