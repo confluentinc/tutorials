@@ -3,7 +3,7 @@
 
 # Agentic AI Part 1 of 2: LLM model and MCP tool setup in Confluent Cloud
 
-In Part 1 of this tutorial series, you will set up and test the infrastructure and third-party dependencies required for an agentic AI use case: a listener that creates concise tasks in a project management platform based on customer communications. This is a prime example of integrating tools in a model: LLMs are strong at summarizing a customer's natural language, but they lack awareness of your organization's project management platform and the context and connectivity needed to integrate with such an external system. You will use [OpenAI](https://platform.openai.com/) as the [model provider](https://docs.confluent.io/cloud/current/ai/ai-model-inference.html) in Confluent Cloud and [Linear](https://linear.app/) as the SaaS project management platform (the _tool_ for the model to call). Linear is similar to [Jira](https://www.atlassian.com/software/jira) or [Asana](https://asana.com/).
+In Part 1 of this tutorial series, you will set up and test the infrastructure and third-party dependencies required for an agentic AI use case: a listener that creates concise tasks in a project management platform based on customer communications. This is a prime example of integrating tools in a model: LLMs are strong at summarizing a customer's natural language, but they lack awareness of your organization's project management platform and the context and connectivity needed to integrate with such an external system. You will use [Amazon Bedrock](https://aws.amazon.com/bedrock/) as the [model provider](https://docs.confluent.io/cloud/current/ai/ai-model-inference.html) in Confluent Cloud and [Linear](https://linear.app/) as the SaaS project management platform (the _tool_ for the model to call). Linear is similar to [Jira](https://www.atlassian.com/software/jira) or [Asana](https://asana.com/).
 
 After you finish this tutorial, in [Part 2](https://developer.confluent.io/confluent-tutorials/agentic-ai-streaming-agent/flinksql/) of the series you will continue to build and evolve a Streaming Agent for this use case.
 
@@ -44,13 +44,37 @@ No config files were created (no resources were created)
 Quickstart complete. Exiting.
 ```
 
-## Set up OpenAI account and create credentials
+## Set up Amazon Bedrock model access and AWS credentials
 
-[Create an OpenAI account](https://auth.openai.com/create-account) if you don't already have one.
+[Sign up for an AWS account](https://portal.aws.amazon.com/billing/signup) if you don't already have one.
 
-You will need OpenAI credits in order to complete this tutorial. Add credits [here](https://platform.openai.com/settings/organization/billing/overview) (credit card required). Adding the minimum amount of credits will be sufficient.
+This tutorial calls the Claude Sonnet 5 model on Amazon Bedrock in the `us-east-1` region, which is billed through AWS Marketplace based on token usage. Open the [Bedrock console](https://console.aws.amazon.com/bedrock/home?region=us-east-1#/model-catalog), click `Model catalog` in the left-hand navigation, and ensure you have access to `Claude Sonnet 5` from Anthropic.
 
-You will need an OpenAI API key in order to call the model from Confluent Cloud. Navigate to the [Project API keys page](https://platform.openai.com/api-keys) and click `Create new secret key`. Save this key because you will need it later when creating a remote model in Flink.
+You will need an AWS access key in order to call the model from Confluent Cloud. Create an IAM user (or use an existing one) in the [IAM console](https://console.aws.amazon.com/iam/home#/users) and attach an inline policy granting the `bedrock:InvokeModel` action:
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": "bedrock:InvokeModel",
+      "Resource": "*"
+    }
+  ]
+}
+```
+
+Then, from that user's `Security credentials` tab, click `Create access key` and choose `Third-party service` as the use case. Save the access key ID and secret access key because you will need them later when creating a remote model in Flink.
+
+If your organization provisions AWS access via SSO (AWS IAM Identity Center) and blocks `iam:CreateUser` with a service control policy, you won't be able to create an IAM user. In that case, use the temporary credentials from your existing SSO session instead — as long as the role you assume has `bedrock:InvokeModel` permission:
+
+```shell
+aws sso login --profile <your-profile>
+aws configure export-credentials --profile <your-profile>
+```
+
+This prints JSON containing `AccessKeyId`, `SecretAccessKey`, and `SessionToken`. Save all three; you'll pass the session token as `aws-session-token` when creating the connection in the next step. Note that these credentials are short-lived (typically 1-12 hours, depending on your org's session duration policy) — once they expire, calls through the connection will start failing, and you'll need to repeat these two commands and re-create the connection with fresh values.
 
 ## Set up Linear account and create credentials
 
@@ -58,25 +82,39 @@ You will need an OpenAI API key in order to call the model from Confluent Cloud.
 
 You will need a Linear API key in order to call Linear as an MCP-based tool from Confluent Cloud. To create a key, click the workspace dropdown at the top left, then `Settings`. Select `Security & access` in the left-hand navigation, followed by `New API key` under `Personal API keys`. Give the key a name. Under `Permissions`, select `Only select permissions...` and then only check the boxes for `Read` and `Write`. Click `Create`. Save this API key.
 
-## Create OpenAI and Linear connections
+## Create Bedrock and Linear connections
 
 In order to create a remote model or MCP tool in Confluent Cloud, you will need to provide a [connection](https://docs.confluent.io/cloud/current/flink/reference/statements/create-connection.html) to an external service as a parameter, so in this step we will create the prerequisite connections.
 
-To create connections to OpenAI and Linear, start a Flink SQL shell:
+To create connections to Amazon Bedrock and Linear, start a Flink SQL shell:
 
 ```shell
 confluent flink shell --compute-pool \
   $(confluent flink compute-pool list -o json | jq -r ".[0].id")
 ```
 
-Paste your OpenAI API key into the following statement to create a connection to OpenAI's [Chat Completions API](https://platform.openai.com/docs/api-reference/chat/create):
+Paste your AWS access key ID and secret access key into the following statement to create a connection to Amazon Bedrock's [Invoke Model API](https://docs.aws.amazon.com/bedrock/latest/APIReference/API_runtime_InvokeModel.html). The endpoint targets the `us.anthropic.claude-sonnet-5` inference profile, which is required for on-demand invocation of Claude Sonnet 5 from `us-east-1`:
 
 ```sql
-CREATE CONNECTION `openai-connection`
+CREATE CONNECTION `bedrock-connection`
   WITH (
-    'type' = 'openai',
-    'endpoint' = 'https://api.openai.com/v1/chat/completions',
-    'api-key' = '<OPENAI_API_KEY>'
+    'type' = 'bedrock',
+    'endpoint' = 'https://bedrock-runtime.us-east-1.amazonaws.com/model/us.anthropic.claude-sonnet-5/invoke',
+    'aws-access-key' = '<AWS_ACCESS_KEY_ID>',
+    'aws-secret-key' = '<AWS_SECRET_ACCESS_KEY>'
+  );
+```
+
+If you're using temporary credentials from an SSO session instead of an IAM user's access key, also include the session token you saved earlier:
+
+```sql
+CREATE CONNECTION `bedrock-connection`
+  WITH (
+    'type' = 'bedrock',
+    'endpoint' = 'https://bedrock-runtime.us-east-1.amazonaws.com/model/us.anthropic.claude-sonnet-5/invoke',
+    'aws-access-key' = '<AWS_ACCESS_KEY_ID>',
+    'aws-secret-key' = '<AWS_SECRET_ACCESS_KEY>',
+    'aws-session-token' = '<AWS_SESSION_TOKEN>'
   );
 ```
 
@@ -111,8 +149,8 @@ You will see:
 +-----------------------+
 |    Connection Name    |
 +-----------------------+
+| bedrock-connection    |
 | linear-mcp-connection |
-| openai-connection     |
 +-----------------------+
 ```
 
@@ -132,7 +170,7 @@ In the form on the left, select the `Streamable HTTP` Transport Type, enter `htt
 
 Scroll down, click `Connect`, and then `Approve` when you see the message `MCP Inspector is requesting access`. You'll also be prompted to select your Linear workspace.
 
-Once you're connected, click `List Tools`. These are the tools at our disposal to build an agentic AI workflow. We're going to focus on issue creation, so note that there is a `create_issue` tool. Click that to see the fields required to create an issue.
+Once you're connected, click `List Tools`. These are the tools at our disposal to build an agentic AI workflow. We're going to focus on issue creation, so note that there is a `save_issue` tool. Click that to see the fields required to create an issue.
 
 ![MCP inspector create_issue](https://raw.githubusercontent.com/confluentinc/tutorials/master/agentic-ai-model-tool-setup/flinksql/img/mcp_inspector_create_issue.png)
 
@@ -151,31 +189,32 @@ curl \
 
 ## Create models
 
-In the Flink SQL shell, create a `gpt-4o` model using the OpenAI connection created earlier:
+In the Flink SQL shell, create a model using the Bedrock connection created earlier. Anthropic models on Bedrock require `max_tokens` to be set explicitly, which you provide via the `bedrock.params.max_tokens` option:
 
 ```sql
 CREATE MODEL chat_listener
 INPUT(prompt STRING)
 OUTPUT(response STRING)
 WITH (
-  'provider' = 'openai',
+  'provider' = 'bedrock',
   'task' = 'text_generation',
-  'openai.model_version' = 'gpt-4o',
-  'openai.connection' = 'openai-connection'
+  'bedrock.connection' = 'bedrock-connection',
+  'bedrock.params.max_tokens' = '1024'
 );
 ```
 
-Next, create a similar LLM model, but this time also provide the MCP server connection. This is the model that we will use to invoke Linear's `create_issue` tool in the next step.
+Next, create a similar LLM model, but this time also provide the MCP server connection. This is the model that we will use to invoke Linear's `save_issue` tool in the next step. The `bedrock.system_prompt` option nudges the model to prefer calling a tool over responding directly:
 
 ```sql
 CREATE MODEL linear_mcp_model
 INPUT(prompt STRING)
 OUTPUT(response STRING)
 WITH (
-  'provider' = 'openai',
+  'provider' = 'bedrock',
   'task' = 'text_generation',
-  'openai.model_version' = 'gpt-4o',
-  'openai.connection' = 'openai-connection',
+  'bedrock.connection' = 'bedrock-connection',
+  'bedrock.params.max_tokens' = '1024',
+  'bedrock.system_prompt' = 'Use the best tool to respond to the input prompt',
   'mcp.connection' = 'linear-mcp-connection'
 );
 ```
@@ -225,7 +264,7 @@ SELECT
           'linear_mcp_model',
           'Create an issue from the following text using <LINEAR_TEAM_ID> as the team ID. I can''t log in to the online store. It says that my account has been locked out. When I try the forgot password route, I don''t get an email to reset it. Please help!',
           MAP[],
-          MAP['create_issue', 'Create a new issue'],
+          MAP['save_issue', 'Save issue'],
           MAP[]
       ) as response;
 ```
