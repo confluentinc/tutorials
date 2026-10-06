@@ -37,7 +37,7 @@ Create an API key scoped to Tableflow:
 confluent api-key create --resource tableflow
 ```
 
-Save the key and secret. You'll use them together in the form `<api-key>:<secret>`.
+Save the key and secret. You'll enter them when prompted in the notebook in Step 3, so they never need to be written into the notebook itself.
 
 ## Step 2: Start Spark and Jupyter
 
@@ -60,10 +60,13 @@ docker ps
 
 Open [http://localhost:8888](http://localhost:8888) in your browser and open the `tableflow-quickstart.ipynb` notebook under `notebooks`.
 
-In the first code cell, replace the two placeholders with the values from Step 1:
+Run the first code cell. It prompts for the values from Step 1:
 
-* `<Tableflow REST Catalog URI>`: your REST Catalog endpoint
-* `<api_key>:<secret>`: your Tableflow API key and secret
+* **Tableflow REST Catalog endpoint**: your REST Catalog endpoint
+* **Tableflow API key**: your Tableflow API key
+* **Tableflow API secret**: your Tableflow API secret (input is hidden)
+
+The secret is read with Python's `getpass`, so it is not stored in the notebook source, which Jupyter auto-saves. Don't paste it into a cell.
 
 In the remaining cells, replace `<your-kafka-cluster-id>` with your Kafka cluster ID (the `lkc-...` value from `confluent kafka cluster describe`, not the cluster name).
 
