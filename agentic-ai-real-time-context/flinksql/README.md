@@ -43,19 +43,22 @@ confluent flink shell --compute-pool \
   $(confluent flink compute-pool list -o json | jq -r ".[0].id")
 ```
 
-Create an `orders` table. Each order records the customer and their membership level at the time of the order. The primary key, upsert changelog mode, compacted cleanup policy, and raw-bytes key make RTCE keep only the latest record for each order. RTCE's [limitations](https://docs.confluent.io/cloud/current/ai/real-time-context-engine/limitations.html) page describes the key format requirements.
+Create an `orders` table. Each order records the customer and their membership level at the time of the order. The primary key, upsert changelog mode, and compacted cleanup policy make RTCE keep only the latest record for each order.
+
+RTCE's [upsert requirements](https://docs.confluent.io/cloud/current/ai/real-time-context-engine/limitations.html#upsert-requirements) also say that the Kafka record key must use raw byte format, and structured key schemas (Avro, Protobuf) aren't supported. When a table has a primary key, Flink defaults to the `avro-registry` key format, so set `'key.format' = 'raw'` explicitly. A raw key must be a single column named `key`, so the order number goes in a column with that name.
 
 ```sql
 CREATE TABLE orders (
-  order_id INT,
+  `key` STRING,
   customer_name STRING,
   membership_level STRING,
   order_total DECIMAL(10, 2),
   order_status STRING,
-  PRIMARY KEY (order_id) NOT ENFORCED
+  PRIMARY KEY (`key`) NOT ENFORCED
 ) WITH (
   'changelog.mode' = 'upsert',
-  'kafka.cleanup-policy' = 'compact'
+  'kafka.cleanup-policy' = 'compact',
+  'key.format' = 'raw'
 );
 ```
 
@@ -66,9 +69,9 @@ Insert a few orders. In a production deployment, these would be produced by an o
 ```sql
 INSERT INTO orders
   VALUES
-    (9189, 'Alex Rivera', 'GOLD', 214.50, 'SHIPPED'),
-    (9190, 'Jordan Lee', 'PLATINUM', 489.00, 'SHIPPED'),
-    (9191, 'Sam Patel', 'STANDARD', 36.25, 'PROCESSING');
+    ('9189', 'Alex Rivera', 'GOLD', 214.50, 'SHIPPED'),
+    ('9190', 'Jordan Lee', 'PLATINUM', 489.00, 'SHIPPED'),
+    ('9191', 'Sam Patel', 'STANDARD', 36.25, 'PROCESSING');
 ```
 
 Confirm that the orders are there:
@@ -92,20 +95,20 @@ confluent rtce rtce-topic create \
   --cloud aws \
   --region <CLUSTER_REGION> \
   --topic-name orders \
-  --description "Customer orders. Each order has the customer's membership_level (PLATINUM, GOLD, or STANDARD)."
+  --description "Customer orders. The key column holds the order number. Each order has the customer's membership_level (PLATINUM, GOLD, or STANDARD)."
 ```
 
 The description is visible to agents when they discover topics, so describe what the topic contains and what its key columns mean.
 
-Check the status of the RTCE topic:
+Check the phase of the RTCE topic:
 
 ```shell
 confluent rtce rtce-topic describe orders
 ```
 
-Run the command again every few seconds until the status changes from `PENDING` to `ACTIVE`. Don't continue until it's `ACTIVE`.
+Run the command again every few seconds until the `Phase` changes from `PENDING` (or `PROVISIONING`) to `ACTIVE`. Don't continue until it's `ACTIVE`.
 
-RTCE reads the topic's cleanup policy to decide how to materialize it. The `orders` topic uses the `compact` policy and a raw-bytes key, so RTCE materializes it in upsert mode and keeps only the latest record for each `order_id`.
+RTCE reads the topic's cleanup policy to decide how to materialize it. The `orders` topic uses the `compact` policy and a raw-bytes key, so RTCE materializes it in upsert mode and keeps only the latest record for each order number (the `key` column).
 
 ## Create credentials and find the MCP endpoint
 
@@ -181,7 +184,7 @@ Next, update the prompt. In addition to the instructions from Part 2, it tells t
 
 ```sql
 ALTER AGENT chat_listener_agent
-SET PROMPT 'Create an issue from the content using <LINEAR_TEAM_ID> as the team ID. Do not create a new issue if a similar issue already exists. If the content mentions an order number, look up that order in the orders topic using the Real-Time Context Engine tool, querying by order_id, and read its membership_level. Use the membership_level to set the issue priority: PLATINUM is priority 1, GOLD is priority 2, and STANDARD is priority 3. If no order is mentioned or the order is not found, use priority 4. Mention the order number and membership level in the issue description.';
+SET PROMPT 'Create an issue from the content using <LINEAR_TEAM_ID> as the team ID. Do not create a new issue if a similar issue already exists. If the content mentions an order number, look up that order in the orders topic using the Real-Time Context Engine tool, querying by the key column, and read its membership_level. Use the membership_level to set the issue priority: PLATINUM is priority 1, GOLD is priority 2, and STANDARD is priority 3. If no order is mentioned or the order is not found, use priority 4. Mention the order number and membership level in the issue description.';
 ```
 
 ## Test the agent with order context
