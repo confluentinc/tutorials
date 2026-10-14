@@ -3,7 +3,7 @@
 
 # How to build a ksqlDB scalar user-defined function (UDF) to transform events
 
-Suppose you want to transform the values of a Kafka topic using a stateless scalar function not already provided by ksqlDB. As a concrete example, consider a topic containing stock price events over which you want to calculate the [volume-weighted average price](https://en.wikipedia.org/wiki/Volume-weighted_average_price) (VWAP) for each event. There is no built-in function for VWAP, so we'll write a custom [ksqlDB user-defined function](https://docs.ksqldb.io/en/latest/concepts/functions/#udfs) (UDF) in Java that performs the calculation.
+Suppose you want to transform the values of a Kafka topic using a stateless scalar function not already provided by ksqlDB. As a concrete example, consider a topic containing stock price events over which you want to calculate the [volume-weighted average price](https://en.wikipedia.org/wiki/Volume-weighted_average_price) (VWAP) for each event. There is no built-in function for VWAP, so we'll write a custom [ksqlDB user-defined function](https://docs.confluent.io/platform/current/ksqldb/concepts/functions.html) (UDF) in Java that performs the calculation.
 
 ## Setup
 

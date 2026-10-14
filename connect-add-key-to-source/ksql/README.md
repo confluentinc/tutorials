@@ -13,7 +13,7 @@ TABLE cities (city_id INTEGER PRIMARY KEY NOT NULL, name VARCHAR(255), state VAR
 ```
 
 To capture all activity into Kafka, you'll use the [JDBC source connector](https://docs.confluent.io/kafka-connectors/jdbc/current/source-connector/overview.html#jdbc-source-connector-for-cp).  ksqlDB natively integrates with Connect by either [communicating with an external Connect 
-cluster or by running Connect embedded](https://docs.ksqldb.io/en/0.10.2-ksqldb/tutorials/embedded-connect/#when-to-use-embedded-connect) 
+cluster or by running Connect embedded](https://docs.confluent.io/platform/current/ksqldb/how-to-guides/use-connector-management.html#embedded-mode) 
 within the ksqlDB server process. 
 
 In this tutorial, we'll show the embedded Connect approach.  To start the JDBC connector from the ksqlDB CLI or from the Editor tab on Confluent Cloud, 

@@ -17,7 +17,7 @@ CREATE STREAM purchases (order_id INT, customer_name VARCHAR, date_of_birth VARC
           VALUE_FORMAT='JSON');
 ```
 
-Then create a stream that will mask the PII columns using the ksqlDB [MASK](https://docs.ksqldb.io/en/0.8.1-ksqldb/developer-guide/ksqldb-reference/scalar-functions/#mask) function:
+Then create a stream that will mask the PII columns using the ksqlDB [MASK](https://docs.confluent.io/platform/current/ksqldb/developer-guide/ksqldb-reference/scalar-functions.html#mask) function:
 
 ```sql
 CREATE STREAM purchases_pii_obfuscated

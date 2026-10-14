@@ -3,7 +3,7 @@
 
 # How to calculate the geographic distance between two points with ksqlDB
 
-You can use the ksqlDB [`GEO_DISTANCE`](https://docs.ksqldb.io/en/latest/developer-guide/ksqldb-reference/scalar-functions/#GEO_DISTANCE) function to calculate the distance between two latitude and longitude points.
+You can use the ksqlDB [`GEO_DISTANCE`](https://docs.confluent.io/platform/current/ksqldb/developer-guide/ksqldb-reference/scalar-functions.html#geo-distance) function to calculate the distance between two latitude and longitude points.
 
 ## Setup
 
