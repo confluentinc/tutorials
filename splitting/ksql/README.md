@@ -4,7 +4,7 @@
 # How to split a stream of events into substreams with ksqlDB
 
 If you have a stream of events in a Kafka topic and wish to split it into substreams based on a field in each event 
-(a.k.a. content-based routing), you can use ksqlDB's [WHERE](https://docs.ksqldb.io/en/latest/developer-guide/ksqldb-reference/quick-reference/#where)
+(a.k.a. content-based routing), you can use ksqlDB's [WHERE](https://docs.confluent.io/platform/current/ksqldb/developer-guide/ksqldb-reference/quick-reference.html#where)
 clause to populate new streams.
 
 For example, suppose that you have a stream representing appearances of an actor or actress in a film, with each event also containing the movie genre:

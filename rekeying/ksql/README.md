@@ -4,7 +4,7 @@
 # How to rekey a stream with ksqlDB
 
 If you have a stream that is either unkeyed (the key is null) or not keyed on the desired field, you can rekey the stream
-by issuing a [`CREATE STREAM AS SELECT`](https://docs.ksqldb.io/en/latest/developer-guide/ksqldb-reference/create-stream-as-select/)
+by issuing a [`CREATE STREAM AS SELECT`](https://docs.confluent.io/platform/current/ksqldb/developer-guide/ksqldb-reference/create-stream-as-select.html)
 (CSAS) statement and explicitly specifying the new key with `PARTITION BY`. The new stream can be partitioned by a value or a scalar function.
 
 For example, suppose that you have an unkeyed stream representing movies:

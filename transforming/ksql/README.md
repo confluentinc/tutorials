@@ -3,7 +3,7 @@
 
 # How to transform events with ksqlDB scalar functions
 
-If you have a stream of events in a Kafka topic and wish to transform a field in each event, you an use ksqlDB's [scalar functions](https://docs.ksqldb.io/en/latest/developer-guide/ksqldb-reference/scalar-functions/) or implement your own [scalar UDF](https://docs.ksqldb.io/en/latest/how-to-guides/create-a-user-defined-function/#scalar-functions) if
+If you have a stream of events in a Kafka topic and wish to transform a field in each event, you an use ksqlDB's [scalar functions](https://docs.confluent.io/platform/current/ksqldb/developer-guide/ksqldb-reference/scalar-functions.html) or implement your own [scalar UDF](https://docs.confluent.io/platform/current/ksqldb/how-to-guides/create-a-user-defined-function.html#scalar-functions) if
 your needs aren't met by the built-in functions.
 
 ## Setup
@@ -22,7 +22,7 @@ Each event has a `title` attribute that combines its title and its release year 
 ## Transform events
 
 Given the stream of movies, we can break the `title` field into separate attributes for the title and release year using the
-[SPLIT](https://docs.ksqldb.io/en/latest/developer-guide/ksqldb-reference/scalar-functions/#split) function. `CAST` is
+[SPLIT](https://docs.confluent.io/platform/current/ksqldb/developer-guide/ksqldb-reference/scalar-functions.html#split) function. `CAST` is
 also used to convert the resulting release year's data type from string to integer.
 
 ```sql
