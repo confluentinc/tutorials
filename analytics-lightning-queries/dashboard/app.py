@@ -121,14 +121,14 @@ def historical_stats():
     return df
 
 
-def render_metric(df, metric, label):
+def render_metric(df, metric, label, scope):
     st.subheader(label)
     if df.empty:
         st.info("No data yet")
     elif view == "Bar charts":
         fig = px.bar(df, x="ticker", y=metric, labels={metric: label})
         fig.update_layout(height=320, margin=dict(l=0, r=0, t=10, b=0))
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True, key=f"{scope}-{metric}")
     else:
         img = word_cloud(df, metric)
         if img is not None:
@@ -159,7 +159,7 @@ def live_dashboard():
     cols = st.columns(3)
     for i, (metric, label) in enumerate(METRICS.items()):
         with cols[i % 3]:
-            render_metric(frames[metric], metric, label)
+            render_metric(frames[metric], metric, label, "live")
 
 
 def historical_dashboard():
@@ -180,7 +180,7 @@ def historical_dashboard():
     for i, (metric, label) in enumerate(METRICS.items()):
         df = stats[["ticker", metric]].sort_values(metric, ascending=False).head(top_n)
         with cols[i % 3]:
-            render_metric(df, metric, label)
+            render_metric(df, metric, label, "historical")
 
     with st.expander("Run your own Spark SQL"):
         sql = st.text_area(
