@@ -1,0 +1,20 @@
+services:
+  spark-iceberg:
+    image: tabulario/spark-iceberg
+    container_name: spark-iceberg
+    entrypoint: ["/bin/bash", "/opt/spark/tableflow-entrypoint.sh"]
+    command: notebook
+    environment:
+      AWS_REGION: ${CLUSTER_REGION}
+      TABLEFLOW_REST_URI: ${TABLEFLOW_REST_URI:-}
+      TABLEFLOW_API_KEY: ${TABLEFLOW_API_KEY:-}
+      TABLEFLOW_API_SECRET: ${TABLEFLOW_API_SECRET:-}
+    ports:
+      - "8888:8888"
+      - "8080:8080"
+      - "10000:10000"
+      - "10001:10001"
+    volumes:
+      - ./warehouse:/home/iceberg/warehouse
+      - ./notebooks:/home/iceberg/notebooks/notebooks
+      - ./tableflow-entrypoint.sh:/opt/spark/tableflow-entrypoint.sh:ro

@@ -1,0 +1,7 @@
+streamlit>=1.37
+requests>=2.31
+pandas>=2.0
+plotly>=5.20
+wordcloud>=1.9
+impyla>=0.19
+thrift_sasl>=0.4.3

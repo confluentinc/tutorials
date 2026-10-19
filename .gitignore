@@ -143,6 +143,7 @@ fabric.properties
 
 # Python virtual env
 **/venv/
+**/.venv/
 
 # bin/ directories in all gradle modules
 **/bin/
