@@ -1,7 +1,7 @@
-<!-- title: How to query a Tableflow-synced Iceberg table with Spark -->
+<!-- title: Streamhouse for Analytics Part 2 of 3: Query Iceberg with Spark -->
 <!-- description: In this tutorial, learn how to query a Tableflow-synced Iceberg table with Spark, with step-by-step instructions and supporting code. -->
 
-# Analytics Part 2 of 3: How to query a Tableflow-synced Iceberg table with Spark
+# Streamhouse for Analytics Part 2 of 3: Query Iceberg with Spark
 
 In [Part 1](https://developer.confluent.io/confluent-tutorials/analytics-tableflow) of this series, you enabled Tableflow on a Kafka topic, which continuously materializes it as an [Apache Iceberg™](https://iceberg.apache.org/) table. In this tutorial, you'll query that table from Spark using Tableflow's built-in Iceberg REST Catalog. There's no export step, second database, or sync job to maintain. Spark reads the same data that backs your Kafka topic.
 

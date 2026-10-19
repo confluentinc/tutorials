@@ -1,7 +1,7 @@
-<!-- title: How to enable real-time analytics with Lightning Queries -->
+<!-- title: Streamhouse for Analytics Part 3 of 3: Serve real-time results with lightning queries -->
 <!-- description: In this tutorial, learn how to compute live last-N-trades stock statistics with a Flink Process Table Function, serve them with the Confluent Cloud Real-Time Context Engine, and query them in real time with lightning queries, with step-by-step instructions and supporting code. -->
 
-# Analytics Part 3 of 3: How to enable real-time analytics with Lightning Queries
+# Streamhouse for Analytics Part 3 of 3: Serve real-time results with lightning queries
 
 In [Part 1](https://developer.confluent.io/confluent-tutorials/analytics-tableflow/) and [Part 2](https://developer.confluent.io/confluent-tutorials/analytics-query-iceberg/) of this series, you materialized a Kafka topic of stock trades as an Iceberg table and queried it with Spark. Spark is a good fit for exploratory analysis over history. When an application needs real-time, high-concurrency serving, Spark is often paired with a separate serving store. Lightning queries take a different approach: they serve results from a continuously updated copy of a Kafka topic, upstream of the data lake and closer to when events are generated and aggregated on the fly by a stream processing engine.
 

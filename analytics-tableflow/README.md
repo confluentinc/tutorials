@@ -1,7 +1,7 @@
-<!-- title: How to materialize a Kafka topic as an Iceberg table with Tableflow -->
+<!-- title: Streamhouse for Analytics Part 1 of 3: Land a Kafka topic in Iceberg with Tableflow -->
 <!-- description: In this tutorial, learn how to materialize a Kafka topic as an Iceberg table with Tableflow, with step-by-step instructions and supporting code. -->
 
-# Analytics Part 1 of 3: How to materialize a Kafka topic as an Iceberg table with Tableflow
+# Streamhouse for Analytics Part 1 of 3: Land a Kafka topic in Iceberg with Tableflow
 
 [Tableflow](https://docs.confluent.io/cloud/current/topics/tableflow/overview.html) is a Confluent Cloud feature that continuously materializes a schematized Kafka topic as an [Apache Iceberg™](https://iceberg.apache.org/) or Delta Lake table. Instead of building a CDC pipeline or a scheduled export job to get topic data into a queryable table, you enable Tableflow on the topic, and Confluent Cloud keeps the table in sync as new records arrive.
 
