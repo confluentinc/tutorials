@@ -3,7 +3,7 @@
 
 # Streamhouse for Analytics Part 3 of 3: Serve real-time results with lightning queries
 
-In [Part 1](https://developer.confluent.io/confluent-tutorials/analytics-tableflow/) and [Part 2](https://developer.confluent.io/confluent-tutorials/analytics-query-iceberg/) of this series, you materialized a Kafka topic of stock trades as an Iceberg table and queried it with Spark. Spark is a good fit for exploratory analysis over history. When an application needs real-time, high-concurrency serving, Spark is often paired with a separate serving store. Lightning queries take a different approach: they serve results from a continuously updated copy of a Kafka topic, upstream of the data lake and closer to when events are generated and aggregated on the fly by a stream processing engine.
+In [Part 1](https://developer.confluent.io/confluent-tutorials/analytics-tableflow/) and [Part 2](https://developer.confluent.io/confluent-tutorials/analytics-query-iceberg/) of this series, you materialized a Kafka topic of stock trades as an Iceberg table and queried it with Spark. Spark is a good fit for exploring history. When an application needs real-time, high-concurrency serving, you often have to add a separate serving store. Lightning queries take a different approach. They serve results from a continuously updated copy of a Kafka topic, upstream of the data lake, with results that a stream processing engine aggregates as events arrive.
 
 In this tutorial, you'll build a dashboard on that approach, with charts that refresh every few seconds. You'll:
 
@@ -33,7 +33,7 @@ The [Real-Time Context Engine](https://docs.confluent.io/cloud/current/ai/real-t
 
 ## Inspect the PTF code
 
-The [`LastNTradesStats`](last-n-trades-stats-ptf/src/main/java/io/confluent/developer/LastNTradesStats.java) class (located under `analytics-lightning-queries/last-n-trades-stats-ptf`) emits an updated result on every incoming trade instead of waiting for a window to close. Rather than using a time-based window, it keeps the most recent N trades per ticker, so each emission describes the last N trades regardless of how long ago they happened. Note the following:
+The [`LastNTradesStats`](https://github.com/confluentinc/tutorials/blob/master/analytics-lightning-queries/last-n-trades-stats-ptf/src/main/java/io/confluent/developer/LastNTradesStats.java) class (located under `analytics-lightning-queries/last-n-trades-stats-ptf`) emits an updated result on every incoming trade instead of waiting for a window to close. Rather than using a time-based window, it keeps the most recent N trades per ticker, so each emission describes the last N trades regardless of how long ago they happened. Note the following:
 
 * **Incremental maintenance.** State holds running totals for volume, price sum, buy count, and sell count, plus the last N trades, oldest first. A new trade adds to the totals. Once more than N trades are retained, the oldest trade is subtracted. The average is the price sum divided by the number of retained trades.
 * **Min and max with minimal rescanning.** A new trade can only move the min or max in one direction, so a single comparison updates them. The retained trades are rescanned only when the evicted trade was the current min or max.
@@ -139,7 +139,7 @@ The `STOCK_TRADES` quickstart schema has `side` (`BUY` or `SELL`), `quantity`, `
 
 Create the output table, which Flink backs with a topic named `stats-by-ticker`. The primary key, upsert changelog mode, and compacted cleanup policy make RTCE keep only the latest record for each ticker.
 
-RTCE's [upsert requirements](https://docs.confluent.io/cloud/current/ai/real-time-context-engine/limitations.html#upsert-requirements) also say that the Kafka record key must use raw byte format, and structured key schemas (Avro, Protobuf) aren't supported. When a table has a primary key, Flink defaults to the `avro-registry` key format, so set `'key.format' = 'raw'` explicitly. A raw key must be a single column named `key`, so the ticker symbol goes in a column with that name.
+RTCE's [upsert requirements](https://docs.confluent.io/cloud/current/ai/real-time-context-engine/limitations.html#upsert-requirements) say that the Kafka record key must be raw bytes. Structured key schemas (Avro, Protobuf) aren't supported. When a table has a primary key, Flink defaults to the `avro-registry` key format, so set `'key.format' = 'raw'` explicitly. A raw key must be a single column named `key`, so the ticker symbol goes in a column with that name.
 
 ```sql
 CREATE TABLE `stats-by-ticker` (
@@ -176,7 +176,7 @@ FROM LastNTradesStats(
 );
 ```
 
-This statement runs until you stop it. Open a second Flink SQL shell (or exit this one, since the statement keeps running in Confluent Cloud) and confirm that statistics are arriving:
+This statement runs until you stop it. Open a second Flink SQL shell (or exit this one, because the statement keeps running in Confluent Cloud) and confirm that statistics are arriving:
 
 ```sql
 SELECT * FROM `stats-by-ticker`;
@@ -280,11 +280,19 @@ The response contains the schema and rows inline. With the default JSON result f
 }
 ```
 
-Run the same query a few seconds later and the numbers will have changed. Lightning queries support point lookups (`WHERE key = 'ZVZZT'`), filters, ordering, and row limits. They don't support aggregates, joins, or subqueries, and they return at most 200 rows. That's why the PTF computes the statistics ahead of time: the query only has to read them. Lightning queries share a rate limit with the RTCE MCP tools. If you exceed it, the API returns a `429`.
+Run the same query a few seconds later and the numbers will have changed.
+
+Lightning queries support point lookups (`WHERE key = 'ZVZZT'`), filters, ordering, and row limits. They don't support aggregates, joins, or subqueries, and they return at most 200 rows. That's why the PTF computes the statistics ahead of time: the query only has to read them. Lightning queries share a rate limit with the RTCE MCP tools. If you exceed it, the API returns a `429`.
 
 ## Run the dashboard
 
-The [`dashboard`](dashboard/app.py) directory contains a single-page web app built with [Streamlit](https://streamlit.io/), a Python framework for data apps. It fits this tutorial for three reasons: the whole app is one Python file, the API credentials stay on your machine instead of in browser JavaScript (call the lightning query endpoint from a backend, not a browser), and `st.fragment(run_every=...)` re-runs only the live chart section on a timer. The app uses [Plotly](https://plotly.com/python/) for the bar charts and the [`wordcloud`](https://github.com/amueller/word_cloud) package for the word clouds.
+The [`dashboard`](https://github.com/confluentinc/tutorials/blob/master/analytics-lightning-queries/dashboard/app.py) directory contains a single-page web app built with [Streamlit](https://streamlit.io/), a Python framework for data apps. It fits this tutorial for three reasons:
+
+* The whole app is one Python file.
+* The API credentials stay on your machine instead of in browser JavaScript. Call the lightning query endpoint from a backend, not a browser.
+* `st.fragment(run_every=...)` re-runs only the live chart section on a timer.
+
+The app uses [Plotly](https://plotly.com/python/) for the bar charts and the [`wordcloud`](https://github.com/amueller/word_cloud) package for the word clouds.
 
 On each refresh, the app issues one lightning query per metric, ordered by that metric in descending order. For example:
 
@@ -346,7 +354,7 @@ Watch the live charts update as new trades flow through the PTF. On the historic
 
 ## Putting it together
 
-In Part 2, the Spark notebook returned a handful of rows from `SELECT *`. That was enough to confirm that Tableflow was keeping the Iceberg table current, but it only sampled the table. The historical tab shows what Spark is for: aggregating over every trade ever written to the table. The dashboard's Spark query groups the full `stock-trades` table by ticker and computes total volume, average, minimum, and maximum price, and buy and sell counts. This query scans the entire table, which grows with each trade, and returns one row per ticker. The dashboard sends the query to the same Spark container from Part 2 over its Thrift server, and renders the result as charts alongside the live data.
+In Part 2, the Spark notebook returned a handful of rows from `SELECT *`. That was enough to confirm that Tableflow was keeping the Iceberg table current, but it only sampled the table. The historical tab shows what Spark is for: aggregating over every trade ever written to the table. The dashboard's Spark query groups the full `stock-trades` table by ticker and computes total volume, average, minimum, and maximum price, and buy and sell counts. It scans the entire table, which grows with each trade, and returns one row per ticker. The dashboard sends the query to the Spark container from Part 2 over its Thrift server and charts the result next to the live data.
 
 Both tabs are derived from the same stream of trades, but they answer different questions and are served by different systems:
 

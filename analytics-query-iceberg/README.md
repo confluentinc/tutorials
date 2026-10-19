@@ -3,7 +3,7 @@
 
 # Streamhouse for Analytics Part 2 of 3: Query Iceberg with Spark
 
-In [Part 1](https://developer.confluent.io/confluent-tutorials/analytics-tableflow) of this series, you enabled Tableflow on a Kafka topic, which continuously materializes it as an [Apache Iceberg™](https://iceberg.apache.org/) table. In this tutorial, you'll query that table from Spark using Tableflow's built-in Iceberg REST Catalog. There's no export step, second database, or sync job to maintain. Spark reads the same data that backs your Kafka topic.
+In [Part 1](https://developer.confluent.io/confluent-tutorials/analytics-tableflow/) of this series, you enabled Tableflow on a Kafka topic, which continuously materializes it as an [Apache Iceberg™](https://iceberg.apache.org/) table. In this tutorial, you'll query that table from Spark using Tableflow's built-in Iceberg REST Catalog. There's no export step, second database, or sync job to maintain. Spark reads the same data that backs your Kafka topic.
 
 The REST Catalog works with any Iceberg-compatible query engine. This tutorial uses Spark because it runs in a local Docker container, but the same catalog configuration applies to systems like [Snowflake](https://docs.confluent.io/cloud/current/topics/tableflow/how-to-guides/query-engines/query-with-snowflake.html), [Trino](https://docs.confluent.io/cloud/current/topics/tableflow/how-to-guides/query-engines/query-with-trino.html), [Amazon Athena](https://docs.confluent.io/cloud/current/topics/tableflow/how-to-guides/query-engines/query-with-aws.html), and [DuckDB](https://docs.confluent.io/cloud/current/topics/tableflow/how-to-guides/query-engines/query-with-duckdb.html).
 
@@ -37,13 +37,13 @@ Create an API key scoped to Tableflow:
 confluent api-key create --resource tableflow
 ```
 
-Save the key and secret. The notebook in Step 3 prompts for them, so you never write them into the notebook itself.
+Save the key and secret. The notebook in Step 3 prompts for them, so you don't have to write them into the notebook.
 
 ## Step 2: Start Spark and Jupyter
 
-This tutorial uses the [`tabulario/spark-iceberg`](https://hub.docker.com/r/tabulario/spark-iceberg) image, which bundles Spark, Jupyter, and the Iceberg runtime. The `notebooks` directory contains a `tableflow-quickstart.ipynb` notebook, which is mounted into the container and appears in Jupyter.
+This tutorial uses the [`tabulario/spark-iceberg`](https://hub.docker.com/r/tabulario/spark-iceberg) image, which bundles Spark, Jupyter, and the Iceberg runtime. The `notebooks` directory contains `tableflow-quickstart.ipynb`, which is mounted into the container and appears in Jupyter.
 
-The notebook prompts for your Tableflow credentials, so the container doesn't need them for this tutorial. If you're continuing to Part 3, where a dashboard queries this table through the container's Spark Thrift server, also export the values from Step 1 before starting the container in the next step. [`tableflow-entrypoint.sh`](tableflow-entrypoint.sh) uses them to set the Tableflow REST Catalog as the Thrift server's default catalog:
+The notebook prompts for your Tableflow credentials, so the container doesn't need them for this tutorial. If you're continuing to Part 3, where a dashboard queries this table through the container's Spark Thrift server, also export the values from Step 1 before you start the container below. [`tableflow-entrypoint.sh`](https://github.com/confluentinc/tutorials/blob/master/analytics-query-iceberg/tableflow-entrypoint.sh) uses them to set the Tableflow REST Catalog as the Thrift server's default catalog:
 
 ```shell
 export TABLEFLOW_REST_URI=<REST_CATALOG_ENDPOINT>

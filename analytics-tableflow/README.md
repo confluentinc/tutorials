@@ -5,9 +5,14 @@
 
 [Tableflow](https://docs.confluent.io/cloud/current/topics/tableflow/overview.html) is a Confluent Cloud feature that continuously materializes a schematized Kafka topic as an [Apache Iceberg™](https://iceberg.apache.org/) or Delta Lake table. Instead of building a CDC pipeline or a scheduled export job to get topic data into a queryable table, you enable Tableflow on the topic, and Confluent Cloud keeps the table in sync as new records arrive.
 
-Analytics workloads typically fall into two categories. *Historical* analytics asks questions over large volumes of accumulated data, such as trends, aggregates over months of trades, and ad hoc exploration, and it is best served by a data lake or warehouse where storage is cheap and query engines can scan a lot of data. *Real-time* analytics asks questions about what is happening right now, such as the latest price and volume for a ticker, and it needs fresh results with low latency and high concurrency, which batch pipelines and warehouses struggle to provide. Applications that use streaming data often need both, and this series shows how to build each from the same stream of events.
+Analytics workloads usually fall into two categories:
 
-In this tutorial, you'll produce sample stock trade data to a topic and enable Tableflow on it, so every record that lands in Kafka also lands in an Iceberg table. This sets up the historical side of analytics. In [Part 2](https://developer.confluent.io/confluent-tutorials/analytics-query-iceberg/) of this series, you'll query that table with Spark. In [Part 3](https://developer.confluent.io/confluent-tutorials/analytics-lightning-queries/), you'll add the real-time side: Flink computes live statistics over the trades, and lightning queries serve them with low latency to a dashboard.
+* *Historical* analytics asks questions over large volumes of accumulated data, such as trends, totals over months of trades, and ad hoc exploration. A data lake or warehouse fits well because storage is cheap and query engines can scan a lot of data.
+* *Real-time* analytics asks about what's happening right now, such as the latest price and volume for a ticker. It needs fresh results with low latency and high concurrency, which batch pipelines and warehouses struggle to provide.
+
+Applications built on streaming data often need both. This series shows how to build each from the same stream of events.
+
+In this tutorial, you'll produce sample stock trade data to a topic and enable Tableflow on it, so every record that lands in Kafka also lands in an Iceberg table. This sets up the historical side. In [Part 2](https://developer.confluent.io/confluent-tutorials/analytics-query-iceberg/) of this series, you'll query that table with Spark. In [Part 3](https://developer.confluent.io/confluent-tutorials/analytics-lightning-queries/), you'll add the real-time side: Flink computes live statistics over the trades, and lightning queries serve them with low latency to a dashboard.
 
 > **How this series relates to [Streamhouse](https://streamhouse.com/):** Streamhouse is an open, vendor-neutral data architecture that connects streaming and table-based systems so data stays current wherever it's consumed, instead of drifting out of sync between one-off pipelines. The Kafka topic you produce to here is operational data. The Iceberg table that Tableflow keeps in sync with it is the same data in your analytical estate, with no batch job in between.
 >
@@ -38,7 +43,7 @@ Install the `confluent-quickstart` CLI plugin, which streamlines the creation of
 confluent plugin install confluent-quickstart
 ```
 
-Run the plugin to create the environment and cluster needed for this tutorial. You can specify a different cloud provider (`gcp` or `azure`) or region, but Part 3 requires AWS. Find supported regions for a given cloud provider by running `confluent kafka region list --cloud <CLOUD>`.
+Run the plugin to create the environment and cluster needed for this tutorial. You can specify a different cloud provider (`gcp` or `azure`) or region, but Part 3 requires AWS. To find the supported regions for a cloud provider, run `confluent kafka region list --cloud <CLOUD>`.
 
 ```shell
 confluent quickstart \
@@ -74,7 +79,7 @@ Provision the connector:
 confluent connect cluster create --config-file ./analytics-tableflow/datagen-stock-trades-connector.json
 ```
 
-Once the connector is running (it may take a minute to start), verify that the `stock-trades` topic is populating. First, set the active API key to the one you just created:
+When the connector is running (it can take a minute to start), verify that the `stock-trades` topic is populating. First, set the active API key to the one you just created:
 
 ```shell
 confluent api-key use <YOUR_API_KEY>
@@ -120,7 +125,7 @@ confluent tableflow topic describe stock-trades --cluster <CLUSTER_ID>
 
 Wait for the `Phase` to change from `PENDING` to `RUNNING`. From then on, every record produced to `stock-trades` is written to an Iceberg table.
 
-You now have a live Iceberg table and didn't write any code to materialize it. In [Part 2](https://developer.confluent.io/confluent-tutorials/analytics-query-iceberg/) of this series, you'll query that table with Spark.
+You now have a live Iceberg table, and you didn't write any code to create it. In [Part 2](https://developer.confluent.io/confluent-tutorials/analytics-query-iceberg/) of this series, you'll query that table with Spark.
 
 ## Clean up
 
