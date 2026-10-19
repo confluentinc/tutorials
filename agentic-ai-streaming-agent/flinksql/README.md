@@ -3,7 +3,7 @@
 
 # Streamhouse for AI Agents Part 2 of 3: Build a Streaming Agent that uses MCP tools
 
-In [Part 1](https://developer.confluent.io/confluent-tutorials/agentic-ai-model-tool-setup/flinksql/) of this tutorial series, you created and tested the models and tools required for a customer support operations use case: generating summarized, structured issues in a project management platform (Linear) based on unstructured customer feedback. In this tutorial, you will build on this foundation and create a [Streaming Agent](https://docs.confluent.io/cloud/current/ai/streaming-agents/overview.html) in Confluent Cloud. Then [Part 3](https://developer.confluent.io/confluent-tutorials/agentic-ai-real-time-context/flinksql/) extends the agent with live business context from Kafka, served by the Real-Time Context Engine, so it can enrich each issue with details about the customer and their order.
+In [Part 1](https://developer.confluent.io/confluent-tutorials/agentic-ai-model-tool-setup/flinksql/) of this tutorial series, you created and tested the models and tools for a customer support use case: turning unstructured customer feedback into short, structured issues in a project management platform (Linear). In this tutorial, you'll build on that foundation and create a [Streaming Agent](https://docs.confluent.io/cloud/current/ai/streaming-agents/overview.html) in Confluent Cloud. In [Part 3](https://developer.confluent.io/confluent-tutorials/agentic-ai-real-time-context/flinksql/), you'll extend the agent with live business context from Kafka, served by the Real-Time Context Engine, so it can add customer and order details to each issue.
 
 > **A note on how this tutorial relates to a broader [Streamhouse](https://streamhouse.com/) data architecture:** Streamhouse is an open, vendor-neutral category of data architectures that keep the current state of a business continuously available to production applications, analytics, and AI agents. One of its principles is that data stays current as business events occur, rather than being refreshed through periodic batch processes. The Streaming Agent you build here follows that pattern. Customer communications arrive on a Kafka topic (transport) whose schema is registered in Schema Registry (govern), and Flink SQL invokes the agent on each new record (transform), so the agent acts on events as they occur and no batch job is needed. In Part 3, the Real-Time Context Engine (RTCE) serves current order data to the agent (serve) so that it can use the customer's membership level to decide how each support issue is prioritized.
 
@@ -48,7 +48,7 @@ WITH (
 
 ## Create the Streaming Agent
 
-Next, create a Streaming Agent using the tool you just created as well as the model you created earlier. Since the agent won't know your Linear team ID, provide it as a prompt hint:
+Next, create a Streaming Agent that uses the tool you just created and the model from Part 1. The agent doesn't know your Linear team ID, so include it in the prompt:
 
 ```sql
 CREATE AGENT chat_listener_agent
@@ -62,7 +62,7 @@ WITH (
 
 ## Test the Streaming Agent
 
-Test your agent against sample customer communications. In a production deployment, communications would be produced into Kafka via a connector (e.g., the [HTTP Source V2 Connector](https://docs.confluent.io/cloud/current/connectors/cc-http-source-v2.html) against a communication platform's REST API) or other Kafka client. Here, you create a table and insert sample communications into it.
+Test the agent with sample customer communications. In production, you would produce communications into Kafka with a connector (for example, the [HTTP Source V2 Connector](https://docs.confluent.io/cloud/current/connectors/cc-http-source-v2.html) against a communication platform's REST API) or another Kafka client. Here, you create a table and insert sample communications into it.
 
 ```sql
 CREATE TABLE customer_communications (
@@ -77,7 +77,7 @@ INSERT INTO `customer_communications`
     (UUID(), 'I cannot log in to the online store. It says the site is undergoing maintenance for an entire day.');
 ```
 
-Now run the agent against this input. The `response` column shows how the agent handled it, and you can head over to your [Linear workspace](https://linear.app/) to see the issue created.
+Now run the agent on this input. The `response` column shows how the agent handled it. Open your [Linear workspace](https://linear.app/) to see the new issue.
 
 ```sql
 SELECT
@@ -89,7 +89,7 @@ FROM customer_communications,
 
 ## Evolve the Streaming Agent
 
-You are off to a good start with your Streaming Agent, but you may already see room for improvement. For example, if you insert another complaint about the site undergoing maintenance:
+The agent works, but there's room for improvement. To see an example, insert another complaint about the site maintenance:
 
 ```sql
 INSERT INTO customer_communications
@@ -107,9 +107,9 @@ FROM customer_communications,
   LATERAL TABLE(AI_RUN_AGENT('chat_listener_agent', `prompt`, `id`, MAP['debug', true]));
 ```
 
-You will see that duplicate issues get created in Linear. This makes sense because the agent is write-only with respect to Linear. To fix that, give the agent the ability to gather more context about your Linear workspace.
+Linear now has duplicate issues. The agent can only write to Linear, so it can't tell that an issue already exists. To fix that, let the agent read your Linear workspace.
 
-First, remember that Linear's MCP server has other tools available beyond issue creation. You can use the `list_issues` tool to let your agent look up existing issues. Run the following statement to allow the MCP tool to both create and list issues:
+Linear's MCP server has more tools than issue creation. The `list_issues` tool lets the agent look up existing issues. Run the following statement to allow the tool to create and list issues:
 
 ```sql
 ALTER TOOL linear_mcp_tool
@@ -118,7 +118,7 @@ SET (
 );
 ```
 
-Next, adjust the agent prompt to prevent near-duplicate issues from being created:
+Next, update the agent prompt to prevent near-duplicate issues:
 
 ```sql
 ALTER AGENT chat_listener_agent
@@ -135,11 +135,11 @@ FROM customer_communications,
   LATERAL TABLE(AI_RUN_AGENT('chat_listener_agent', `prompt`, `id`, MAP['debug', true]));
 ```
 
-If you add more complaints about the site undergoing maintenance, you will see that the agent doesn't take action, and the response explains why. For example, `An issue similar to your problem already exists in the team's Linear workspace`.
+If you add more complaints about the site maintenance, the agent takes no action, and the response explains why. For example: `An issue similar to your problem already exists in the team's Linear workspace`.
 
 ## Test with a new issue
 
-To verify that the agent handles a completely new issue correctly, insert another communication, this time requesting a refund due to a shipping mistake:
+To check that the agent handles a new issue correctly, insert a communication that requests a refund for a shipping mistake:
 
 ```sql
 INSERT INTO customer_communications
@@ -157,20 +157,20 @@ FROM customer_communications,
   LATERAL TABLE(AI_RUN_AGENT('chat_listener_agent', `prompt`, `id`, MAP['debug', true]));
 ```
 
-The agent skips the earlier maintenance complaints because issues for them already exist, and creates a new issue for the refund request. Head over to your [Linear workspace](https://linear.app/) to see it:
+The agent skips the earlier maintenance complaints because issues for them already exist, and it creates a new issue for the refund request. Open your [Linear workspace](https://linear.app/) to see it:
 
 ![Linear refund issue](https://raw.githubusercontent.com/confluentinc/tutorials/master/agentic-ai-streaming-agent/flinksql/img/linear_refund_issue.png)
 
 ## Further experimentation
 
-How can you make your agent even smarter? Try implementing enhancements such as:
+To make the agent smarter, try these enhancements:
 
-- Adjust the agent prompt to set issue priority more intelligently
-- Give the agent the ability to handle multiple communications about the same issue and capture them all in the same issue. Hint: Linear's MCP server provides `update_issue` and `create_comment` tools.
+- Change the agent prompt to set issue priority
+- Let the agent add multiple communications about the same problem to one issue. Hint: Linear's MCP server provides `update_issue` and `create_comment` tools.
 
 ## Next steps
 
-In [Part 3](https://developer.confluent.io/confluent-tutorials/agentic-ai-real-time-context/flinksql/), give your agent live business context from Kafka using the Real-Time Context Engine, and then run the agent continuously.
+In [Part 3](https://developer.confluent.io/confluent-tutorials/agentic-ai-real-time-context/flinksql/), you'll give the agent live business context from Kafka with the Real-Time Context Engine, and then run it continuously.
 
 ## Clean up
 

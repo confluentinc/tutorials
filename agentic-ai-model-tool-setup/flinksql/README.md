@@ -3,11 +3,11 @@
 
 # Streamhouse for AI Agents Part 1 of 3: Set up an LLM and MCP tool in Confluent Cloud
 
-In Part 1 of this tutorial series, you will set up and test the infrastructure and third-party dependencies required for an agentic AI use case: a listener that creates concise tasks in a project management platform based on customer communications. This is a prime example of integrating tools in a model: LLMs are strong at summarizing a customer's natural language, but they lack awareness of your organization's project management platform and the context and connectivity needed to integrate with such an external system. You will use [Amazon Bedrock](https://aws.amazon.com/bedrock/) as the [model provider](https://docs.confluent.io/cloud/current/ai/ai-model-inference.html) in Confluent Cloud and [Linear](https://linear.app/) as the SaaS project management platform (the _tool_ for the model to call). Linear is similar to [Jira](https://www.atlassian.com/software/jira) or [Asana](https://asana.com/).
+In Part 1 of this tutorial series, you'll set up and test the infrastructure and third-party services for an agentic AI use case: a listener that creates short tasks in a project management platform from customer communications. This is a good example of why models need tools. LLMs are good at summarizing a customer's message, but they don't know about your project management platform and can't connect to it on their own. You'll use [Amazon Bedrock](https://aws.amazon.com/bedrock/) as the [model provider](https://docs.confluent.io/cloud/current/ai/ai-model-inference.html) in Confluent Cloud and [Linear](https://linear.app/) as the SaaS project management platform (the _tool_ for the model to call). Linear is similar to [Jira](https://www.atlassian.com/software/jira) or [Asana](https://asana.com/).
 
-Automatic ticket creation is a good fit for an automated AI pipeline because the cost of a wrong answer is low. For example, if an agent mistakenly creates a ticket or incorrectly routes one, the humans in the loop can clean it up after the fact.
+Automatic ticket creation is a good fit for an AI pipeline because a wrong answer costs little. If an agent creates a ticket by mistake or routes one incorrectly, a person can fix it later.
 
-In [Part 2](https://developer.confluent.io/confluent-tutorials/agentic-ai-streaming-agent/flinksql/), you will build and evolve a Streaming Agent for this use case. In [Part 3](https://developer.confluent.io/confluent-tutorials/agentic-ai-real-time-context/flinksql/) you will ground the agent with live business context from Kafka using the Real-Time Context Engine.
+In [Part 2](https://developer.confluent.io/confluent-tutorials/agentic-ai-streaming-agent/flinksql/), you'll build and evolve a Streaming Agent for this use case. In [Part 3](https://developer.confluent.io/confluent-tutorials/agentic-ai-real-time-context/flinksql/) you'll further evolve the agent by grounding it with live business context from Kafka using the Real-Time Context Engine.
 
 > **A note on how this tutorial relates to a broader [Streamhouse](https://streamhouse.com/) data architecture:** Streamhouse is an open, vendor-neutral category of data architectures that keep the current state of a business continuously available to production applications, analytics, and AI agents. It describes five stages: capture, transport, transform, govern, and serve. This series covers the part of that picture where an agent acts on business events as they happen instead of on data refreshed in batches. In this part, you set up the model and the tool that Flink SQL will call for each event. In Parts 2 and 3, customer communications and orders are records in Kafka topics (transport) with schemas registered in Schema Registry (govern), and Flink SQL invokes the agent on each new communication (transform). In Part 3, the Real-Time Context Engine (RTCE) serves current order data to the agent (serve) so that it can use the customer's membership level to decide how each support issue is prioritized.
 
@@ -32,7 +32,7 @@ Install a CLI plugin that streamlines resource creation in Confluent Cloud:
 confluent plugin install confluent-quickstart
 ```
 
-Run the plugin to create the Confluent Cloud resources (Kafka cluster and Flink compute pool) needed for this tutorial. Note that you may specify a different cloud provider (`gcp` or `azure`) or region. You can find supported regions in a given cloud provider by running `confluent kafka region list --cloud <CLOUD>`. The plugin should complete in under a minute.
+Run the plugin to create the Confluent Cloud resources this tutorial needs: a Kafka cluster and a Flink compute pool. You can choose a different cloud provider (`gcp` or `azure`) or region. To list the supported regions for a cloud provider, run `confluent kafka region list --cloud <CLOUD>`. The plugin takes under a minute.
 
 ```shell
 confluent quickstart \
@@ -41,7 +41,7 @@ confluent quickstart \
   --compute-pool-name agentic-ai-pool
 ```
 
-Because this tutorial uses the plugin only to create infrastructure and not to generate client configuration files, you will see the following output when it completes:
+This tutorial uses the plugin only to create infrastructure, not client configuration files, so you'll see the following output when it finishes:
 
 ```plaintext
 No config files were created (no resources were created)
@@ -54,7 +54,7 @@ Quickstart complete. Exiting.
 
 This tutorial calls the Claude Sonnet 5 model on Amazon Bedrock in the `us-east-1` region, which is billed through AWS Marketplace based on token usage. Open the [Bedrock console](https://console.aws.amazon.com/bedrock/home?region=us-east-1#/model-catalog), click `Model catalog` in the left-hand navigation, and ensure you have access to `Claude Sonnet 5` from Anthropic.
 
-You will need an AWS access key in order to call the model from Confluent Cloud. Create an IAM user (or use an existing one) in the [IAM console](https://console.aws.amazon.com/iam/home#/users) and attach an inline policy granting the `bedrock:InvokeModel` action:
+You need an AWS access key to call the model from Confluent Cloud. Create an IAM user (or use an existing one) in the [IAM console](https://console.aws.amazon.com/iam/home#/users) and attach an inline policy granting the `bedrock:InvokeModel` action:
 
 ```json
 {
@@ -69,26 +69,26 @@ You will need an AWS access key in order to call the model from Confluent Cloud.
 }
 ```
 
-Then, from that user's `Security credentials` tab, click `Create access key` and choose `Third-party service` as the use case. Save the access key ID and secret access key because you will need them later when creating a remote model in Flink.
+Then, from that user's `Security credentials` tab, click `Create access key` and choose `Third-party service` as the use case. Save the access key ID and secret access key. You'll need them when you create the connection in Flink.
 
-If your organization provisions AWS access via SSO (AWS IAM Identity Center) and blocks `iam:CreateUser` with a service control policy, you won't be able to create an IAM user. In that case, use the temporary credentials from your existing SSO session instead, as long as the role you assume has `bedrock:InvokeModel` permission:
+If your organization provisions AWS access via SSO (AWS IAM Identity Center) and blocks `iam:CreateUser` with a service control policy, you won't be able to create an IAM user. In that case, use the temporary credentials from your SSO session instead. The role you assume must have the `bedrock:InvokeModel` permission:
 
 ```shell
 aws sso login --profile <your-profile>
 aws configure export-credentials --profile <your-profile>
 ```
 
-This prints JSON containing `AccessKeyId`, `SecretAccessKey`, and `SessionToken`. Save all three. You'll pass the session token as `aws-session-token` when creating the connection in the next step. Note that these credentials are short-lived (typically 1 to 12 hours, depending on your organization's session duration policy). Once they expire, calls through the connection will start failing, and you'll need to repeat these two commands and re-create the connection with fresh values.
+This prints JSON containing `AccessKeyId`, `SecretAccessKey`, and `SessionToken`. Save all three. You'll pass the session token as `aws-session-token` when you create the connection in the next step. These credentials are short-lived, typically 1 to 12 hours depending on your organization's policy. When they expire, calls through the connection fail. To fix that, run these two commands again and re-create the connection with the new values.
 
 ## Set up Linear account and create credentials
 
-[Sign up](https://linear.app/signup) for a free Linear account (no credit card required). As part of the signup flow, you will be prompted to create a workspace. Give your workspace a unique name and select the region that makes sense for you. Click through the quick start prompts until you get to your workspace home page.
+[Sign up](https://linear.app/signup) for a free Linear account (no credit card required). During signup, Linear prompts you to create a workspace. Give it a unique name and select a region. Click through the quick start prompts until you reach your workspace home page.
 
-You will need a Linear API key in order to call Linear as an MCP-based tool from Confluent Cloud. To create a key, click the workspace dropdown at the top left, then `Settings`. Select `Security & access` in the left-hand navigation, followed by `New API key` under `Personal API keys`. Give the key a name. Under `Permissions`, select `Only select permissions...` and then only check the boxes for `Read` and `Write`. Click `Create`. Save this API key.
+You need a Linear API key to call Linear as an MCP tool from Confluent Cloud. To create one, click the workspace dropdown at the top left, then click `Settings`. Select `Security & access` in the left-hand navigation, then click `New API key` under `Personal API keys`. Give the key a name. Under `Permissions`, select `Only select permissions...` and check only `Read` and `Write`. Click `Create`, and save the API key.
 
 ## Create Bedrock and Linear connections
 
-To create a remote model or MCP tool in Confluent Cloud, you must provide a [connection](https://docs.confluent.io/cloud/current/flink/reference/statements/create-connection.html) to an external service as a parameter. In this step, you create the prerequisite connections.
+To create a remote model or MCP tool in Confluent Cloud, you need a [connection](https://docs.confluent.io/cloud/current/flink/reference/statements/create-connection.html) to the external service. In this step, you create those connections.
 
 To create connections to Amazon Bedrock and Linear, start a Flink SQL shell:
 
@@ -122,7 +122,7 @@ CREATE CONNECTION `bedrock-connection`
   );
 ```
 
-The connection is successfully created when you see the following output:
+You'll see the following output when the connection is created:
 
 ```plaintext
 Finished statement execution. Statement phase: COMPLETED.
@@ -160,7 +160,7 @@ You will see:
 
 ## Inspect the Linear MCP server
 
-In this section you will inspect Linear's MCP server to see which tools are available and what parameters they require. You'll need to know this information when invoking the tool in a later step.
+In this section, you'll inspect Linear's MCP server to see which tools it has and which parameters they require. You'll need this when you call the tool later.
 
 Run the following command from your terminal (not the Flink shell) to start an MCP server inspection utility:
 
@@ -176,11 +176,11 @@ Toggle the radio button where it says `Disconnected` to connect to the server.
 
 ![MCP inspector connect](https://raw.githubusercontent.com/confluentinc/tutorials/master/agentic-ai-model-tool-setup/flinksql/img/mcp-inspector-connect.png)
 
-Once you're connected, click `Tools` at the top of the page. These are the tools available for building an agentic AI workflow. This tutorial focuses on issue creation, so click the `save_issue` tool to see the fields required to create an issue.
+Once you're connected, click `Tools` at the top of the page. These are the tools you can use in an agentic AI workflow. This tutorial focuses on issue creation, so click the `save_issue` tool to see the fields required to create an issue.
 
 ![MCP inspector save_issue](https://raw.githubusercontent.com/confluentinc/tutorials/master/agentic-ai-model-tool-setup/flinksql/img/mcp-inspector-save-issue.png)
 
-You'll notice a required `team` field that you must provide when calling the tool. You can get your team ID (a GUID) by running the following command from your terminal. Be sure to substitute your Linear API key:
+The tool has a required `team` field. To get your team ID (a GUID), run the following command in your terminal. Substitute your Linear API key:
 
 ```shell
 curl \
@@ -209,7 +209,7 @@ WITH (
 );
 ```
 
-Next, create a similar LLM model, but this time also provide the MCP server connection. You will use this model to invoke Linear's `save_issue` tool in the next step. The `bedrock.system_prompt` option nudges the model to prefer calling a tool over responding directly:
+Next, create a similar model that also uses the MCP server connection. You'll use it to call Linear's `save_issue` tool in the next step. The `bedrock.system_prompt` option tells the model to prefer calling a tool over answering directly:
 
 ```sql
 CREATE MODEL linear_mcp_model
@@ -255,14 +255,14 @@ FROM
 LATERAL TABLE(AI_COMPLETE('chat_listener', prompt)) AS r(response);
 ```
 
-You should see output like the following. It may take 10 to 15 seconds to appear in the query results. Your output may be different because the underlying model is nondeterministic.
+You should see output like the following. It can take 10 to 15 seconds to appear. Your output may differ because the model is nondeterministic.
 
 ```plaintext
 prompt                                           response
 what is a good family friendly dog breed? ...    Labrador Retriever
 ```
 
-Next, test MCP tool invocation with the following command. Substitute your Linear team ID.
+Next, test the MCP tool call. Substitute your Linear team ID:
 
 ```sql
 SELECT
@@ -275,13 +275,13 @@ SELECT
   ) AS response;
 ```
 
-You should see a JSON response indicating the status as well as the action taken. In the [Linear web app](https://linear.app/), click `All issues` and you will see a new ticket in the backlog summarizing the issue:
+You should see a JSON response with the status and the action taken. In the [Linear web app](https://linear.app/), click `All issues`. You'll see a new ticket in the backlog that summarizes the issue:
 
 ![Linear new issue](https://raw.githubusercontent.com/confluentinc/tutorials/master/agentic-ai-model-tool-setup/flinksql/img/linear_new_issue.png)
 
 ## Next steps
 
-Now that you have created models and a tool and verified that they work as expected, proceed to [Part 2](https://developer.confluent.io/confluent-tutorials/agentic-ai-streaming-agent/flinksql/) of this tutorial series.
+You've created the models and tool and confirmed they work. Continue to [Part 2](https://developer.confluent.io/confluent-tutorials/agentic-ai-streaming-agent/flinksql/) of this tutorial series.
 
 ## Clean up
 

@@ -3,14 +3,14 @@
 
 # Streamhouse for AI Agents Part 3 of 3: Ground a Streaming Agent with the Real-Time Context Engine
 
-In [Part 1](https://developer.confluent.io/confluent-tutorials/agentic-ai-model-tool-setup/flinksql/) and [Part 2](https://developer.confluent.io/confluent-tutorials/agentic-ai-streaming-agent/flinksql/) of this tutorial series, you set up an LLM model and an MCP tool for Linear in Confluent Cloud, and then built a Streaming Agent that uses them to turn customer communications into issues in Linear. The agent can see what is already in Linear, but it knows nothing about the customer who wrote in. A message like _"I would like a partial refund on order 9189"_ becomes an issue that a human then has to enrich by looking up the order and the customer's membership level before deciding how urgent it is.
+In [Part 1](https://developer.confluent.io/confluent-tutorials/agentic-ai-model-tool-setup/flinksql/) and [Part 2](https://developer.confluent.io/confluent-tutorials/agentic-ai-streaming-agent/flinksql/) of this tutorial series, you set up an LLM and an MCP tool for Linear in Confluent Cloud, and then built a Streaming Agent that turns customer communications into Linear issues. The agent can see what's already in Linear, but it knows nothing about the customer who wrote in. A message like _"I would like a partial refund on order 9189"_ becomes an issue that a person has to look up, finding the order and the customer's membership level, before deciding how urgent it is.
 
-In this tutorial, you will give the agent that context using the [Real-Time Context Engine](https://docs.confluent.io/cloud/current/ai/real-time-context-engine/overview.html) (RTCE). RTCE materializes Kafka topic data into a low-latency serving layer and exposes it to agents as MCP tools, so the agent can query current data without a Kafka consumer, a separate database, or a Flink job to maintain. You will:
+In this tutorial, you'll give the agent that context with the [Real-Time Context Engine](https://docs.confluent.io/cloud/current/ai/real-time-context-engine/overview.html) (RTCE). RTCE materializes Kafka topic data into a low-latency serving layer and exposes it to agents as MCP tools. The agent can query current data without a Kafka consumer, a separate database, or a Flink job to maintain. You'll:
 
 1. Create an `orders` table in Flink SQL that records each order's customer membership level
 2. Enable RTCE on the `orders` topic and create credentials for its MCP endpoint
 3. Create an MCP tool for RTCE in Flink SQL
-4. Alter the Streaming Agent from Part 2 to add the RTCE tool and set the priority of each Linear issue based on the customer's membership level
+4. Alter the Streaming Agent from Part 2 to add the RTCE tool and set each Linear issue's priority from the customer's membership level
 
 > **A note on how this tutorial relates to a broader [Streamhouse](https://streamhouse.com/) data architecture:** Streamhouse is an open, vendor-neutral category of data architectures that keep the current state of a business continuously available to production applications, analytics, and AI agents. It describes five stages: capture, transport, transform, govern, and serve. In this series, customer communications and orders are records in Kafka topics (transport), and Flink SQL invokes the agent on each new communication (transform). The data is schematized throughout: Flink registers a schema in Schema Registry for each table's topic, and RTCE requires a registered schema in order to expose a topic, so the agent queries typed, governed columns (govern). RTCE is the serve stage: the current state of each order is queryable by the agent at the moment it handles a communication, with no batch export in between.
 
@@ -45,7 +45,7 @@ confluent flink shell --compute-pool \
 
 Create an `orders` table. Each order records the customer and their membership level at the time of the order. The primary key, upsert changelog mode, and compacted cleanup policy make RTCE keep only the latest record for each order.
 
-RTCE's [upsert requirements](https://docs.confluent.io/cloud/current/ai/real-time-context-engine/limitations.html#upsert-requirements) also say that the Kafka record key must use raw byte format, and structured key schemas (Avro, Protobuf) aren't supported. When a table has a primary key, Flink defaults to the `avro-registry` key format, so set `'key.format' = 'raw'` explicitly. A raw key must be a single column named `key`, so the order number goes in a column with that name.
+RTCE's [upsert requirements](https://docs.confluent.io/cloud/current/ai/real-time-context-engine/limitations.html#upsert-requirements) say that the Kafka record key must be raw bytes. Structured key schemas (Avro, Protobuf) aren't supported. When a table has a primary key, Flink defaults to the `avro-registry` key format, so set `'key.format' = 'raw'` explicitly. A raw key must be a single column named `key`, so the order number goes in a column with that name.
 
 ```sql
 CREATE TABLE orders (
@@ -64,7 +64,7 @@ CREATE TABLE orders (
 
 Creating the table also creates a Kafka topic named `orders` and registers its value schema in Schema Registry. RTCE requires a registered schema.
 
-Insert a few orders. In a production deployment, these would be produced by an order management system or captured from its database with a CDC connector. Order `9189` is the one from the refund request in Part 2:
+Insert a few orders. In production, an order management system would produce these, or a CDC connector would capture them from its database. Order `9189` is the one from the refund request in Part 2:
 
 ```sql
 INSERT INTO orders
@@ -80,25 +80,21 @@ Confirm that the orders are there:
 SELECT * FROM orders;
 ```
 
+Exit the Flink SQL shell (`exit;`).
+
 ## Enable RTCE on the orders topic
 
-Exit the Flink SQL shell (`exit;`) and find your cluster's region:
-
-```shell
-confluent kafka cluster describe
-```
-
-Enable RTCE on the `orders` topic, using the region from the output. The cloud must be `aws`:
+Enable RTCE on the `orders` topic. Set `--region` to your cluster's region. The cloud must be `aws`:
 
 ```shell
 confluent rtce rtce-topic create \
   --cloud aws \
-  --region <CLUSTER_REGION> \
+  --region us-east-1 \
   --topic-name orders \
   --description "Customer orders. The key column holds the order number. Each order has the customer's membership_level (PLATINUM, GOLD, or STANDARD)."
 ```
 
-The description is visible to agents when they discover topics, so describe what the topic contains and what its key columns mean.
+Agents see the description when they discover topics, so describe what the topic contains and what its key column means.
 
 Check the phase of the RTCE topic:
 
@@ -106,9 +102,9 @@ Check the phase of the RTCE topic:
 confluent rtce rtce-topic describe orders
 ```
 
-Run the command again every few seconds until the `Phase` changes from `PENDING` (or `PROVISIONING`) to `ACTIVE`. Don't continue until it's `ACTIVE`.
+Run the command every few seconds until `Phase` changes from `PENDING` (or `PROVISIONING`) to `ACTIVE`. Don't continue until it's `ACTIVE`.
 
-RTCE reads the topic's cleanup policy to decide how to materialize it. The `orders` topic uses the `compact` policy and a raw-bytes key, so RTCE materializes it in upsert mode and keeps only the latest record for each order number (the `key` column).
+RTCE reads the topic's cleanup policy to decide how to materialize it. The `orders` topic uses the `compact` policy and a raw key, so RTCE materializes it in upsert mode and keeps only the latest record for each order number (the `key` column).
 
 ## Create credentials and find the MCP endpoint
 
@@ -118,7 +114,7 @@ RTCE's MCP endpoint authenticates with a Confluent Cloud API key that has global
 confluent api-key create --resource global --description "RTCE tutorial"
 ```
 
-Save the API key and secret. You'll provide both when creating a Flink connection in the next step.
+Save the API key and secret. You'll need both to create a Flink connection in the next step.
 
 Next, get the MCP endpoint URL. In the [Confluent Cloud Console](https://confluent.cloud), navigate to your cluster and click `Topics`. In the `orders` row, find the `Context engine` column, click `Details`, and then click `Copy topic details to clipboard`. The endpoint resembles:
 
@@ -135,7 +131,7 @@ confluent flink shell --compute-pool \
   $(confluent flink compute-pool list -o json | jq -r ".[0].id")
 ```
 
-Create a connection to RTCE's MCP server. The Linear connection in Part 1 used a bearer token. RTCE uses HTTP Basic authentication, so provide the API key as the username and the API secret as the password:
+Create a connection to RTCE's MCP server. The Linear connection in Part 1 used a bearer token, but RTCE uses HTTP Basic authentication. Use the API key as the username and the API secret as the password:
 
 ```sql
 CREATE CONNECTION `rtce-mcp-connection`
@@ -154,7 +150,7 @@ RTCE exposes three MCP tools:
 - `getMetadata`: returns a topic's schema, including column names, data types, and primary key information
 - `queryData`: runs a read-only SQL query against a topic. RTCE supports key lookups, filters, compound predicates, ordering, and row limits, but not aggregates, joins, or subqueries. Queries return at most 200 rows.
 
-Create a tool that allows the agent to call all three:
+Create a tool that lets the agent call all three:
 
 ```sql
 CREATE TOOL rtce_tool
@@ -174,13 +170,13 @@ Add the RTCE tool to the `chat_listener_agent` from Part 2. The agent keeps its 
 ALTER AGENT chat_listener_agent ADD TOOL rtce_tool;
 ```
 
-The agent now makes more tool calls per communication: looking up the order, checking Linear for similar issues, and creating the issue. Raise the iteration limit from the Part 2 value of `5` so it has room to finish:
+The agent now makes more tool calls for each communication: it looks up the order, checks Linear for similar issues, and creates the issue. Raise the iteration limit from `5` in Part 2 so the agent has room to finish:
 
 ```sql
 ALTER AGENT chat_listener_agent SET ('max_iterations' = '10');
 ```
 
-Next, update the prompt. In addition to the instructions from Part 2, it tells the agent to look up the order in RTCE and to use the customer's membership level to set the Linear issue priority (in Linear, `1` is Urgent, `2` is High, `3` is Medium, and `4` is Low). Naming the topic and the columns up front saves the agent from having to discover them on every run:
+Next, update the prompt. In addition to the Part 2 instructions, it tells the agent to look up the order in RTCE and set the Linear issue priority from the customer's membership level. In Linear, `1` is Urgent, `2` is High, `3` is Medium, and `4` is Low. The prompt names the topic and columns so the agent doesn't have to discover them on every run:
 
 ```sql
 ALTER AGENT chat_listener_agent
@@ -208,13 +204,13 @@ FROM customer_communications,
   LATERAL TABLE(AI_RUN_AGENT('chat_listener_agent', `prompt`, `id`, MAP['debug', true]));
 ```
 
-This query processes every row in `customer_communications`, including the ones from Part 2. The agent recognizes that issues for those already exist and doesn't create new ones. With `debug` enabled, you can see the agent call the RTCE tool to look up the order.
+This query processes every row in `customer_communications`, including the ones from Part 2. The agent sees that issues for those already exist and doesn't create new ones. With `debug` enabled, you can see the agent call the RTCE tool to look up the order.
 
-Head over to your [Linear workspace](https://linear.app/) to see the new issues. Order `9190` belongs to a `PLATINUM` customer, so its issue should have an Urgent priority. Order `9191` belongs to a `STANDARD` customer, so its issue should have a Medium priority. LLM output varies from run to run, so wording and tool-call sequences may differ, but the priorities should follow the membership levels.
+Open your [Linear workspace](https://linear.app/) to see the new issues. Order `9190` belongs to a `PLATINUM` customer, so its issue should have Urgent priority. Order `9191` belongs to a `STANDARD` customer, so its issue should have Medium priority. LLM output varies from run to run, so the wording and tool calls may differ, but the priorities should follow the membership levels.
 
 ## Run the agent continuously
 
-So far you have been running the agent with a `SELECT` query. To run it continuously, so that every new customer communication is handled as it arrives, write the results to a table with an `INSERT INTO` statement:
+So far, you've run the agent with a `SELECT` query. To run it continuously, so it handles every new customer communication as it arrives, write the results to a table with an `INSERT INTO` statement:
 
 ```sql
 CREATE TABLE agent_results (
@@ -251,7 +247,7 @@ Try extending the agent:
 
 ## Clean up
 
-When you are done experimenting, delete the `agentic-ai-env` environment to clean up the Confluent Cloud infrastructure created for this tutorial. Run the following command in your terminal to get the environment ID of the form `env-123456` corresponding to the environment named `agentic-ai-env`:
+When you're done experimenting, delete the `agentic-ai-env` environment to clean up the Confluent Cloud infrastructure created for this tutorial. Run the following command in your terminal to get the environment ID of the form `env-123456` corresponding to the environment named `agentic-ai-env`:
 
 ```shell
 confluent environment list
