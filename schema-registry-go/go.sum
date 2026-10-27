@@ -54,6 +54,8 @@ github.com/confluentinc/confluent-kafka-go/v2 v2.15.1 h1:zqKvZk3Ay68ya4hnImXecb5
 github.com/confluentinc/confluent-kafka-go/v2 v2.15.1/go.mod h1:Jb4/23G4BMIa8vrwtoKx5bdk2h0eUYHbXC45m1FuOXI=
 github.com/confluentinc/confluent-kafka-go/v2 v2.16.0 h1:kf268ezKIaGmJHfrRQqrIzB7h0PuGl1h/Rsd7rsYcGg=
 github.com/confluentinc/confluent-kafka-go/v2 v2.16.0/go.mod h1:3uFmX9Hrc+Ie1cBHo/dPXEY0U1GQG1oz651fhM9pLS0=
+github.com/confluentinc/confluent-kafka-go/v2 v2.16.1 h1:/ijZ+cEblgBZFkqNbcZL28MPb7QftY/c6EpRjda9vOQ=
+github.com/confluentinc/confluent-kafka-go/v2 v2.16.1/go.mod h1:+UyluWSsEYBJE8L5ocILZIxL5sd6h+4DdEvi1qkFYO4=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
