@@ -116,7 +116,7 @@ confluent api-key create --resource global --description "RTCE tutorial"
 
 Save the API key and secret. You'll need both to create a Flink connection in the next step.
 
-Next, get the MCP endpoint URL. In the [Confluent Cloud Console](https://confluent.cloud), navigate to your cluster and click `Topics`. In the `orders` row, find the `Context engine` column, click `Details`, and then click `Copy topic details to clipboard`. The endpoint resembles:
+Next, get the MCP endpoint URL. In the [Confluent Cloud Console](https://confluent.cloud), navigate to your cluster and click `Topics`. click the `orders` topic, then click `Settings`. Scroll down to `Lightning Table` to find the MCP endpoint URL. The endpoint resembles:
 
 ```plaintext
 https://mcp.{CLUSTER_REGION}.aws.confluent.cloud/mcp/v1/context-engine/organizations/{ORG_ID}/environments/{ENV_ID}/kafka-clusters/{LKC_ID}
