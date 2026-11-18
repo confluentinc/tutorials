@@ -3,7 +3,7 @@
 
 # Streamhouse for AI Agents Part 1 of 3: Set up an LLM and MCP tool in Confluent Cloud
 
-In Part 1 of this tutorial series, you'll set up and test the infrastructure and third-party services for an agentic AI use case: a listener that creates short tasks in a project management platform from customer communications. This is a good example of why models need tools. LLMs are good at summarizing a customer's message, but they don't know about your project management platform and can't connect to it on their own. You'll use [Amazon Bedrock](https://aws.amazon.com/bedrock/) as the [model provider](https://docs.confluent.io/cloud/current/ai/ai-model-inference.html) in Confluent Cloud and [Linear](https://linear.app/) as the SaaS project management platform (the _tool_ for the model to call). Linear is similar to [Jira](https://www.atlassian.com/software/jira) or [Asana](https://asana.com/).
+In Part 1 of this tutorial series, you'll set up and test the infrastructure and third-party services for an agentic AI use case: a listener that creates short tasks in a project management platform from customer communications. This is a good example of why models need tools. LLMs are good at summarizing a customer's message, but they don't know about your project management platform and can't connect to it on their own. You'll use Confluent Cloud's [Managed Model Inference](https://docs.confluent.io/cloud/current/ai/managed-model.html) to run an LLM, so there are no model provider accounts, endpoints, or API keys to set up, and [Linear](https://linear.app/) as the SaaS project management platform (the _tool_ for the model to call). Linear is similar to [Jira](https://www.atlassian.com/software/jira) or [Asana](https://asana.com/).
 
 Automatic ticket creation is a good fit for an AI pipeline because a wrong answer costs little. If an agent creates a ticket by mistake or routes one incorrectly, a person can fix it later.
 
@@ -32,7 +32,7 @@ Install a CLI plugin that streamlines resource creation in Confluent Cloud:
 confluent plugin install confluent-quickstart
 ```
 
-Run the plugin to create the Confluent Cloud resources this tutorial needs: a Kafka cluster and a Flink compute pool. You can choose a different cloud provider (`gcp` or `azure`) or region. To list the supported regions for a cloud provider, run `confluent kafka region list --cloud <CLOUD>`. The plugin takes under a minute.
+Run the plugin to create the Confluent Cloud resources this tutorial needs: a Kafka cluster and a Flink compute pool. You can choose a different cloud provider (`gcp` or `azure`) or region, but the Flink compute pool must be in a [region that supports Managed Model Inference](https://docs.confluent.io/cloud/current/ai/managed-model.html). To list the supported regions for a cloud provider, run `confluent kafka region list --cloud <CLOUD>`. The plugin takes under a minute.
 
 ```shell
 confluent quickstart \
@@ -48,88 +48,24 @@ No config files were created (no resources were created)
 Quickstart complete. Exiting.
 ```
 
-## Set up Amazon Bedrock model access and AWS credentials
-
-[Sign up for an AWS account](https://portal.aws.amazon.com/billing/signup) if you don't already have one.
-
-This tutorial calls the Claude Sonnet 5 model on Amazon Bedrock in the `us-east-1` region, which is billed through AWS Marketplace based on token usage. Open the [Bedrock console](https://console.aws.amazon.com/bedrock/home?region=us-east-1#/model-catalog), click `Model catalog` in the left-hand navigation, and ensure you have access to `Claude Sonnet 5` from Anthropic.
-
-You need an AWS access key to call the model from Confluent Cloud. Create an IAM user (or use an existing one) in the [IAM console](https://console.aws.amazon.com/iam/home#/users) and attach an inline policy granting the `bedrock:InvokeModel` action:
-
-```json
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": "bedrock:InvokeModel",
-      "Resource": "*"
-    }
-  ]
-}
-```
-
-Then, from that user's `Security credentials` tab, click `Create access key` and choose `Third-party service` as the use case. Save the access key ID and secret access key. You'll need them when you create the connection in Flink.
-
-If your organization provisions AWS access via SSO (AWS IAM Identity Center) and blocks `iam:CreateUser` with a service control policy, you won't be able to create an IAM user. In that case, use the temporary credentials from your SSO session instead. The role you assume must have the `bedrock:InvokeModel` permission:
-
-```shell
-aws sso login --profile <your-profile>
-aws configure export-credentials --profile <your-profile>
-```
-
-This prints JSON containing `AccessKeyId`, `SecretAccessKey`, and `SessionToken`. Save all three. You'll pass the session token as `aws-session-token` when you create the connection in the next step. These credentials are short-lived, typically 1 to 12 hours depending on your organization's policy. When they expire, calls through the connection fail. To fix that, run these two commands again and re-create the connection with the new values.
-
 ## Set up Linear account and create credentials
 
 [Sign up](https://linear.app/signup) for a free Linear account (no credit card required). During signup, Linear prompts you to create a workspace. Give it a unique name and select a region. Click through the quick start prompts until you reach your workspace home page.
 
 You need a Linear API key to call Linear as an MCP tool from Confluent Cloud. To create one, click the workspace dropdown at the top left, then click `Settings`. Select `Security & access` in the left-hand navigation, then click `New API key` under `Personal API keys`. Give the key a name. Under `Permissions`, select `Only select permissions...` and check only `Read` and `Write`. Click `Create`, and save the API key.
 
-## Create Bedrock and Linear connections
+## Create the Linear connection
 
-To create a remote model or MCP tool in Confluent Cloud, you need a [connection](https://docs.confluent.io/cloud/current/flink/reference/statements/create-connection.html) to the external service. In this step, you create those connections.
+To create an MCP tool in Confluent Cloud, you need a [connection](https://docs.confluent.io/cloud/current/flink/reference/statements/create-connection.html) to the external service. Managed Model Inference doesn't need a connection because Confluent hosts access to the model. In this step, you create the connection to Linear.
 
-To create connections to Amazon Bedrock and Linear, start a Flink SQL shell:
+Start a Flink SQL shell:
 
 ```shell
 confluent flink shell --compute-pool \
   $(confluent flink compute-pool list -o json | jq -r ".[0].id")
 ```
 
-Paste your AWS access key ID and secret access key into the following statement to create a connection to Amazon Bedrock's [Invoke Model API](https://docs.aws.amazon.com/bedrock/latest/APIReference/API_runtime_InvokeModel.html). The endpoint targets the `us.anthropic.claude-sonnet-5` inference profile, which is required for on-demand invocation of Claude Sonnet 5 from `us-east-1`:
-
-```sql
-CREATE CONNECTION `bedrock-connection`
-  WITH (
-    'type' = 'bedrock',
-    'endpoint' = 'https://bedrock-runtime.us-east-1.amazonaws.com/model/us.anthropic.claude-sonnet-5/invoke',
-    'aws-access-key' = '<AWS_ACCESS_KEY_ID>',
-    'aws-secret-key' = '<AWS_SECRET_ACCESS_KEY>'
-  );
-```
-
-If you're using temporary credentials from an SSO session instead of an IAM user's access key, also include the session token you saved earlier:
-
-```sql
-CREATE CONNECTION `bedrock-connection`
-  WITH (
-    'type' = 'bedrock',
-    'endpoint' = 'https://bedrock-runtime.us-east-1.amazonaws.com/model/us.anthropic.claude-sonnet-5/invoke',
-    'aws-access-key' = '<AWS_ACCESS_KEY_ID>',
-    'aws-secret-key' = '<AWS_SECRET_ACCESS_KEY>',
-    'aws-session-token' = '<AWS_SESSION_TOKEN>'
-  );
-```
-
-You'll see the following output when the connection is created:
-
-```plaintext
-Finished statement execution. Statement phase: COMPLETED.
-The server returned empty rows for this statement.
-```
-
-Next, create a connection to Linear's MCP server. Linear offers both streamable HTTP and SSE-based [MCP endpoints](https://linear.app/docs/mcp#general). Paste your Linear API key into the following statement to create a connection to Linear's streamable HTTP MCP server:
+Create a connection to Linear's MCP server. Linear offers both streamable HTTP and SSE-based [MCP endpoints](https://linear.app/docs/mcp#general). Paste your Linear API key into the following statement to create a connection to Linear's streamable HTTP MCP server:
 
 ```sql
 CREATE CONNECTION `linear-mcp-connection`
@@ -141,7 +77,14 @@ CREATE CONNECTION `linear-mcp-connection`
   );
 ```
 
-Validate that both connections have been created:
+You'll see the following output when the connection is created:
+
+```plaintext
+Finished statement execution. Statement phase: COMPLETED.
+The server returned empty rows for this statement.
+```
+
+Validate that the connection has been created:
 
 ```sql
 SHOW CONNECTIONS;
@@ -153,7 +96,6 @@ You will see:
 +-----------------------+
 |    Connection Name    |
 +-----------------------+
-| bedrock-connection    |
 | linear-mcp-connection |
 +-----------------------+
 ```
@@ -195,32 +137,40 @@ curl \
 
 ## Create models
 
-In the Flink SQL shell, create a model using the Bedrock connection created earlier. Anthropic models on Bedrock require `max_tokens` to be set explicitly, which you provide via the `bedrock.params.max_tokens` option:
+In the Flink SQL shell, list the managed models available in your compute pool's region:
+
+```sql
+SHOW MODELS;
+```
+
+Managed models are the entries prefixed with `system.`. This tutorial uses an Anthropic Claude Sonnet model. If the `anthropic.claude-sonnet-4-6` model ID used below isn't listed, substitute the ID of another Claude Sonnet model from the output (without the `system.` prefix).
+
+Create a model with the `confluent` provider. Anthropic models require `max_tokens` to be set explicitly, which you provide via the `confluent.params.max_tokens` option:
 
 ```sql
 CREATE MODEL chat_listener
 INPUT(prompt STRING)
 OUTPUT(response STRING)
 WITH (
-  'provider' = 'bedrock',
+  'provider' = 'confluent',
   'task' = 'text_generation',
-  'bedrock.connection' = 'bedrock-connection',
-  'bedrock.params.max_tokens' = '1024'
+  'confluent.model' = 'anthropic.claude-sonnet-4-6',
+  'confluent.params.max_tokens' = '1024'
 );
 ```
 
-Next, create a similar model that also uses the MCP server connection. You'll use it to call Linear's `save_issue` tool in the next step. The `bedrock.system_prompt` option tells the model to prefer calling a tool over answering directly:
+Next, create a similar model that also uses the MCP server connection. You'll use it to call Linear's `save_issue` tool in the next step. The `confluent.system_prompt` option tells the model to prefer calling a tool over answering directly:
 
 ```sql
 CREATE MODEL linear_mcp_model
 INPUT(prompt STRING)
 OUTPUT(response STRING)
 WITH (
-  'provider' = 'bedrock',
+  'provider' = 'confluent',
   'task' = 'text_generation',
-  'bedrock.connection' = 'bedrock-connection',
-  'bedrock.params.max_tokens' = '1024',
-  'bedrock.system_prompt' = 'Use the best tool to respond to the input prompt',
+  'confluent.model' = 'anthropic.claude-sonnet-4-6',
+  'confluent.params.max_tokens' = '1024',
+  'confluent.system_prompt' = 'Use the best tool to respond to the input prompt',
   'mcp.connection' = 'linear-mcp-connection'
 );
 ```
@@ -231,7 +181,7 @@ Validate that both models have been created:
 SHOW MODELS;
 ```
 
-You will see:
+In addition to the `system.` managed models, you will see your two models:
 
 ```plaintext
 +------------------+
@@ -239,6 +189,7 @@ You will see:
 +------------------+
 | chat_listener    |
 | linear_mcp_model |
+| system....       |
 +------------------+
 ```
 
