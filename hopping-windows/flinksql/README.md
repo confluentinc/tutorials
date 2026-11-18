@@ -41,6 +41,21 @@ FROM TABLE(HOP(TABLE temperature_readings, DESCRIPTOR(ts), INTERVAL '5' MINUTES,
 GROUP BY sensor_id, window_start, window_end;
 ```
 
+The `HOP` function takes two interval parameters that together define the shape of the windows:
+
+* **Hop (slide)**: `INTERVAL '5' MINUTES` is the third argument. It controls how often a new window starts. Here, a new
+  window begins every 5 minutes, so the query produces a new result for each sensor every 5 minutes.
+* **Window size**: `INTERVAL '10' MINUTES` is the fourth argument. It controls how long each window is, i.e., how much
+  time the average is computed over. Here, each window covers 10 minutes of readings.
+
+Note that the hop comes before the size in the argument list.
+
+Because the hop (5 minutes) is smaller than the window size (10 minutes), consecutive windows overlap, and each reading
+falls into two windows (window size ÷ hop = 2). For example, a reading at `02:25:30` is included in both the
+`02:20:00`–`02:30:00` window and the `02:25:00`–`02:35:00` window. This is what makes the result a trailing 10-minute
+average that is refreshed every 5 minutes. If the hop equaled the window size, the windows wouldn't overlap and
+you'd have a tumbling window instead.
+
 ## Running the example
 
 You can run the example backing this tutorial in one of three ways: a Flink Table API-based JUnit test, locally with the Flink SQL Client 
