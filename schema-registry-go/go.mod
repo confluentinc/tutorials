@@ -4,7 +4,7 @@ go 1.26.10
 
 require (
 	github.com/confluentinc/confluent-kafka-go/v2 v2.16.1
-	github.com/magiconair/properties v1.18.12
+	github.com/magiconair/properties v1.18.13
 )
 
 require (
